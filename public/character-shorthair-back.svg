@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -30 40 45" width="200" height="225">
+  <!-- Ambient Ground Shadow -->
+  <ellipse cx="0" cy="8" rx="12" ry="5.0" fill="#1b120a" opacity="0.22" />
+
+  <!-- Sitting Base (Viewed from Behind) -->
+  <ellipse cx="0" cy="4" rx="10" ry="4.2" fill="#c56349" />
+  <ellipse cx="0" cy="3.5" rx="9" ry="3.6" fill="#e07a5f" />
+
+  <!-- Back Torso (与正视完全一致的圆润自然落肩，消除所有凸起凹陷) -->
+  <path d="M-6,2 C-7,-4 -5,-9 0,-9 C5,-9 7,-4 6,2 Z" fill="#e07a5f" />
+  <path d="M-4,1 Q0,3 4,1" stroke="#000000" stroke-width="0.6" opacity="0.16" fill="none" />
+  
+  <!-- Back Spine Seam & Neck Fold (温润纯正的后背中脊缝与后领) -->
+  <line x1="0" y1="-7.5" x2="0" y2="1.5" stroke="#000000" stroke-width="0.65" opacity="0.14" stroke-linecap="round" />
+  <path d="M-3.5,-8.8 Q0,-8.0 3.5,-8.8" stroke="#000000" stroke-width="0.6" opacity="0.18" fill="none" />
+
+  <!-- Back Head & Short Hair Beanie -->
+  <g id="back-head">
+    <!-- Back Skull Base -->
+    <circle cx="0" cy="-14" r="7.0" fill="#f5d6be" />
+    <path d="M-3.8,-8.5 C-3.8,-6.4 3.8,-6.4 3.8,-8.5 Z" fill="#f5d6be" />
+
+    <!-- Short Hair: Clean Back Nape Hairline (经典利落短发后发脚) -->
+    <path d="M-4.2,-9.2 Q0,-7.8 4.2,-9.2" stroke="#1f1b18" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.85" />
+
+    <!-- Back Pompom -->
+    <circle cx="0" cy="-22.6" r="2.3" fill="#425b6e" />
+    <path d="M-1.4,-23.6 C-0.6,-24.4 0.8,-24.4 1.5,-23.5 C2.1,-22.6 1.4,-21.3 0,-21.3 C-1.3,-21.3 -2.0,-22.3 -1.4,-23.6 Z" fill="rgba(0,0,0,0.14)" />
+    <path d="M-1.2,-23.0 Q0,-24.0 1.2,-23.2 M-1.0,-22.0 Q0,-21.2 0.8,-22.0" stroke="rgba(0,0,0,0.24)" stroke-width="0.5" stroke-linecap="round" fill="none" />
+
+    <!-- Full Back Beanie Crown Dome (88% coverage) -->
+    <path d="M-7.6,-10.8 C-8.3,-19.5 -4.8,-23.4 0,-23.4 C4.8,-23.4 8.3,-19.5 7.6,-10.8 C6.0,-8.2 -6.0,-8.2 -7.6,-10.8 Z" fill="#425b6e" />
+    <path d="M-5.4,-14.0 C-5.6,-19.2 -2.8,-22.2 0,-22.6 C2.8,-22.2 5.6,-19.2 5.4,-14.0" stroke="rgba(0,0,0,0.16)" stroke-width="0.55" stroke-dasharray="1.5 1.5" fill="none" />
+
+    <!-- Back Folded Cuff -->
+    <path d="M-7.7,-10.8 C-5.4,-8.6 5.4,-8.6 7.7,-10.8 C7.3,-14.0 0,-14.6 -7.3,-14.0 Z" fill="#425b6e" />
+    <path d="M-7.5,-11.0 C-5.0,-8.8 5.0,-8.8 7.5,-11.0" stroke="rgba(0,0,0,0.22)" stroke-width="0.8" fill="none" />
+    <path d="M-7.0,-13.8 Q0,-14.6 7.0,-13.8" stroke="rgba(0,0,0,0.18)" stroke-width="0.6" fill="none" />
+
+    <!-- Back Rib Texture Lines -->
+    <line x1="-5.0" y1="-13.8" x2="-5.2" y2="-11.4" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+    <line x1="-2.5" y1="-14.2" x2="-2.6" y2="-10.6" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+    <line x1="0" y1="-14.4" x2="0" y2="-10.2" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+    <line x1="2.5" y1="-14.2" x2="2.6" y2="-10.6" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+    <line x1="5.0" y1="-13.8" x2="5.2" y2="-11.4" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+  </g>
+</svg>

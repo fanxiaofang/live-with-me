@@ -1,0 +1,375 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700" style="background-color: #171412; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Background subtle grid -->
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#251f1b" stroke-width="0.8" />
+    </pattern>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="card-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+
+    <!-- View Box Ground Shadow -->
+    <radialGradient id="podium-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0e0a07" stop-opacity="0.45" />
+      <stop offset="60%" stop-color="#0e0a07" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#0e0a07" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1000" height="700" fill="#171412" />
+  <rect width="1000" height="700" fill="url(#grid)" />
+
+  <!-- Sheet Header -->
+  <g transform="translate(60, 50)">
+    <!-- Brand Tag -->
+    <rect x="0" y="0" width="94" height="22" rx="4" fill="#2d241d" stroke="#48392e" stroke-width="1" />
+    <text x="47" y="15" fill="#d6a87c" font-size="11" font-weight="600" text-anchor="middle" letter-spacing="1">ISOMETRIC</text>
+
+    <!-- Main Title -->
+    <text x="106" y="17" fill="#f5ede2" font-size="20" font-weight="bold" letter-spacing="0.5">经典短发毛线帽小人 · 4 视图设计规范 (Short Hair Character)</text>
+    <text x="0" y="44" fill="#9e9182" font-size="12">
+      规范版本：v2.4 · 2.5D 轴测透视 (2:1 Isometric Ratio) · 视角：正前(SE) / 左侧(SW) / 正后(NW) / 右侧(NE)
+    </text>
+  </g>
+
+  <!-- Color Palette Card -->
+  <g transform="translate(60, 110)">
+    <rect x="0" y="0" width="880" height="48" rx="8" fill="#201b17" stroke="#362d26" stroke-width="1" />
+    
+    <text x="20" y="29" fill="#a89b8c" font-size="12" font-weight="600">标准色板 (Palette):</text>
+
+    <!-- Swatch 1: Beanie -->
+    <rect x="150" y="14" width="20" height="20" rx="4" fill="#425B6E" stroke="#5a778c" stroke-width="1" />
+    <text x="178" y="28" fill="#e3dbce" font-size="11" font-weight="500">毛线帽 #425B6E</text>
+
+    <!-- Swatch 2: Hair -->
+    <rect x="310" y="14" width="20" height="20" rx="4" fill="#1F1B18" stroke="#453d36" stroke-width="1" />
+    <text x="338" y="28" fill="#e3dbce" font-size="11" font-weight="500">经典短发 #1F1B18</text>
+
+    <!-- Swatch 3: Skin -->
+    <rect x="470" y="14" width="20" height="20" rx="4" fill="#F5D6BE" stroke="#d6b398" stroke-width="1" />
+    <text x="498" y="28" fill="#e3dbce" font-size="11" font-weight="500">浅暖肤色 #F5D6BE</text>
+
+    <!-- Swatch 4: Robe/Shirt -->
+    <rect x="630" y="14" width="20" height="20" rx="4" fill="#E07A5F" stroke="#bf5d43" stroke-width="1" />
+    <text x="658" y="28" fill="#e3dbce" font-size="11" font-weight="500">陶土长袍 #E07A5F</text>
+
+    <!-- Swatch 5: Accent Line -->
+    <rect x="780" y="14" width="20" height="20" rx="4" fill="#1B120A" stroke="#332415" stroke-width="1" />
+    <text x="808" y="28" fill="#e3dbce" font-size="11" font-weight="500">地光阴影 #1B120A</text>
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- 4 VIEWS CONTAINER CARDS                                           -->
+  <!-- ================================================================= -->
+
+  <!-- CARD 1: 正面视图 FRONT VIEW (SE) -->
+  <g transform="translate(60, 180)">
+    <!-- Card Frame -->
+    <rect x="0" y="0" width="205" height="400" rx="10" fill="#201a16" stroke="#3b3129" stroke-width="1" filter="url(#card-shadow)" />
+    
+    <!-- View Header -->
+    <rect x="0" y="0" width="205" height="40" rx="10" fill="#29221d" />
+    <path d="M 0 30 L 0 40 L 205 40 L 205 30 Z" fill="#29221d" />
+    <text x="16" y="25" fill="#f5ede2" font-size="13" font-weight="bold">01 · 正面视图 (Front)</text>
+    <text x="188" y="25" fill="#c4794e" font-size="11" font-weight="600" text-anchor="end">SE 朝向</text>
+
+    <!-- Floor Podium / Axis -->
+    <ellipse cx="102" cy="275" rx="70" ry="28" fill="url(#podium-shadow)" />
+    <path d="M 52 275 L 102 250 L 152 275 L 102 300 Z" fill="none" stroke="#3a3028" stroke-width="1" stroke-dasharray="2 2" />
+
+    <!-- Isometric Character: Front View (Scaled 4x) -->
+    <g id="char-front-view" transform="translate(102, 260) scale(4)">
+      <!-- Ambient Ground Shadow -->
+      <ellipse cx="0" cy="8" rx="13" ry="5.5" fill="#1b120a" opacity="0.22" />
+
+      <!-- Folded Sitting Base -->
+      <ellipse cx="0" cy="4" rx="10" ry="4.2" fill="#c56349" />
+      <ellipse cx="0" cy="3.5" rx="9" ry="3.6" fill="#e07a5f" />
+
+      <!-- Front Torso -->
+      <path d="M-6,2 C-7,-4 -5,-9 0,-9 C5,-9 7,-4 6,2 Z" fill="#e07a5f" />
+      <path d="M-4,1 Q0,3 4,1" stroke="#000000" stroke-width="0.6" opacity="0.16" fill="none" />
+
+      <!-- Natural Folded Hands (交叠自然平放于膝前，保持纯净圆润落肩) -->
+      <ellipse cx="-1.6" cy="1.2" rx="2.2" ry="1.5" fill="#f5d6be" />
+      <ellipse cx="1.6" cy="1.2" rx="2.2" ry="1.5" fill="#f5d6be" />
+
+      <!-- Front Head & Short Hair Beanie -->
+      <g id="front-head-group">
+        <!-- Round Skin Face -->
+        <circle cx="0" cy="-14" r="7.1" fill="#f5d6be" />
+        <!-- Head base shadow -->
+        <ellipse cx="0" cy="-14.5" rx="5.5" ry="2.0" fill="#1f1b18" opacity="0.15" />
+
+        <!-- Beanie Top Pompom (Front Offset Left) -->
+        <circle cx="-2.6" cy="-22.6" r="2.2" fill="#425b6e" />
+        <path d="M-3.8,-23.6 C-3.0,-24.5 -1.8,-24.2 -1.4,-23.4 C-0.8,-22.4 -1.6,-21.2 -2.6,-21.2 C-3.6,-21.2 -4.2,-22.2 -3.8,-23.6 Z" fill="rgba(0,0,0,0.12)" />
+        <path d="M-3.6,-23.0 Q-2.6,-24.0 -1.6,-23.2 M-3.4,-22.0 Q-2.4,-21.0 -1.8,-22.2" stroke="rgba(0,0,0,0.22)" stroke-width="0.5" stroke-linecap="round" fill="none" />
+
+        <!-- Beanie Crown Dome -->
+        <path d="M-7.6,-13.2 C-8.2,-20.5 -4.8,-23.2 0,-23.2 C4.8,-23.2 8.2,-20.5 7.6,-13.2 C5.2,-14.8 -5.2,-14.8 -7.6,-13.2 Z" fill="#425b6e" />
+        <!-- Crown knit crease seam -->
+        <path d="M-5.2,-15.5 C-5.4,-19.0 -2.6,-22.0 0,-22.4 C2.6,-22.0 5.4,-19.0 5.2,-15.5" stroke="rgba(0,0,0,0.15)" stroke-width="0.55" stroke-dasharray="1.5 1.5" fill="none" />
+
+        <!-- Folded Beanie Cuff (Front) -->
+        <path d="M-7.7,-11.8 C-8.0,-15.6 -4.2,-17.0 0,-17.0 C4.2,-17.0 8.0,-15.6 7.7,-11.8 C5.2,-13.6 -5.2,-13.6 -7.7,-11.8 Z" fill="#425b6e" />
+        <path d="M-7.5,-12.0 C-5.0,-13.8 5.0,-13.8 7.5,-12.0" stroke="rgba(0,0,0,0.22)" stroke-width="0.75" fill="none" />
+        <path d="M-7.2,-15.3 Q0,-16.8 7.2,-15.3" stroke="rgba(0,0,0,0.18)" stroke-width="0.6" fill="none" />
+
+        <!-- Cuff Rib Stitches -->
+        <line x1="-5.0" y1="-15.4" x2="-5.2" y2="-13.2" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="-2.4" y1="-16.1" x2="-2.5" y2="-13.8" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="0" y1="-16.4" x2="0" y2="-14.0" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="2.4" y1="-16.1" x2="2.5" y2="-13.8" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="5.0" y1="-15.4" x2="5.2" y2="-13.2" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+
+        <!-- Short Hair: Classic Crescent Curtain Bangs (经典微八字月牙刘海 - 与展示页面 100% 同步) -->
+        <g id="bangs-classic-crescent-curtain">
+          <path
+            d="M-5.6,-13.4 C-4.8,-11.0 -0.8,-10.5 3.6,-12.8 C1.4,-13.6 -0.6,-14.2 -3.4,-14.2 C-4.6,-14.2 -5.2,-13.9 -5.6,-13.4 Z"
+            fill="#1f1b18"
+          />
+          <path
+            d="M2.2,-13.8 C3.2,-12.8 4.6,-12.6 5.4,-13.0 C4.6,-13.7 3.4,-14.0 2.2,-13.8 Z"
+            fill="#1f1b18"
+            opacity="0.9"
+          />
+        </g>
+      </g>
+    </g>
+
+    <!-- View Footnote / Features -->
+    <g transform="translate(16, 330)">
+      <text x="0" y="14" fill="#ded5c7" font-size="11" font-weight="600">特征要点：</text>
+      <text x="0" y="30" fill="#948777" font-size="10">• 帽檐露出一抹饱满微八字月牙刘海</text>
+      <text x="0" y="45" fill="#948777" font-size="10">• 顶球偏左前方，呈现生动倾角</text>
+      <text x="0" y="60" fill="#948777" font-size="10">• 双手自然交叠平放于膝前，姿态端庄安宁</text>
+    </g>
+  </g>
+
+  <!-- CARD 2: 左侧身视图 LEFT PROFILE (SW) -->
+  <g transform="translate(285, 180)">
+    <!-- Card Frame -->
+    <rect x="0" y="0" width="205" height="400" rx="10" fill="#201a16" stroke="#3b3129" stroke-width="1" filter="url(#card-shadow)" />
+    
+    <!-- View Header -->
+    <rect x="0" y="0" width="205" height="40" rx="10" fill="#29221d" />
+    <path d="M 0 30 L 0 40 L 205 40 L 205 30 Z" fill="#29221d" />
+    <text x="16" y="25" fill="#f5ede2" font-size="13" font-weight="bold">02 · 左侧视图 (Left)</text>
+    <text x="188" y="25" fill="#c4794e" font-size="11" font-weight="600" text-anchor="end">SW 朝向</text>
+
+    <!-- Floor Podium / Axis -->
+    <ellipse cx="102" cy="275" rx="70" ry="28" fill="url(#podium-shadow)" />
+    <path d="M 52 275 L 102 250 L 152 275 L 102 300 Z" fill="none" stroke="#3a3028" stroke-width="1" stroke-dasharray="2 2" />
+
+    <!-- Isometric Character: Left View (Scaled 4x) -->
+    <g id="char-left-view" transform="translate(102, 260) scale(4)">
+      <!-- Ambient Ground Shadow -->
+      <ellipse cx="0" cy="8" rx="12" ry="5.2" fill="#1b120a" opacity="0.22" />
+
+      <!-- Side Seated Base -->
+      <ellipse cx="0" cy="4" rx="9" ry="4" fill="#c56349" />
+      <ellipse cx="-1" cy="3.5" rx="8" ry="3.5" fill="#e07a5f" />
+
+      <!-- Side Torso -->
+      <path d="M-5.5,2 C-7.0,-3 -4.5,-8.5 -1.0,-9 C2.5,-9.5 5.5,-5.5 5.0,2 Z" fill="#e07a5f" />
+      <path d="M-2.2,-5.5 Q-4.2,-1.5 -2.0,2.0" stroke="#e07a5f" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.9" />
+      <ellipse cx="-2.0" cy="2.2" rx="1.6" ry="1.2" fill="#f5d6be" />
+
+      <!-- Side Head & Short Hair Beanie -->
+      <g id="left-head-group">
+        <!-- Full Round Head -->
+        <circle cx="0" cy="-14" r="7.1" fill="#f5d6be" />
+
+        <!-- Side Beanie Pompom -->
+        <circle cx="3.528" cy="-22.138" r="2.2" fill="#425b6e" />
+        <path d="M 2.239 -23.226 C 3.039 -24.026 4.439 -23.65 5.039 -22.75 C 5.639 -21.75 4.839 -20.826 3.839 -20.826 C 2.739 -20.826 1.939 -21.826 2.239 -23.226 Z" fill="rgba(0,0,0,0.14)" />
+        <path d="M 2.969 -22.891 C 3.635 -23.491 3.993 -22.906 4.66 -22.373 M 2.816 -21.538 C 3.482 -20.871 4.082 -20.871 4.616 -21.538" stroke="rgba(0,0,0,0.22)" stroke-width="0.5" stroke-linecap="round" fill="none" />
+
+        <!-- Side Beanie Crown Dome -->
+        <path d="M -7.603 -13.394 C -9.375 -20.675 -3.422 -23.264 0.485 -23.664 C 4.392 -24.064 10.006 -19.44 7.599 -11.044 C 3.999 -12.544 -0.003 -13.694 -7.603 -13.394 Z" fill="#425b6e" />
+        <path d="M-4.8,-17.2 C-4.4,-20.8 -1.5,-22.8 1.5,-22.6 C4.8,-22.2 6.8,-19.2 6.4,-14.2" stroke="rgba(0,0,0,0.16)" stroke-width="0.55" stroke-dasharray="1.5 1.5" fill="none" />
+
+        <!-- Side Folded Cuff (Tilted over brow & nape) -->
+        <path d="M -7.303 -13.221 C -5.177 -18.749 -2 -16.6 3 -15.2 C 5.5 -14.4 7.288 -13.401 7.688 -12.401 C 8.145 -11.357 6.652 -9.425 7.179 -10.045 C 3.092 -11.554 0.628 -12.459 -3.412 -12.907 C -5.928 -13.186 -7.003 -12.621 -7.303 -13.221 Z" fill="#425b6e" />
+        <path d="M -7.485 -13.071 C -3.113 -14.442 1.439 -12.028 6.823 -10.297" stroke="rgba(0,0,0,0.22)" stroke-width="0.75" fill="none" />
+        <path d="M -7.112 -16.059 C -1.687 -16.688 3.437 -14.942 7.818 -12.423" stroke="rgba(0,0,0,0.18)" stroke-width="0.55" fill="none" />
+
+        <!-- Side Rib Stitches -->
+        <line x1="-5.456" y1="-15.797" x2="-5.291" y2="-13.418" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="-2.724" y1="-13.592" x2="-2.931" y2="-16.044" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="-0.188" y1="-13.125" x2="-0.263" y2="-15.667" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="2.8" y1="-14.735" x2="2.788" y2="-12.039" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="5.906" y1="-13.358" x2="5.674" y2="-10.865" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+
+        <!-- Short Hair: Delicate Side Temple Hair Wisp (侧额微调月牙发梢) -->
+        <path d="M -6.873 -13.063 C -7.207 -12.431 -4.624 -11.731 -4.031 -11.783 C -2.144 -11.949 -2.13 -11.731 -2.381 -12.176 C -3.259 -11.654 -1.213 -11.98 -2.137 -12.044 C -2.63 -11.596 -2.334 -13.829 -6.873 -13.063 Z" fill="#1f1b18" />
+      </g>
+    </g>
+
+    <!-- View Footnote / Features -->
+    <g transform="translate(16, 330)">
+      <text x="0" y="14" fill="#ded5c7" font-size="11" font-weight="600">特征要点：</text>
+      <text x="0" y="30" fill="#948777" font-size="10">• 侧脸线条圆润饱满，消除压扁感</text>
+      <text x="0" y="45" fill="#948777" font-size="10">• 额侧探出一抹纤细月牙发梢(非墨镜)</text>
+      <text x="0" y="60" fill="#948777" font-size="10">• 帽身前高后低自然扣住后枕骨</text>
+    </g>
+  </g>
+
+  <!-- CARD 3: 背面视图 BACK VIEW (NW) -->
+  <g transform="translate(510, 180)">
+    <!-- Card Frame -->
+    <rect x="0" y="0" width="205" height="400" rx="10" fill="#201a16" stroke="#3b3129" stroke-width="1" filter="url(#card-shadow)" />
+    
+    <!-- View Header -->
+    <rect x="0" y="0" width="205" height="40" rx="10" fill="#29221d" />
+    <path d="M 0 30 L 0 40 L 205 40 L 205 30 Z" fill="#29221d" />
+    <text x="16" y="25" fill="#f5ede2" font-size="13" font-weight="bold">03 · 背面视图 (Back)</text>
+    <text x="188" y="25" fill="#c4794e" font-size="11" font-weight="600" text-anchor="end">NW 朝向</text>
+
+    <!-- Floor Podium / Axis -->
+    <ellipse cx="102" cy="275" rx="70" ry="28" fill="url(#podium-shadow)" />
+    <path d="M 52 275 L 102 250 L 152 275 L 102 300 Z" fill="none" stroke="#3a3028" stroke-width="1" stroke-dasharray="2 2" />
+
+    <!-- Isometric Character: Back View (Scaled 4x) -->
+    <g id="char-back-view" transform="translate(102, 260) scale(4)">
+      <!-- Ambient Ground Shadow -->
+      <ellipse cx="0" cy="8" rx="12" ry="5.0" fill="#1b120a" opacity="0.22" />
+
+      <!-- Sitting Base (Viewed from Behind) -->
+      <ellipse cx="0" cy="4" rx="10" ry="4.2" fill="#c56349" />
+      <ellipse cx="0" cy="3.5" rx="9" ry="3.6" fill="#e07a5f" />
+
+      <!-- Back Torso (与正视完全一致的圆润自然落肩，消除所有凸起凹陷) -->
+      <path d="M-6,2 C-7,-4 -5,-9 0,-9 C5,-9 7,-4 6,2 Z" fill="#e07a5f" />
+      <path d="M-4,1 Q0,3 4,1" stroke="#000000" stroke-width="0.6" opacity="0.16" fill="none" />
+      
+      <!-- Back Spine Seam & Neck Fold (温润纯正的后背中脊缝与后领) -->
+      <line x1="0" y1="-7.5" x2="0" y2="1.5" stroke="#000000" stroke-width="0.65" opacity="0.14" stroke-linecap="round" />
+      <path d="M-3.5,-8.8 Q0,-8.0 3.5,-8.8" stroke="#000000" stroke-width="0.6" opacity="0.18" fill="none" />
+
+      <!-- Back Head & Short Hair Beanie -->
+      <g id="back-head-group">
+        <!-- Back Skull Base -->
+        <circle cx="0" cy="-14" r="7.0" fill="#f5d6be" />
+        <!-- Nape Skin peek -->
+        <path d="M-3.8,-8.5 C-3.8,-6.4 3.8,-6.4 3.8,-8.5 Z" fill="#f5d6be" />
+
+        <!-- Short Hair: Clean Back Nape Hairline (经典利落短发后发脚) -->
+        <path d="M-4.2,-9.2 Q0,-7.8 4.2,-9.2" stroke="#1f1b18" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.85" />
+
+        <!-- Back Pompom (Centered) -->
+        <circle cx="0" cy="-22.6" r="2.3" fill="#425b6e" />
+        <path d="M-1.4,-23.6 C-0.6,-24.4 0.8,-24.4 1.5,-23.5 C2.1,-22.6 1.4,-21.3 0,-21.3 C-1.3,-21.3 -2.0,-22.3 -1.4,-23.6 Z" fill="rgba(0,0,0,0.14)" />
+        <path d="M-1.2,-23.0 Q0,-24.0 1.2,-23.2 M-1.0,-22.0 Q0,-21.2 0.8,-22.0" stroke="rgba(0,0,0,0.24)" stroke-width="0.5" stroke-linecap="round" fill="none" />
+
+        <!-- Full Back Beanie Crown Dome (88% coverage) -->
+        <path d="M-7.6,-10.8 C-8.3,-19.5 -4.8,-23.4 0,-23.4 C4.8,-23.4 8.3,-19.5 7.6,-10.8 C6.0,-8.2 -6.0,-8.2 -7.6,-10.8 Z" fill="#425b6e" />
+        <path d="M-5.4,-14.0 C-5.6,-19.2 -2.8,-22.2 0,-22.6 C2.8,-22.2 5.6,-19.2 5.4,-14.0" stroke="rgba(0,0,0,0.16)" stroke-width="0.55" stroke-dasharray="1.5 1.5" fill="none" />
+
+        <!-- Back Folded Cuff (包裹后脑下沿) -->
+        <path d="M-7.7,-10.8 C-5.4,-8.6 5.4,-8.6 7.7,-10.8 C7.3,-14.0 0,-14.6 -7.3,-14.0 Z" fill="#425b6e" />
+        <path d="M-7.5,-11.0 C-5.0,-8.8 5.0,-8.8 7.5,-11.0" stroke="rgba(0,0,0,0.22)" stroke-width="0.8" fill="none" />
+        <path d="M-7.0,-13.8 Q0,-14.6 7.0,-13.8" stroke="rgba(0,0,0,0.18)" stroke-width="0.6" fill="none" />
+
+        <!-- Back Rib Texture Lines -->
+        <line x1="-5.0" y1="-13.8" x2="-5.2" y2="-11.4" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+        <line x1="-2.5" y1="-14.2" x2="-2.6" y2="-10.6" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+        <line x1="0" y1="-14.4" x2="0" y2="-10.2" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+        <line x1="2.5" y1="-14.2" x2="2.6" y2="-10.6" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+        <line x1="5.0" y1="-13.8" x2="5.2" y2="-11.4" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" />
+
+        <!-- 严格规范：背面无任何前额刘海穿模 -->
+      </g>
+    </g>
+
+    <!-- View Footnote / Features -->
+    <g transform="translate(16, 330)">
+      <text x="0" y="14" fill="#ded5c7" font-size="11" font-weight="600">特征要点：</text>
+      <text x="0" y="30" fill="#948777" font-size="10">• 温暖连贯实心后背，彻底纠正身形倒置</text>
+      <text x="0" y="45" fill="#948777" font-size="10">• 后发际干净微露一截后颈皮肉</text>
+      <text x="0" y="60" fill="#948777" font-size="10">• 纯净圆润自然落肩，消除凸起与凹陷</text>
+    </g>
+  </g>
+
+  <!-- CARD 4: 右侧身视图 RIGHT PROFILE (NE) -->
+  <g transform="translate(735, 180)">
+    <!-- Card Frame -->
+    <rect x="0" y="0" width="205" height="400" rx="10" fill="#201a16" stroke="#3b3129" stroke-width="1" filter="url(#card-shadow)" />
+    
+    <!-- View Header -->
+    <rect x="0" y="0" width="205" height="40" rx="10" fill="#29221d" />
+    <path d="M 0 30 L 0 40 L 205 40 L 205 30 Z" fill="#29221d" />
+    <text x="16" y="25" fill="#f5ede2" font-size="13" font-weight="bold">04 · 右侧视图 (Right)</text>
+    <text x="188" y="25" fill="#c4794e" font-size="11" font-weight="600" text-anchor="end">NE 朝向</text>
+
+    <!-- Floor Podium / Axis -->
+    <ellipse cx="102" cy="275" rx="70" ry="28" fill="url(#podium-shadow)" />
+    <path d="M 52 275 L 102 250 L 152 275 L 102 300 Z" fill="none" stroke="#3a3028" stroke-width="1" stroke-dasharray="2 2" />
+
+    <!-- Isometric Character: Right View (Scaled 4x, Horizontally flipped) -->
+    <g id="char-right-view" transform="translate(102, 260) scale(4)">
+      <!-- Ambient Ground Shadow -->
+      <ellipse cx="0" cy="8" rx="12" ry="5.2" fill="#1b120a" opacity="0.22" />
+
+      <!-- Side Seated Base (Right side mirrored) -->
+      <ellipse cx="0" cy="4" rx="9" ry="4" fill="#c56349" />
+      <ellipse cx="1" cy="3.5" rx="8" ry="3.5" fill="#e07a5f" />
+
+      <!-- Side Torso (Right oriented) -->
+      <path d="M5.5,2 C7.0,-3 4.5,-8.5 1.0,-9 C-2.5,-9.5 -5.5,-5.5 -5.0,2 Z" fill="#e07a5f" />
+      <path d="M2.2,-5.5 Q4.2,-1.5 2.0,2.0" stroke="#e07a5f" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.9" />
+      <ellipse cx="2.0" cy="2.2" rx="1.6" ry="1.2" fill="#f5d6be" />
+
+      <!-- Side Head Mirrored (flip X: -1) -->
+      <g id="right-head-group" transform="scale(-1, 1)">
+        <!-- Full Round Head -->
+        <circle cx="0" cy="-14" r="7.1" fill="#f5d6be" />
+
+        <!-- Side Beanie Pompom -->
+        <circle cx="3.528" cy="-22.138" r="2.2" fill="#425b6e" />
+        <path d="M 2.239 -23.226 C 3.039 -24.026 4.439 -23.65 5.039 -22.75 C 5.639 -21.75 4.839 -20.826 3.839 -20.826 C 2.739 -20.826 1.939 -21.826 2.239 -23.226 Z" fill="rgba(0,0,0,0.14)" />
+        <path d="M 2.969 -22.891 C 3.635 -23.491 3.993 -22.906 4.66 -22.373 M 2.816 -21.538 C 3.482 -20.871 4.082 -20.871 4.616 -21.538" stroke="rgba(0,0,0,0.22)" stroke-width="0.5" stroke-linecap="round" fill="none" />
+
+        <!-- Side Beanie Crown Dome -->
+        <path d="M -7.603 -13.394 C -9.375 -20.675 -3.422 -23.264 0.485 -23.664 C 4.392 -24.064 10.006 -19.44 7.599 -11.044 C 3.999 -12.544 -0.003 -13.694 -7.603 -13.394 Z" fill="#425b6e" />
+        <path d="M-4.8,-17.2 C-4.4,-20.8 -1.5,-22.8 1.5,-22.6 C4.8,-22.2 6.8,-19.2 6.4,-14.2" stroke="rgba(0,0,0,0.16)" stroke-width="0.55" stroke-dasharray="1.5 1.5" fill="none" />
+
+        <!-- Side Folded Cuff -->
+        <path d="M -7.303 -13.221 C -5.177 -18.749 -2 -16.6 3 -15.2 C 5.5 -14.4 7.288 -13.401 7.688 -12.401 C 8.145 -11.357 6.652 -9.425 7.179 -10.045 C 3.092 -11.554 0.628 -12.459 -3.412 -12.907 C -5.928 -13.186 -7.003 -12.621 -7.303 -13.221 Z" fill="#425b6e" />
+        <path d="M -7.485 -13.071 C -3.113 -14.442 1.439 -12.028 6.823 -10.297" stroke="rgba(0,0,0,0.22)" stroke-width="0.75" fill="none" />
+        <path d="M -7.112 -16.059 C -1.687 -16.688 3.437 -14.942 7.818 -12.423" stroke="rgba(0,0,0,0.18)" stroke-width="0.55" fill="none" />
+
+        <!-- Side Rib Stitches -->
+        <line x1="-5.456" y1="-15.797" x2="-5.291" y2="-13.418" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="-2.724" y1="-13.592" x2="-2.931" y2="-16.044" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="-0.188" y1="-13.125" x2="-0.263" y2="-15.667" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="2.8" y1="-14.735" x2="2.788" y2="-12.039" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+        <line x1="5.906" y1="-13.358" x2="5.674" y2="-10.865" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+
+        <!-- Side Hair Wisp (Tuned) -->
+        <path d="M -6.873 -13.063 C -7.207 -12.431 -4.624 -11.731 -4.031 -11.783 C -2.144 -11.949 -2.13 -11.731 -2.381 -12.176 C -3.259 -11.654 -1.213 -11.98 -2.137 -12.044 C -2.63 -11.596 -2.334 -13.829 -6.873 -13.063 Z" fill="#1f1b18" />
+      </g>
+    </g>
+
+    <!-- View Footnote / Features -->
+    <g transform="translate(16, 330)">
+      <text x="0" y="14" fill="#ded5c7" font-size="11" font-weight="600">特征要点：</text>
+      <text x="0" y="30" fill="#948777" font-size="10">• 右侧视角对称渲染，动态自然平衡</text>
+      <text x="0" y="45" fill="#948777" font-size="10">• 适配 2.5D 轴测图右上走廊/窗台朝向</text>
+      <text x="0" y="60" fill="#948777" font-size="10">• 轮廓与空间几何体 100% 严密对齐</text>
+    </g>
+  </g>
+
+  <!-- Sheet Footer Notes -->
+  <g transform="translate(60, 610)">
+    <rect x="0" y="0" width="880" height="42" rx="6" fill="#1d1815" stroke="#2e2620" stroke-width="1" />
+    <text x="20" y="26" fill="#8f8173" font-size="11">
+      💡 提示：该矢量图采用纯 SVG 路径构建，无外部位图依赖。可直接拖入 Figma、Illustrator、Inkscape 或网页作为高分辨率资源使用。
+    </text>
+  </g>
+</svg>

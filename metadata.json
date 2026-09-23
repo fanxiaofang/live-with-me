@@ -1,0 +1,6 @@
+{
+  "name": "Live With Me",
+  "description": "一个让少数亲近朋友安静生活在同一个线上小世界里的低打扰陪伴空间。Presence without conversation。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

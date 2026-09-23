@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -30 40 45" width="200" height="225">
+  <!-- Ambient Ground Shadow -->
+  <ellipse cx="0" cy="8" rx="13" ry="5.5" fill="#1b120a" opacity="0.22" />
+
+  <!-- Folded Sitting Base -->
+  <ellipse cx="0" cy="4" rx="10" ry="4.2" fill="#c56349" />
+  <ellipse cx="0" cy="3.5" rx="9" ry="3.6" fill="#e07a5f" />
+
+  <!-- Front Torso (纯净圆润自然落肩，无凸起无凹陷) -->
+  <path d="M-6,2 C-7,-4 -5,-9 0,-9 C5,-9 7,-4 6,2 Z" fill="#e07a5f" />
+  <path d="M-4,1 Q0,3 4,1" stroke="#000000" stroke-width="0.6" opacity="0.16" fill="none" />
+
+  <!-- Natural Folded Hands (交叠自然平放于膝前，保持无多余道具与纯净落肩) -->
+  <ellipse cx="-1.6" cy="1.2" rx="2.2" ry="1.5" fill="#f5d6be" />
+  <ellipse cx="1.6" cy="1.2" rx="2.2" ry="1.5" fill="#f5d6be" />
+
+  <!-- Front Head & Short Hair Beanie -->
+  <g id="front-head">
+    <!-- Round Skin Face -->
+    <circle cx="0" cy="-14" r="7.1" fill="#f5d6be" />
+    <ellipse cx="0" cy="-14.5" rx="5.5" ry="2.0" fill="#1f1b18" opacity="0.15" />
+
+    <!-- Beanie Top Pompom -->
+    <circle cx="-2.6" cy="-22.6" r="2.2" fill="#425b6e" />
+    <path d="M-3.8,-23.6 C-3.0,-24.5 -1.8,-24.2 -1.4,-23.4 C-0.8,-22.4 -1.6,-21.2 -2.6,-21.2 C-3.6,-21.2 -4.2,-22.2 -3.8,-23.6 Z" fill="rgba(0,0,0,0.12)" />
+    <path d="M-3.6,-23.0 Q-2.6,-24.0 -1.6,-23.2 M-3.4,-22.0 Q-2.4,-21.0 -1.8,-22.2" stroke="rgba(0,0,0,0.22)" stroke-width="0.5" stroke-linecap="round" fill="none" />
+
+    <!-- Beanie Crown Dome -->
+    <path d="M-7.6,-13.2 C-8.2,-20.5 -4.8,-23.2 0,-23.2 C4.8,-23.2 8.2,-20.5 7.6,-13.2 C5.2,-14.8 -5.2,-14.8 -7.6,-13.2 Z" fill="#425b6e" />
+    <path d="M-5.2,-15.5 C-5.4,-19.0 -2.6,-22.0 0,-22.4 C2.6,-22.0 5.4,-19.0 5.2,-15.5" stroke="rgba(0,0,0,0.15)" stroke-width="0.55" stroke-dasharray="1.5 1.5" fill="none" />
+
+    <!-- Folded Beanie Cuff -->
+    <path d="M-7.7,-11.8 C-8.0,-15.6 -4.2,-17.0 0,-17.0 C4.2,-17.0 8.0,-15.6 7.7,-11.8 C5.2,-13.6 -5.2,-13.6 -7.7,-11.8 Z" fill="#425b6e" />
+    <path d="M-7.5,-12.0 C-5.0,-13.8 5.0,-13.8 7.5,-12.0" stroke="rgba(0,0,0,0.22)" stroke-width="0.75" fill="none" />
+    <path d="M-7.2,-15.3 Q0,-16.8 7.2,-15.3" stroke="rgba(0,0,0,0.18)" stroke-width="0.6" fill="none" />
+
+    <!-- Cuff Rib Stitches -->
+    <line x1="-5.0" y1="-15.4" x2="-5.2" y2="-13.2" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+    <line x1="-2.4" y1="-16.1" x2="-2.5" y2="-13.8" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+    <line x1="0" y1="-16.4" x2="0" y2="-14.0" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+    <line x1="2.4" y1="-16.1" x2="2.5" y2="-13.8" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+    <line x1="5.0" y1="-15.4" x2="5.2" y2="-13.2" stroke="rgba(0,0,0,0.14)" stroke-width="0.45" />
+
+    <!-- Short Hair: Classic Crescent Curtain Bangs (经典微八字月牙刘海 - 与展示页面 100% 同步) -->
+    <g id="bangs-classic-crescent-curtain">
+      <path
+        d="M-5.6,-13.4 C-4.8,-11.0 -0.8,-10.5 3.6,-12.8 C1.4,-13.6 -0.6,-14.2 -3.4,-14.2 C-4.6,-14.2 -5.2,-13.9 -5.6,-13.4 Z"
+        fill="#1f1b18"
+      />
+      <path
+        d="M2.2,-13.8 C3.2,-12.8 4.6,-12.6 5.4,-13.0 C4.6,-13.7 3.4,-14.0 2.2,-13.8 Z"
+        fill="#1f1b18"
+        opacity="0.9"
+      />
+    </g>
+  </g>
+</svg>
