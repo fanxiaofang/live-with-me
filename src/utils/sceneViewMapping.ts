@@ -18,7 +18,7 @@ export type FurnitureSlotId =
   | 'desk_workstation'   // 电脑桌 · 人体工学工作椅 (背影专注敲键盘)
   | 'sofa_lounge'        // 懒人沙发 · 阅卷席 (正身放松倚靠，腿上展书)
   | 'tatami_capsule'     // 胶囊舱 · 榻榻米卧榻 (侧卧安睡裹被)
-  | 'tatami_corn'        // 玉米仓 · 阁楼铺位 (安心沉眠)
+  | 'tatami_corn'        // 林间小木屋 · 暖木卧榻 (安心沉眠)
   | 'observatory_post';  // 观测站 · 操作台 (侧身戴耳机监听电波)
 
 export type CharacterViewAngle = 'front' | 'side' | 'side_mirrored' | 'back' | 'sleeping';
@@ -137,17 +137,17 @@ export const SCENE_SLOT_CONFIGS: Record<FurnitureSlotId, SceneSlotConfig> = {
   tatami_corn: {
     slotId: 'tatami_corn',
     furniture: 'tatami_mat',
-    furnitureName: '玉米仓卧榻',
-    slotName: '阁楼暖铺',
+    furnitureName: '小木屋暖木卧榻',
+    slotName: '暖木大床',
     room: 'corn_lounge',
     viewAngle: 'sleeping',
     facing: 'side',
     mirrored: false,
     pose: 'bed_sleeping',
     accessory: 'none',
-    badgeLabel: '玉米仓 · 卧榻 (安睡)',
-    actionDesc: '在阳光温热的麦秆香气中熟睡',
-    offset: { dx: -6, dy: 17 },
+    badgeLabel: '小木屋 · 暖榻 (安睡)',
+    actionDesc: '在雪松原木幽香与温暖炉火微光中沉沉熟睡',
+    offset: { dx: 0, dy: 26 },
   },
   observatory_post: {
     slotId: 'observatory_post',
@@ -203,7 +203,7 @@ export function resolvePresenceSlots(people: Person[]): {
     if (person.currentRoom === 'capsule_pod') {
       targetSlotId = 'tatami_capsule';
     }
-    // 2. 玉米仓专属槽位
+    // 2. 林间小木屋专属槽位
     else if (person.currentRoom === 'corn_lounge') {
       targetSlotId = 'tatami_corn';
     }

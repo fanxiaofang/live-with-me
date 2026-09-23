@@ -251,7 +251,7 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                             : 'bg-[#25211e] border-[#38312b] text-[#998e81] hover:border-[#4d4237]'
                         }`}
                       >
-                        <div className="text-xs font-medium">{rInfo.name.split('&')[0]}</div>
+                        <div className="text-xs font-medium">{rInfo.name.split('&')[0].split('·')[0].trim()}</div>
                         <div className="text-[10px] text-[#7d7367] mt-0.5 truncate">{rInfo.enName}</div>
                       </button>
                     );

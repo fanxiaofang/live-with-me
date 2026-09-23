@@ -290,7 +290,7 @@ export const AtmosphereBar: React.FC<AtmosphereBarProps> = ({
                     : 'text-[#94897d] hover:text-[#e0d6c8]'
                 }`}
               >
-                <span>{rInfo.name.split('&')[0]}</span>
+                <span>{rInfo.name.split('&')[0].split('·')[0].trim()}</span>
               </button>
             );
           })}

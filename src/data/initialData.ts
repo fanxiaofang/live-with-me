@@ -182,9 +182,9 @@ export const ROOMS: Record<string, RoomInfo> = {
   },
   corn_lounge: {
     id: 'corn_lounge',
-    name: '金黄玉米卧房休息室',
-    enName: 'Golden Corn Cob Nap Lounge',
-    desc: '麦浪花田边的巨型金黄大玉米休息屋，裹着碧绿苞叶外衣与飘逸玉米须，内设云朵软榻、暖绒棉被与蜜糖壁灯，是惬意午休与沉浸安睡的童话秘境',
+    name: '林间小木屋 · 暖木卧房',
+    enName: 'Cozy Timber Woodland Cabin',
+    desc: '花田草坪旁的静谧北欧风纯木质小木屋，散发着天然雪松原木清香。坡顶瓦檐下有暖黄壁灯、厚实实木原木墙、柔软云朵大床与红陶羊毛被，是静心小憩与安稳沉睡的温馨木屋',
     cameraTarget: [-3.2, 0.8, 1.2],
     zoom: 1.65,
   },

@@ -536,10 +536,89 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               <stop offset="100%" stopColor="#7c2d12" stopOpacity="0" />
             </radialGradient>
 
-            {/* Corn Lounge Interior Warm Candlelight Radial Glow */}
+            {/* Wooden Cabin Interior Warm Candlelight Radial Glow */}
+            <radialGradient id="cabinGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#fff8eb" stopOpacity="0.92" />
+              <stop offset="45%" stopColor="#fed7aa" stopOpacity="0.48" />
+              <stop offset="100%" stopColor="#9a5824" stopOpacity="0" />
+            </radialGradient>
+
+            {/* Wooden Cabin Shingle, Log, and Stone Gradients */}
+            <linearGradient id="cabinLogGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#9e693d" />
+              <stop offset="35%" stopColor="#82522b" />
+              <stop offset="70%" stopColor="#673e1f" />
+              <stop offset="100%" stopColor="#482710" />
+            </linearGradient>
+
+            <linearGradient id="cabinStoneGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#635b50" />
+              <stop offset="50%" stopColor="#494137" />
+              <stop offset="100%" stopColor="#2e2720" />
+            </linearGradient>
+
+            <linearGradient id="cabinShingleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#c55f3a" />
+              <stop offset="50%" stopColor="#a34524" />
+              <stop offset="100%" stopColor="#722b13" />
+            </linearGradient>
+
+            {/* 3D Sloping Roof Side Shingle Gradient (Sunlit Terracotta) */}
+            <linearGradient id="cabinRoofSideGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#df7a57" />
+              <stop offset="35%" stopColor="#c55f3a" />
+              <stop offset="70%" stopColor="#a34524" />
+              <stop offset="100%" stopColor="#682913" />
+            </linearGradient>
+
+            {/* 3D Timber Floor Waxed Hardwood Gradient */}
+            <linearGradient id="cabinFloorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#a87a4e" />
+              <stop offset="50%" stopColor="#8c5f35" />
+              <stop offset="100%" stopColor="#674121" />
+            </linearGradient>
+
+            {/* 2.5D Isometric Cabin Floorboard Perspective Gradient (Back depth to front threshold) */}
+            <linearGradient id="cabinFloorIsoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#4f2f16" />
+              <stop offset="35%" stopColor="#6d4422" />
+              <stop offset="70%" stopColor="#8c5d35" />
+              <stop offset="100%" stopColor="#9e6d40" />
+            </linearGradient>
+
+            {/* 2.5D West Side Wall Ambient Occlusion Gradient */}
+            <linearGradient id="cabinSideWallGrad" x1="100%" y1="0%" x2="0%" y2="0%">
+              <stop offset="0%" stopColor="#4d321d" />
+              <stop offset="60%" stopColor="#6d4627" />
+              <stop offset="100%" stopColor="#845833" />
+            </linearGradient>
+
+            {/* 2.5D East Partition Wall Interior Shadow Gradient */}
+            <linearGradient id="cabinEastWallGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#482e1a" />
+              <stop offset="50%" stopColor="#5d3a20" />
+              <stop offset="100%" stopColor="#7a4e2a" />
+            </linearGradient>
+
+            {/* 2.5D Ceiling & Soffit Ambient Occlusion Drop Shadow */}
+            <linearGradient id="cabinCeilingAOGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#1a0f07" stopOpacity="0.75" />
+              <stop offset="65%" stopColor="#28170c" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#28170c" stopOpacity="0" />
+            </linearGradient>
+
+            {/* Brass Hurricane Porch Lantern Radial Glow */}
+            <radialGradient id="cabinLanternGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#fffbeb" stopOpacity="0.95" />
+              <stop offset="40%" stopColor="#fde68a" stopOpacity="0.6" />
+              <stop offset="75%" stopColor="#f59e0b" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#d97706" stopOpacity="0" />
+            </radialGradient>
+
+            {/* Corn Lounge / Cabin Fallback Radial Glow */}
             <radialGradient id="cornGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#fff8eb" stopOpacity="0.85" />
-              <stop offset="50%" stopColor="#fed7aa" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="#fff8eb" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="#fed7aa" stopOpacity="0.45" />
               <stop offset="100%" stopColor="#c27329" stopOpacity="0" />
             </radialGradient>
 
@@ -3231,19 +3310,20 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           </g>
 
           {/* ======================================================== */}
-          {/* 2.6 WARM HARVEST CORN CABIN (暖阳玉米仓 · 田园卧房休息室) */}
-          {/*     Harmonious rustic timber, toasted golden grain, and  */}
-          {/*     terracotta eaves matching the living cottage haven   */}
+          {/* 2.6 COZY TIMBER WOODLAND CABIN (林间小木屋 · 暖木卧房) */}
+          {/*     Front directly facing viewer with symmetrical A-frame */}
+          {/*     gable, authentic 3D depth, embedded chimney & warm alcove */}
           {/* ======================================================== */}
-          <g id="corn-lounge-haven">
+          <g id="wooden-cabin-haven">
             {/* Connecting Footpath with Natural Stepping Stones from Porch */}
-            <g id="corn-stepping-stones" opacity="0.85">
+            <g id="cabin-stepping-stones" opacity="0.85">
               <ellipse cx="295" cy="405" rx="10" ry="5.5" fill="#655d54" />
               <ellipse cx="268" cy="418" rx="11" ry="6" fill="#756c62" />
               <ellipse cx="240" cy="425" rx="12" ry="6.5" fill="#625a52" />
+              <ellipse cx="218" cy="442" rx="11" ry="6" fill="#585047" />
             </g>
 
-            {/* Main Corn Lounge Interactive Group */}
+            {/* Main Wooden Cabin Interactive Group (正面向观众，端正通透且富有立体层次) */}
             <g
               id="room-corn_lounge"
               transform="translate(210, 400)"
@@ -3252,18 +3332,19 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               }}
               onMouseEnter={() => setHoveredObject('room-corn_lounge')}
               onMouseLeave={() => setHoveredObject(null)}
-              className="cursor-pointer group/corn"
+              className="cursor-pointer group/cabin"
             >
-              {/* Deep Ground Contact Shadow Grounding the Cabin onto Meadow */}
-              <ellipse cx="10" cy="62" rx="76" ry="16" fill="#1b2518" opacity="0.55" />
+              {/* 1. SOFT MEADOW CONTACT & GROUND SHADOWS */}
+              <ellipse cx="0" cy="58" rx="88" ry="20" fill="#1b2518" opacity="0.45" />
+              <ellipse cx="0" cy="56" rx="74" ry="14" fill="#121a10" opacity="0.35" />
 
               {/* Active Room Indicator Aura */}
               {activeRoom === 'corn_lounge' && (
                 <ellipse
-                  cx="10"
-                  cy="15"
-                  rx="88"
-                  ry="58"
+                  cx="0"
+                  cy="10"
+                  rx="92"
+                  ry="64"
                   fill="rgba(196, 87, 56, 0.12)"
                   stroke="#c45738"
                   strokeWidth="2.4"
@@ -3272,358 +3353,684 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 />
               )}
 
-              {/* RUSTIC TIMBER & STONE CRADLE FOUNDATION (呼应主屋石砌基座与原木梁架构) */}
-              <g id="corn-cradle-foundation">
-                {/* Stone Plinth Footers (同主屋深灰石料 #4a4239) */}
-                <ellipse cx="-42" cy="58" rx="10" ry="5" fill="#38322a" />
-                <ellipse cx="-42" cy="56" rx="8" ry="4" fill="#4a4239" />
-                <ellipse cx="48" cy="60" rx="10" ry="5" fill="#38322a" />
-                <ellipse cx="48" cy="58" rx="8" ry="4" fill="#4a4239" />
+              {/* 2. CHIMNEY EMBEDDED IN ROOF (穿透屋顶后侧的立体石砌烟囱) */}
+              <g id="cabin-chimney">
+                {/* Stepped Lead/Copper Roof Flashing Base */}
+                <polygon points="-36,-18 -18,-18 -16,-22 -38,-22" fill="#b45309" stroke="#78350f" strokeWidth="0.6" />
 
-                {/* Heavy Cedar Timber Upright Struts (深暖棕原木 #5c3f29) */}
-                <polygon points="-48,56 -36,56 -32,32 -44,32" fill="#5c3f29" stroke="#362315" strokeWidth="1" />
-                <ellipse cx="-38" cy="32" rx="6" ry="3" fill="#755236" />
+                {/* Chimney 3D Stack: Front Face (Sunlit) */}
+                <rect x="-35" y="-56" width="13" height="36" rx="1.5" fill="url(#cabinStoneGrad)" stroke="#221b14" strokeWidth="1" />
+                {/* Chimney 3D Stack: Right Side Bevel (Shadow depth) */}
+                <polygon points="-22,-56 -18,-59 -18,-24 -22,-20" fill="#352e25" stroke="#1f1812" strokeWidth="0.8" />
 
-                <polygon points="42,58 54,58 58,34 46,34" fill="#5c3f29" stroke="#362315" strokeWidth="1" />
-                <ellipse cx="52" cy="34" rx="6" ry="3" fill="#755236" />
+                {/* Individual Fieldstone Block Textures */}
+                <rect x="-33" y="-52" width="6" height="5" rx="1" fill="#696053" stroke="#221b14" strokeWidth="0.5" />
+                <rect x="-26" y="-50" width="3.5" height="5" rx="1" fill="#4d453b" stroke="#221b14" strokeWidth="0.5" />
+                <rect x="-33" y="-43" width="9" height="5" rx="1" fill="#584f44" stroke="#221b14" strokeWidth="0.5" />
+                <rect x="-32" y="-36" width="5" height="5" rx="1" fill="#6b6255" stroke="#221b14" strokeWidth="0.5" />
+                <rect x="-26" y="-35" width="3.5" height="5" rx="1" fill="#453d33" stroke="#221b14" strokeWidth="0.5" />
 
-                {/* Horizontal Heavy Timber Beam */}
-                <rect x="-44" y="44" width="98" height="9" rx="3.5" fill="#4e331f" stroke="#2c1a0c" strokeWidth="1" />
-                <line x1="-40" y1="48.5" x2="50" y2="48.5" stroke="#704b2e" strokeWidth="1.2" />
+                {/* Stepped Stone Cornice Cap */}
+                <polygon points="-37,-58 -16,-62 -15,-60 -36,-56" fill="#483f34" stroke="#1f1812" strokeWidth="0.8" />
 
-                {/* 2-Step Weathered Wood Steps */}
-                <polygon points="4,58 26,58 28,63 2,63" fill="#4a301b" />
-                <rect x="3" y="56" width="24" height="3.5" rx="1.5" fill="#7a522f" stroke="#3a2211" strokeWidth="0.8" />
-                <rect x="6" y="51" width="20" height="3" rx="1.5" fill="#8c5f37" stroke="#3a2211" strokeWidth="0.8" />
+                {/* Terracotta Chimney Flue Pot with Warm Rim */}
+                <rect x="-30" y="-66" width="8" height="7" rx="1.5" fill="#b94e32" stroke="#682514" strokeWidth="0.8" />
+                <line x1="-29" y1="-63" x2="-23" y2="-63" stroke="#e07255" strokeWidth="0.8" />
+                <ellipse cx="-26" cy="-66" rx="3.5" ry="1.5" fill="#2d130a" stroke="#682514" strokeWidth="0.6" />
 
-                {/* Pastoral Wild Chamomiles & Wheat Stalks at Base */}
-                <g id="corn-wildflowers">
-                  {/* Wild chamomile clump left */}
-                  <g transform="translate(-56, 44)">
-                    <line x1="0" y1="18" x2="-2" y2="2" stroke="#3a5635" strokeWidth="1.8" />
-                    <circle cx="-2" cy="2" r="4.2" fill="#ffffff" />
-                    <circle cx="-2" cy="2" r="1.8" fill="#d97706" />
-                  </g>
-                  <g transform="translate(-68, 52)">
-                    <line x1="0" y1="14" x2="0" y2="2" stroke="#3a5635" strokeWidth="1.6" />
-                    <circle cx="0" cy="2" r="3.5" fill="#ffffff" />
-                    <circle cx="0" cy="2" r="1.5" fill="#d97706" />
-                  </g>
-                  {/* Wheat stalk right */}
-                  <g transform="translate(68, 48)">
-                    <line x1="0" y1="18" x2="3" y2="2" stroke="#486842" strokeWidth="1.8" />
-                    <ellipse cx="3" cy="2" rx="2.5" ry="5" fill="#deb46a" stroke="#8c5f28" strokeWidth="0.6" transform="rotate(15 3 2)" />
-                    <ellipse cx="2" cy="6" rx="2.2" ry="4.5" fill="#cf9d4e" stroke="#8c5f28" strokeWidth="0.6" transform="rotate(-15 2 6)" />
-                  </g>
-                  <circle cx="-28" cy="60" r="2.2" fill="#ffffff" />
-                  <circle cx="-28" cy="60" r="1" fill="#d97706" />
-                  <circle cx="34" cy="62" r="2.2" fill="#ffffff" />
-                  <circle cx="34" cy="62" r="1" fill="#d97706" />
+                {/* Gently Billowing Translucent Woodsmoke Puffs */}
+                <g id="chimney-smoke" className="pointer-events-none">
+                  <circle cx="-26" cy="-72" r="4.5" fill="#fcfbf7" opacity="0.45" className="animate-pulse" />
+                  <circle cx="-23" cy="-82" r="7" fill="#fcfbf7" opacity="0.38" className="animate-pulse" />
+                  <circle cx="-27" cy="-95" r="9.5" fill="#fcfbf7" opacity="0.26" />
+                  <circle cx="-22" cy="-110" r="13" fill="#fcfbf7" opacity="0.16" />
+                  <circle cx="-25" cy="-126" r="16" fill="#fcfbf7" opacity="0.08" />
                 </g>
               </g>
 
-              {/* NATURAL DRIED SAGE & HUSK BACK WRAPPERS (风干鼠尾草绿与麦秆米色苞叶，告别荧光绿) */}
-              <g id="corn-back-husks">
-                <path
-                  d="M-60,30 C-75,45 -35,62 30,58 C68,54 85,38 78,20 C60,42 0,50 -55,26 Z"
-                  fill="#4d6645"
-                  stroke="#354830"
-                  strokeWidth="1.4"
-                />
-                <path
-                  d="M-40,8 C-65,-12 -30,-28 10,-32 C30,-34 60,-24 70,-10 C45,-24 0,-24 -35,2 Z"
-                  fill="#5f7e56"
-                  stroke="#3d5437"
-                  strokeWidth="1.4"
-                />
-                {/* Natural dried straw edge highlight */}
-                <path d="M-55,28 C-35,54 15,54 65,36" stroke="#cbb897" strokeWidth="1.2" fill="none" opacity="0.6" />
-              </g>
+              {/* 3. 3D FIELDSTONE FOUNDATION & OILED TIMBER PORCH DECK (正面立体基座与台阶) */}
+              <g id="cabin-foundation">
+                {/* Natural Fieldstone Plinth: Top Beveled Ledge */}
+                <polygon points="-62,44 62,44 64,47 -64,47" fill="#6d6355" stroke="#261e17" strokeWidth="0.8" />
+                {/* Fieldstone Foundation Wall */}
+                <rect x="-64" y="47" width="128" height="8.5" rx="1.2" fill="url(#cabinStoneGrad)" stroke="#221b14" strokeWidth="1" />
 
-              {/* TOASTED GOLDEN HARVEST CORN BODY (烘烤暖金麦穗色，与主屋暖米白/原木/红陶瓦和谐共鸣) */}
-              <g id="corn-cob-body">
-                {/* Base Warm Toasted Corn Shell */}
-                <path
-                  d="M-62,24 C-76,-4 -54,-24 -12,-28 C34,-32 76,-12 82,14 C86,34 56,48 10,48 C-36,48 -54,42 -62,24 Z"
-                  fill="url(#toastedCornGrad)"
-                  stroke="#7c4c1a"
-                  strokeWidth="1.8"
-                />
-                {/* Sun-warmed soft grain undertone */}
-                <path
-                  d="M-58,22 C-70,-2 -50,-20 -10,-24 C30,-28 70,-10 76,12 C80,30 52,44 10,44 C-32,44 -50,38 -58,22 Z"
-                  fill="#deb264"
-                  opacity="0.65"
-                />
+                {/* Carved Masonry Block Facets */}
+                <rect x="-60" y="48.5" width="22" height="5.5" rx="1.2" fill="#63594b" stroke="#2d241a" strokeWidth="0.7" />
+                <rect x="-36" y="48.5" width="26" height="5.5" rx="1.2" fill="#52483d" stroke="#2d241a" strokeWidth="0.7" />
+                <rect x="-8" y="48.5" width="28" height="5.5" rx="1.2" fill="#61574a" stroke="#2d241a" strokeWidth="0.7" />
+                <rect x="22" y="48.5" width="20" height="5.5" rx="1.2" fill="#4d4439" stroke="#2d241a" strokeWidth="0.7" />
+                <rect x="44" y="48.5" width="17" height="5.5" rx="1.2" fill="#5c5244" stroke="#2d241a" strokeWidth="0.7" />
 
-                {/* HARMONIOUS TOASTED CORN KERNELS (温暖烘焙燕麦与成熟金色玉米粒，质感温润素雅) */}
-                <g id="corn-kernels" opacity="0.95">
-                  {/* Row 1 (Top curved row) */}
-                  {[
-                    { x: -34, y: -20, w: 10, h: 7, r: 2.5, rot: -18 },
-                    { x: -21, y: -23, w: 11, h: 7, r: 2.5, rot: -10 },
-                    { x: -8, y: -25, w: 11, h: 7.5, r: 2.8, rot: -4 },
-                    { x: 5, y: -25, w: 11, h: 7.5, r: 2.8, rot: 2 },
-                    { x: 18, y: -23, w: 11, h: 7, r: 2.5, rot: 8 },
-                    { x: 31, y: -19, w: 10, h: 7, r: 2.5, rot: 15 },
-                    { x: 43, y: -13, w: 9, h: 6.5, r: 2.2, rot: 22 },
-                    { x: 54, y: -6, w: 8, h: 6, r: 2, rot: 28 },
-                  ].map((k, i) => (
-                    <g key={`k1-${i}`} transform={`translate(${k.x}, ${k.y}) rotate(${k.rot})`}>
-                      <rect x={-k.w / 2} y={-k.h / 2} width={k.w} height={k.h} rx={k.r} fill="#eed59f" stroke="#925c22" strokeWidth="0.8" />
-                      <ellipse cx={-k.w / 4} cy={-k.h / 4} rx={k.w / 3.5} ry={k.h / 4} fill="#fffcf0" opacity="0.5" />
-                    </g>
-                  ))}
+                {/* Heavy Oiled Timber Deck (厚实木地台顶面与封边梁) */}
+                <rect x="-61" y="41" width="122" height="4.5" rx="1" fill="url(#cabinFloorGrad)" stroke="#382110" strokeWidth="1" />
+                {/* Timber Deck Plank Groove Lines */}
+                {[-44, -28, -12, 4, 20, 36, 52].map((gx) => (
+                  <line key={`dplank-${gx}`} x1={gx} y1="41" x2={gx} y2="45.5" stroke="#482b13" strokeWidth="0.9" />
+                ))}
+                {/* Timber Deck Fascia Lip (高光倒角) */}
+                <line x1="-60" y1="41.5" x2="60" y2="41.5" stroke="#c49362" strokeWidth="0.8" opacity="0.6" />
 
-                  {/* Row 2 (Upper-mid curved row) */}
-                  {[
-                    { x: -48, y: -10, w: 10, h: 7.5, r: 2.5, rot: -22 },
-                    { x: -36, y: -12, w: 11, h: 8, r: 2.8, rot: -15 },
-                    { x: -22, y: -14, w: 12, h: 8, r: 2.8, rot: -8 },
-                    { x: -8, y: -15, w: 12, h: 8.5, r: 3, rot: -2 },
-                    { x: 6, y: -15, w: 12, h: 8.5, r: 3, rot: 4 },
-                    { x: 20, y: -13, w: 12, h: 8, r: 2.8, rot: 10 },
-                    { x: 34, y: -9, w: 11, h: 7.5, r: 2.6, rot: 18 },
-                    { x: 47, y: -3, w: 10, h: 7, r: 2.4, rot: 25 },
-                    { x: 59, y: 5, w: 9, h: 6.5, r: 2.2, rot: 32 },
-                  ].map((k, i) => (
-                    <g key={`k2-${i}`} transform={`translate(${k.x}, ${k.y}) rotate(${k.rot})`}>
-                      <rect x={-k.w / 2} y={-k.h / 2} width={k.w} height={k.h} rx={k.r} fill="#e4be78" stroke="#8a531b" strokeWidth="0.8" />
-                      <ellipse cx={-k.w / 4} cy={-k.h / 4} rx={k.w / 3.5} ry={k.h / 4} fill="#fffbf0" opacity="0.45" />
-                    </g>
-                  ))}
+                {/* 2-Step Front Entrance Stairs (正面实木台阶) */}
+                <g id="cabin-stairs" transform="translate(-4, 0)">
+                  {/* Step 1 (Top Step) */}
+                  <rect x="-14" y="45.5" width="28" height="3.5" rx="1" fill="#8c5b32" stroke="#3d2411" strokeWidth="0.8" />
+                  <line x1="-13" y1="46" x2="13" y2="46" stroke="#c49362" strokeWidth="0.6" opacity="0.6" />
+                  {/* Step 2 (Bottom Step) */}
+                  <rect x="-16" y="49" width="32" height="4" rx="1.2" fill="#6e4423" stroke="#331c0c" strokeWidth="0.8" />
+                  <line x1="-15" y1="49.5" x2="15" y2="49.5" stroke="#ba8958" strokeWidth="0.6" opacity="0.5" />
+                  {/* Stair Contact Shadow */}
+                  <ellipse cx="0" cy="53.5" rx="18" ry="2.5" fill="#1b2518" opacity="0.4" />
+                </g>
 
-                  {/* Left Taper Tip Kernels */}
-                  {[
-                    { x: -55, y: 6, w: 9, h: 7, r: 2.2, rot: -18 },
-                    { x: -60, y: 17, w: 8, h: 6.5, r: 2, rot: -10 },
-                    { x: -52, y: 26, w: 9, h: 7, r: 2.2, rot: 0 },
-                  ].map((k, i) => (
-                    <g key={`ktip-${i}`} transform={`translate(${k.x}, ${k.y}) rotate(${k.rot})`}>
-                      <rect x={-k.w / 2} y={-k.h / 2} width={k.w} height={k.h} rx={k.r} fill="#d8aa60" stroke="#7e4a17" strokeWidth="0.8" />
-                      <ellipse cx={-k.w / 4} cy={-k.h / 4} rx={k.w / 3.5} ry={k.h / 4} fill="#fffcf2" opacity="0.4" />
-                    </g>
-                  ))}
+                {/* Porch Details: Hunter Green Garden Boots */}
+                <g transform="translate(-24, 42.5)" opacity="0.95">
+                  <path d="M0,0 L3.5,0 L4,5 L7.5,5 L7.5,8 L-1.5,8 L-1.5,5 Z" fill="#2d4429" stroke="#152613" strokeWidth="0.7" />
+                  <path d="M5,-0.5 L8.5,-0.5 L9,4.5 L12.5,4.5 L12.5,7.5 L3.5,7.5 L3.5,4 Z" fill="#2d4429" stroke="#152613" strokeWidth="0.7" />
+                </g>
 
-                  {/* Bottom Framing Kernels */}
-                  {[
-                    { x: -44, y: 34, w: 11, h: 7.5, r: 2.8, rot: 6 },
-                    { x: -30, y: 38, w: 11, h: 7.5, r: 2.8, rot: 4 },
-                    { x: 38, y: 36, w: 11, h: 7.5, r: 2.8, rot: -4 },
-                    { x: 52, y: 30, w: 10, h: 7, r: 2.6, rot: -12 },
-                    { x: 64, y: 20, w: 9, h: 6.5, r: 2.2, rot: -20 },
-                    { x: 68, y: 10, w: 8, h: 6, r: 2, rot: -28 },
-                  ].map((k, i) => (
-                    <g key={`kb-${i}`} transform={`translate(${k.x}, ${k.y}) rotate(${k.rot})`}>
-                      <rect x={-k.w / 2} y={-k.h / 2} width={k.w} height={k.h} rx={k.r} fill="#caa056" stroke="#6d3e11" strokeWidth="0.8" />
-                      <ellipse cx={-k.w / 4} cy={-k.h / 4} rx={k.w / 3.5} ry={k.h / 4} fill="#fffdf5" opacity="0.35" />
-                    </g>
-                  ))}
+                {/* Porch Details: Hammered Copper Watering Can */}
+                <g transform="translate(44, 38)" opacity="0.95">
+                  <ellipse cx="4" cy="9" rx="5" ry="2.5" fill="#1b2518" opacity="0.3" />
+                  <rect x="0" y="2" width="8" height="7" rx="2" fill="#b86b3e" stroke="#5d3119" strokeWidth="0.8" />
+                  <line x1="1" y1="3" x2="7" y2="3" stroke="#e08e5c" strokeWidth="0.8" />
+                  <path d="M0,4 C-3.5,3 -3.5,7.5 0,7.5" stroke="#844522" strokeWidth="1.2" fill="none" />
+                  <line x1="8" y1="4" x2="13.5" y2="1.5" stroke="#844522" strokeWidth="1.2" />
+                  <ellipse cx="14" cy="1.2" rx="1.5" ry="2" fill="#d47e4d" stroke="#5d3119" strokeWidth="0.6" />
                 </g>
               </g>
 
-              {/* NATURAL AMBER CORN SILK TASSELS (柔和琥珀色玉米须) */}
-              <g id="corn-silk-tassels" transform="translate(74, -12)">
-                <path d="M0,0 C12,-12 24,-8 34,-16 C38,-20 44,-16 48,-22" stroke="#deb46a" strokeWidth="1.6" fill="none" strokeLinecap="round" opacity="0.8" />
-                <path d="M2,4 C16,-4 26,-2 36,-8 C42,-12 50,-10 54,-14" stroke="#c58e42" strokeWidth="1.4" fill="none" strokeLinecap="round" opacity="0.75" />
-                <path d="M-2,6 C10,2 22,6 30,2 C38,0 46,2 52,-2" stroke="#9c6628" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.7" />
-                <path d="M4,10 C18,8 28,14 38,10 C44,8 52,12 56,8" stroke="#eed59f" strokeWidth="1.2" fill="none" strokeLinecap="round" opacity="0.8" />
+              {/* 4. LEFT WALL FIREWOOD LEAN-TO SHELTER (左侧贴墙实木柴棚) */}
+              <g id="cabin-firewood-leanto" transform="translate(-62, 14)">
+                {/* Lean-to Slanted Shingle Roof */}
+                <polygon points="-16,-2 4,-2 2,1 -18,1" fill="url(#cabinShingleGrad)" stroke="#361f0d" strokeWidth="0.8" />
+                <line x1="-18" y1="1" x2="2" y2="1" stroke="#e07255" strokeWidth="0.8" />
+                {/* Timber Posts */}
+                <rect x="-16" y="1" width="2.6" height="27" rx="0.8" fill="#4d2f17" stroke="#2a1608" strokeWidth="0.6" />
+                <rect x="1" y="1" width="2.6" height="27" rx="0.8" fill="#4d2f17" stroke="#2a1608" strokeWidth="0.6" />
+
+                {/* Stacked Split Wood with 3D Rings and Bark */}
+                {[
+                  { cx: -11, cy: 23, r: 4.8 },
+                  { cx: -2, cy: 23.5, r: 4.8 },
+                  { cx: 7, cy: 24, r: 4.6 },
+                  { cx: -6.5, cy: 15.5, r: 4.8 },
+                  { cx: 2.5, cy: 16, r: 4.8 },
+                  { cx: -2, cy: 8, r: 4.5 },
+                ].map((log, idx) => (
+                  <g key={`fw-log-${idx}`}>
+                    <circle cx={log.cx} cy={log.cy} r={log.r} fill="#cf9f6e" stroke="#422915" strokeWidth="0.9" />
+                    <circle cx={log.cx} cy={log.cy} r={log.r * 0.65} fill="none" stroke="#aa794d" strokeWidth="0.7" strokeDasharray="4 1.5" />
+                    <circle cx={log.cx} cy={log.cy} r={log.r * 0.28} fill="#885b34" />
+                    <line x1={log.cx} y1={log.cy} x2={log.cx + log.r * 0.7} y2={log.cy - log.r * 0.3} stroke="#543319" strokeWidth="0.6" />
+                  </g>
+                ))}
+
+                {/* Chopping Block & Axe */}
+                <g transform="translate(-14, 25)">
+                  <rect x="-2" y="0" width="6" height="4.5" rx="1.2" fill="#755034" stroke="#432c1b" strokeWidth="0.6" />
+                  <line x1="1" y1="0" x2="4" y2="-4" stroke="#b08154" strokeWidth="0.9" strokeLinecap="round" />
+                  <polygon points="0.5,0 2, -0.5 1.8,-1.5 0.3,-1" fill="#94a3b8" stroke="#475569" strokeWidth="0.4" />
+                </g>
               </g>
 
-              {/* COZY SLEEPING CABIN INTERIOR (同主屋暖白抹灰、原木横梁与红陶被褥) */}
-              <g id="corn-sleeping-interior">
-                {/* Heavy Cedar Timber Frame (深色雪松木门框 #523924) */}
-                <path
-                  d="M-36,2 C-36,-14 26,-14 26,2 L26,38 C26,42 -36,42 -36,38 Z"
-                  fill="#523924"
-                  stroke="#332114"
-                  strokeWidth="2"
-                />
+              {/* 5. 2.5D ISOMETRIC ARCHITECTURAL CUTAWAY BEDROOM ALCOVE (立体木屋卧房：真正空间进深、透视地板、侧山墙与立体家具) */}
+              <g id="cabin-sleeping-interior">
+                {/* 1. Heavy Timber Outer Opening Frame & Lintel (门洞外边框与前地梁截面) */}
+                <rect x="-58" y="-2" width="70" height="44" fill="#3b2311" stroke="#221206" strokeWidth="1.2" />
+                {/* Front Floor Threshold Cut Thickness (前地梁切面木质厚度) */}
+                <polygon points="-58,42 12,42 12,44.5 -58,44.5" fill="#4d2f16" stroke="#2b1607" strokeWidth="0.8" />
+                <line x1="-58" y1="42.5" x2="12" y2="42.5" stroke="#7a4e2a" strokeWidth="0.6" />
 
-                {/* MINIATURE TERRACOTTA TILE AWNING (红陶瓦小门檐，与主屋红瓦屋顶绝对呼应！) */}
-                <path
-                  d="M-40,-8 C-15,-20 18,-20 32,-8 L30,-5 C16,-16 -13,-16 -38,-5 Z"
-                  fill="url(#terracottaRoof)"
-                  stroke="#482e18"
-                  strokeWidth="1.2"
-                />
-                <line x1="-38" y1="-5" x2="30" y2="-5" stroke="#70533c" strokeWidth="1.5" />
+                {/* 2. Recessed Knotty Pine Back Wall (空间深处的后山墙：横向延伸贯穿，无突兀隔板阻隔) */}
+                <polygon points="-48,6 12,6 12,24 -48,24" fill="#eedcc5" />
+                {/* Horizontal Pine Wall Slat Grooves on Back Wall */}
+                {[10, 14, 18, 22].map((sy) => (
+                  <line key={`bk-pwall-${sy}`} x1="-48" y1={sy} x2="12" y2={sy} stroke="#c7b195" strokeWidth="0.7" opacity="0.65" />
+                ))}
+                {/* Back Wall Baseboard Moulding (后墙实木踢脚线贯穿至右侧) */}
+                <polygon points="-48,22.8 12,22.8 12,24 -48,24" fill="#633e21" stroke="#3d2311" strokeWidth="0.5" />
 
-                {/* Warm Cream Plaster Interior Wall (与主屋墙壁 #e8decb 完全同色) */}
-                <path
-                  d="M-33,3 C-33,-11 23,-11 23,3 L23,36 C23,40 -33,40 -33,36 Z"
-                  fill="#e8decb"
-                />
-                {/* Candlelight Warmth Glow inside */}
-                <path
-                  d="M-33,3 C-33,-11 23,-11 23,3 L23,36 C23,40 -33,40 -33,36 Z"
-                  fill="url(#cornGlow)"
-                  opacity="0.6"
-                />
+                {/* 3. Receding West Side Wall (西侧内山墙 - 表现空间纵深与切面厚度) */}
+                <polygon points="-56,2 -48,6 -48,24 -56,42" fill="url(#cabinSideWallGrad)" />
+                {/* West Wall Vertical Timber Grooves receding inwards */}
+                <line x1="-53" y1="3.5" x2="-53" y2="35.5" stroke="#3d2514" strokeWidth="0.6" opacity="0.5" />
+                <line x1="-50" y1="5" x2="-50" y2="29" stroke="#3d2514" strokeWidth="0.6" opacity="0.5" />
+                {/* West Wall Baseboard Moulding (西侧踢脚线) */}
+                <polygon points="-56,40.5 -48,22.8 -48,24 -56,42" fill="#54331a" stroke="#2c1a0c" strokeWidth="0.5" />
 
-                {/* Subtle Timber Slat Wallpaper */}
-                <g opacity="0.12" stroke="#70533c" strokeWidth="0.8">
-                  <line x1="-24" y1="-8" x2="-24" y2="34" />
-                  <line x1="-12" y1="-10" x2="-12" y2="34" />
-                  <line x1="0" y1="-10" x2="0" y2="34" />
-                  <line x1="12" y1="-8" x2="12" y2="34" />
+                {/* 4. Right Doorframe Timber Jamb (右侧门框立柱收口，不再有突入床头的隔板) */}
+                <line x1="12" y1="2" x2="12" y2="42" stroke="#221206" strokeWidth="1.2" />
+                <line x1="11.2" y1="2" x2="11.2" y2="42" stroke="#7a4e2a" strokeWidth="0.6" opacity="0.7" />
+
+                {/* 5. 2.5D REFINED TIMBER FLOOR WITH TRUE DEPTH PERSPECTIVE (优化后的自然纵深实木地板) */}
+                {/* Floor Base Polygon */}
+                <polygon points="-56,42 -48,24 12,24 12,42" fill="url(#cabinFloorIsoGrad)" stroke="#38200f" strokeWidth="0.6" />
+
+                {/* Horizontal Plank Seams with Perspective Foreshortening (近宽远窄的层进横向板缝，营造强烈纵深推移感) */}
+                <line x1="-54.1" y1="37.8" x2="12" y2="37.8" stroke="#3d220f" strokeWidth="0.75" opacity="0.65" />
+                <line x1="-52.5" y1="34.2" x2="12" y2="34.2" stroke="#381f0d" strokeWidth="0.7" opacity="0.6" />
+                <line x1="-51.1" y1="31.0" x2="12" y2="31.0" stroke="#331c0b" strokeWidth="0.65" opacity="0.55" />
+                <line x1="-49.9" y1="28.2" x2="12" y2="28.2" stroke="#2e190a" strokeWidth="0.6" opacity="0.5" />
+                <line x1="-48.8" y1="25.8" x2="12" y2="25.8" stroke="#281508" strokeWidth="0.55" opacity="0.45" />
+
+                {/* Symmetrical Perspective Depth Seams (向房间纵深对称平稳汇聚的纵向板缝，中间笔直无偏斜) */}
+                {/* Center Depth Seam: Strictly vertical straight into the depth (居中垂直纵深中轴缝) */}
+                <line x1="-20" y1="42" x2="-20" y2="24" stroke="#2d1708" strokeWidth="0.75" opacity="0.6" />
+                {/* Left Flanking Depth Seams (向中心自然汇聚) */}
+                <line x1="-32" y1="42" x2="-29.5" y2="24" stroke="#351b0a" strokeWidth="0.7" opacity="0.55" />
+                <line x1="-44" y1="42" x2="-38.5" y2="24" stroke="#351b0a" strokeWidth="0.7" opacity="0.55" />
+                <line x1="-56" y1="42" x2="-48" y2="24" stroke="#241105" strokeWidth="0.9" opacity="0.75" />
+                {/* Right Flanking Depth Seams (对称向中心平缓汇聚) */}
+                <line x1="-8" y1="42" x2="-10.5" y2="24" stroke="#351b0a" strokeWidth="0.7" opacity="0.55" />
+                <line x1="4" y1="42" x2="-1.5" y2="24" stroke="#351b0a" strokeWidth="0.7" opacity="0.55" />
+
+                {/* Polished Floor Wax Warm Specular Sheen (地板打蜡柔润反光) */}
+                <ellipse cx="-38" cy="33" rx="14" ry="4.5" fill="#fde68a" opacity="0.12" className="pointer-events-none" />
+
+                {/* 6. Ceiling & Soffit with Transverse Timber Beam (天花板与房梁进深) */}
+                <polygon points="-56,2 12,2 12,6 -48,6" fill="#1b120c" opacity="0.38" />
+                <polygon points="-56,2 12,2 12,11 -48,11" fill="url(#cabinCeilingAOGrad)" className="pointer-events-none" />
+                {/* Transverse exposed ceiling rafter */}
+                <polygon points="-52,3 10,3 9,4.8 -51,4.8" fill="#3d2311" stroke="#1f1107" strokeWidth="0.4" />
+
+                {/* 7. Corner Ambient Occlusion Shadows (西侧阴角与踢脚线环境遮蔽阴影) */}
+                <line x1="-48" y1="6" x2="-48" y2="24" stroke="#1c1007" strokeWidth="2.5" opacity="0.5" filter="url(#softShadow)" />
+                <line x1="-48" y1="24" x2="12" y2="24" stroke="#1c1007" strokeWidth="1.6" opacity="0.38" />
+
+                {/* Warm Ambient Candlelight & Lamp Interior Glow */}
+                <ellipse cx="-20" cy="24" rx="32" ry="16" fill="url(#cabinGlow)" opacity="0.6" className="pointer-events-none" />
+
+                {/* 8. Recessed Wall Shelf on Back Wall with Teacups & Succulent */}
+                <g id="cabin-backwall-shelf" transform="translate(0, 0)">
+                  {/* Shelf Cast Shadow on back wall */}
+                  <polygon points="-43.5,13.5 -30.5,13.5 -30.5,15.5 -43.5,15.5" fill="#1b120c" opacity="0.32" />
+                  {/* Shelf Top 3D Surface */}
+                  <polygon points="-44,11 -31,11 -30.5,12.2 -43.5,12.2" fill="#8c5828" stroke="#4d2f16" strokeWidth="0.4" />
+                  {/* Shelf Front Face */}
+                  <rect x="-43.5" y="12.2" width="13" height="1.6" rx="0.4" fill="#583416" stroke="#331c0c" strokeWidth="0.4" />
+                  {/* Decorative Items on Shelf */}
+                  <rect x="-42" y="8.5" width="3.2" height="3.5" rx="0.6" fill="#f4ede2" stroke="#8c7866" strokeWidth="0.4" />
+                  <rect x="-36.5" y="9" width="3.4" height="3" rx="0.5" fill="#c25f38" stroke="#752e14" strokeWidth="0.4" />
+                  <circle cx="-34.8" cy="8" r="1.6" fill="#4d7c49" />
                 </g>
 
-                {/* Bedside Rustic Nightstand */}
-                <rect x="-30" y="16" width="12" height="18" rx="2" fill="#755034" stroke="#432c1b" strokeWidth="0.8" />
-                <rect x="-26" y="12" width="5" height="4.5" rx="1.2" fill="#e8decb" />
-                <path d="M-23.5,11 Q-22,7 -24,4" stroke="#ffffff" strokeWidth="0.8" fill="none" opacity="0.7" className="animate-pulse" />
+                {/* 9. Hand-Braided Bedside Wool Rug on Perspective Floor */}
+                <ellipse cx="-18" cy="38.5" rx="19" ry="4.5" fill="#844535" opacity="0.38" />
+                <ellipse cx="-18" cy="38.5" rx="15" ry="3.5" fill="#4a5d48" opacity="0.48" />
 
-                {/* Warm Brass Nightstand Lamp */}
-                <circle cx="-24" cy="8" r="2.8" fill="#d97706" />
-                <circle cx="-24" cy="8" r="1.4" fill="#fef3c7" />
-                <circle cx="-24" cy="8" r="11" fill="#fed7aa" opacity="0.32" className="animate-pulse pointer-events-none" />
+                {/* 10. 2.5D ISOMETRIC BEDSIDE NIGHTSTAND & PLEATED LAMP (西侧雅致三维床头柜与百褶小台灯) */}
+                <g id="cabin-nightstand-3d">
+                  {/* Nightstand Ground Contact Shadow on Floorboards (接触阴影 - 稳稳落地) */}
+                  <ellipse cx="-39" cy="37.5" rx="7.5" ry="2.2" fill="#140d08" opacity="0.5" filter="url(#softShadow)" />
 
-                {/* Plump Cloud Bed with Polished Pine Base */}
-                <polygon points="-16,22 21,22 21,38 -16,38" fill="#9e734c" stroke="#5c3f29" strokeWidth="1" />
-                <path d="M-15,22 C-15,18 20,18 20,22 L20,28 C20,30 -15,30 -15,28 Z" fill="#fffdfa" />
+                  {/* 4 Sturdy Turned Legs */}
+                  <line x1="-43.5" y1="34" x2="-43.5" y2="37" stroke="#3d2513" strokeWidth="1.4" strokeLinecap="round" />
+                  <line x1="-34.5" y1="34" x2="-34.5" y2="37" stroke="#3d2513" strokeWidth="1.4" strokeLinecap="round" />
+                  <line x1="-42.5" y1="28" x2="-42.5" y2="30.5" stroke="#2a1608" strokeWidth="1.2" strokeLinecap="round" />
 
-                {/* Soft Pillow */}
-                <ellipse cx="-7" cy="18" rx="7.5" ry="4.5" fill="#fcfaf6" filter="url(#softShadow)" />
-                <path d="M-10,18 Q-7,16 -4,18" stroke="#d5ccbd" strokeWidth="0.8" fill="none" />
+                  {/* Cabinet Body Front Face (柜体正面立面) */}
+                  <rect x="-44" y="27" width="10" height="7.5" rx="0.8" fill="#754f2c" stroke="#432c1b" strokeWidth="0.7" />
+                  {/* Top Pull Drawer with Brass Pull Knob */}
+                  <rect x="-43" y="28" width="8" height="2.8" rx="0.5" fill="#845833" stroke="#52331c" strokeWidth="0.5" />
+                  <circle cx="-39" cy="29.4" r="0.75" fill="#d97706" stroke="#78350f" strokeWidth="0.3" />
 
-                {/* Quilt in Terracotta & Sage Green (红陶瓦色与鼠尾草绿拼布软被，呼应主屋与草坪) */}
-                <path
-                  d="M-3,19 C6,19 16,20 21,21 L21,36 C10,36 -12,36 -14,28 C-6,28 -3,22 -3,19 Z"
-                  fill="#b94e32"
-                  filter="url(#softShadow)"
-                />
-                {/* Sage Green Turned-down Quilt Cuff */}
-                <path d="M-3,19 C5,18 14,19 21,21" stroke="#527c54" strokeWidth="3" strokeLinecap="round" fill="none" />
-                <line x1="2" y1="23" x2="16" y2="34" stroke="#a03f26" strokeWidth="0.8" strokeDasharray="2,2" />
-                <line x1="12" y1="22" x2="4" y2="34" stroke="#a03f26" strokeWidth="0.8" strokeDasharray="2,2" />
+                  {/* Lower Open Shelf with Stacked Bedtime Books */}
+                  <rect x="-43" y="31.4" width="8" height="2.5" fill="#54331a" />
+                  <rect x="-42" y="32.4" width="6" height="1.2" rx="0.3" fill="#3b5266" />
+                  <rect x="-41.5" y="31.5" width="5" height="1" rx="0.3" fill="#99382b" />
 
-                {/* SLEEPER / CHARACTER IN CORN LOUNGE (Presence 槽位 tatami_corn) */}
-                {(() => {
-                  const cornOccupant = presenceSlots.tatami_corn?.occupant;
-                  const slotCfg = presenceSlots.tatami_corn?.config;
-                  if (cornOccupant && slotCfg) {
-                    return (
-                      <g
-                        id={`person-in-corn-${cornOccupant.id}`}
-                        transform={`translate(${slotCfg.offset.dx}, ${slotCfg.offset.dy})`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onSelectPerson(cornOccupant);
-                        }}
-                        onMouseEnter={(e) => {
-                          e.stopPropagation();
-                          setHoveredObject(`person-${cornOccupant.id}`);
-                        }}
-                        onMouseLeave={() => setHoveredObject(null)}
-                        className="cursor-pointer group/char"
-                      >
-                        {/* Sleeping Head in Corn Lounge with thin beanie & peeking bangs */}
-                        <CharacterHead
-                          cx={0}
-                          cy={0}
-                          r={5.5}
-                          skinColor={cornOccupant.skinColor || '#fad4c0'}
-                          hairColor={cornOccupant.hairColor || '#1a1a1a'}
-                          hairStyle={cornOccupant.hairStyle || 'curtain_crescent'}
-                          beanieColor={cornOccupant.beanieColor || '#425b6e'}
-                          hasPompom={cornOccupant.hasPompom ?? true}
-                          isSleeping={true}
-                          facing={slotCfg.facing}
-                        />
-                        <path d="M-3.5,4 Q0,6 3.5,4" stroke={cornOccupant.shirtColor} strokeWidth="2.4" fill="none" />
+                  {/* 3D Top Surface (柜面等轴测顶面 - 提供真实水平承托) */}
+                  <polygon points="-45,25.5 -35,25.5 -34,27 -44,27" fill="#a47246" stroke="#4d2f16" strokeWidth="0.6" />
 
-                        {/* Character Status Tag (仅悬停时柔和显现) */}
+                  {/* 3D Left Shaded Side Face (柜体西侧阴影立体面) */}
+                  <polygon points="-45,25.5 -44,27 -44,34.5 -45,33" fill="#583416" stroke="#331c0c" strokeWidth="0.6" />
+
+                  {/* Warm Pleated Bedside Table Lamp (百褶小台灯 - 稳稳立于顶面) */}
+                  <g id="bedside-table-lamp" transform="translate(0, 0)">
+                    {/* Turned Brass Base Resting on Top Surface */}
+                    <ellipse cx="-39.5" cy="26.2" rx="2.4" ry="0.9" fill="#b45309" stroke="#78350f" strokeWidth="0.4" />
+                    <line x1="-39.5" y1="26.2" x2="-39.5" y2="20.5" stroke="#d97706" strokeWidth="1" />
+                    <circle cx="-39.5" cy="16.8" r="0.7" fill="#b45309" />
+
+                    {/* Pleated Cream Lampshade (百褶灯罩) */}
+                    <polygon
+                      points="-43,21.8 -36,21.8 -37.5,17.2 -41.5,17.2"
+                      fill="#fef3c7"
+                      stroke="#d97706"
+                      strokeWidth="0.6"
+                    />
+                    {/* Lampshade Pleat Fluting Lines */}
+                    <line x1="-40.8" y1="17.3" x2="-41.8" y2="21.7" stroke="#fcd34d" strokeWidth="0.5" />
+                    <line x1="-39.5" y1="17.2" x2="-39.5" y2="21.8" stroke="#fcd34d" strokeWidth="0.5" />
+                    <line x1="-38.2" y1="17.3" x2="-37.2" y2="21.7" stroke="#fcd34d" strokeWidth="0.5" />
+
+                    {/* Warm Ambient Glow Aura */}
+                    <circle cx="-39.5" cy="19.5" r="14" fill="url(#cabinLanternGlow)" opacity="0.5" className="animate-pulse pointer-events-none" />
+                  </g>
+
+                  {/* Steaming Ceramic Tea Mug Resting on Top Surface */}
+                  <g id="bedside-mug">
+                    <rect x="-36.5" y="24.2" width="2.8" height="2.6" rx="0.5" fill="#e8dfd1" stroke="#8a7966" strokeWidth="0.4" />
+                    <path d="M-33.7,24.8 C-33,24.8 -33,26.2 -33.7,26.2" stroke="#8a7966" strokeWidth="0.4" fill="none" />
+                    <path d="M-35,23 Q-34.5,21.5 -35,20.5" stroke="#ffffff" strokeWidth="0.5" fill="none" opacity="0.65" />
+                  </g>
+                </g>
+
+                {/* 11. 2.5D ISOMETRIC CRAFTSMAN PINE BED (东西走向三维工匠松木大床：床头在东，床尾在西，顶面与正面立体分明) */}
+                <g id="cabin-pine-bed-isometric">
+                  {/* Bed Frame Ground Contact Shadow (地面深层环境遮蔽接触阴影 - 告别悬浮) */}
+                  <polygon points="-28,36 8.5,36 6.5,23 -26,23" fill="#140d08" opacity="0.52" filter="url(#softShadow)" />
+
+                  {/* 4 Pine Bed Legs */}
+                  <rect x="-27" y="32" width="2.5" height="4.5" rx="0.6" fill="#4a2c14" />
+                  <rect x="5.5" y="32" width="2.5" height="4.5" rx="0.6" fill="#4a2c14" />
+                  <rect x="-24.5" y="22" width="2" height="3" rx="0.5" fill="#38200f" />
+
+                  {/* Bed Frame Front Side Apron Rail (床架正面立面厚度) */}
+                  <polygon points="-27,31.5 7,31.5 7,34.5 -27,34.5" fill="#673f20" stroke="#38200f" strokeWidth="0.7" />
+                  <line x1="-26" y1="32.5" x2="6" y2="32.5" stroke="#8c5828" strokeWidth="0.5" opacity="0.8" />
+
+                  {/* 2.5D Top Mattress Foundation (床垫三维顶面 - 具有清晰的等轴测纵深) */}
+                  <polygon points="-27,31.5 7,31.5 5,21.5 -25,21.5" fill="#fffdfa" stroke="#d5cbba" strokeWidth="0.6" />
+
+                  {/* 2.5D Craftsman Headboard at EAST (靠东侧通透松木墙面的立体实木床头板) */}
+                  <g id="bed-headboard-east-3d">
+                    {/* Headboard Turned Posts with Round Finials (Back-East & Front-East) */}
+                    <rect x="4.5" y="14" width="2.2" height="12.5" rx="0.6" fill="#583416" stroke="#2d1706" strokeWidth="0.5" />
+                    <circle cx="5.6" cy="13.2" r="1.1" fill="#8c5828" stroke="#2d1706" strokeWidth="0.4" />
+                    <rect x="6.5" y="24" width="2.4" height="12.5" rx="0.6" fill="#583416" stroke="#2d1706" strokeWidth="0.5" />
+                    <circle cx="7.7" cy="23.2" r="1.2" fill="#8c5828" stroke="#2d1706" strokeWidth="0.4" />
+
+                    {/* Headboard Main Facing Panel (内立面) */}
+                    <polygon points="4.5,15.2 6.5,16.2 6.5,31.5 4.5,30.5" fill="#6d4727" stroke="#3b2311" strokeWidth="0.7" />
+                    {/* Top Beveled Cap */}
+                    <polygon points="4.5,15.2 6.5,16.2 7.5,17.2 5.5,16.2" fill="#8c5828" />
+                    {/* Horizontal Wooden Slats on Headboard */}
+                    {[19, 23, 27].map((hy) => (
+                      <line key={`3dh-slat-${hy}`} x1="4.7" y1={hy} x2="6.3" y2={hy + 0.8} stroke="#4d2f16" strokeWidth="0.8" />
+                    ))}
+                  </g>
+
+                  {/* 2.5D Craftsman Footboard at WEST (靠西侧的立体实木低矮床尾与立柱) */}
+                  <g id="bed-footboard-west-3d">
+                    {/* Corner Posts at Foot of Bed */}
+                    <rect x="-25.2" y="19" width="2" height="7.5" rx="0.5" fill="#583416" stroke="#2d1706" strokeWidth="0.4" />
+                    <circle cx="-24.2" cy="18.2" r="1" fill="#8c5828" stroke="#2d1706" strokeWidth="0.4" />
+                    <rect x="-27.2" y="28" width="2.2" height="7.5" rx="0.5" fill="#583416" stroke="#2d1706" strokeWidth="0.5" />
+                    <circle cx="-26.1" cy="27.2" r="1.1" fill="#8c5828" stroke="#2d1706" strokeWidth="0.4" />
+
+                    {/* Low Footboard Rail */}
+                    <polygon points="-25.2,21.5 -27.2,22.5 -27.2,31.5 -25.2,30.5" fill="#583416" stroke="#2d1706" strokeWidth="0.7" />
+                  </g>
+
+                  {/* 2.5D Plump Pillows at EAST (枕头靠东侧床头，立体平铺于床面顶层) */}
+                  <g id="bed-pillows-east-3d">
+                    {/* Backing Bolster Pillow */}
+                    <polygon points="3.2,18 5.2,19 5.2,29.5 3.2,28.5" fill="#f4eee4" stroke="#d5cbba" strokeWidth="0.5" />
+                    {/* Main Cloud-Soft Sleeping Pillow (宽厚云朵软枕，承托人物头部 at dx:0, dy:26) */}
+                    <polygon
+                      points="-1.8,19.5 3.5,20.2 3.5,30.5 -1.8,29.8"
+                      fill="#fffdfa"
+                      stroke="#d5cbba"
+                      strokeWidth="0.7"
+                      filter="url(#softShadow)"
+                    />
+                    {/* Head Resting Indentation at (0, 26) */}
+                    <ellipse cx="0.8" cy="25.5" rx="2.4" ry="4.5" fill="#f5ede2" opacity="0.6" />
+                    <path d="M0.8,22 Q-0.4,25.5 0.8,29" stroke="#c4b59f" strokeWidth="0.7" fill="none" />
+                  </g>
+
+                  {/* 2.5D Cozy Quilt Covering Body to WEST (具有顶面与正垂面厚度的立体暖冬厚被) */}
+                  <g id="bed-quilt-west-3d">
+                    {/* Main Terracotta Quilt Top Surface (暖陶红被子顶面) */}
+                    <polygon
+                      points="-26,21.5 -6.5,21.5 -6.5,31.5 -26,31.5"
+                      fill="#b94e32"
+                      stroke="#882e16"
+                      strokeWidth="0.7"
+                      filter="url(#softShadow)"
+                    />
+
+                    {/* Perspective Diamond Quilted Stitch Seams (菱格绗缝细线) */}
+                    <line x1="-22" y1="22" x2="-9" y2="31" stroke="#942a12" strokeWidth="0.7" strokeDasharray="3 1.5" />
+                    <line x1="-15" y1="22" x2="-4.5" y2="28.5" stroke="#942a12" strokeWidth="0.7" strokeDasharray="3 1.5" />
+                    <line x1="-9" y1="22" x2="-22" y2="31" stroke="#942a12" strokeWidth="0.7" strokeDasharray="3 1.5" />
+                    <line x1="-4.5" y1="24" x2="-15" y2="31" stroke="#942a12" strokeWidth="0.7" strokeDasharray="3 1.5" />
+
+                    {/* Quilt Front Draped Edge (被子正面下垂厚度面 - 自然垂过床沿) */}
+                    <polygon points="-26,31.5 -6.5,31.5 -6.5,33.8 -26,33.8" fill="#942a12" />
+                    <line x1="-26" y1="33.8" x2="-6.5" y2="33.8" stroke="#661b0c" strokeWidth="0.6" />
+
+                    {/* 3D Turned-Down Duvet Cuff at Chest (立体翻折草席绿被头：顶面与正面折厚) */}
+                    <polygon
+                      points="-6.5,21.5 -3.8,21.5 -3.8,31.5 -6.5,31.5"
+                      fill="#3a5a40"
+                      stroke="#223927"
+                      strokeWidth="0.6"
+                    />
+                    <polygon points="-6.5,31.5 -3.8,31.5 -3.8,33.5 -6.5,33.5" fill="#29402e" />
+                    <line x1="-5.2" y1="22" x2="-5.2" y2="33" stroke="#588157" strokeWidth="0.5" opacity="0.7" />
+                  </g>
+
+                  {/* 12. SLEEPER / CHARACTER IN BED (Presence 槽位 tatami_corn 头部精准安歇于东侧枕上) */}
+                  {(() => {
+                    const cabinOccupant = presenceSlots.tatami_corn?.occupant;
+                    const slotCfg = presenceSlots.tatami_corn?.config;
+                    if (cabinOccupant && slotCfg) {
+                      return (
                         <g
-                          transform="translate(0, -20)"
-                          className="opacity-0 group-hover/char:opacity-100 transition-opacity duration-200 pointer-events-none"
+                          id={`person-in-cabin-${cabinOccupant.id}`}
+                          transform={`translate(${slotCfg.offset.dx}, ${slotCfg.offset.dy})`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectPerson(cabinOccupant);
+                          }}
+                          onMouseEnter={(e) => {
+                            e.stopPropagation();
+                            setHoveredObject(`person-${cabinOccupant.id}`);
+                          }}
+                          onMouseLeave={() => setHoveredObject(null)}
+                          className="cursor-pointer group/char"
                         >
-                          <rect x="-42" y="-7.5" width="84" height="15" rx="7.5" fill="#1c1917" opacity="0.94" stroke="#c47a4f" strokeWidth="0.6" />
-                          <text x="0" y="3" fill="#f0ebe1" fontSize="8" fontWeight="bold" textAnchor="middle">
-                            🌾 {cornOccupant.name} · {slotCfg.badgeLabel.split('(')[0].trim()}
-                          </text>
+                          {/* Sleeping Head with cozy beanie resting snugly on the East pillow */}
+                          <CharacterHead
+                            cx={0}
+                            cy={0}
+                            r={5.5}
+                            skinColor={cabinOccupant.skinColor || '#fad4c0'}
+                            hairColor={cabinOccupant.hairColor || '#1a1a1a'}
+                            hairStyle={cabinOccupant.hairStyle || 'curtain_crescent'}
+                            beanieColor={cabinOccupant.beanieColor || '#425b6e'}
+                            hasPompom={cabinOccupant.hasPompom ?? true}
+                            isSleeping={true}
+                            facing={slotCfg.facing}
+                          />
+                          {/* Peeking Shirt Collar tucked above the turned-down duvet cuff */}
+                          <path d="M-4,-2.2 Q-5.5,0 -4,2.2" stroke={cabinOccupant.shirtColor} strokeWidth="2.2" fill="none" />
+
+                          {/* Character Status Tag */}
+                          <g
+                            transform="translate(0, -20)"
+                            className="opacity-0 group-hover/char:opacity-100 transition-opacity duration-200 pointer-events-none"
+                          >
+                            <rect x="-44" y="-7.5" width="88" height="15" rx="7.5" fill="#1c1917" opacity="0.94" stroke="#c47a4f" strokeWidth="0.6" />
+                            <text x="0" y="3" fill="#f0ebe1" fontSize="8" fontWeight="bold" textAnchor="middle">
+                              🪵 {cabinOccupant.name} · {slotCfg.badgeLabel.split('(')[0].trim()}
+                            </text>
+                          </g>
                         </g>
+                      );
+                    }
+                    return (
+                      <g opacity="0.4">
+                        <ellipse cx="0" cy="26" rx="2.5" ry="4" fill="#deb46a" />
                       </g>
                     );
-                  }
-                  return (
-                    <g opacity="0.6">
-                      <ellipse cx="-7" cy="18" rx="4" ry="2.2" fill="#deb46a" />
-                    </g>
-                  );
-                })()}
+                  })()}
+                </g>
 
-                {/* Arched Window Reflection */}
-                <path
-                  d="M-30,-2 C-15,-10 10,-10 20,-2"
-                  stroke="#ffffff"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  fill="none"
-                  opacity="0.4"
-                  className="pointer-events-none"
-                />
-              </g>
+                {/* Porch Awning over Bedroom Doorway */}
+                <rect x="-60" y="-4" width="74" height="4.5" rx="1.5" fill="#54331a" stroke="#2c1a0c" strokeWidth="1" />
+                <polygon points="-62,-9 15,-9 16,-4 -63,-4" fill="url(#cabinShingleGrad)" stroke="#421a0c" strokeWidth="0.8" />
+                <line x1="-63" y1="-4" x2="16" y2="-4" stroke="#e07255" strokeWidth="0.9" />
 
-              {/* FOREGROUND NATURAL SAGE & DRIED HUSK HOOD (质朴素雅的苞叶遮阳小门廊) */}
-              <g id="corn-front-husks">
-                <path
-                  d="M-42,-12 C-30,-28 15,-28 32,-16 C38,-12 36,-6 28,-8 C14,-18 -18,-18 -32,-4 C-38,2 -44,0 -42,-12 Z"
-                  fill="#5c7a52"
-                  stroke="#384f33"
-                  strokeWidth="1.5"
-                />
-                <path d="M-30,-18 Q-5,-24 24,-12" stroke="#a1be99" strokeWidth="1.2" fill="none" opacity="0.75" />
-
-                <path
-                  d="M-64,20 C-78,35 -56,52 -38,50 C-46,42 -52,32 -50,22 Z"
-                  fill="#4c6645"
-                  stroke="#2e402a"
-                  strokeWidth="1.4"
-                />
-                <path
-                  d="M24,42 C38,52 64,44 72,28 C60,38 42,42 24,42 Z"
-                  fill="#455f3f"
-                  stroke="#293b26"
-                  strokeWidth="1.2"
-                />
-
-                {/* Weathered Oak Signpost beside entrance: "🌽 暖阳玉米仓" */}
-                <g transform="translate(-48, 22)">
-                  <line x1="0" y1="0" x2="0" y2="28" stroke="#54371d" strokeWidth="2.2" strokeLinecap="round" />
-                  <rect x="-16" y="-2" width="32" height="14" rx="2.5" fill="#dfd3be" stroke="#70533c" strokeWidth="1.2" filter="url(#softShadow)" />
-                  <text x="0" y="8" fill="#4d321d" fontSize="7.5" fontWeight="bold" textAnchor="middle">
-                    🌽 暖阳仓
-                  </text>
-                  {/* Brass mounting studs */}
-                  <circle cx="-13" cy="5" r="0.8" fill="#b45309" />
-                  <circle cx="13" cy="5" r="0.8" fill="#b45309" />
+                {/* Brass Hanging Storm Lantern under eave */}
+                <g transform="translate(-24, -4)">
+                  <line x1="0" y1="0" x2="0" y2="4.5" stroke="#2a1e14" strokeWidth="1" />
+                  <circle cx="0" cy="4.5" r="1.2" fill="#8c5828" />
+                  <rect x="-2.5" y="4.5" width="5" height="7" rx="1.2" fill="#fef08a" stroke="#8c5828" strokeWidth="0.7" />
+                  <ellipse cx="0" cy="8" rx="1" ry="1.8" fill="#f59e0b" />
+                  <rect x="-3" y="11.5" width="6" height="1.5" rx="0.5" fill="#78350f" />
+                  <circle cx="0" cy="8" r="15" fill="url(#cabinLanternGlow)" className="animate-pulse pointer-events-none" />
                 </g>
               </g>
 
-              {/* FLOATING SLEEP & STATUS BUBBLES */}
+              {/* 6. RIGHT FACADE CEDAR LOG WALL & 3D MULTI-PANE FLOWER WINDOW (右侧原木墙与花窗) */}
+              <g id="cabin-log-walls">
+                {/* Solid Cedar Log Wall Panel */}
+                <rect x="12" y="-2" width="48" height="44" rx="1" fill="url(#cabinLogGrad)" stroke="#382110" strokeWidth="1.4" />
+
+                {/* Stacked Round Cedar Log Courses with 3D Cylindrical Shading */}
+                {[6, 14, 22, 30, 38].map((ly) => (
+                  <g key={`rlog-${ly}`}>
+                    {/* Shadow crevice line */}
+                    <line x1="12" y1={ly} x2="60" y2={ly} stroke="#2a1608" strokeWidth="1.4" />
+                    {/* Upper log sunlit highlight */}
+                    <line x1="12" y1={ly + 1.2} x2="60" y2={ly + 1.2} stroke="#b68354" strokeWidth="0.9" opacity="0.85" />
+                  </g>
+                ))}
+
+                {/* Interlocking Saddle-Notch Log Ends on Right Corner (3D 圆木咬角) */}
+                <g id="log-corner-notches-right">
+                  {[0, 8, 16, 24, 32, 40].map((ny, idx) => (
+                    <g key={`notch-r-${idx}`} transform={`translate(60, ${ny})`}>
+                      <ellipse cx="3.5" cy="3" rx="4.6" ry="4.2" fill="#cf9f6e" stroke="#4a2c14" strokeWidth="1.1" />
+                      <ellipse cx="3.5" cy="3" rx="2.8" ry="2.4" fill="none" stroke="#9a6e42" strokeWidth="0.7" strokeDasharray="3 1.5" />
+                      <circle cx="3.5" cy="3" r="1.2" fill="#754b25" />
+                    </g>
+                  ))}
+                </g>
+
+                {/* Interlocking Saddle-Notch Log Ends on Left Corner */}
+                <g id="log-corner-notches-left">
+                  {[2, 10, 18, 26, 34, 42].map((ny, idx) => (
+                    <g key={`notch-l-${idx}`} transform={`translate(-58, ${ny})`}>
+                      <ellipse cx="-3.2" cy="3" rx="4.4" ry="4" fill="#a47244" stroke="#3d220d" strokeWidth="1.1" />
+                      <ellipse cx="-3.2" cy="3" rx="2.6" ry="2.2" fill="none" stroke="#754b25" strokeWidth="0.7" />
+                      <circle cx="-3.2" cy="3" r="1.1" fill="#583416" />
+                    </g>
+                  ))}
+                </g>
+
+                {/* 3D Multi-Pane Window & Window Planter Box (立体暖光花窗与繁花木箱) */}
+                <g id="cabin-window" transform="translate(24, 4)">
+                  {/* Recessed Timber Casing */}
+                  <rect x="0" y="0" width="24" height="23" rx="2" fill="#4d2f17" stroke="#2c1a0c" strokeWidth="1.2" />
+                  {/* Warm Glowing Window Panes */}
+                  <rect x="2" y="2" width="20" height="19" rx="1" fill="#fde68a" stroke="#d97706" strokeWidth="0.6" />
+                  <rect x="2" y="2" width="20" height="19" rx="1" fill="url(#cabinGlow)" opacity="0.85" />
+
+                  {/* White Linen Café Curtains */}
+                  <path d="M2,2 L8,2 Q6,10 2,14 Z" fill="#fffdf9" opacity="0.88" />
+                  <path d="M22,2 L16,2 Q18,10 22,14 Z" fill="#fffdf9" opacity="0.88" />
+
+                  {/* Window Mullions / Cross Frame */}
+                  <line x1="12" y1="2" x2="12" y2="21" stroke="#4d2f17" strokeWidth="1.4" />
+                  <line x1="2" y1="11" x2="22" y2="11" stroke="#4d2f17" strokeWidth="1.4" />
+
+                  {/* Glass Specular Reflections */}
+                  <line x1="4" y1="4" x2="10" y2="10" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+                  <line x1="14" y1="4" x2="20" y2="10" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+
+                  {/* 3D Overflowing Window Planter Box */}
+                  <g id="window-planter" transform="translate(-1, 22)">
+                    <rect x="0" y="0" width="26" height="7" rx="1.5" fill="#663f21" stroke="#361f0d" strokeWidth="1" />
+                    <line x1="1" y1="1.5" x2="25" y2="1.5" stroke="#9e693d" strokeWidth="0.8" />
+
+                    {/* Lush Green Foliage */}
+                    <ellipse cx="4" cy="-1" rx="4" ry="2.5" fill="#365c27" />
+                    <ellipse cx="12" cy="-2" rx="5" ry="3" fill="#446e32" />
+                    <ellipse cx="20" cy="-1" rx="4" ry="2.5" fill="#365c27" />
+
+                    {/* Blooming Blossoms */}
+                    <circle cx="4" cy="-1.5" r="2" fill="#ec4899" />
+                    <circle cx="4" cy="-1.5" r="0.8" fill="#fef08a" />
+                    <circle cx="9" cy="-3" r="2.2" fill="#f59e0b" />
+                    <circle cx="9" cy="-3" r="0.9" fill="#78350f" />
+                    <circle cx="14" cy="-1.5" r="2.4" fill="#ffffff" />
+                    <circle cx="14" cy="-1.5" r="1" fill="#eab308" />
+                    <circle cx="19" cy="-3" r="2" fill="#f43f5e" />
+                    <circle cx="19" cy="-3" r="0.8" fill="#fef08a" />
+                    <circle cx="23" cy="-1" r="1.8" fill="#8b5cf6" />
+                    <circle cx="23" cy="-1" r="0.6" fill="#ffffff" />
+
+                    {/* Cascading Ivy tendrils spilling over the logs */}
+                    <path d="M6,6 Q7,10 9,13" stroke="#446e32" strokeWidth="1.1" fill="none" />
+                    <circle cx="9" cy="13" r="1.2" fill="#446e32" />
+                    <path d="M18,6 Q20,11 22,14" stroke="#365c27" strokeWidth="1.1" fill="none" />
+                    <circle cx="22" cy="14" r="1.2" fill="#365c27" />
+                  </g>
+                </g>
+              </g>
+
+              {/* 7. SYMMETRICAL FRONT-FACING GABLED ROOF (正对观众的端正双坡陶瓦大屋顶与实木挑檐) */}
+              <g id="cabin-main-roof">
+                {/* Gable Wall Boarding (Upper Triangular Facade) */}
+                <polygon
+                  points="-66,-2 0,-44 66,-2"
+                  fill="#784f2c"
+                  stroke="#382110"
+                  strokeWidth="1.4"
+                />
+                {/* Vertical Pine Planks in the Gable Triangle */}
+                {[-50, -38, -26, -14, 0, 14, 26, 38, 50].map((px) => {
+                  const yTop = -44 + Math.abs(px) * (42 / 66);
+                  return (
+                    <line
+                      key={`gplank-${px}`}
+                      x1={px}
+                      y1={yTop}
+                      x2={px}
+                      y2="-2"
+                      stroke="#5a381f"
+                      strokeWidth="0.9"
+                      opacity="0.75"
+                    />
+                  );
+                })}
+
+                {/* Main Roof Pitch in Terracotta Clay Tiles */}
+                <polygon
+                  points="0,-46 -70,-1 -68,3 0,-40 68,3 70,-1"
+                  fill="url(#cabinShingleGrad)"
+                  stroke="#4a1c0d"
+                  strokeWidth="1.4"
+                />
+
+                {/* Overlapping Terracotta Clay Tile Shingle Courses */}
+                {[
+                  { y: -36, l: -14, r: 14 },
+                  { y: -28, l: -28, r: 28 },
+                  { y: -20, l: -42, r: 42 },
+                  { y: -12, l: -54, r: 54 },
+                  { y: -4, l: -64, r: 64 },
+                ].map((row, idx) => (
+                  <g key={`shingle-row-${idx}`}>
+                    <line x1={row.l} y1={row.y} x2={row.r} y2={row.y} stroke="#4a1a0c" strokeWidth="1.3" />
+                    <line x1={row.l + 2} y1={row.y + 1} x2={row.r - 2} y2={row.y + 1} stroke="#ea8c6e" strokeWidth="0.9" opacity="0.8" />
+                  </g>
+                ))}
+
+                {/* Carved Timber Bargeboards on Gable Peak (正面重工实木封檐厚梁) */}
+                <polyline
+                  points="-72,-1 0,-46 72,-1"
+                  fill="none"
+                  stroke="#5a381f"
+                  strokeWidth="3.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <polyline
+                  points="-70,0 0,-44 70,0"
+                  fill="none"
+                  stroke="#8f5e36"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+
+                {/* Carved Apex Pendant Finial on Gable Peak (山墙尖顶悬鱼) */}
+                <g transform="translate(0, -46)">
+                  <polygon points="0,0 -4,9 0,16 4,9" fill="#5a381f" stroke="#2a1608" strokeWidth="0.8" />
+                  <circle cx="0" cy="18" r="2.2" fill="#8f5e36" stroke="#2a1608" strokeWidth="0.6" />
+                </g>
+
+                {/* Decorative Nordic Timber Truss: Collar Tie Beam & King Post */}
+                <polygon points="-44,-16 44,-16 44,-13 -44,-13" fill="#4d2f17" stroke="#2a1608" strokeWidth="0.7" />
+                <rect x="-2" y="-42" width="4" height="27" rx="0.6" fill="#4d2f17" stroke="#2a1608" strokeWidth="0.7" />
+                <polygon points="0,-32 2.5,-29 0,-26 -2.5,-29" fill="#deb46a" stroke="#8c5f28" strokeWidth="0.5" />
+
+                {/* Timber Rafter Tails under eaves */}
+                {[-58, -46, -34, 34, 46, 58].map((rx) => (
+                  <rect key={`rafter-${rx}`} x={rx} y="-2" width="2.8" height="4.5" rx="0.8" fill="#4a2c14" />
+                ))}
+
+                {/* Deep Ambient Occlusion Drop Shadow cast onto walls & alcove */}
+                <polygon points="-66,0 0,-38 66,0 66,4 0,-34 -66,4" fill="#140d08" opacity="0.2" />
+              </g>
+
+              {/* 8. REFINED RUSTIC SIGNPOST IN FOREGROUND: "🪵 小木屋" (精致小木牌) */}
+              <g id="cabin-signpost" transform="translate(-62, 54)">
+                {/* Post Shadow */}
+                <ellipse cx="2" cy="18" rx="4" ry="2" fill="#141c12" opacity="0.35" />
+                {/* Round Weathered Cedar Upright Post */}
+                <rect x="0" y="0" width="3" height="18" rx="1" fill="#54371d" stroke="#2c1a0c" strokeWidth="0.8" />
+                {/* Horizontal Mounting Bracket */}
+                <rect x="-2" y="2" width="28" height="2" rx="0.6" fill="#6d4727" stroke="#3d2513" strokeWidth="0.5" />
+
+                {/* Hand-Carved Oak Sign Plaque with Chamfered Edges */}
+                <polygon
+                  points="-3,4 27,4 25,18 -5,18"
+                  fill="#eedcc5"
+                  stroke="#684628"
+                  strokeWidth="1.2"
+                  filter="url(#softShadow)"
+                />
+                <text x="11" y="14" fill="#4a2c14" fontSize="7.5" fontWeight="bold" textAnchor="middle">
+                  🪵 小木屋
+                </text>
+                {/* Brass Mounting Studs */}
+                <circle cx="-1.5" cy="7" r="0.7" fill="#b45309" />
+                <circle cx="23.5" cy="7" r="0.7" fill="#b45309" />
+              </g>
+
+              {/* 9. MEADOW WILDFLOWERS NESTLED AROUND FOUNDATION */}
+              <g id="cabin-wildflowers">
+                <g transform="translate(-68, 50)">
+                  <line x1="0" y1="12" x2="-2" y2="2" stroke="#3a5635" strokeWidth="1.6" />
+                  <circle cx="-2" cy="2" r="3.8" fill="#ffffff" />
+                  <circle cx="-2" cy="2" r="1.5" fill="#d97706" />
+                </g>
+                <g transform="translate(-76, 56)">
+                  <line x1="0" y1="10" x2="1" y2="1" stroke="#3a5635" strokeWidth="1.4" />
+                  <circle cx="1" cy="1" r="3.2" fill="#ffffff" />
+                  <circle cx="1" cy="1" r="1.3" fill="#d97706" />
+                </g>
+                <g transform="translate(64, 50)">
+                  <line x1="0" y1="14" x2="2" y2="1" stroke="#486842" strokeWidth="1.6" />
+                  <circle cx="2" cy="1" r="3.6" fill="#ffffff" />
+                  <circle cx="2" cy="1" r="1.5" fill="#d97706" />
+                </g>
+                <circle cx="-34" cy="62" r="2.2" fill="#ffffff" />
+                <circle cx="-34" cy="62" r="1" fill="#d97706" />
+                <circle cx="34" cy="63" r="2.2" fill="#ffffff" />
+                <circle cx="34" cy="63" r="1" fill="#d97706" />
+                <circle cx="8" cy="65" r="2" fill="#facc15" />
+              </g>
+
+              {/* 10. FLOATING SLEEP & STATUS BUBBLES */}
               {presenceSlots.tatami_corn?.occupant && (
-                <g id="corn-sleep-whispers" transform="translate(10, -42)" className="pointer-events-none">
+                <g id="cabin-sleep-whispers" transform="translate(10, -56)" className="pointer-events-none">
                   <text x="8" y="2" fill="#deb46a" fontSize="10" fontWeight="bold" className="animate-bounce">z</text>
                   <text x="16" y="-8" fill="#c58e42" fontSize="13" fontWeight="bold" className="animate-pulse">Z</text>
 
                   <g transform="translate(-10, 8)">
-                    <rect x="-44" y="-8" width="88" height="17" rx="8.5" fill="#1c1917" opacity="0.94" />
-                    <text x="0" y="4" fill="#deb46a" fontSize="9.5" fontWeight="bold" textAnchor="middle">
-                      🌽 {presenceSlots.tatami_corn.occupant.name} · 玉米仓甜梦
+                    <rect x="-44" y="-8" width="88" height="17" rx="8.5" fill="#1c1917" opacity="0.94" stroke="#c47a4f" strokeWidth="0.6" />
+                    <text x="0" y="4" fill="#fed7aa" fontSize="9.5" fontWeight="bold" textAnchor="middle">
+                      🪵 {presenceSlots.tatami_corn.occupant.name} · 木屋酣眠
                     </text>
                   </g>
                 </g>
               )}
 
-              {/* HOVER PILL LABEL FOR CORN LOUNGE */}
+              {/* 11. HOVER PILL LABEL FOR CABIN */}
               <g
-                transform="translate(0, 52)"
-                className="opacity-0 group-hover/corn:opacity-100 transition-opacity pointer-events-none"
+                transform="translate(0, 56)"
+                className="opacity-0 group-hover/cabin:opacity-100 transition-opacity pointer-events-none"
               >
-                <rect x="-68" y="-8" width="136" height="17" rx="8.5" fill="#1c1917" opacity="0.94" />
-                <text x="0" y="4" fill="#deb46a" fontSize="9.5" fontWeight="bold" textAnchor="middle">
-                  🌽 暖阳玉米仓 · 休憩甜梦卧房
+                <rect x="-68" y="-8" width="136" height="17" rx="8.5" fill="#1c1917" opacity="0.94" stroke="#c47a4f" strokeWidth="0.6" />
+                <text x="0" y="4" fill="#fed7aa" fontSize="9.5" fontWeight="bold" textAnchor="middle">
+                  🪵 林间小木屋 · 暖木卧房
                 </text>
               </g>
             </g>
@@ -4060,7 +4467,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {hoveredObject === 'room-living_nook' && '暖炉起居角与黑胶唱机'}
               {hoveredObject === 'room-friend_room' && '🛋️ 林木的花园书房 · 惬意懒人沙发角（点击对焦参观）'}
               {hoveredObject === 'room-capsule_pod' && '🚀 旧太空胶囊仓 · 卧室与午休小天地（点击对焦参观）'}
-              {hoveredObject === 'room-corn_lounge' && '🌽 暖阳玉米仓 · 烘焙暖金与红陶瓦田园安睡卧房（点击对焦参观）'}
+              {hoveredObject === 'room-corn_lounge' && '🪵 林间小木屋 · 质朴原木与雪松清香的安睡木屋（点击对焦参观）'}
               {hoveredObject === 'room-observatory' && '📡 山巅外星电波监听站 · 频率 1420.405 MHz 监听地外文明电波（点击对焦参观）'}
               {hoveredObject === 'alien-receiver' && '📡 外星信号接收装置 · 频率 1420.405 MHz 监听深空（点击捕获电波）'}
               {hoveredObject === 'sheep-pasture' && '🐑 辽阔青青前沿草场 · 悠闲吃草的小羊群与雏菊野花甸'}
