@@ -28,6 +28,7 @@ import {
 } from './components/bookshelf';
 import { ambientAudio } from './audio/ambientAudio';
 import { Sparkles, Info, X } from 'lucide-react';
+import { ChairInspectionModal } from './components/desk';
 import {
   RoomLayoutConfig,
   EditableObjectId,
@@ -58,6 +59,22 @@ export default function App() {
   const [isMemoriesOpen, setIsMemoriesOpen] = useState(false);
   const [showManifesto, setShowManifesto] = useState(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // 电脑桌椅子状态管理 (空椅态 vs 小人组合态)
+  const [isChairModalOpen, setIsChairModalOpen] = useState(false);
+  const [isChairEmptyOverride, setIsChairEmptyOverride] = useState(false);
+
+  const handleToggleChairSeated = (nextSeated?: boolean) => {
+    setIsChairEmptyOverride((prev) => {
+      const nextVal = nextSeated !== undefined ? !nextSeated : !prev;
+      triggerToast(
+        nextVal
+          ? '🪑 已切换为【空椅子态】：清晰查看白橡木温莎椅的坐垫、木纹与朝向桌案的靠背'
+          : '💻 已切换为【小人组合态】：小人就座敲代码，后背自然贴合温莎梳背'
+      );
+      return nextVal;
+    });
+  };
 
   // Bookshelf state
   const [isBookshelfModalOpen, setIsBookshelfModalOpen] = useState(false);
@@ -316,6 +333,7 @@ export default function App() {
         onSelectPerson={(p) => setSelectedPerson(p)}
         onEditMyStatus={() => setIsStatusPickerOpen(true)}
         onOpenSvgExport={() => setIsSvgExportOpen(true)}
+        onOpenChairInspector={() => setIsChairModalOpen(true)}
       />
 
       {/* 3. Stylized Cozy 2.5D Layered World */}
@@ -350,6 +368,9 @@ export default function App() {
             }
           }}
           onDragGizmoDelta={handleDragGizmoDelta}
+          isChairEmptyOverride={isChairEmptyOverride}
+          onToggleChairSeated={handleToggleChairSeated}
+          onOpenChairInspector={() => setIsChairModalOpen(true)}
         />
       </div>
 
@@ -361,6 +382,9 @@ export default function App() {
         onUpdatePosition={handleUpdateLayoutPosition}
         onResetDefaults={handleResetLayoutDefaults}
         isOpen={isLayoutInspectorOpen}
+        isChairEmpty={isChairEmptyOverride}
+        onToggleChairSeated={handleToggleChairSeated}
+        onOpenChairInspector={() => setIsChairModalOpen(true)}
         onToggleOpen={() => {
           setIsLayoutInspectorOpen((prev) => {
             const next = !prev;
@@ -481,6 +505,18 @@ export default function App() {
       <SvgExportModal
         isOpen={isSvgExportOpen}
         onClose={() => setIsSvgExportOpen(false)}
+      />
+
+      {/* 12. 电脑桌工位座椅透视与就座组合态检视弹窗 */}
+      <ChairInspectionModal
+        isOpen={isChairModalOpen}
+        onClose={() => setIsChairModalOpen(false)}
+        isSeatedInRoom={!isChairEmptyOverride}
+        onToggleSeatedInRoom={(seated) => {
+          setIsChairEmptyOverride(!seated);
+          triggerToast(seated ? '💻 已应用【小人组合态】' : '🪑 已应用【空椅子态】');
+        }}
+        currentPerson={people.find((p) => p.isSelf)}
       />
     </main>
   );

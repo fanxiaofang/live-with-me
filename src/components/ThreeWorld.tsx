@@ -7,7 +7,7 @@ import { resolvePresenceSlots, SceneSlotConfig } from '../utils/sceneViewMapping
 import { Bookshelf, BookshelfPreset, BookItemConfig, TierConfig } from './bookshelf';
 import { CastIronWoodStove, StoveColorVariant } from './CastIronWoodStove';
 import { RecordCabinet, RetroTurntable } from './cabinet';
-import { AtticDesk } from './desk';
+import { AtticDesk, WindsorChair } from './desk';
 import { MonsteraPlant, FiddleLeafFig } from './plants';
 import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from './layout-gizmo';
 import { WallPostersGallery, PosterDetailModal, PosterId } from './wall-posters';
@@ -35,6 +35,9 @@ interface ThreeWorldProps {
   onDragGizmoDelta?: (dx: number, dy: number) => void;
   onDragGizmoEnd?: () => void;
   onSelectPoster?: (id: PosterId) => void;
+  isChairEmptyOverride?: boolean;
+  onToggleChairSeated?: (seated?: boolean) => void;
+  onOpenChairInspector?: () => void;
 }
 
 // Room Camera Pan/Scale configurations in the 2.5D countryside landscape
@@ -205,6 +208,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   onDragGizmoDelta,
   onDragGizmoEnd,
   onSelectPoster,
+  isChairEmptyOverride = false,
+  onToggleChairSeated,
+  onOpenChairInspector,
 }) => {
   const currentLayout = roomLayout || cabinetLayout;
   const effectiveGizmoId = isInspectorOpen ? activeGizmoId : null;
@@ -1723,189 +1729,39 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 )}
               </g>
 
-              {/* 1.4 2.5D ERGONOMIC WORK CHAIR & CHARACTER: Self (阁楼人体工学转椅与工作人物：支持椅子与人物随动校准) */}
+              {/* 1.4 2.5D ERGONOMIC WORK CHAIR & CHARACTER: Self (阁楼手作白橡木温莎椅与工作人物：支持椅子与人物随动校准，修正朝向) */}
               <g
                 id="isometric-chair-container"
                 transform={`translate(${currentLayout?.['attic-chair']?.screen.x ?? -132}, ${currentLayout?.['attic-chair']?.screen.y ?? 101})`}
-                onClick={(e) => {
-                  if (isInspectorOpen) {
-                    e.stopPropagation();
-                    onSelectGizmo?.(effectiveGizmoId === 'attic-chair' ? null : 'attic-chair');
-                  }
-                }}
-                onMouseEnter={(e) => {
-                  if (isInspectorOpen) {
-                    e.stopPropagation();
-                    setHoveredObject('chair:手作白橡木温莎椅 (点击可校准工位座椅及人物)');
-                  }
-                }}
-                onMouseLeave={() => {
-                  if (isInspectorOpen) {
-                    setHoveredObject(null);
-                  }
-                }}
                 className={isInspectorOpen ? 'cursor-pointer' : ''}
               >
-                {/* 1. Ground Cast Shadow (温润实木四脚在木地板上的柔和漫反射投影，落地于 y=20.5 水平地面) */}
-                <ellipse cx="0" cy="20.5" rx="12" ry="5" fill="#1f150d" opacity="0.28" filter="url(#softShadow)" />
-
-                {/* 2. 2.5D Rustic Handcrafted White Oak Windsor Spindle Chair (日式手作温润白橡木温莎纺锤椅：外八圆柱木腿、环形加固枨、马鞍形实木座板、优雅圆弧纺锤梳背) */}
-                <g id="desk-chair">
-                  {/* Four Turned Splayed Solid Wood Legs (四根外八锥形实木腿，温润木蜡油柚木色) */}
-                  {/* Back-Left Leg (后左椅腿) */}
-                  <polygon points="-6.5,7 -5,6.5 -8.5,19.5 -10,19.5" fill="#4d2f16" stroke="#321c0b" strokeWidth="0.4" />
-                  <ellipse cx="-9.2" cy="19.5" rx="1.2" ry="0.6" fill="#321c0b" />
-
-                  {/* Back-Right Leg (后右椅腿) */}
-                  <polygon points="5,6.5 6.5,7 10,18.5 8.5,18.5" fill="#58351b" stroke="#321c0b" strokeWidth="0.4" />
-                  <ellipse cx="9.2" cy="18.5" rx="1.2" ry="0.6" fill="#321c0b" />
-
-                  {/* Under-Seat H-Stretcher Wood Braces (实木H型加固横枨，展现扎实手作榫卯结构) */}
-                  <line x1="-8.5" y1="14" x2="8.5" y2="13" stroke="#663f22" strokeWidth="1.3" strokeLinecap="round" />
-                  <line x1="-2" y1="13.5" x2="-2" y2="17" stroke="#4a2a11" strokeWidth="1.1" strokeLinecap="round" />
-
-                  {/* Front-Left Leg (前左椅腿：微外八，温润受光) */}
-                  <polygon points="-7.5,7.5 -5.8,7.5 -8,21.5 -10,21.5" fill="#87562e" stroke="#482b13" strokeWidth="0.5" />
-                  <line x1="-6.8" y1="8" x2="-8.8" y2="21" stroke="#b07746" strokeWidth="0.7" strokeLinecap="round" />
-                  <ellipse cx="-9" cy="21.5" rx="1.3" ry="0.65" fill="#482b13" />
-
-                  {/* Front-Right Leg (前右椅腿：微外八，温润高光) */}
-                  <polygon points="5.8,7.5 7.5,7.5 10,20.5 8,20.5" fill="#7a4b24" stroke="#40240d" strokeWidth="0.5" />
-                  <line x1="6.8" y1="8" x2="8.8" y2="20" stroke="#a36b3b" strokeWidth="0.7" strokeLinecap="round" />
-                  <ellipse cx="9" cy="20.5" rx="1.3" ry="0.65" fill="#40240d" />
-
-                  {/* Ergonomic Curved Windsor Backrest Crest Rail & Vertical Spindles (典雅优雅弧形温莎梳背与多根实木纺锤立柱) */}
-                  {/* Vertical Turned Spindles (7根梳背细圆木柱：严格沿等轴测透视朝向座板延伸) */}
-                  <line x1="-7" y1="-3" x2="-7" y2="5" stroke="#7a4b24" strokeWidth="1.2" strokeLinecap="round" />
-                  <line x1="-4.5" y1="-4.5" x2="-4.5" y2="4" stroke="#87562e" strokeWidth="1.2" strokeLinecap="round" />
-                  <line x1="-2.2" y1="-5.5" x2="-2.2" y2="3.5" stroke="#9a6639" strokeWidth="1.2" strokeLinecap="round" />
-                  <line x1="0" y1="-6.2" x2="0" y2="3" stroke="#a67142" strokeWidth="1.2" strokeLinecap="round" />
-                  <line x1="2.2" y1="-6.8" x2="2.2" y2="3.5" stroke="#9a6639" strokeWidth="1.2" strokeLinecap="round" />
-                  <line x1="4.5" y1="-7.5" x2="4.5" y2="4" stroke="#87562e" strokeWidth="1.2" strokeLinecap="round" />
-                  <line x1="7" y1="-8.5" x2="7" y2="5" stroke="#7a4b24" strokeWidth="1.2" strokeLinecap="round" />
-
-                  {/* Curved Continuous Top Bentwood Crest Rail (温润蒸汽弯曲白橡木椅背顶梁：顺应-0.2852透视微倾) */}
-                  <path
-                    d="M-8.5,-1.5 C-8.5,-7.5 0,-10.5 8.5,-7.0"
-                    stroke="#543217"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                  <path
-                    d="M-8.5,-1.5 C-8.5,-7.5 0,-10.5 8.5,-7.0"
-                    stroke="#945f34"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                  <path
-                    d="M-7.5,-2.8 C-7.5,-7.8 0,-9.8 7.5,-7.2"
-                    stroke="#bf8554"
-                    strokeWidth="0.7"
-                    strokeLinecap="round"
-                    fill="none"
-                    opacity="0.85"
-                  />
-
-                  {/* Hand-Carved Saddle Seat (厚实白橡木微凹马鞍坐板：侧面与前缘厚重温润) */}
-                  {/* Seat Underside Chamfer Rim */}
-                  <polygon points="-9.2,6.5 0,3.8 9.2,6.5 0,9.2" fill="#4a2a11" />
-                  {/* Seat Top Wooden Plank */}
-                  <polygon points="-9,5.5 0,2.8 9,5.5 0,8.2" fill="#915e34" stroke="#543217" strokeWidth="0.5" />
-                  {/* Wooden Plank Highlight on Front Edge */}
-                  <line x1="-8.5" y1="5.7" x2="0" y2="8.1" stroke="#b88050" strokeWidth="0.85" strokeLinecap="round" />
-                  <line x1="0" y1="8.1" x2="8.5" y2="5.7" stroke="#a66e40" strokeWidth="0.85" strokeLinecap="round" />
-
-                  {/* Handwoven Linen Cushion (质朴棉麻椅垫：增添温馨森系居家感) */}
-                  <polygon points="-7.5,5.2 0,3.0 7.5,5.2 0,7.2" fill="#ded4c3" stroke="#b8ab96" strokeWidth="0.4" />
-                  <polygon points="-7,5.0 0,3.2 7,5.0 0,6.8" fill="#ebe4d6" />
-                </g>
-
-                {/* 3. Character Body (由 Presence 场景槽位 desk_workstation 动态分配与驱动：背身工作态) */}
                 {(() => {
                   const deskOccupant = presenceSlots.desk_workstation?.occupant;
-                  const slotCfg = presenceSlots.desk_workstation?.config;
-                  if (!deskOccupant || !slotCfg) return null;
+                  const isActuallySeated = !isChairEmptyOverride && Boolean(deskOccupant);
 
                   return (
-                    <g
-                      id={`character-seated-desk-${deskOccupant.id}`}
+                    <WindsorChair
+                      isSeated={isActuallySeated}
+                      occupant={deskOccupant}
+                      isInspectorOpen={isInspectorOpen}
+                      isSelected={effectiveGizmoId === 'attic-chair'}
                       onClick={(e) => {
                         if (isInspectorOpen) {
                           e.stopPropagation();
                           onSelectGizmo?.(effectiveGizmoId === 'attic-chair' ? null : 'attic-chair');
                         } else {
                           e.stopPropagation();
-                          onSelectPerson(deskOccupant);
+                          onOpenChairInspector?.();
                         }
                       }}
-                      onMouseEnter={(e) => {
-                        if (isInspectorOpen) {
-                          e.stopPropagation();
-                          setHoveredObject(`chair:手作白橡木温莎椅 (${deskOccupant.name} 正在此工作 · 点击校准)`);
-                        } else {
-                          e.stopPropagation();
-                          setHoveredObject(`person-${deskOccupant.id}`);
-                        }
-                      }}
-                      onMouseLeave={() => setHoveredObject(null)}
-                      className="cursor-pointer group/char"
-                    >
-                      {/* Seated Pelvis on Cushion (稳坐于座垫中央的卫衣下摆) */}
-                      <polygon points="-6.5,4.5 0,2.8 6.5,4.5 0,6.2" fill={deskOccupant.shirtColor} />
-
-                      {/* Torso & Hoodie (从座垫向上升起、贴紧椅背的后背卫衣剪影，双肩斜率严格为-0.2852) */}
-                      <polygon
-                        points="-6,-5 0,-6.7 6,-8.4 5.5,3.5 -5.5,4.5"
-                        fill={deskOccupant.shirtColor}
-                      />
-
-                      {/* Spine Crease & Neckline (自然的卫衣后背中缝与领口微皱) */}
-                      <line x1="0" y1="-6.5" x2="0" y2="3.5" stroke="#000000" strokeWidth="0.8" opacity="0.16" strokeLinecap="round" />
-                      <path d="M-2.5,-6.7 Q0,-5.2 2.5,-7.4" stroke="#000000" strokeWidth="0.8" opacity="0.22" fill="none" />
-
-                      {/* Arms & Hands (手臂顺着等轴测朝向自然向前舒展，双手舒适平放于笔记本键盘上) */}
-                      {/* Left Arm (近侧手臂：自左肩下垂微屈伸向键盘前部) */}
-                      <path d="M-5.5,-5 C-8,-2.5 -6.5,-5.5 -4,-7" stroke={deskOccupant.shirtColor} strokeWidth="2.8" strokeLinecap="round" fill="none" />
-                      {/* Right Arm (远侧手臂：自右肩顺延向键盘深处伸出) */}
-                      <path d="M5.5,-8.4 C7.5,-5.5 5,-7 2.5,-8.5" stroke={deskOccupant.shirtColor} strokeWidth="2.8" strokeLinecap="round" fill="none" />
-                      {/* Delicate Hands resting on Laptop Keyboard (双手搭在键盘上正在敲击代码) */}
-                      <ellipse cx="-4" cy="-7" rx="1.4" ry="1.1" fill={deskOccupant.skinColor || '#fad4c0'} />
-                      <ellipse cx="2.5" cy="-8.5" rx="1.4" ry="1.1" fill={deskOccupant.skinColor || '#fad4c0'} />
-
-                      {/* Head: 后背视角 (facing="back") - 严格居中正对笔记本屏幕 */}
-                      <CharacterHead
-                        cx={0}
-                        cy={-14}
-                        r={7}
-                        skinColor={deskOccupant.skinColor || '#fad4c0'}
-                        hairColor={deskOccupant.hairColor || '#1a1a1a'}
-                        hairStyle={deskOccupant.hairStyle || 'curtain_crescent'}
-                        beanieColor={deskOccupant.beanieColor || '#425b6e'}
-                        hasPompom={deskOccupant.hasPompom ?? true}
-                        facing={slotCfg.facing}
-                      />
-                      {/* Headphones on Head (两耳罩与头梁沿-0.2852斜率微倾，紧密贴合头部) */}
-                      <path d="M-7,-13 C-8,-19.5 8,-23.5 7,-17" stroke="#1e293b" strokeWidth="1.8" fill="none" />
-                      <circle cx="-7" cy="-13" r="2.2" fill="#334155" />
-                      <circle cx="7" cy="-17" r="2.2" fill="#334155" />
-
-                      {/* Character Status Tag (悬浮状态标签：保持水平正向展示，清晰易读) */}
-                      <g
-                        transform="translate(0, -32)"
-                        className="opacity-0 group-hover/char:opacity-100 transition-opacity duration-200 pointer-events-none"
-                      >
-                        <rect x="-42" y="-8" width="84" height="17" rx="8.5" fill="#1c1917" opacity="0.92" />
-                        <text x="0" y="4" fill="#f0ebe1" fontSize="9" fontWeight="bold" textAnchor="middle">
-                          {deskOccupant.currentState === 'coding' ? '💻' : '🌿'} {deskOccupant.name} · {slotCfg.badgeLabel.split('(')[0].trim()}
-                        </text>
-                      </g>
-                    </g>
+                      onHover={(label) => setHoveredObject(label)}
+                      onToggleSeated={() => onToggleChairSeated?.(!isActuallySeated)}
+                      onOpenInspectorModal={onOpenChairInspector}
+                    />
                   );
                 })()}
 
-                {/* 4. 2.5D 轴测校准把手 (仅在校准器开启且选中温莎椅时渲染) */}
+                {/* 2.5D 轴测校准把手 (仅在校准器开启且选中温莎椅时渲染) */}
                 {effectiveGizmoId === 'attic-chair' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 19.5 }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Person, LifeStateId, RoomId } from '../types';
 import { LIFE_STATES, ROOMS } from '../data/initialData';
-import { Sparkles, Edit3, Image as ImageIcon } from 'lucide-react';
+import { Sparkles, Edit3, Image as ImageIcon, Armchair } from 'lucide-react';
 import { CharacterHead } from './CharacterAvatar';
 
 interface PresencePanelProps {
@@ -9,6 +9,7 @@ interface PresencePanelProps {
   onSelectPerson: (person: Person) => void;
   onEditMyStatus: () => void;
   onOpenSvgExport?: () => void;
+  onOpenChairInspector?: () => void;
 }
 
 export const PresencePanel: React.FC<PresencePanelProps> = ({
@@ -16,6 +17,7 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
   onSelectPerson,
   onEditMyStatus,
   onOpenSvgExport,
+  onOpenChairInspector,
 }) => {
   const me = people.find((p) => p.isSelf);
   const friends = people.filter((p) => !p.isSelf);
@@ -126,9 +128,20 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
           })}
         </div>
 
-        {/* Quick SVG Export Button */}
-        {onOpenSvgExport && (
-          <div className="pt-2 border-t border-[#302a24]">
+        {/* Quick Tools Buttons */}
+        <div className="pt-2 border-t border-[#302a24] space-y-1.5">
+          {onOpenChairInspector && (
+            <button
+              type="button"
+              onClick={onOpenChairInspector}
+              className="w-full py-1.5 px-2 rounded-lg bg-[#26201b] hover:bg-[#332b24] border border-[#3b3127] hover:border-[#4d4033] text-[11px] text-[#c9bcad] hover:text-[#f0e8dc] flex items-center justify-center gap-1.5 transition-all group"
+            >
+              <Armchair className="w-3.5 h-3.5 text-[#d97736] group-hover:scale-110 transition-transform" />
+              <span>检视工位椅子 (空椅 / 组合态)</span>
+            </button>
+          )}
+
+          {onOpenSvgExport && (
             <button
               type="button"
               onClick={onOpenSvgExport}
@@ -137,8 +150,8 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
               <ImageIcon className="w-3.5 h-3.5 text-[#c4794e] group-hover:scale-110 transition-transform" />
               <span>导出 短发 4 视图 SVG</span>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </aside>
   );

@@ -32,6 +32,9 @@ interface LayoutInspectorPanelProps {
   onResetDefaults: () => void;
   isOpen: boolean;
   onToggleOpen: () => void;
+  isChairEmpty?: boolean;
+  onToggleChairSeated?: (seated?: boolean) => void;
+  onOpenChairInspector?: () => void;
 }
 
 const CATEGORIES: { id: RoomCategory | 'all'; label: string; icon: React.FC<{ className?: string }> }[] = [
@@ -52,6 +55,9 @@ export const LayoutInspectorPanel: React.FC<LayoutInspectorPanelProps> = ({
   onResetDefaults,
   isOpen,
   onToggleOpen,
+  isChairEmpty = false,
+  onToggleChairSeated,
+  onOpenChairInspector,
 }) => {
   const [copied, setCopied] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -329,6 +335,33 @@ export const roomLayoutConfig = ${JSON.stringify(formattedObj, null, 2)};`;
                             -Z
                           </button>
                         </div>
+                      </div>
+                    )}
+                    {/* 工位座椅专属：空椅/组合态即时切换与检视 */}
+                    {id === 'attic-chair' && (
+                      <div
+                        className="mt-2 pt-2 border-t border-[#3a2d20] flex items-center justify-between text-[11px]"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[#9c8d7d]">工位就座:</span>
+                          <button
+                            type="button"
+                            onClick={() => onToggleChairSeated?.(isChairEmpty)}
+                            className="px-2 py-0.5 rounded bg-[#2b2118] hover:bg-[#3d2f22] text-[#d97736] border border-[#4d3a28] font-medium transition-colors"
+                          >
+                            {isChairEmpty ? '🪑 当前: 空椅态 (点击就坐)' : '💻 当前: 组合态 (点击离开)'}
+                          </button>
+                        </div>
+                        {onOpenChairInspector && (
+                          <button
+                            type="button"
+                            onClick={onOpenChairInspector}
+                            className="px-2 py-0.5 rounded bg-[#d97736]/20 hover:bg-[#d97736]/35 text-[#f0a36e] border border-[#d97736]/40 text-[10px] font-medium transition-colors"
+                          >
+                            检视对比
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>

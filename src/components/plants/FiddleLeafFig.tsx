@@ -69,36 +69,72 @@ export const FiddleLeafFig: React.FC<FiddleLeafFigProps> = ({ onHover, onClick }
 
         {/* 琴叶榕深邃下层阔叶 (稳重深墨绿) */}
         <linearGradient id="figLeafDeepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#1e4428" />
-          <stop offset="55%" stopColor="#14331c" />
-          <stop offset="100%" stopColor="#0d2413" />
+          <stop offset="0%" stopColor="#1b4625" />
+          <stop offset="55%" stopColor="#12351b" />
+          <stop offset="100%" stopColor="#0a2211" />
         </linearGradient>
 
-        {/* 琴叶榕受光革质中层主叶 (温润自然森林绿，消除刺眼荧光绿) */}
-        <linearGradient id="figLeafLushGrad" x1="0%" y1="0%" x2="80%" y2="100%">
-          <stop offset="0%" stopColor="#2e6839" />
-          <stop offset="40%" stopColor="#23542d" />
-          <stop offset="85%" stopColor="#183f21" />
-          <stop offset="100%" stopColor="#112c17" />
+        {/* 琴叶榕受光革质中层主叶 (自然油亮墨绿，蜡质厚实质感) */}
+        <linearGradient id="figLeafLushGrad" x1="0%" y1="0%" x2="90%" y2="100%">
+          <stop offset="0%" stopColor="#296636" />
+          <stop offset="45%" stopColor="#1e5229" />
+          <stop offset="85%" stopColor="#143b1c" />
+          <stop offset="100%" stopColor="#0d2913" />
         </linearGradient>
 
-        {/* 琴叶榕向阳冠叶 (柔和沉稳暖橄榄绿，温润舒适) */}
+        {/* 琴叶榕向阳中上层主叶 (明朗林绿，叶肉饱满) */}
         <linearGradient id="figLeafSunlitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#3d7e48" />
-          <stop offset="45%" stopColor="#2c6835" />
-          <stop offset="100%" stopColor="#1e4e27" />
+          <stop offset="0%" stopColor="#3c8449" />
+          <stop offset="45%" stopColor="#2a6a35" />
+          <stop offset="100%" stopColor="#194823" />
         </linearGradient>
 
-        {/* 顶芽初生娇叶 (柔和嫩芽绿，避免过度荧光发光) */}
+        {/* 顶冠杯状新生娇叶 (鲜亮黄绿，薄嫩透光) */}
+        <linearGradient id="figLeafCrownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#68b44e" />
+          <stop offset="45%" stopColor="#4f9a38" />
+          <stop offset="100%" stopColor="#2e6d22" />
+        </linearGradient>
+
+        {/* 琴叶榕标志性翻卷叶背嫩黄绿 (Underside Leaf Curl: 浅草绿透光层次) */}
+        <linearGradient id="figLeafUnderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#b4e476" />
+          <stop offset="45%" stopColor="#93cf57" />
+          <stop offset="100%" stopColor="#6ea838" />
+        </linearGradient>
+
+        {/* 粗壮凸起浅黄绿主叶脉渐变 (Thick Pale Chartreuse Midrib) */}
+        <linearGradient id="figVeinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#d8f892" />
+          <stop offset="50%" stopColor="#b5e66a" />
+          <stop offset="100%" stopColor="#82b844" />
+        </linearGradient>
+
+        {/* 革质蜡光表面高光 (Glossy Satin Sheen) */}
+        <linearGradient id="figLeafSheenGrad" x1="0%" y1="0%" x2="50%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.25" />
+          <stop offset="40%" stopColor="#ffffff" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
+        </linearGradient>
+
+        {/* 顶芽初生娇嫩小叶 */}
         <linearGradient id="figSproutGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#68a872" />
-          <stop offset="40%" stopColor="#4c8e57" />
-          <stop offset="100%" stopColor="#2e6938" />
+          <stop offset="0%" stopColor="#7ac45c" />
+          <stop offset="50%" stopColor="#58a43c" />
+          <stop offset="100%" stopColor="#367a24" />
         </linearGradient>
       </defs>
 
-      {/* --- 1. 地面漫反射接触阴影 (花架脚与陶筒在木地板上的投影) --- */}
-      <ellipse cx="0" cy="15.5" rx="12" ry="5.2" fill="#1b120c" opacity="0.3" filter="url(#softShadow)" />
+      {/* 
+        【室内比例黄金重整】：
+        以地面接触基准点 (0, 15.5) 为缩放原点进行 0.74x 紧凑化等比校准：
+        - 盆底与阴影稳贴木地板基线；
+        - 叶冠高度从 65px 优化为约 48px，彻底告别过大遮挡墙面挂画问题；
+        - 冠幅与卧榻、书架、懒人沙发形成协调的室内家具生态天际线。
+      */}
+      <g transform="translate(0, 15.5) scale(0.74) translate(0, -15.5)">
+        {/* --- 1. 地面漫反射接触阴影 (花架脚与陶筒在木地板上的投影) --- */}
+        <ellipse cx="0" cy="15.5" rx="12" ry="5.2" fill="#1b120c" opacity="0.3" filter="url(#softShadow)" />
 
       {/* --- 2. 北欧实木十字高脚架 (Mid-Century Modern Timber Stand) --- */}
       {/* 2.1 后侧支腿 (在花盆背面) */}
@@ -166,201 +202,445 @@ export const FiddleLeafFig: React.FC<FiddleLeafFigProps> = ({ onHover, onClick }
         <line x1="7.5" y1="4.0" x2="8.5" y2="14.8" stroke="url(#figWoodLegGrad)" strokeWidth="2.0" strokeLinecap="round" />
       </g>
 
-      {/* --- 4. 琴叶榕真实木质主干与节间生态 (Woody S-Curved Trunk & Botanical Nodes) --- */}
+      {/* --- 4. 琴叶榕真实木质主干与节间生态 (Woody Lignified Trunk & Botanical Nodes) --- */}
       <g id="fig-trunk-system">
         {/* 木质基部粗壮根颈 */}
-        <path d="M-1.8,-1.2 Q0,-1.0 1.8,-1.2 L1.2,-3.5 L-1.2,-3.5 Z" fill="#3b2515" />
-        {/* 优雅苍劲主茎干 (S-Curved Lignified Trunk) */}
+        <path d="M-2.0,-1.2 Q0,-1.0 2.0,-1.2 L1.4,-3.8 L-1.4,-3.8 Z" fill="#3b2515" />
+        {/* 优雅挺拔主茎干 (Sturdy Upright Trunk with subtle botanical curvature) */}
         <path
-          d="M0,-1.5 Q-1.5,-9 0.8,-18 Q2.5,-24 1.2,-32 Q0.5,-37 0.8,-42"
+          d="M0,-1.5 Q-1.2,-10 0.5,-18 Q1.8,-26 0.8,-34 Q0.2,-40 0.5,-45"
           fill="none"
           stroke="#442a17"
-          strokeWidth="2.4"
+          strokeWidth="2.8"
           strokeLinecap="round"
         />
-        {/* 主干向阳木纹高光 */}
+        {/* 主干受光侧木纹高光 */}
         <path
-          d="M0.4,-2 Q-0.8,-9 1.4,-18 Q2.8,-24 1.6,-32"
+          d="M0.5,-2 Q-0.6,-10 1.1,-18 Q2.3,-26 1.3,-34 Q0.8,-40 1.0,-44"
           fill="none"
-          stroke="#734c2d"
-          strokeWidth="0.8"
+          stroke="#78502f"
+          strokeWidth="0.9"
           strokeLinecap="round"
-          opacity="0.8"
+          opacity="0.85"
         />
 
-        {/* 琴叶榕关键植物学特征：叶节脱落后的木质化环痕 (Leaf Scars) */}
-        <ellipse cx="-0.2" cy="-6" rx="1.5" ry="0.5" fill="none" stroke="#2a180c" strokeWidth="0.5" opacity="0.75" />
-        <ellipse cx="0.6" cy="-12" rx="1.4" ry="0.45" fill="none" stroke="#2a180c" strokeWidth="0.5" opacity="0.7" />
-        <ellipse cx="1.6" cy="-21" rx="1.3" ry="0.4" fill="none" stroke="#2a180c" strokeWidth="0.5" opacity="0.7" />
+        {/* 琴叶榕标志性植物学特征：叶节脱落后的木质化环痕 (Leaf Scars at Nodes) */}
+        <ellipse cx="-0.2" cy="-6" rx="1.6" ry="0.55" fill="none" stroke="#25160c" strokeWidth="0.55" opacity="0.8" />
+        <ellipse cx="0.4" cy="-13" rx="1.5" ry="0.5" fill="none" stroke="#25160c" strokeWidth="0.55" opacity="0.8" />
+        <ellipse cx="1.2" cy="-21" rx="1.4" ry="0.45" fill="none" stroke="#25160c" strokeWidth="0.55" opacity="0.8" />
+        <ellipse cx="1.0" cy="-29" rx="1.3" ry="0.4" fill="none" stroke="#25160c" strokeWidth="0.5" opacity="0.75" />
 
         {/* 琴叶榕独有的红棕色纸质干苞片/托叶鞘 (Papery Brown Stipule Sheaths at Nodes) */}
-        <path d="M-0.8,-12 Q-1.8,-14 -1.2,-16 Q-0.2,-15 0.5,-13 Z" fill="#6d3a1f" opacity="0.85" />
-        <path d="M1.2,-21 Q2.6,-23 2.0,-25.5 Q0.8,-24 0.6,-22 Z" fill="#6d3a1f" opacity="0.85" />
-        <path d="M0.5,-31 Q1.8,-34 1.2,-36.5 Q0.2,-34 0.2,-32 Z" fill="#7a4123" opacity="0.9" />
+        <path d="M-0.8,-13 Q-2.0,-15 -1.4,-17.5 Q-0.3,-16 0.6,-14 Z" fill="#6d3a1f" opacity="0.9" />
+        <path d="M1.2,-21 Q2.8,-23 2.2,-26 Q0.8,-24.5 0.5,-22.5 Z" fill="#6d3a1f" opacity="0.9" />
+        <path d="M0.8,-29 Q2.2,-31.5 1.5,-34.5 Q0.3,-32.5 0.3,-30 Z" fill="#7a4123" opacity="0.92" />
+        <path d="M0.2,-37 Q1.5,-39.5 1.0,-42.5 Q0.0,-40.5 0.0,-38 Z" fill="#7a4123" opacity="0.92" />
 
-        {/* 侧向微木质叶柄分枝 */}
-        <path d="M0.2,-10 Q-4,-13 -7,-16" fill="none" stroke="#3d2514" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M1.2,-15 Q6,-18 9,-22" fill="none" stroke="#3d2514" strokeWidth="1.4" strokeLinecap="round" />
-        <path d="M1.8,-24 Q7,-28 10,-32" fill="none" stroke="#3d2514" strokeWidth="1.3" strokeLinecap="round" />
+        {/* 粗壮短叶柄 (Petioles directly anchoring leaves to node scars) */}
+        <path d="M-0.2,-13 Q-3,-15 -5,-17" fill="none" stroke="#3d2514" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M0.8,-15 Q4,-17 6.5,-19" fill="none" stroke="#3d2514" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M1.2,-22 Q5.5,-24 8,-26" fill="none" stroke="#3d2514" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M-0.1,-23 Q-4.5,-25 -7,-27" fill="none" stroke="#3d2514" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M0.8,-30 Q-3.5,-33 -5.5,-35" fill="none" stroke="#3d2514" strokeWidth="1.4" strokeLinecap="round" />
+        <path d="M1.0,-31 Q4.5,-34 6.8,-36" fill="none" stroke="#3d2514" strokeWidth="1.4" strokeLinecap="round" />
       </g>
 
-      {/* --- 5. 2.5D 有机层叠琴叶榕大叶冠 (Lush Fiddle Leaf Canopy) --- */}
-      {/* 点击或悬浮时产生整株生动微颤摇曳动画 */}
+      {/* --- 5. 2.5D 植物学真实生境：茂密有机层叠琴叶榕大叶冠 (Sculptural Fiddle Leaf Canopy) --- */}
+      {/* 
+        【彻底根据用户照片真实重构】：
+        1. 经典小提琴轮廓 (Fiddle/Violin Silhouette)：顶部阔圆外展扇面、中间优雅收腰、基部耳状心形抱茎。
+        2. 荷叶起伏波浪卷边 (Undulating Ruffled Margins)：叶缘绝非平滑死板线条，而是三维波浪翻卷起伏。
+        3. 3D 卷边露出浅黄绿叶背 (Turned Underside Leaf Curls)：高度还原实物照片中叶片边缘卷折露出的明亮浅绿叶背。
+        4. 粗壮凸起浅黄绿主脉 (Thick Chartreuse Midrib) 与 60° 放射羽状侧脉。
+        5. 充沛丰富的 11 片叶四层垂直生态梯队，生机勃勃。
+      */}
       <g
         id="fig-canopy-group"
         className={`origin-[0_0] transition-transform duration-700 ease-out ${
           rustle ? 'scale-[1.03] rotate-1' : 'group-hover/fig:scale-[1.01]'
         }`}
       >
-        {/* 5.1 远景深色背景阔叶 (Back Depth Leaves: 构筑浓郁森林质感底色) */}
-        <g id="fig-leaf-back-left" transform="translate(-4, -18) rotate(-28)">
-          {/* 提琴轮廓：宽大钝圆顶端与明显收腰 */}
+        {/* ======================================================== */}
+        {/* 5.1 第一层：后景深色背景阔叶 (Back Tier Deep Forest Leaves) */}
+        {/* ======================================================== */}
+        {/* 后景左上挺拔阔叶 (Back-Left Upper) */}
+        <g id="fig-leaf-back-left-up" transform="translate(-4, -28) rotate(-32)">
+          {/* 小提琴经典轮廓：宽扇顶 + 波浪收腰 + 耳基 */}
           <path
-            d="M0,0 C-3,-3 -5,-5 -6,-8 C-7.5,-12 -5.5,-15 -7.5,-19 C-9.5,-23 -7,-28 -2,-30 C3,-32 7,-28 7,-23 C7,-18 5,-14 3,-10 C1.5,-7 0.5,-3 0,0 Z"
+            d="M0,0
+               C-2.5,-3 -4.5,-5 -4.8,-8.5
+               C-5.2,-12 -3.8,-15 -5.8,-19.5
+               C-8.0,-24.5 -6.5,-30.5 -1.5,-32.5
+               C3.5,-34 8.5,-30 8.0,-24.5
+               C7.5,-19.5 5.5,-15.5 3.5,-11.5
+               C2.0,-8 1.0,-3.5 0,0 Z"
             fill="url(#figLeafDeepGrad)"
-            stroke="#0b1e10"
+            stroke="#0c2011"
+            strokeWidth="0.45"
+          />
+          {/* 粗壮凸起黄绿主叶脉 */}
+          <path d="M0,0 Q-0.5,-16 0.5,-31" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.85" opacity="0.65" strokeLinecap="round" />
+          {/* 侧脉 */}
+          <path d="M0,-8 Q-3,-10 -4.5,-12 M0,-15 Q-4,-17 -5.5,-20 M0,-22 Q-4.5,-25 -4.5,-28" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.4" />
+          <path d="M0,-9 Q3,-11 4.5,-13 M0,-16 Q4,-18 6.5,-21 M0,-23 Q4,-26 5,-28" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.4" />
+        </g>
+
+        {/* 后景右上挺拔阔叶 (Back-Right Upper) */}
+        <g id="fig-leaf-back-right-up" transform="translate(4, -30) rotate(28)">
+          <path
+            d="M0,0
+               C2.5,-3 4.5,-5 4.8,-8.5
+               C5.2,-12 3.8,-15 5.8,-19.5
+               C8.0,-24.5 6.5,-30.5 1.5,-32.5
+               C-3.5,-34 -8.5,-30 -8.0,-24.5
+               C-7.5,-19.5 -5.5,-15.5 -3.5,-11.5
+               C-2.0,-8 -1.0,-3.5 0,0 Z"
+            fill="url(#figLeafDeepGrad)"
+            stroke="#0c2011"
+            strokeWidth="0.45"
+          />
+          <path d="M0,0 Q0.5,-16 -0.5,-31" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.85" opacity="0.65" strokeLinecap="round" />
+          <path d="M0,-8 Q3,-10 4.5,-12 M0,-15 Q4,-17 5.5,-20 M0,-22 Q4.5,-25 4.5,-28" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.4" />
+          <path d="M0,-9 Q-3,-11 -4.5,-13 M0,-16 Q-4,-18 -6.5,-21 M0,-23 Q-4,-26 -5,-28" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.4" />
+        </g>
+
+        {/* 后景顶端中轴背景叶 (Back-Center Upright) */}
+        <g id="fig-leaf-back-center" transform="translate(0.5, -36) rotate(-2)">
+          <path
+            d="M0,0
+               C-2.8,-3.5 -5.0,-6 -4.8,-10.5
+               C-4.5,-14 -3.0,-17.5 -4.8,-22
+               C-6.5,-26.5 -3.5,-31.5 1.5,-32
+               C6.5,-32.5 9.0,-27 7.5,-22
+               C6.2,-17.5 4.5,-14 4.0,-10.5
+               C3.5,-6 1.8,-3.5 0,0 Z"
+            fill="url(#figLeafDeepGrad)"
+            stroke="#0d2413"
+            strokeWidth="0.4"
+          />
+          <path d="M0,0 Q0.5,-16 1.0,-31" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.9" opacity="0.7" strokeLinecap="round" />
+        </g>
+
+        {/* ======================================================== */}
+        {/* 5.2 第二层：下层成熟阔大垂展叶 (Lower Mature Splaying Leaves) */}
+        {/* ======================================================== */}
+        {/* 下层左侧垂展大提琴叶 (Lower-Front-Left Dominant Violin Leaf) */}
+        <g id="fig-leaf-lower-left" transform="translate(-5, -16) rotate(-20)">
+          {/* 叶片主轮廓：生动收腰波浪边缘 */}
+          <path
+            d="M0,0
+               C-3.5,-2.5 -6.5,-4.0 -8.5,-7.5
+               C-10.5,-11.0 -7.5,-15.5 -11.0,-20.5
+               C-14.5,-25.5 -11.0,-31.5 -3.5,-32.5
+               C3.8,-33.5 7.5,-28.5 6.8,-22.5
+               C6.2,-17.0 3.8,-13.0 1.5,-9.0
+               C-0.2,-6.0 0.0,-2.5 0,0 Z"
+            fill="url(#figLeafLushGrad)"
+            stroke="#102b15"
+            strokeWidth="0.5"
+          />
+
+          {/* 【照片核心特征】：波浪翻折叶背 (Curled Underside Flap: 露出嫩黄绿叶背) */}
+          <path
+            d="M-8.5,-7.5
+               C-10.5,-11.0 -7.5,-15.5 -11.0,-20.5
+               C-12.2,-17.5 -10.0,-13.0 -7.8,-9.5
+               C-7.2,-8.5 -8.0,-7.8 -8.5,-7.5 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#5fa030"
+            strokeWidth="0.3"
+          />
+          {/* 叶顶边缘翻卷微卷褶皱 */}
+          <path
+            d="M-11.0,-20.5
+               C-14.5,-25.5 -11.0,-31.5 -3.5,-32.5
+               C-5.5,-30.5 -10.0,-26.5 -9.5,-22.5
+               C-9.2,-21.5 -10.5,-21.0 -11.0,-20.5 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#5fa030"
+            strokeWidth="0.3"
+          />
+
+          {/* 革质蜡光表面漫反射高光带 */}
+          <path
+            d="M-1,-4 C-4,-8 -6,-14 -3,-24 C0,-28 4,-26 3,-20 C2,-14 0,-7 -1,-4 Z"
+            fill="url(#figLeafSheenGrad)"
+          />
+
+          {/* 粗壮显眼的浅黄绿主脉 (从基部一直贯穿至顶端) */}
+          <path d="M0,0 Q-3.5,-15 -4.0,-31.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="1.2" strokeLinecap="round" />
+          <path d="M0,0 Q-3.5,-15 -4.0,-31.5" fill="none" stroke="#f0ffb8" strokeWidth="0.45" strokeLinecap="round" opacity="0.8" />
+
+          {/* 人字形放射状凸起羽脉 (左侧 5 条，右侧 5 条) */}
+          <path d="M-0.8,-6 Q-5,-7.5 -7.5,-9" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.85" />
+          <path d="M-1.8,-11 Q-6.5,-12.5 -9.0,-15" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.85" />
+          <path d="M-2.8,-17 Q-8.5,-18.5 -10.8,-21.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M-3.5,-23 Q-9.5,-24.5 -11.5,-27.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.8" />
+          <path d="M-3.8,-27 Q-7.5,-29.5 -6.0,-31.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.55" opacity="0.75" />
+
+          <path d="M-0.8,-7 Q2.5,-9 5.0,-11" fill="none" stroke="#68b44e" strokeWidth="0.55" opacity="0.8" />
+          <path d="M-1.8,-12 Q3.0,-14.5 5.8,-17" fill="none" stroke="#68b44e" strokeWidth="0.55" opacity="0.8" />
+          <path d="M-2.6,-18 Q3.5,-20.5 6.2,-23.5" fill="none" stroke="#68b44e" strokeWidth="0.6" opacity="0.8" />
+          <path d="M-3.4,-24 Q2.0,-26.5 4.0,-29.5" fill="none" stroke="#68b44e" strokeWidth="0.55" opacity="0.75" />
+        </g>
+
+        {/* 下层右侧微躬舒展叶 (Lower-Front-Right Spreading Leaf) */}
+        <g id="fig-leaf-lower-right" transform="translate(5, -18) rotate(22)">
+          <path
+            d="M0,0
+               C3.5,-2.5 6.5,-4.0 8.5,-7.5
+               C10.5,-11.0 7.5,-15.5 11.0,-20.5
+               C14.5,-25.5 11.0,-31.5 3.5,-32.5
+               C-3.8,-33.5 -7.5,-28.5 -6.8,-22.5
+               C-6.2,-17.0 -3.8,-13.0 -1.5,-9.0
+               C0.2,-6.0 0.0,-2.5 0,0 Z"
+            fill="url(#figLeafLushGrad)"
+            stroke="#102b15"
+            strokeWidth="0.5"
+          />
+
+          {/* 右下翻卷叶背露出 */}
+          <path
+            d="M8.5,-7.5
+               C10.5,-11.0 7.5,-15.5 11.0,-20.5
+               C12.2,-17.5 10.0,-13.0 7.8,-9.5
+               C7.2,-8.5 8.0,-7.8 8.5,-7.5 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#5fa030"
+            strokeWidth="0.3"
+          />
+
+          {/* 粗壮凸起浅黄绿主脉 */}
+          <path d="M0,0 Q3.5,-15 4.0,-31.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="1.2" strokeLinecap="round" />
+          <path d="M0,0 Q3.5,-15 4.0,-31.5" fill="none" stroke="#f0ffb8" strokeWidth="0.45" strokeLinecap="round" opacity="0.8" />
+
+          {/* 侧脉 */}
+          <path d="M0.8,-6 Q5,-7.5 7.5,-9" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.85" />
+          <path d="M1.8,-11 Q6.5,-12.5 9.0,-15" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.85" />
+          <path d="M2.8,-17 Q8.5,-18.5 10.8,-21.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M3.5,-23 Q9.5,-24.5 11.5,-27.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.8" />
+
+          <path d="M0.8,-7 Q-2.5,-9 -5.0,-11" fill="none" stroke="#68b44e" strokeWidth="0.55" opacity="0.8" />
+          <path d="M1.8,-12 Q-3.0,-14.5 -5.8,-17" fill="none" stroke="#68b44e" strokeWidth="0.55" opacity="0.8" />
+          <path d="M2.6,-18 Q-3.5,-20.5 -6.2,-23.5" fill="none" stroke="#68b44e" strokeWidth="0.6" opacity="0.8" />
+        </g>
+
+        {/* 下层正中自然下垂大叶 (Lower-Center Drooping Leaf - 如照片底部饱满大叶) */}
+        <g id="fig-leaf-lower-center" transform="translate(0, -13) rotate(3)">
+          <path
+            d="M0,0
+               C-4.0,-2.0 -7.0,-3.5 -8.0,-6.5
+               C-9.5,-10.0 -6.5,-13.5 -8.5,-18.0
+               C-10.5,-22.5 -7.0,-27.5 0.0,-28.0
+               C7.0,-27.5 10.5,-22.5 8.5,-18.0
+               C6.5,-13.5 9.5,-10.0 8.0,-6.5
+               C7.0,-3.5 4.0,-2.0 0,0 Z"
+            fill="url(#figLeafDeepGrad)"
+            stroke="#0f2613"
             strokeWidth="0.5"
           />
           {/* 主脉 */}
-          <path d="M0,0 Q-1,-15 -0.5,-29" fill="none" stroke="#2f663b" strokeWidth="0.9" opacity="0.6" />
+          <path d="M0,0 Q0,-14 0,-27.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="1.15" strokeLinecap="round" />
+          <path d="M0,0 Q0,-14 0,-27.5" fill="none" stroke="#eaffba" strokeWidth="0.4" strokeLinecap="round" opacity="0.75" />
+          {/* 对称侧羽脉 */}
+          <path d="M0,-6 Q-4,-8 -7,-9 M0,-11 Q-5.5,-13 -7.5,-15 M0,-17 Q-6,-19 -7.5,-22" fill="none" stroke="#6db853" strokeWidth="0.55" opacity="0.75" />
+          <path d="M0,-6 Q4,-8 7,-9 M0,-11 Q5.5,-13 7.5,-15 M0,-17 Q6,-19 7.5,-22" fill="none" stroke="#6db853" strokeWidth="0.55" opacity="0.75" />
         </g>
 
-        <g id="fig-leaf-back-right" transform="translate(4, -20) rotate(24)">
+        {/* ======================================================== */}
+        {/* 5.3 第三层：中层波浪大叶 (Mid Tier Lush Undulating Leaves)   */}
+        {/* ======================================================== */}
+        {/* 中层左侧大波浪大琴叶 (Mid-Left Magnificent Wavy Leaf) */}
+        <g id="fig-leaf-mid-left" transform="translate(-4, -25) rotate(-18)">
           <path
-            d="M0,0 C3,-3 5,-5 6.5,-8 C8,-12 6,-15 8,-19 C10,-23 7.5,-28 2.5,-30 C-2.5,-32 -6.5,-28 -6.5,-23 C-6.5,-18 -4.5,-14 -2.5,-10 C-1,-7 -0.5,-3 0,0 Z"
-            fill="url(#figLeafDeepGrad)"
-            stroke="#0b1e10"
-            strokeWidth="0.5"
-          />
-          <path d="M0,0 Q1,-15 1,-29" fill="none" stroke="#2f663b" strokeWidth="0.9" opacity="0.6" />
-        </g>
-
-        {/* 5.2 左下方垂展大琴叶 (Front-Left Spreading Leathery Violin Leaf) */}
-        <g id="fig-leaf-front-left" transform="translate(-7, -16) rotate(-16)">
-          {/* 叶身收腰波浪曲线 */}
-          <path
-            d="M0,0 C-4,-3 -7,-4 -9,-8 C-11,-12 -8,-16 -11.5,-21 C-14,-25 -10,-31 -3.5,-32 C3,-33 7,-28 6,-22 C5.5,-17 3,-13 1,-9 C-0.5,-6 0,-2 0,0 Z"
-            fill="url(#figLeafLushGrad)"
-            stroke="#122c17"
-            strokeWidth="0.5"
-          />
-          {/* 向光受光半叶柔和漫反射 (哑光革质光泽，沉静柔和) */}
-          <path
-            d="M0,0 C-4,-3 -7,-4 -9,-8 C-11,-12 -8,-16 -11.5,-21 C-14,-25 -10,-31 -3.5,-32 Q-2,-16 0,0 Z"
-            fill="#387a46"
-            opacity="0.5"
-          />
-
-          {/* 细腻主叶脉 (温和草木绿，告别刺眼高光) */}
-          <path d="M0,0 Q-4,-15 -4.5,-31" fill="none" stroke="#68a872" strokeWidth="0.8" strokeLinecap="round" opacity="0.75" />
-
-          {/* 人字形羽状侧脉 (低对比柔和融入叶肉) */}
-          <path d="M-1,-5 Q-5,-6 -8,-7.5" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.6" />
-          <path d="M-2,-9 Q-7,-10 -9.5,-12.5" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.6" />
-          <path d="M-3,-14 Q-9,-15 -11.5,-18" fill="none" stroke="#68a872" strokeWidth="0.5" opacity="0.6" />
-          <path d="M-4,-20 Q-10,-22 -12,-26" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.55" />
-          <path d="M-4.2,-25 Q-8,-28 -6,-30.5" fill="none" stroke="#68a872" strokeWidth="0.4" opacity="0.5" />
-
-          {/* 右侧羽脉 */}
-          <path d="M-1,-6 Q2,-8 4.5,-10" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.55" />
-          <path d="M-2,-11 Q2.5,-13 5,-15.5" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.55" />
-          <path d="M-3,-17 Q3,-19 5.5,-23" fill="none" stroke="#52935d" strokeWidth="0.45" opacity="0.55" />
-          <path d="M-4,-23 Q1.5,-26 2,-29" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.5" />
-
-          {/* 边缘微弱暗调轮廓 */}
-          <path
-            d="M-9,-8 Q-12,-16 -11.5,-21 Q-14,-25 -10,-31"
-            fill="none"
-            stroke="#458252"
-            strokeWidth="0.3"
-            opacity="0.4"
-          />
-        </g>
-
-        {/* 5.3 右侧舒展大琴叶 (Front-Right Dominant Leaf with Leathery Luster) */}
-        <g id="fig-leaf-front-right" transform="translate(8, -21) rotate(18)">
-          <path
-            d="M0,0 C4,-3 7,-4 9,-8 C11,-12 8,-16 12,-21 C14.5,-25 11,-31 4.5,-32 C-2,-33 -6,-28 -5.5,-22 C-5,-17 -2.5,-13 -0.5,-9 C0.5,-6 0,-2 0,0 Z"
-            fill="url(#figLeafLushGrad)"
-            stroke="#122c17"
-            strokeWidth="0.5"
-          />
-          {/* 背光侧轻微沉淀 */}
-          <path
-            d="M0,0 C4,-3 7,-4 9,-8 C11,-12 8,-16 12,-21 C14.5,-25 11,-31 4.5,-32 Q2,-16 0,0 Z"
-            fill="#3a7d49"
-            opacity="0.45"
-          />
-
-          {/* 主叶脉 */}
-          <path d="M0,0 Q4,-15 5.5,-31" fill="none" stroke="#68a872" strokeWidth="0.8" strokeLinecap="round" opacity="0.75" />
-
-          {/* 右侧羽脉 */}
-          <path d="M1,-5 Q5,-6 8,-7.5" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.6" />
-          <path d="M2,-9 Q7,-10 9.8,-12.5" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.6" />
-          <path d="M3,-14 Q9,-15 12,-18" fill="none" stroke="#68a872" strokeWidth="0.5" opacity="0.6" />
-          <path d="M4,-20 Q10,-22 12.5,-26" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.55" />
-
-          {/* 左侧羽脉 */}
-          <path d="M1,-6 Q-2,-8 -4.2,-10" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.55" />
-          <path d="M2,-11 Q-2.5,-13 -4.8,-15.5" fill="none" stroke="#52935d" strokeWidth="0.4" opacity="0.55" />
-          <path d="M3,-17 Q-2.8,-19 -4.5,-23" fill="none" stroke="#52935d" strokeWidth="0.45" opacity="0.55" />
-
-          {/* 柔和哑光漫光带 */}
-          <path
-            d="M2,-6 Q5,-14 6,-22 Q4,-26 2,-22"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="0.6"
-            opacity="0.15"
-            strokeLinecap="round"
-          />
-        </g>
-
-        {/* 5.4 中上层挺立主冠叶 (Crown Upright Flaring Violin Leaf) */}
-        <g id="fig-leaf-crown-main" transform="translate(1, -29) rotate(-4)">
-          <path
-            d="M0,0 C-3,-3 -5.5,-5 -6.5,-9 C-7.5,-13 -4.5,-17 -6.5,-22 C-8,-26.5 -4,-32 1.5,-32.5 C7,-33 10,-28 9.5,-22 C9,-17 6.5,-13 4.5,-9 C3,-6 1,-2 0,0 Z"
+            d="M0,0
+               C-4.0,-3.0 -7.2,-4.5 -9.0,-8.5
+               C-11.0,-12.5 -8.0,-17.0 -12.0,-22.0
+               C-15.0,-26.5 -11.5,-32.5 -3.8,-33.5
+               C4.0,-34.5 8.2,-29.0 7.2,-23.0
+               C6.5,-17.5 4.0,-13.5 1.8,-9.5
+               C0.0,-6.5 0.2,-2.5 0,0 Z"
             fill="url(#figLeafSunlitGrad)"
-            stroke="#153b1e"
+            stroke="#13361a"
             strokeWidth="0.5"
           />
-          {/* 受光提亮面 (沉稳橄榄林绿，消除原先荧光浅绿) */}
+
+          {/* 波浪翻卷叶背露出 (Underside Leaf Curl: 照片中极其抢眼的受光浅绿荷叶边) */}
           <path
-            d="M0,0 C-3,-3 -5.5,-5 -6.5,-9 C-7.5,-13 -4.5,-17 -6.5,-22 C-8,-26.5 -4,-32 1.5,-32.5 Q1,-16 0,0 Z"
-            fill="#4a8f56"
-            opacity="0.4"
+            d="M-9.0,-8.5
+               C-11.0,-12.5 -8.0,-17.0 -12.0,-22.0
+               C-13.8,-18.5 -10.5,-14.0 -8.0,-10.0
+               C-7.5,-9.0 -8.5,-8.5 -9.0,-8.5 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#68a834"
+            strokeWidth="0.35"
+          />
+          {/* 上沿波浪翻卷 */}
+          <path
+            d="M-12.0,-22.0
+               C-15.0,-26.5 -11.5,-32.5 -3.8,-33.5
+               C-6.0,-31.0 -10.5,-27.0 -10.0,-23.5
+               C-10.0,-22.5 -11.5,-22.2 -12.0,-22.0 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#68a834"
+            strokeWidth="0.35"
           />
 
-          {/* 主叶脉 */}
-          <path d="M0,0 Q1,-16 1.8,-31.5" fill="none" stroke="#7ab884" strokeWidth="0.8" strokeLinecap="round" opacity="0.75" />
+          {/* 凸起主脉 */}
+          <path d="M0,0 Q-4.0,-16 -4.2,-33" fill="none" stroke="url(#figVeinGrad)" strokeWidth="1.25" strokeLinecap="round" />
+          <path d="M0,0 Q-4.0,-16 -4.2,-33" fill="none" stroke="#f6ffd0" strokeWidth="0.5" strokeLinecap="round" opacity="0.85" />
 
           {/* 细腻侧羽脉 */}
-          <path d="M0.2,-5 Q-3.5,-7 -5.5,-8.5" fill="none" stroke="#7ab884" strokeWidth="0.45" opacity="0.6" />
-          <path d="M0.5,-10 Q-4.5,-12 -6.2,-14.5" fill="none" stroke="#7ab884" strokeWidth="0.45" opacity="0.6" />
-          <path d="M0.8,-15 Q-5,-17 -6.8,-20" fill="none" stroke="#7ab884" strokeWidth="0.5" opacity="0.6" />
-          <path d="M1.2,-21 Q-4,-24 -5.5,-27" fill="none" stroke="#7ab884" strokeWidth="0.4" opacity="0.55" />
+          <path d="M-1,-7 Q-5.5,-8.5 -8.0,-10" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M-2,-12 Q-7.5,-13.5 -10.0,-16.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M-3,-18 Q-9.5,-19.5 -12.0,-23" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M-3.8,-24 Q-10.5,-25.5 -12.5,-29" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.8" />
 
-          <path d="M0.4,-6 Q3.8,-8 5.8,-9.5" fill="none" stroke="#68a872" strokeWidth="0.4" opacity="0.55" />
-          <path d="M0.8,-11 Q4.8,-13 7.5,-15.5" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.55" />
-          <path d="M1.2,-16 Q5.5,-18 8.2,-21.5" fill="none" stroke="#68a872" strokeWidth="0.45" opacity="0.55" />
-          <path d="M1.5,-22 Q4.8,-25 6.5,-27.5" fill="none" stroke="#68a872" strokeWidth="0.4" opacity="0.5" />
+          <path d="M-1,-8 Q2.8,-10 5.5,-12" fill="none" stroke="#70ba52" strokeWidth="0.6" opacity="0.8" />
+          <path d="M-2,-13 Q3.5,-15.5 6.5,-18.5" fill="none" stroke="#70ba52" strokeWidth="0.6" opacity="0.8" />
+          <path d="M-2.8,-19 Q4.0,-21.5 7.0,-24.5" fill="none" stroke="#70ba52" strokeWidth="0.6" opacity="0.8" />
         </g>
 
-        {/* 5.5 顶端新生娇嫩黄绿卷叶与芽尖 (Emerging Apical Sprout & Baby Leaf) */}
-        <g id="fig-tender-sprout" transform="translate(1, -38)">
-          {/* 初展微卷小提琴嫩叶 (柔和自然淡绿) */}
+        {/* 中层右侧向阳舒展叶 (Mid-Right Sunlit Leaf) */}
+        <g id="fig-leaf-mid-right" transform="translate(4, -26) rotate(16)">
           <path
-            d="M0,0 C-2,-2 -3.5,-4 -3.8,-6.5 C-4,-9 -2,-11 0.5,-11.5 C3,-12 4.5,-9.5 4,-7 C3.5,-4.8 2,-3 0,0 Z"
+            d="M0,0
+               C4.0,-3.0 7.2,-4.5 9.0,-8.5
+               C11.0,-12.5 8.0,-17.0 12.0,-22.0
+               C15.0,-26.5 11.5,-32.5 3.8,-33.5
+               C-4.0,-34.5 -8.2,-29.0 -7.2,-23.0
+               C-6.5,-17.5 -4.0,-13.5 -1.8,-9.5
+               C-0.0,-6.5 -0.2,-2.5 0,0 Z"
+            fill="url(#figLeafSunlitGrad)"
+            stroke="#13361a"
+            strokeWidth="0.5"
+          />
+
+          {/* 右侧波浪翻卷叶背 */}
+          <path
+            d="M9.0,-8.5
+               C11.0,-12.5 8.0,-17.0 12.0,-22.0
+               C13.8,-18.5 10.5,-14.0 8.0,-10.0
+               C7.5,-9.0 8.5,-8.5 9.0,-8.5 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#68a834"
+            strokeWidth="0.35"
+          />
+
+          {/* 凸起主脉 */}
+          <path d="M0,0 Q4.0,-16 4.2,-33" fill="none" stroke="url(#figVeinGrad)" strokeWidth="1.25" strokeLinecap="round" />
+          <path d="M0,0 Q4.0,-16 4.2,-33" fill="none" stroke="#f6ffd0" strokeWidth="0.5" strokeLinecap="round" opacity="0.85" />
+
+          {/* 侧脉 */}
+          <path d="M1,-7 Q5.5,-8.5 8.0,-10" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M2,-12 Q7.5,-13.5 10.0,-16.5" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M3,-18 Q9.5,-19.5 12.0,-23" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.7" opacity="0.85" />
+          <path d="M3.8,-24 Q10.5,-25.5 12.5,-29" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.65" opacity="0.8" />
+
+          <path d="M1,-8 Q-2.8,-10 -5.5,-12" fill="none" stroke="#70ba52" strokeWidth="0.6" opacity="0.8" />
+          <path d="M2,-13 Q-3.5,-15.5 -6.5,-18.5" fill="none" stroke="#70ba52" strokeWidth="0.6" opacity="0.8" />
+        </g>
+
+        {/* ======================================================== */}
+        {/* 5.4 第四层：顶冠杯状挺立嫩叶与初展新芽 (Apical Chalice Crown) */}
+        {/* ======================================================== */}
+        {/* 
+          【实物照片关键亮点】：
+          顶端新叶如高脚杯/酒杯般向上挺立合抱 (Chalice/Goblet Upright)，
+          叶色娇嫩翠绿黄亮，背部大面积翻折受光，生机盎然！
+        */}
+        {/* 顶端左侧杯状幼叶 (Crown-Left Chalice Leaf) */}
+        <g id="fig-leaf-crown-left" transform="translate(-2, -35) rotate(-10)">
+          <path
+            d="M0,0
+               C-2.5,-3 -4.5,-5 -5.2,-9
+               C-6.0,-13 -4.0,-17 -6.2,-22
+               C-8.0,-26.5 -4.5,-32.5 1.5,-33
+               C6.5,-33.5 9.5,-28.5 8.5,-23
+               C7.5,-18 5.5,-14 3.8,-10
+               C2.0,-6.5 1.0,-2.5 0,0 Z"
+            fill="url(#figLeafCrownGrad)"
+            stroke="#1d4d23"
+            strokeWidth="0.45"
+          />
+
+          {/* 大面积向阳翻折浅黄绿叶背 (Chalice Lip Curve) */}
+          <path
+            d="M-5.2,-9
+               C-6.0,-13 -4.0,-17 -6.2,-22
+               C-8.0,-26.5 -4.5,-32.5 1.5,-33
+               C-1.5,-30.5 -4.5,-26.0 -4.0,-21.5
+               C-3.5,-17.0 -4.5,-13.0 -4.0,-9.5
+               C-3.8,-9.0 -4.8,-8.8 -5.2,-9 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#72b83a"
+            strokeWidth="0.35"
+          />
+
+          {/* 鲜嫩明亮黄绿主脉 */}
+          <path d="M0,0 Q0.5,-16 1.2,-32" fill="none" stroke="url(#figVeinGrad)" strokeWidth="1.1" strokeLinecap="round" />
+          <path d="M0,0 Q0.5,-16 1.2,-32" fill="none" stroke="#ffffff" strokeWidth="0.4" strokeLinecap="round" opacity="0.6" />
+
+          {/* 嫩羽脉 */}
+          <path d="M0,-8 Q-3.5,-10 -5.0,-12 M0,-14 Q-4.0,-16 -5.8,-19 M0,-21 Q-4.2,-24 -5.5,-27" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.55" opacity="0.85" />
+          <path d="M0,-9 Q3.5,-11 5.5,-13 M0,-15 Q4.5,-17 7.0,-20 M0,-22 Q4.0,-25 6.0,-28" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.55" opacity="0.85" />
+        </g>
+
+        {/* 顶端右侧杯状幼叶 (Crown-Right Chalice Leaf) */}
+        <g id="fig-leaf-crown-right" transform="translate(2, -36) rotate(12)">
+          <path
+            d="M0,0
+               C2.5,-3 4.5,-5 5.2,-9
+               C6.0,-13 4.0,-17 6.2,-22
+               C8.0,-26.5 4.5,-32.5 -1.5,-33
+               C-6.5,-33.5 -9.5,-28.5 -8.5,-23
+               C-7.5,-18 -5.5,-14 -3.8,-10
+               C-2.0,-6.5 -1.0,-2.5 0,0 Z"
+            fill="url(#figLeafCrownGrad)"
+            stroke="#1d4d23"
+            strokeWidth="0.45"
+          />
+
+          {/* 右侧杯口翻折浅黄绿叶背 */}
+          <path
+            d="M5.2,-9
+               C6.0,-13 4.0,-17 6.2,-22
+               C8.0,-26.5 4.5,-32.5 -1.5,-33
+               C1.5,-30.5 4.5,-26.0 4.0,-21.5
+               C3.5,-17.0 4.5,-13.0 4.0,-9.5
+               C3.8,-9.0 4.8,-8.8 5.2,-9 Z"
+            fill="url(#figLeafUnderGrad)"
+            stroke="#72b83a"
+            strokeWidth="0.35"
+          />
+
+          {/* 鲜嫩明亮黄绿主脉 */}
+          <path d="M0,0 Q-0.5,-16 -1.2,-32" fill="none" stroke="url(#figVeinGrad)" strokeWidth="1.1" strokeLinecap="round" />
+          <path d="M0,0 Q-0.5,-16 -1.2,-32" fill="none" stroke="#ffffff" strokeWidth="0.4" strokeLinecap="round" opacity="0.6" />
+
+          {/* 侧脉 */}
+          <path d="M0,-8 Q3.5,-10 5.0,-12 M0,-14 Q4.0,-16 5.8,-19 M0,-21 Q4.2,-24 5.5,-27" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.55" opacity="0.85" />
+          <path d="M0,-9 Q-3.5,-11 -5.5,-13 M0,-15 Q-4.5,-17 -7.0,-20 M0,-22 Q-4.0,-25 -6.0,-28" fill="none" stroke="url(#figVeinGrad)" strokeWidth="0.55" opacity="0.85" />
+        </g>
+
+        {/* 顶端正中直立新生卷曲娇芽 (Emerging Baby Leaf & Apical Bud) */}
+        <g id="fig-apical-sprout" transform="translate(0.5, -44)">
+          {/* 初展微卷小提琴嫩芽 (青翠半透明) */}
+          <path
+            d="M0,0
+               C-1.8,-2 -3.0,-4 -3.2,-6.5
+               C-3.5,-9.5 -1.5,-12 0.8,-12.5
+               C3.0,-12.8 4.5,-10 4.0,-7
+               C3.5,-4.5 2.0,-2.5 0,0 Z"
             fill="url(#figSproutGrad)"
-            stroke="#1b4d26"
+            stroke="#1d5528"
             strokeWidth="0.35"
           />
           {/* 嫩脉 */}
-          <path d="M0,0 Q0.3,-5 0.5,-11" fill="none" stroke="#8ec898" strokeWidth="0.5" strokeLinecap="round" opacity="0.75" />
+          <path d="M0,0 Q0.3,-5 0.6,-12" fill="none" stroke="#b6f082" strokeWidth="0.65" strokeLinecap="round" />
 
-          {/* 顶端直立红褐色绒毛保护芽苞 (Apical Bud Sheath) */}
-          <path d="M0,-1 Q0.8,-4 0.5,-7 Q-0.2,-4 0,-1 Z" fill="#78350f" stroke="#3b1504" strokeWidth="0.25" />
+          {/* 顶端直立红褐色绒毛托叶苞鞘 (Papery Terminal Bud Sheath) */}
+          <path d="M0,-1 Q1.0,-4 0.6,-8 Q-0.3,-5 0,-1 Z" fill="#78350f" stroke="#3b1504" strokeWidth="0.3" />
         </g>
       </g>
 
@@ -375,10 +655,11 @@ export const FiddleLeafFig: React.FC<FiddleLeafFigProps> = ({ onHover, onClick }
           <path d="M11,-43 L13,-43 L12,-45 L12,-41 Z" fill="#ffffff" />
         </g>
       )}
+      </g>
 
       {/* --- 7. 悬浮精致标签 (Hover Tooltip Badge) --- */}
       <g
-        transform="translate(0, -56)"
+        transform="translate(0, -42)"
         className="opacity-0 group-hover/fig:opacity-100 transition-opacity duration-200 pointer-events-none"
       >
         <rect x="-42" y="-10" width="84" height="20" rx="10" fill="#18231c" opacity="0.92" />
