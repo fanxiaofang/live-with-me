@@ -429,19 +429,27 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = ({
         {/* A. 舱身底部柔和草甸漫反射软阴影 (消解粗暴的大黑椭圆块) */}
         <ellipse cx="-6" cy="62" rx="60" ry="12" fill="#182419" opacity="0.18" filter="url(#softShadow)" />
 
-        {/* 选中高光光环 (Active Room Selection Aura) */}
+        {/* 选中高光光环 (Atmospheric Ambient Glow - no harsh dashed sticker bounding box) */}
         {activeRoom === 'capsule_pod' && (
-          <ellipse
-            cx="-4"
-            cy="12"
-            rx="82"
-            ry="52"
-            fill="rgba(214, 140, 104, 0.12)"
-            stroke="#d68c68"
-            strokeWidth="2.4"
-            strokeDasharray="7 5"
-            className="animate-[pulse_3s_infinite]"
-          />
+          <g className="pointer-events-none">
+            <ellipse
+              cx="-4"
+              cy="12"
+              rx="88"
+              ry="56"
+              fill="rgba(214, 140, 104, 0.08)"
+              stroke="#d68c68"
+              strokeWidth="1.6"
+              className="animate-[pulse_3s_infinite]"
+            />
+            <ellipse
+              cx="-4"
+              cy="12"
+              rx="76"
+              ry="46"
+              fill="rgba(254, 215, 170, 0.06)"
+            />
+          </g>
         )}
 
         {/* B. 四足重型液压升降支撑架 (每个支脚配备独立精确的 Contact Shadows) */}

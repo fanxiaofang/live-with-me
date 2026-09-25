@@ -55,25 +55,49 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
       {/* 1. 夯土垫层、碎石散水与接地柔和遮蔽阴影 (Ground AO & Gravel) */}
       {/* ======================================================== */}
       <g id="foundation-earth-gravel-berm">
-        {/* 全局接地软漫反射投影 (Soft Grounding Occlusion Shadow) */}
-        <ellipse cx="0" cy="235" rx="315" ry="38" fill="#141f13" opacity="0.48" />
-
-        {/* 碎石散水护坡垫层 (Crushed Stone Drainage Swale Footprint) */}
+        {/* 碎石散水护坡垫层 (Crushed Stone Drainage Swale Footprint - 端正的 2.5D 等轴测菱形基石底座) */}
         <polygon
           points="-292,145 0,62 292,145 0,236"
           fill="url(#gravelSwaleGrad)"
           stroke="#38312a"
-          strokeWidth="1"
+          strokeWidth="0.8"
         />
-        {/* 碎石基台前立面剖切带 (Fascia of Gravel Trench) */}
+        {/* 碎石基台前立面收边带 (Fascia of Gravel Trench) */}
         <polygon
-          points="-292,145 0,236 0,244 -292,153"
-          fill="#332c25"
+          points="-292,145 0,236 0,241 -292,150"
+          fill="#2f2721"
         />
         <polygon
-          points="0,236 292,145 292,153 0,244"
-          fill="#25201b"
+          points="0,236 292,145 292,150 0,241"
+          fill="#241d18"
         />
+
+        {/* 紧贴基石底边的等轴测接触阴影线 (仅附着在基础底边缝隙，绝不在草地前方外溢任何椭圆黑洞) */}
+        <polyline
+          points="-292,150 0,241 292,150"
+          stroke="#1b2a1a"
+          strokeWidth="2.2"
+          opacity="0.4"
+          strokeLinecap="round"
+          fill="none"
+        />
+
+        {/* 自然草叶点缀散水边缘，彻底模糊硬矢量边缘 (Tufts blending sod into gravel) */}
+        <g opacity="0.85">
+          {[-260, -200, -140, -80, 80, 140, 200, 260].map((gx) => {
+            const gy = 145 + Math.abs(gx) * -0.31 + 91; // approximate edge line
+            return (
+              <path
+                key={`edge-t-${gx}`}
+                d={`M${gx},${gy} Q${gx - 3},${gy - 6} ${gx - 5},${gy - 10} M${gx + 2},${gy} Q${gx + 4},${gy - 5} ${gx + 6},${gy - 8}`}
+                stroke="#49863c"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                fill="none"
+              />
+            );
+          })}
+        </g>
 
         {/* 散落的自然小卵石与碎石纹理 (Scattered River Gravel Pebbles) */}
         {[

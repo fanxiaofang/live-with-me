@@ -183,8 +183,8 @@ export const ROOMS: Record<string, RoomInfo> = {
   corn_lounge: {
     id: 'corn_lounge',
     name: '林间小木屋 · 暖木卧房',
-    enName: 'Cozy Timber Woodland Cabin',
-    desc: '花田草坪旁的静谧北欧风纯木质小木屋，散发着天然雪松原木清香。坡顶瓦檐下有暖黄壁灯、厚实实木原木墙、柔软云朵大床与红陶羊毛被，是静心小憩与安稳沉睡的温馨木屋',
+    enName: 'Cozy Timber Sleeping Cabin',
+    desc: '主宅西翼的独立安睡小木屋，与东翼旧太空胶囊睡眠舱定位呼应，提供深沉甜梦与午休小天地。散发着天然雪松原木幽香，坡顶瓦檐下有暖黄壁灯、工匠松木大床、柔软云朵软枕与红陶羊毛被，是静心小憩与安稳沉睡的温馨卧室。',
     cameraTarget: [-3.2, 0.8, 1.2],
     zoom: 1.65,
   },

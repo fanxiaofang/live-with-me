@@ -25,24 +25,24 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
   const Y_SPAN = 154;
   const PLANK_STEP = Y_SPAN / TOTAL_PLANKS; // ~9.625px
 
-  // 单板微色差池（焦糖蜜糖暖橡木与日本扁柏微色差）
+  // 单板微色差池（温润熟成焦糖胡桃木与琥珀柚木自然木色差，彻底消除泛白与刺眼感）
   const plankTones = [
-    { fill: '#a87a4e', opacity: 0.14 },
-    { fill: '#96683e', opacity: 0.18 },
-    { fill: '#b08154', opacity: 0.12 },
-    { fill: '#8f6137', opacity: 0.20 },
-    { fill: '#a4764a', opacity: 0.15 },
-    { fill: '#ba8c5e', opacity: 0.10 },
-    { fill: '#94663c', opacity: 0.18 },
-    { fill: '#a07246', opacity: 0.14 },
-    { fill: '#ad7e52', opacity: 0.13 },
-    { fill: '#8c5f35', opacity: 0.22 },
-    { fill: '#a6784c', opacity: 0.15 },
-    { fill: '#b58658', opacity: 0.11 },
-    { fill: '#986a40', opacity: 0.17 },
-    { fill: '#a37549', opacity: 0.14 },
-    { fill: '#8e6037', opacity: 0.20 },
-    { fill: '#a97b4f', opacity: 0.13 },
+    { fill: '#784a27', opacity: 0.16 },
+    { fill: '#6c3f1e', opacity: 0.20 },
+    { fill: '#83512c', opacity: 0.14 },
+    { fill: '#663b1a', opacity: 0.22 },
+    { fill: '#7b4c28', opacity: 0.16 },
+    { fill: '#86542f', opacity: 0.12 },
+    { fill: '#6a3e1d', opacity: 0.19 },
+    { fill: '#744624', opacity: 0.15 },
+    { fill: '#804f2a', opacity: 0.14 },
+    { fill: '#633818', opacity: 0.24 },
+    { fill: '#794a26', opacity: 0.16 },
+    { fill: '#84522d', opacity: 0.13 },
+    { fill: '#6d401f', opacity: 0.18 },
+    { fill: '#774725', opacity: 0.15 },
+    { fill: '#653a19', opacity: 0.21 },
+    { fill: '#7e4d28', opacity: 0.14 },
   ];
 
   // 定长错缝接缝（Staggered Joints）沿板纵向的切割位置定义
@@ -88,30 +88,30 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           <polygon points="-272,135 0,58 272,135 0,212" />
         </clipPath>
 
-        {/* 2. 木蜡油实木基底渐变 (Honey Teak to Warm Cedar) */}
+        {/* 2. 木蜡油熟成实木基底渐变 (Honey Amber Teak to Mature Walnut) */}
         <linearGradient id="hardwoodBaseWaxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#ae8155" />
-          <stop offset="35%" stopColor="#9e7146" />
-          <stop offset="75%" stopColor="#8c5f36" />
-          <stop offset="100%" stopColor="#7a4f29" />
+          <stop offset="0%" stopColor="#8c582f" />
+          <stop offset="35%" stopColor="#7b4b26" />
+          <stop offset="70%" stopColor="#693d1d" />
+          <stop offset="100%" stopColor="#552f14" />
         </linearGradient>
 
         {/* 3. 前左收边地袱梁渐变 (Front-Left Sill Rim Joist) */}
         <linearGradient id="rimBeamLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#7c4e2b" />
-          <stop offset="100%" stopColor="#5a3419" />
+          <stop offset="0%" stopColor="#673d1c" />
+          <stop offset="100%" stopColor="#482711" />
         </linearGradient>
 
         {/* 4. 前右收边地袱梁渐变 (Front-Right Sill Rim Joist - Shadow Side) */}
         <linearGradient id="rimBeamRightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#663c1e" />
-          <stop offset="100%" stopColor="#482711" />
+          <stop offset="0%" stopColor="#543015" />
+          <stop offset="100%" stopColor="#361c0a" />
         </linearGradient>
 
         {/* 5. 前缘挑檐柔和投影渐变 */}
         <linearGradient id="rimNosingShadowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#221208" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#221208" stopOpacity="0" />
+          <stop offset="0%" stopColor="#1a0c05" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#1a0c05" stopOpacity="0" />
         </linearGradient>
       </defs>
 
@@ -152,7 +152,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           );
         })}
 
-        {/* 双线 V-Groove 企口微倒角嵌缝 (Double-line V-Groove Plank Seams) */}
+        {/* 企口拼板自然阴影嵌缝 (Plank Seams: 彻底移除高频白光，仅保留深色暗槽) */}
         {Array.from({ length: TOTAL_PLANKS - 1 }).map((_, idx) => {
           const yIntercept = 58 + (idx + 1) * PLANK_STEP;
           const slope = 0.283088;
@@ -169,25 +169,15 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="#3e2311"
-                strokeWidth="0.85"
-                opacity="0.38"
-              />
-              {/* 迎光微倒角高光线 (Warm Satin Micro-bevel Chamfer) */}
-              <line
-                x1={x1}
-                y1={y1 + 0.45}
-                x2={x2}
-                y2={y2 + 0.45}
-                stroke="#f0cb9e"
-                strokeWidth="0.4"
-                opacity="0.35"
+                stroke="#2a1609"
+                strokeWidth="0.75"
+                opacity="0.45"
               />
             </g>
           );
         })}
 
-        {/* 定长错缝接缝 (Staggered Butt Joints / 企口拼缝暗线) */}
+        {/* 定长错缝接缝 (Staggered Butt Joints / 企口拼缝暗线: 纯正实木拼口) */}
         {buttJoints.map((bj, i) => {
           // 当前木板的 Y 截距
           const yCenter = 58 + (bj.plankIdx + 0.5) * PLANK_STEP;
@@ -205,28 +195,18 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
                 y1={y + halfH}
                 x2={bj.x + halfW}
                 y2={y - halfH}
-                stroke="#331c0d"
-                strokeWidth="0.9"
-                opacity="0.42"
-              />
-              {/* 接缝微倒角反光 */}
-              <line
-                x1={bj.x - halfW}
-                y1={y + halfH + 0.4}
-                x2={bj.x + halfW}
-                y2={y - halfH + 0.4}
-                stroke="#edd2af"
-                strokeWidth="0.35"
-                opacity="0.30"
+                stroke="#241207"
+                strokeWidth="0.8"
+                opacity="0.45"
               />
             </g>
           );
         })}
 
-        {/* 自然原木微纹理 (Subtle Organic Wood Grain Waves) */}
+        {/* 自然原木微纹理 (Subtle Organic Wood Grain Waves: 柔和暖色) */}
         <path
           d="M-200,80 Q-100,105 0,135 T200,195"
-          stroke="#e8be8d"
+          stroke="#3d210f"
           strokeWidth="0.6"
           strokeDasharray="40 18 60 25"
           opacity="0.12"
@@ -234,10 +214,10 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
         />
         <path
           d="M-150,60 Q-50,86 50,116 T220,165"
-          stroke="#422511"
+          stroke="#2d160a"
           strokeWidth="0.5"
           strokeDasharray="50 30 70 20"
-          opacity="0.08"
+          opacity="0.1"
           fill="none"
         />
       </g>
@@ -251,18 +231,18 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
         <polygon
           points="-272,135 0,212 0,219 -272,142"
           fill="url(#rimBeamLeftGrad)"
-          stroke="#422411"
+          stroke="#381f0d"
           strokeWidth="0.7"
         />
-        {/* 梁顶 45° 倒角高光线 (Top Chamfer Highlight) */}
+        {/* 梁顶温润原木倒角 (Top Chamfer: 柔和柚木色微光，消除刺眼荧光白) */}
         <line
           x1="-272"
           y1="135"
           x2="0"
           y2="212"
-          stroke="#e2b484"
-          strokeWidth="0.9"
-          opacity="0.85"
+          stroke="#9e693b"
+          strokeWidth="0.75"
+          opacity="0.65"
         />
         {/* 梁底阴影收口 (Bottom Shadow Crease) */}
         <line
@@ -270,7 +250,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           y1="142"
           x2="0"
           y2="219"
-          stroke="#2d170b"
+          stroke="#200e05"
           strokeWidth="0.8"
         />
 
@@ -278,7 +258,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
         <polygon
           points="0,212 272,135 272,142 0,219"
           fill="url(#rimBeamRightGrad)"
-          stroke="#361c0c"
+          stroke="#2d1609"
           strokeWidth="0.7"
         />
         {/* 右侧梁顶微光 */}
@@ -287,9 +267,9 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           y1="212"
           x2="272"
           y2="135"
-          stroke="#bf9062"
-          strokeWidth="0.8"
-          opacity="0.75"
+          stroke="#82522a"
+          strokeWidth="0.7"
+          opacity="0.55"
         />
         {/* 右侧梁底暗线 */}
         <line

@@ -99,23 +99,23 @@ export const CottageRoofFraming: React.FC<CottageRoofFramingProps> = () => {
         strokeLinecap="round"
       />
 
-      {/* 5. 温暖童话陶瓦主屋顶层 (Terracotta Clay Tile Overhang) */}
+      {/* 5. 温暖童话陶瓦主屋顶层 (Terracotta Clay Tile Overhang: 温润哑光陶土) */}
       {/* 左坡红陶瓦面 */}
       <polygon
         points="-287,-10 0,-96 0,-84 -287,-2"
         fill="url(#terracottaRoof)"
-        stroke="#b84f2f"
+        stroke="#8a3720"
         strokeWidth="0.5"
       />
       {/* 右坡红陶瓦面 (背光侧稍显沉静温馨) */}
       <polygon
         points="0,-96 287,-10 287,-2 0,-84"
         fill="url(#terracottaRoof)"
-        stroke="#a34427"
+        stroke="#752c18"
         strokeWidth="0.5"
       />
 
-      {/* 6. 陶瓦起伏微节律与瓦当阴影 (Tile Rim Scallops & Interlocking Shadows) */}
+      {/* 6. 陶瓦起伏微节律与瓦当阴影 (Tile Rim Scallops: 沉稳哑光陶泥层次) */}
       {/* 左坡瓦片微重叠分格 */}
       {[-245, -205, -165, -125, -85, -45].map((tx) => {
         const ty = -96 - tx * 0.2996; // 依据坡度推算 y
@@ -126,18 +126,18 @@ export const CottageRoofFraming: React.FC<CottageRoofFramingProps> = () => {
               y1={ty}
               x2={tx + 2}
               y2={ty + 11.5}
-              stroke="#7a2d18"
+              stroke="#662211"
               strokeWidth="0.8"
-              opacity="0.65"
+              opacity="0.6"
             />
             <line
               x1={tx + 1}
               y1={ty}
               x2={tx + 3}
               y2={ty + 11.5}
-              stroke="#ffa185"
-              strokeWidth="0.6"
-              opacity="0.6"
+              stroke="#b54e32"
+              strokeWidth="0.5"
+              opacity="0.35"
             />
           </g>
         );
@@ -153,7 +153,7 @@ export const CottageRoofFraming: React.FC<CottageRoofFramingProps> = () => {
               y1={ty}
               x2={tx - 2}
               y2={ty + 11.5}
-              stroke="#6b2412"
+              stroke="#591c0e"
               strokeWidth="0.8"
               opacity="0.6"
             />
@@ -162,32 +162,34 @@ export const CottageRoofFraming: React.FC<CottageRoofFramingProps> = () => {
               y1={ty}
               x2={tx - 3}
               y2={ty + 11.5}
-              stroke="#f58f73"
-              strokeWidth="0.6"
-              opacity="0.5"
+              stroke="#943b22"
+              strokeWidth="0.5"
+              opacity="0.3"
             />
           </g>
         );
       })}
 
-      {/* 7. 陶瓦迎光天光微高光 (Sunlit Eave Crest Highlight) */}
+      {/* 7. 陶瓦迎光沉稳温润檐脊 (Matte Terracotta Eave Crest: 彻底祛除刺眼粉白荧光，还原哑光陶土原色) */}
       <line
         x1="-287"
         y1="-10"
         x2="0"
         y2="-96"
-        stroke="#ffb39b"
-        strokeWidth="1.2"
+        stroke="#ba5539"
+        strokeWidth="0.8"
         strokeLinecap="round"
+        opacity="0.85"
       />
       <line
         x1="0"
         y1="-96"
         x2="287"
         y2="-10"
-        stroke="#f79c82"
-        strokeWidth="1.0"
+        stroke="#9c422a"
+        strokeWidth="0.75"
         strokeLinecap="round"
+        opacity="0.8"
       />
 
       {/* 8. 左右出挑平滑圆润端头 (Fascia Tail Returns) */}
