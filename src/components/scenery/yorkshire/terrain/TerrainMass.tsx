@@ -23,6 +23,16 @@ import { YORKSHIRE_LAYOUT, anchorsToPath, DEBUG_TERRAIN } from '../landscapeLayo
  *   - the eastern shoulder flows out into the communication ridge base;
  *   - the foreground gains a lower shadow basin and a soft lateral shoulder.
  * Still no decorative elements (walls, trails, trees, stones, sheep tracks).
+ *
+ * Phase 2.4 — scope reduced to MIDGROUND + PLAYSPACE terrain only.
+ * The distant countryside is no longer this component's job; it belongs to
+ * `BackgroundYorkshireMatte`. Everything here now stays inside the playable
+ * window (see foregroundSlope.extent) instead of spanning the whole 6000px
+ * world as giant flat surfaces:
+ *   - main house local rise + nearby central slope
+ *   - western valley shoulder near gameplay
+ *   - local east shoulder rising to the communication hill base
+ *   - foreground slope
  */
 export const TerrainMass: React.FC<YorkshireCommonProps> = ({ theme, className }) => {
   const terrace = YORKSHIRE_LAYOUT.mainTerrace;

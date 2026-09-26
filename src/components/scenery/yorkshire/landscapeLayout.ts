@@ -27,65 +27,108 @@ export const YORKSHIRE_LAYOUT = {
   },
 
   // ───────────────────────────────────────────────────────────────────────────
-  // 🏔️ DISTANT RIDGES: 3-layer depth hierarchy (far / mid-far / mid)
+  // 🖼️ BACKGROUND MATTE: the painted distant countryside
   // ───────────────────────────────────────────────────────────────────────────
-  distantRidges: {
-    // Phase 2.1: each depth tier has its own anchor rhythm —
-    // no tier may read as a scaled copy of another.
-    // Phase 2.3: the ridge system was raised into the readable band between
-    // the house and the near-terrain top edge, AND the amplitudes were
-    // increased so the crests actually read at the overview zoom (0.66).
-    // Previously amplitudes of 16–34 world units rendered as 9–19 screen px,
-    // i.e. three flat horizontal colour stripes.
-    // The whole distant system now lives inside a ~110-unit band
-    // (y ≈ 92 … 214) so all three tiers stay visible.
-    far: {
-      id: 'ridge-far',
-      depth: 'far',
-      // Quietest tier: long wavelength, few major crests, one gentle notch.
-      anchors: [
-        { x: -2400, y: 100 }, { x: -1700, y: 80 }, { x: -1000, y: 96 },
-        { x: -350, y: 78 }, { x: 300, y: 100 }, { x: 950, y: 80 },
-        { x: 1600, y: 98 }, { x: 2250, y: 104 }, { x: 2900, y: 90 },
-        { x: 3600, y: 82 },
-      ],
-      baseline: 800,
-      fill: 'hillGreenFar',
-      opacity: 1.0,
-    },
-    midFar: {
-      id: 'ridge-mid-far',
-      depth: 'mid-far',
-      // Carries most of the rolling fell character: broad shoulders, two
-      // asymmetric rises, a shallow notch, deliberately uneven spacing.
-      anchors: [
-        { x: -2400, y: 140 }, { x: -1900, y: 116 }, { x: -1400, y: 106 },
-        { x: -1000, y: 130 }, { x: -600, y: 112 }, { x: -200, y: 138 },
-        { x: 100, y: 114 }, { x: 450, y: 134 }, { x: 800, y: 108 },
-        { x: 1150, y: 132 }, { x: 1500, y: 116 }, { x: 1900, y: 140 },
-        { x: 2400, y: 110 }, { x: 3000, y: 134 }, { x: 3600, y: 118 },
-      ],
-      baseline: 800,
-      fill: 'hillGreenMid',
-      opacity: 1.0,
-    },
-    mid: {
-      id: 'ridge-mid',
-      depth: 'mid',
-      // Terrain-specific: rolls behind the farm belt, dips, then climbs to
-      // meet the communication hill (leftAnchor 600,172) and falls away.
-      // Not a copy of the far or mid-far waveform.
-      anchors: [
-        { x: -2400, y: 168 }, { x: -1800, y: 150 }, { x: -1200, y: 166 },
-        { x: -700, y: 146 }, { x: -300, y: 162 }, { x: 100, y: 150 },
-        { x: 480, y: 160 }, { x: 600, y: 172 }, { x: 900, y: 152 },
-        { x: 1300, y: 168 }, { x: 1800, y: 148 }, { x: 2400, y: 164 },
-        { x: 3000, y: 152 }, { x: 3600, y: 168 },
-      ],
-      baseline: 800,
-      fill: 'hillGreenNear',
-      opacity: 1.0,
-    },
+  // Phase 2.4 — hybrid background strategy.
+  //
+  // Responsibility split:
+  //   BACKGROUND MATTE  → distant ridges, rolling fells, atmospheric depth,
+  //                       far agricultural land, communication-hill context.
+  //   TERRAIN SILHOUETTE→ horizon transition / haze blend only.
+  //   TERRAIN MASS      → midground + playspace terrain only.
+  //
+  // Composed for the REAL overview camera (ThreeWorld ROOM_VIEWPORTS.overview,
+  // scale 0.66). Only roughly world y ≈ 55 … 320 is visible between the sky
+  // and the midground terrain silhouette, so every band is placed to read
+  // inside that window. Off-screen world areas are deliberately not composed.
+  //
+  // Every band uses a fade-to-transparent vertical gradient instead of a flat
+  // fill, which is what stops the backdrop reading as stacked colour slabs.
+  backgroundMatte: {
+    // Aerial-perspective wash across the whole backdrop
+    atmosphere: { top: -160, horizon: 340 },
+
+    // FAR — soft overlapping painted ridges, lowest contrast, few crests
+    farBands: [
+      {
+        id: 'matte-far-a',
+        depth: 0,
+        tone: 'hillGreenFar',
+        opacity: 0.5,
+        baseline: 156,
+        anchors: [
+          { x: -2600, y: 106 }, { x: -1750, y: 84 }, { x: -950, y: 100 },
+          { x: -150, y: 80 }, { x: 700, y: 98 }, { x: 1450, y: 82 },
+          { x: 2200, y: 102 }, { x: 2950, y: 86 }, { x: 3700, y: 98 },
+          { x: 4300, y: 88 },
+        ],
+      },
+      {
+        id: 'matte-far-b',
+        depth: 1,
+        tone: 'hillGreenFar',
+        opacity: 0.62,
+        baseline: 186,
+        anchors: [
+          { x: -2600, y: 126 }, { x: -1850, y: 106 }, { x: -1050, y: 122 },
+          { x: -250, y: 104 }, { x: 600, y: 124 }, { x: 1350, y: 106 },
+          { x: 2150, y: 126 }, { x: 2900, y: 108 }, { x: 3650, y: 122 },
+          { x: 4300, y: 110 },
+        ],
+      },
+    ],
+
+    // MID-FAR — broader rolling fells: two asymmetric rises, uneven spacing
+    midBands: [
+      {
+        id: 'matte-mid-a',
+        depth: 2,
+        tone: 'hillGreenMid',
+        opacity: 0.68,
+        baseline: 222,
+        anchors: [
+          { x: -2600, y: 152 }, { x: -1900, y: 134 }, { x: -1150, y: 150 },
+          { x: -400, y: 130 }, { x: 300, y: 148 }, { x: 850, y: 132 },
+          { x: 1500, y: 152 }, { x: 2100, y: 136 }, { x: 2750, y: 154 },
+          { x: 3400, y: 138 }, { x: 4300, y: 156 },
+        ],
+      },
+      {
+        id: 'matte-mid-b',
+        depth: 3,
+        tone: 'hillGreenMid',
+        opacity: 0.78,
+        baseline: 262,
+        anchors: [
+          { x: -2600, y: 180 }, { x: -1950, y: 162 }, { x: -1250, y: 178 },
+          { x: -550, y: 160 }, { x: 150, y: 176 }, { x: 750, y: 158 },
+          { x: 1400, y: 178 }, { x: 2050, y: 162 }, { x: 2700, y: 182 },
+          { x: 3350, y: 164 }, { x: 4300, y: 180 },
+        ],
+      },
+    ],
+
+    // Far agricultural land: a few very large, soft, low-contrast tonal
+    // patches. Deliberately NOT parcels — no edges, no boundaries.
+    farmPatches: [
+      { id: 'matte-farm-a', cx: -320, cy: 244, rx: 640, ry: 72, tone: 'wheatFar', opacity: 0.2 },
+      { id: 'matte-farm-b', cx: 780, cy: 258, rx: 720, ry: 82, tone: 'hillGreenNear', opacity: 0.16 },
+      { id: 'matte-farm-c', cx: 1820, cy: 248, rx: 580, ry: 70, tone: 'wheatFar', opacity: 0.17 },
+      { id: 'matte-farm-d', cx: 2980, cy: 256, rx: 620, ry: 76, tone: 'hillGreenNear', opacity: 0.14 },
+    ],
+
+    // Land base — guarantees no sky gap behind the midground terrain.
+    landBase: { top: 236, bottom: 900 },
+  },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🌫️ HORIZON TRANSITION: blends the painted matte into the midground
+  // ───────────────────────────────────────────────────────────────────────────
+  horizonTransition: {
+    top: 140,
+    peak: 232,
+    bottom: 320,
+    opacity: 0.22,
   },
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -261,11 +304,15 @@ export const YORKSHIRE_LAYOUT = {
     // Phase 2.1: single top edge replacing the old horizontal bands —
     // slightly lower west foreground, central descending slope,
     // higher east shoulder rising toward the communication hill base.
+    // Phase 2.4: EXTENT REDUCED to the playable/midground window. TerrainMass
+    // must no longer span the whole 6000px world as one giant flat surface —
+    // everything beyond this range belongs to the painted background matte.
+    extent: { minX: -1600, maxX: 2600 },
     topEdge: [
-      { x: -2400, y: 648 }, { x: -1050, y: 616 }, { x: -540, y: 590 },
+      { x: -1600, y: 632 }, { x: -1050, y: 616 }, { x: -540, y: 590 },
       { x: -260, y: 566 }, { x: -40, y: 540 }, { x: 230, y: 532 },
       { x: 540, y: 502 }, { x: 850, y: 486 }, { x: 1250, y: 498 },
-      { x: 2100, y: 522 }, { x: 3600, y: 538 },
+      { x: 2100, y: 522 }, { x: 2600, y: 530 },
     ],
     contourInterval: 45,
     benchAnchor: { x: 295, y: 452 },

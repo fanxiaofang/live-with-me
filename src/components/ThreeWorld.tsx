@@ -14,6 +14,7 @@ import { WallPostersGallery, PosterDetailModal, PosterId } from './wall-posters'
 import { LeftWallCraftBoard } from './LeftWallCraftBoard';
 import { CottageFoundation, TimberFlooring, CottageRoofFraming, CottageWallProfiles, CapsulePodHaven, WoodenCabinHaven } from './architecture';
 import {
+  BackgroundYorkshireMatte,
   TerrainSilhouette,
   TerrainMass,
   RiverValley,
@@ -1108,10 +1109,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             <rect x="-3000" y="80" width="7400" height="200" fill="url(#distantHazeGrad)" />
           </g>
 
-          {/* ✅ 01 TERRAIN SILHOUETTE (Approved Phase 2.1 new distant ridge system) */}
+          {/* ✅ 00 BACKGROUND MATTE (Painted distant Yorkshire countryside backdrop) */}
+          <BackgroundYorkshireMatte theme={theme} />
+
+          {/* ✅ 01 TERRAIN SILHOUETTE (Horizon transition / haze blend only) */}
           <TerrainSilhouette theme={theme} />
 
-          {/* ✅ 02 TERRAIN MASS (Approved Phase 2.1 central landform, valley slope, east shoulder, foreground) */}
+          {/* ✅ 02 TERRAIN MASS (Midground + playspace terrain only) */}
           <TerrainMass theme={theme} />
 
           {/* Rolling Terraced Hills & Sunny Wheat Slopes */}

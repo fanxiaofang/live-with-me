@@ -2,7 +2,10 @@ export * from './landscapeTypes';
 export * from './landscapeLayout';
 export * from './landscapeTheme';
 
-// Layer 01: Terrain Silhouette
+// Layer 00: Background Matte (painted distant countryside backdrop)
+export * from './background/BackgroundYorkshireMatte';
+
+// Layer 01: Terrain Silhouette (horizon transition / haze blend)
 export * from './terrain/TerrainSilhouette';
 
 // Layer 02: Terrain Mass & Local Formations

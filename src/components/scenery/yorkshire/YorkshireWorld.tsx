@@ -1,5 +1,6 @@
 import React from 'react';
 import { YorkshireCommonProps, CommunicationHillProps } from './landscapeTypes';
+import { BackgroundYorkshireMatte } from './background/BackgroundYorkshireMatte';
 import { TerrainSilhouette } from './terrain/TerrainSilhouette';
 import { TerrainMass } from './terrain/TerrainMass';
 import { RiverValley } from './terrain/RiverValley';
@@ -26,8 +27,9 @@ export interface YorkshireWorldProps extends YorkshireCommonProps {
  * 🌿 YorkshireWorld
  *
  * Central Yorkshire Scenery Architecture Orchestrator.
- * Combines the 6 semantic layers:
- * 01 TERRAIN SILHOUETTE
+ * Combines the semantic layers:
+ * 00 BACKGROUND MATTE
+ * 01 TERRAIN SILHOUETTE (horizon transition)
  * 02 TERRAIN MASS & RIVER VALLEY
  * 03 LAND PARCELS
  * 04 BOUNDARIES
@@ -46,6 +48,9 @@ export const YorkshireWorld: React.FC<YorkshireWorldProps> = ({
   return (
     <g id="yorkshire-world" className={className}>
       <YorkshireDefs theme={theme} />
+
+      {/* 00 BACKGROUND MATTE */}
+      <BackgroundYorkshireMatte theme={theme} />
 
       {/* 01 TERRAIN SILHOUETTE */}
       <TerrainSilhouette theme={theme} />
