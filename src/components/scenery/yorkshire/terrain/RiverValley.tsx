@@ -23,27 +23,29 @@ export const RiverValley: React.FC<YorkshireCommonProps> = ({
 }) => {
   const layout = YORKSHIRE_LAYOUT.riverValley;
 
-  // West bank: descends from crest to valley floor
-  const westBankPath = anchorsToPath(
-    [
-      { x: layout.westBank.crest.x, y: layout.westBank.crest.y },
-      { x: layout.westBank.crest.x - 40, y: layout.westBank.crest.y + 60 },
-      { x: layout.westBank.toe.x - 20, y: layout.westBank.toe.y - 40 },
-      { x: layout.westBank.toe.x, y: layout.westBank.toe.y },
-    ],
-    800
-  );
+  // West bank: LONG, SOFT descent — explicit Bézier with a compound rhythm:
+  // gentle start off the crest, a mid-slope concave bench, soft arrival at
+  // the valley floor. The long run (330px) keeps the gradient easy.
+  const westBankPath = `
+    M${layout.westBank.crest.x},${layout.westBank.crest.y}
+    C${layout.westBank.crest.x - 14},${layout.westBank.crest.y + 74}
+     ${layout.westBank.crest.x + 64},${layout.westBank.crest.y + 158}
+     ${layout.westBank.toe.x - 92},${layout.westBank.toe.y - 58}
+    C${layout.westBank.toe.x - 52},${layout.westBank.toe.y - 22}
+     ${layout.westBank.toe.x - 12},${layout.westBank.toe.y - 4}
+     ${layout.westBank.toe.x},${layout.westBank.toe.y}
+    L${layout.westBank.toe.x},800 L${layout.westBank.crest.x},800 Z
+  `;
 
-  // East bank: rises from valley floor back to field level
-  const eastBankPath = anchorsToPath(
-    [
-      { x: layout.eastBank.toe.x, y: layout.eastBank.toe.y },
-      { x: layout.eastBank.toe.x + 40, y: layout.eastBank.toe.y + 50 },
-      { x: layout.eastBank.crest.x - 30, y: layout.eastBank.crest.y - 30 },
-      { x: layout.eastBank.crest.x, y: layout.eastBank.crest.y },
-    ],
-    800
-  );
+  // East bank: SHORT, FIRM rise — one taut curve back to the house-side
+  // pasture. Deliberately different in character from the west bank.
+  const eastBankPath = `
+    M${layout.eastBank.toe.x},${layout.eastBank.toe.y}
+    C${layout.eastBank.toe.x + 16},${layout.eastBank.toe.y + 28}
+     ${layout.eastBank.toe.x + 54},${layout.eastBank.toe.y + 46}
+     ${layout.eastBank.crest.x},${layout.eastBank.crest.y}
+    L${layout.eastBank.crest.x},800 L${layout.eastBank.toe.x},800 Z
+  `;
 
   // Valley floor: the low point between banks
   const valleyFloorPath = anchorsToPath(

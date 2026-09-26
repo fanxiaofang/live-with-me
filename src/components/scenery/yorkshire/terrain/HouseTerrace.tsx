@@ -22,35 +22,38 @@ export const HouseTerrace: React.FC<YorkshireCommonProps> = ({
 }) => {
   const terrace = YORKSHIRE_LAYOUT.mainTerrace;
 
-  // Natural terrace outline: broad crown, gentle shoulders, soft front drop
-  // This is a large organic shape, not a diamond or rectangle
+  // Natural terrace outline: broad crown, gentle shoulders, soft front drop.
+  // Phase 2.1: control points deliberately NOT mirrored — the left shoulder
+  // rises a touch more directly, the right shoulder rolls longer and lazier,
+  // and the front drop reaches the entrance from slightly different angles.
   const terraceOutline = `
     M${terrace.leftShoulder.x},${terrace.leftShoulder.y}
-    C${terrace.leftShoulder.x + 40},${terrace.leftShoulder.y - 30}
-     ${terrace.crown.x - 80},${terrace.crown.y - 20}
+    C${terrace.leftShoulder.x + 36},${terrace.leftShoulder.y - 34}
+     ${terrace.crown.x - 96},${terrace.crown.y - 16}
      ${terrace.crown.x},${terrace.crown.y}
-    C${terrace.crown.x + 80},${terrace.crown.y - 20}
-     ${terrace.rightShoulder.x - 40},${terrace.rightShoulder.y - 30}
+    C${terrace.crown.x + 64},${terrace.crown.y - 24}
+     ${terrace.rightShoulder.x - 52},${terrace.rightShoulder.y - 26}
      ${terrace.rightShoulder.x},${terrace.rightShoulder.y}
-    C${terrace.rightShoulder.x + 30},${terrace.rightShoulder.y + 40}
-     ${terrace.frontEdge.x + 120},${terrace.frontEdge.y - 60}
+    C${terrace.rightShoulder.x + 52},${terrace.rightShoulder.y + 34}
+     ${terrace.frontEdge.x + 138},${terrace.frontEdge.y - 64}
      ${terrace.frontEdge.x},${terrace.frontEdge.y}
-    C${terrace.frontEdge.x - 120},${terrace.frontEdge.y - 60}
-     ${terrace.leftShoulder.x - 30},${terrace.leftShoulder.y + 40}
+    C${terrace.frontEdge.x - 104},${terrace.frontEdge.y - 72}
+     ${terrace.leftShoulder.x - 40},${terrace.leftShoulder.y + 30}
      ${terrace.leftShoulder.x},${terrace.leftShoulder.y}
     Z
   `;
 
-  // Front drop: visible but not abrupt, rolls down naturally
+  // Front drop: visible but not abrupt, rolls down naturally.
+  // Phase 2.1: asymmetric control offsets — west side drops a little sooner.
   const frontDropPath = `
-    M${terrace.leftShoulder.x + 20},${terrace.frontEdge.y - 40}
-    C${terrace.crown.x - 60},${terrace.frontEdge.y - 20}
-     ${terrace.crown.x + 60},${terrace.frontEdge.y - 20}
-     ${terrace.rightShoulder.x - 20},${terrace.frontEdge.y - 40}
-    L${terrace.rightShoulder.x - 10},${terrace.frontEdge.y + 20}
-    C${terrace.crown.x + 50},${terrace.frontEdge.y + 35}
-     ${terrace.crown.x - 50},${terrace.frontEdge.y + 35}
-     ${terrace.leftShoulder.x + 10},${terrace.frontEdge.y + 20}
+    M${terrace.leftShoulder.x + 24},${terrace.frontEdge.y - 38}
+    C${terrace.crown.x - 72},${terrace.frontEdge.y - 16}
+     ${terrace.crown.x + 48},${terrace.frontEdge.y - 24}
+     ${terrace.rightShoulder.x - 28},${terrace.frontEdge.y - 42}
+    L${terrace.rightShoulder.x - 14},${terrace.frontEdge.y + 22}
+    C${terrace.crown.x + 42},${terrace.frontEdge.y + 38}
+     ${terrace.crown.x - 58},${terrace.frontEdge.y + 30}
+     ${terrace.leftShoulder.x + 12},${terrace.frontEdge.y + 18}
     Z
   `;
 

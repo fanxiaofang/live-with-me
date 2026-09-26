@@ -94,23 +94,42 @@ export const TerrainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, class
 /**
  * Rear-right ridge system that naturally hosts the communication station.
  * Structure: midground ridge → raised shoulder → communication summit.
- * Slightly asymmetric, wind-shaped, no isolated cone/volcano look.
+ *
+ * Phase 2.1: explicit cubic Bézier silhouette instead of uniform spline
+ * smoothing — long, gentle west shoulder; tighter east falloff; mild
+ * wind-shaped asymmetry at the summit. No isolated cone/volcano look.
  */
 const CommunicationHillRidge: React.FC<{ theme: YorkshireCommonProps['theme'] }> = ({ theme }) => {
   const hill = YORKSHIRE_LAYOUT.communicationHill;
   const ridge = hill.ridge;
+  const baseY = hill.base.y;
+  const summitX = ridge.summit.x;
+  const summitY = ridge.summit.y;
 
-  // Build ridge silhouette from control points
-  const ridgePath = anchorsToPath(
-    [
-      { x: ridge.leftAnchor.x, y: ridge.leftAnchor.y },
-      { x: ridge.leftShoulder.x, y: ridge.leftShoulder.y },
-      { x: ridge.summit.x + (hill.summitSkew * 40), y: ridge.summit.y }, // slight lean
-      { x: ridge.rightShoulder.x, y: ridge.rightShoulder.y },
-      { x: ridge.rightAnchor.x, y: ridge.rightAnchor.y },
-    ],
-    hill.base.y
-  );
+  // Hand-tuned Bézier: each segment has its own structural rhythm.
+  const ridgePath = `
+    M${ridge.leftAnchor.x},${ridge.leftAnchor.y}
+    C742,236 776,204 ${ridge.leftShoulder.x},${ridge.leftShoulder.y}
+    C836,128 862,${summitY} ${summitX},${summitY}
+    C924,${summitY} 936,130 ${ridge.rightShoulder.x},${ridge.rightShoulder.y}
+    C968,224 1032,262 ${ridge.rightAnchor.x},${ridge.rightAnchor.y}
+    L${ridge.rightAnchor.x},${baseY} L${ridge.leftAnchor.x},${baseY} Z
+  `;
+
+  // Summit highlight: same hand-tuned rhythm, unclosed (filled against chord)
+  const summitHighlightPath = `
+    M${ridge.leftShoulder.x},${ridge.leftShoulder.y}
+    C836,128 862,${summitY} ${summitX},${summitY}
+    C924,${summitY} 936,130 ${ridge.rightShoulder.x},${ridge.rightShoulder.y}
+  `;
+
+  // Atmospheric glaze on the long west face only
+  const westGlazePath = `
+    M${ridge.leftAnchor.x},${ridge.leftAnchor.y}
+    C742,236 776,204 ${ridge.leftShoulder.x},${ridge.leftShoulder.y}
+    C836,128 862,${summitY} ${summitX},${summitY}
+    L${summitX},${baseY} L${ridge.leftAnchor.x},${baseY} Z
+  `;
 
   return (
     <g id="communication-hill-ridge" opacity="0.96">
@@ -123,22 +142,14 @@ const CommunicationHillRidge: React.FC<{ theme: YorkshireCommonProps['theme'] }>
 
       {/* Wind-shaped summit highlight (asymmetric, leans with prevailing wind) */}
       <path
-        d={anchorsToPath([
-          { x: ridge.leftShoulder.x, y: ridge.leftShoulder.y },
-          { x: ridge.summit.x + (hill.summitSkew * 40), y: ridge.summit.y },
-          { x: ridge.rightShoulder.x, y: ridge.rightShoulder.y },
-        ])}
+        d={summitHighlightPath}
         fill="#5a6e56"
         opacity={0.6}
       />
 
       {/* Soft atmospheric integration with distant ridges */}
       <path
-        d={anchorsToPath([
-          { x: ridge.leftAnchor.x, y: ridge.leftAnchor.y },
-          { x: ridge.leftShoulder.x, y: ridge.leftShoulder.y },
-          { x: ridge.summit.x + (hill.summitSkew * 40), y: ridge.summit.y },
-        ])}
+        d={westGlazePath}
         fill={theme.skyBottom}
         opacity={0.12}
       />

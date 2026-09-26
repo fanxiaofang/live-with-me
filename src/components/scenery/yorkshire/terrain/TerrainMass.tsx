@@ -9,10 +9,13 @@ import { YORKSHIRE_LAYOUT, anchorsToPath, DEBUG_TERRAIN } from '../landscapeLayo
  * Spatial Region: YORKSHIRE_LAYOUT.scene.worldBounds & mainTerrace & foregroundSlope
  *
  * Phase 2 redesign: the terrain itself carries the composition.
- * - One coherent central landform with broad crown, gentle shoulders, natural front drop
- * - Western landmass visibly descends toward river valley
- * - Eastern landmass rises toward communication hill ridge
- * - Foreground descends gently away from house in layered pasture slopes
+ * Phase 2.1 rhythm correction: the major masses use explicit cubic Bézier
+ * sections with distinct rhythms (not one shared spline language), and the
+ * foreground is a single uneven landform instead of stacked horizontal bands.
+ * - Central landform: quick left shoulder rise, longer rolling right shoulder
+ * - Western slope: firm drop into the valley floor, long soft climb to the crest
+ * - Eastern shoulder: rises toward the communication hill left anchor
+ * - Foreground: lower west, central descending slope, higher east shoulder
  * - No decorative elements (walls, trails, trees, stones, sheep tracks)
  */
 export const TerrainMass: React.FC<YorkshireCommonProps> = ({ theme, className }) => {
@@ -21,69 +24,40 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ theme, className }
   const hill = YORKSHIRE_LAYOUT.communicationHill;
   const fg = YORKSHIRE_LAYOUT.foregroundSlope;
 
-  // Central landform: broad crown beneath/behind house, gentle shoulders, natural drop
-  const centralLandformPath = anchorsToPath(
-    [
-      { x: -420, y: 320 },   // far left approach
-      { x: terrace.leftShoulder.x, y: terrace.leftShoulder.y },
-      { x: terrace.crown.x, y: terrace.crown.y },
-      { x: terrace.rightShoulder.x, y: terrace.rightShoulder.y },
-      { x: 520, y: 300 },    // far right approach
-    ],
-    800
-  );
+  // Central landform: explicit Bézier — left shoulder rises fairly directly,
+  // right shoulder rolls longer and lazier (asymmetric rhythm, not mirrored).
+  const centralLandformPath = `
+    M-420,320
+    C-388,294 -356,260 ${terrace.leftShoulder.x},${terrace.leftShoulder.y}
+    C-258,203 -132,152 ${terrace.crown.x},${terrace.crown.y}
+    C118,147 258,180 ${terrace.rightShoulder.x},${terrace.rightShoulder.y}
+    C436,272 486,290 520,300
+    L520,800 L-420,800 Z
+  `;
 
-  // Western valley slope: descends from central fields toward river
-  const westValleySlopePath = anchorsToPath(
-    [
-      { x: -420, y: 320 },   // connects to central landform left edge
-      { x: -460, y: 370 },   // eastBank toe
-      { x: valley.valleyFloor.centerline[2].x, y: valley.valleyFloor.centerline[2].y }, // valley floor
-      { x: valley.westBank.toe.x, y: valley.westBank.toe.y },
-      { x: valley.westBank.crest.x, y: valley.westBank.crest.y },
-    ],
-    800
-  );
+  // Western valley slope: explicit Bézier — firm east-side drop from the
+  // central fields into the valley floor, then a long, soft compound climb
+  // up to the far western crest (concave bench, then convex shoulder).
+  const westValleySlopePath = `
+    M-420,320
+    C-442,348 -450,360 ${valley.eastBank.toe.x},${valley.eastBank.toe.y}
+    C-540,452 -612,470 ${valley.westBank.toe.x},${valley.westBank.toe.y}
+    C-806,498 -938,362 ${valley.westBank.crest.x},${valley.westBank.crest.y}
+    L${valley.westBank.crest.x},800 L-420,800 Z
+  `;
 
-  // Eastern shoulder: rises toward communication hill
-  const eastShoulderPath = anchorsToPath(
-    [
-      { x: 520, y: 300 },    // connects to central landform right edge
-      { x: 620, y: 280 },    // gentle rise
-      { x: hill.ridge.leftAnchor.x, y: hill.ridge.leftAnchor.y },
-      { x: hill.ridge.leftShoulder.x, y: hill.ridge.leftShoulder.y },
-    ],
-    800
-  );
+  // Eastern shoulder: rises toward the communication hill left anchor (660,252),
+  // then continues up the long west shoulder of the hill ridge.
+  const eastShoulderPath = `
+    M520,300
+    C562,288 610,272 ${hill.ridge.leftAnchor.x},${hill.ridge.leftAnchor.y}
+    C700,236 760,206 ${hill.ridge.leftShoulder.x},${hill.ridge.leftShoulder.y}
+    L${hill.ridge.leftShoulder.x},800 L520,800 Z
+  `;
 
-  // Foreground pasture slopes: gentle depth progression
-  const middlePasturePath = anchorsToPath(
-    [
-      { x: -2400, y: fg.middlePasture.yTop },
-      { x: -600, y: fg.middlePasture.yTop + 15 },
-      { x: -100, y: fg.middlePasture.yTop + 8 },
-      { x: 300, y: fg.middlePasture.yTop + 12 },
-      { x: 720, y: fg.middlePasture.yTop + 5 },
-      { x: 1200, y: fg.middlePasture.yTop + 10 },
-      { x: 2200, y: fg.middlePasture.yTop },
-      { x: 3600, y: fg.middlePasture.yTop + 15 },
-    ],
-    fg.middlePasture.yBottom
-  );
-
-  const lowerForegroundPath = anchorsToPath(
-    [
-      { x: -2400, y: fg.lowerForeground.yTop },
-      { x: -1200, y: fg.lowerForeground.yTop + 10 },
-      { x: -350, y: fg.lowerForeground.yTop + 15 },
-      { x: 140, y: fg.lowerForeground.yTop + 12 },
-      { x: 650, y: fg.lowerForeground.yTop + 8 },
-      { x: 1180, y: fg.lowerForeground.yTop + 14 },
-      { x: 2200, y: fg.lowerForeground.yTop + 10 },
-      { x: 3600, y: fg.lowerForeground.yTop + 18 },
-    ],
-    fg.lowerForeground.yBottom
-  );
+  // Foreground: ONE uneven landform from the topEdge anchors —
+  // lower west foreground, central descending slope, higher east shoulder.
+  const foregroundPath = anchorsToPath(fg.topEdge, 800);
 
   return (
     <g id="yorkshire-terrain-mass" className={className}>
@@ -110,16 +84,13 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ theme, className }
           <stop offset="100%" stopColor="#5a7048" />
         </linearGradient>
 
-        {/* Middle pasture: calm, rolling */}
-        <linearGradient id="middlePastureGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#8da848" />
-          <stop offset="100%" stopColor="#6b8335" />
-        </linearGradient>
-
-        {/* Lower foreground: quieter, simpler */}
-        <linearGradient id="lowerForegroundGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#7a9438" />
-          <stop offset="100%" stopColor="#5a7030" />
+        {/* Foreground: one uneven landform — cooler/lower toward the west,
+            warming and rising through the east shoulder */}
+        <linearGradient id="foregroundGrad" x1="0" y1="0" x2="1" y2="0.25">
+          <stop offset="0%" stopColor="#5f772e" />
+          <stop offset="45%" stopColor="#7a9438" />
+          <stop offset="78%" stopColor="#86a344" />
+          <stop offset="100%" stopColor="#7a9438" />
         </linearGradient>
       </defs>
 
@@ -188,33 +159,30 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ theme, className }
       />
 
       {/* ─────────────────────────────────────────────────────────────────── */}
-      {/* 4. FOREGROUND SLOPES: Gentle depth progression                     */}
+      {/* 4. FOREGROUND: one uneven landform, no stacked strips              */}
       {/* ─────────────────────────────────────────────────────────────────── */}
       <path
-        id="middle-pasture"
-        d={middlePasturePath}
-        fill="url(#middlePastureGrad)"
+        id="foreground-slope"
+        d={foregroundPath}
+        fill="url(#foregroundGrad)"
       />
 
+      {/* Central descending slope: soft shading where the land falls
+          from the terrace front toward the viewer (diagonal, not a band) */}
       <path
-        id="lower-foreground"
-        d={lowerForegroundPath}
-        fill="url(#lowerForegroundGrad)"
+        id="central-descent-shade"
+        d="M-170,552 C-70,606 30,654 108,714 C56,748 -30,752 -100,728 C-158,700 -214,628 -170,552 Z"
+        fill="#4e6324"
+        opacity={0.16}
       />
 
-      {/* Subtle contour line at pasture transition (not decorative, structural) */}
-      <path
-        d={anchorsToPath([
-          { x: -600, y: fg.middlePasture.yTop + 15 },
-          { x: -100, y: fg.middlePasture.yTop + 8 },
-          { x: 300, y: fg.middlePasture.yTop + 12 },
-          { x: 720, y: fg.middlePasture.yTop + 5 },
-        ])}
-        fill="none"
-        stroke="#9cb84a"
-        strokeWidth="1.2"
-        opacity={0.3}
-      />
+      {/* Contour strokes that follow the land: west runs with the valley
+          descent, center falls toward the viewer, east climbs the shoulder */}
+      <g id="foreground-contours" opacity={0.3}>
+        <path d="M-470,612 C-392,632 -306,646 -230,664" fill="none" stroke="#9cb84a" strokeWidth="1.2" />
+        <path d="M-60,586 C-8,634 44,680 84,728" fill="none" stroke="#9cb84a" strokeWidth="1.2" />
+        <path d="M556,540 C636,524 728,512 822,504" fill="none" stroke="#a8c055" strokeWidth="1.2" />
+      </g>
 
       {/* ─────────────────────────────────────────────────────────────────── */}
       {/* DEBUG: Terrain anchors & boundaries                                */}
