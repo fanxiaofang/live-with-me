@@ -14,11 +14,12 @@ import { WallPostersGallery, PosterDetailModal, PosterId } from './wall-posters'
 import { LeftWallCraftBoard } from './LeftWallCraftBoard';
 import { CottageFoundation, TimberFlooring, CottageRoofFraming, CottageWallProfiles, CapsulePodHaven, WoodenCabinHaven } from './architecture';
 import {
-  YorkshireRiverBeck,
-  YorkshireDrystoneWalls,
-  YorkshireStoneBastion,
-  YorkshireSheepFlock,
-} from './scenery/YorkshireLandscape';
+  RiverValley,
+  PastureFields,
+  DrystoneWalls,
+  HouseTerrace,
+  YorkshireDressing,
+} from './scenery/yorkshire';
 
 interface ThreeWorldProps {
   timeOfDay: TimeOfDay;
@@ -1575,15 +1576,20 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               />
             </g>
 
-            {/* 🌟 YORKSHIRE MEANDERING BECK (左侧清澈河湾与卵石浅滩) */}
-            <YorkshireRiverBeck
+            {/* 🌟 02 TERRAIN: River Valley (左侧清澈河湾与卵石浅滩) */}
+            <RiverValley
               theme={theme}
               onTriggerToast={onTriggerToast}
               setHoveredObject={setHoveredObject}
             />
 
-            {/* 🌟 YORKSHIRE DRYSTONE WALLS & 5-BAR FIELD GATE (开阔干砌石墙与英伦大木栅栏门) */}
-            <YorkshireDrystoneWalls
+            {/* 🌟 03 LAND PARCELS (Patchwork Dales Fields) */}
+            <PastureFields
+              theme={theme}
+            />
+
+            {/* 🌟 04 BOUNDARIES (Authentic Drystone Boundary Walls & 5-Bar Gate) */}
+            <DrystoneWalls
               theme={theme}
               onTriggerToast={onTriggerToast}
               setHoveredObject={setHoveredObject}
@@ -2424,9 +2430,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
             </g>
 
-            {/* 🌟 2.5D COTTAGE HEARTH SCULPTED TURF MOUND & STONE BASE (约克郡风貌干砌石护坡主屋台地) */}
-            {/*    为大木屋构筑敦厚坚实、深扎大地的干砌灰岩石基座与迎宾石阶，彻底告别悬空漂浮感 */}
-            <YorkshireStoneBastion
+            {/* 🌟 02 TERRAIN: House Terrace (约克郡风貌干砌石护坡主屋台地与石阶) */}
+            <HouseTerrace
               theme={theme}
               onTriggerToast={onTriggerToast}
               setHoveredObject={setHoveredObject}
@@ -3883,8 +3888,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/*    (前景大面积纯净留白负空间与点缀长椅，彻底解决杂乱与拥挤) */}
           {/* ======================================================== */}
           <g id="foreground-meadow-elements">
-            {/* 🌟 约克郡黑脸羊群生态 (Swaledale Sheep Flock) */}
-            <YorkshireSheepFlock
+            {/* 🌟 06 DRESSING: Swaledale Sheep Flock & Meadow Elements */}
+            <YorkshireDressing
               theme={theme}
               onTriggerToast={onTriggerToast}
               setHoveredObject={setHoveredObject}
