@@ -14,6 +14,8 @@ import { WallPostersGallery, PosterDetailModal, PosterId } from './wall-posters'
 import { LeftWallCraftBoard } from './LeftWallCraftBoard';
 import { CottageFoundation, TimberFlooring, CottageRoofFraming, CottageWallProfiles, CapsulePodHaven, WoodenCabinHaven } from './architecture';
 import {
+  TerrainSilhouette,
+  TerrainMass,
   RiverValley,
   PastureFields,
   DrystoneWalls,
@@ -1106,36 +1108,15 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             <rect x="-3000" y="80" width="7400" height="200" fill="url(#distantHazeGrad)" />
           </g>
 
+          {/* ✅ 01 TERRAIN SILHOUETTE (Approved Phase 2.1 new distant ridge system) */}
+          <TerrainSilhouette theme={theme} />
+
+          {/* ✅ 02 TERRAIN MASS (Approved Phase 2.1 central landform, valley slope, east shoulder, foreground) */}
+          <TerrainMass theme={theme} />
+
           {/* Rolling Terraced Hills & Sunny Wheat Slopes */}
           <g id="hills">
-            {/* Distant Mountain Range 1 (远山1：约克郡山峦，灰蓝晨霭与鼠尾草绿交融) */}
-            <path
-              d="M-2400,200 Q-1200,170 -600,210 Q-200,160 180,145 Q420,172 680,132 Q940,158 1240,140 Q1520,165 2200,145 Q2900,170 3600,200 L3600,500 L-2400,500 Z"
-              fill={theme.hillGreenFar}
-            />
-
-            {/* Mountain 1 Patchwork Dales Fields (参考图中远山经典的拼贴田亩色块) */}
-            <polygon points="120,150 260,175 340,168 200,145" fill="#849977" opacity="0.65" />
-            <polygon points="620,138 740,162 820,154 700,132" fill="#9cb086" opacity="0.6" />
-            <polygon points="1180,145 1320,168 1400,160 1260,140" fill="#849977" opacity="0.65" />
-
-            {/* Mountain 1 Bold Cel-Shaded Facets (雕塑感强烈的背光硬切面阴影，统一受光方向) */}
-            <polygon points="180,145 320,165 420,172 260,175" fill="#44563a" opacity="0.55" />
-            <polygon points="680,132 820,152 940,158 780,170" fill="#405236" opacity="0.58" />
-            <polygon points="1240,140 1400,160 1520,165 1350,175" fill="#44563a" opacity="0.55" />
-
-            {/* Far Hillside Field Boundary Stone Seams (远方山坡分割田地的细干砌石墙网) */}
-            <line x1="200" y1="145" x2="260" y2="175" stroke="#483c30" strokeWidth="0.9" opacity="0.7" />
-            <line x1="700" y1="132" x2="740" y2="162" stroke="#483c30" strokeWidth="0.9" opacity="0.7" />
-            <line x1="1260" y1="140" x2="1320" y2="168" stroke="#483c30" strokeWidth="0.9" opacity="0.7" />
-
-            {/* Subtle distant mountain haze layer (空气透视：远山底部与天光柔和交融) */}
-            <path
-              d="M-2400,205 Q-1200,180 -600,215 Q-180,170 260,175 Q580,192 890,165 Q1240,185 1520,175 2200,185 Q2900,170 3600,205 L3600,350 L-2400,350 Z"
-              fill={theme.skyBottom}
-              opacity="0.32"
-            />
-
+            {/* (Legacy distant-range terrain removed — replaced by TerrainSilhouette above) */}
             {/* Yorkshire Dales Stone Railway Viaduct (Ribblehead Viaduct - 万物生灵经典石砌高架铁路拱桥) */}
             <g id="yorkshire-railway-viaduct" opacity="0.95">
               {/* Viaduct Ground Drop Shadow in Valley Fold */}
@@ -1221,12 +1202,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
             </g>
 
-            {/* Distant Mountain Ridge 2 (中景山丘脊线·暖金橄榄绿阳光山坡) */}
-            <path
-              d="M-2400,220 Q-1200,190 -600,230 Q-150,185 240,178 Q560,198 880,168 Q1240,192 1520,182 2200,190 Q2900,195 3600,220 L3600,500 L-2400,500 Z"
-              fill={theme.hillGreenMid}
-            />
-
+            {/* (Legacy midground ridge-2 removed — replaced by TerrainSilhouette above) */}
             {/* 🌟 MAJESTIC OBSERVATORY SUMMIT MOUNTAIN PEAK (巍峨山巅峰峦岩体·托举监听站彻底消灭浮空感) */}
             <g id="observatory-summit-mountain-base">
               {/* Grand High Mountain Promontory rising to y=76 to support Observatory at y=82 */}
@@ -1258,10 +1234,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
             </g>
 
-            {/* Ridge 2 Cel-Shaded Facets (中景山丘背光阴影硬切面，层次分明) */}
-            <polygon points="240,178 420,195 560,198 380,210" fill="#46582a" opacity="0.5" />
-            <polygon points="880,168 1080,190 1240,192 1020,208" fill="#405226" opacity="0.52" />
-
+            {/* (Legacy ridge-2 facets removed — replaced by TerrainSilhouette above) */}
             {/* Distant farmsteads */}
             <g transform="translate(720, 150)">
               <rect x="0" y="8" width="18" height="12" fill="#fffaf2" />
@@ -1272,17 +1245,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               <polygon points="-2,6 7,0 17,6" fill="#a84e34" />
             </g>
 
-            {/* Distant Rolling Golden Wheat Slopes (远方丘陵金色麦田，开阔起伏的大自然风光) */}
-            <path
-              d="M-2400,235 Q-1200,210 -600,245 Q-150,210 240,185 Q560,210 Q880,180 1240,212 Q1520,195 2200,210 Q2900,220 3600,235 L3600,400 Q2600,340 1800,320 Q1240,280 860,265 Q480,270 160,280 Q-150,290 -600,295 Q-1200,310 -2400,330 Z"
-              fill={theme.wheatFar}
-            />
-            {/* Distant soft grain shimmer */}
-            <path
-              d="M-2400,235 Q-1200,210 -600,245 Q-150,210 240,185 Q560,210 Q880,180 1240,212 Q1520,195 2200,210 Q2900,220 3600,235 L3600,400 Q2600,340 1800,320 Q1240,280 860,265 Q480,270 160,280 Q-150,290 -600,295 Q-1200,310 -2400,330 Z"
-              fill="url(#wheatPattern)"
-              opacity="0.12"
-            />
+            {/* (Legacy golden wheat slopes removed — replaced by TerrainSilhouette above) */}
 
             {/* Yorkshire Dales Drystone Walls (万物生灵灵魂元素：攀附丘陵与田亩边界的干砌石墙网) */}
             <g id="yorkshire-drystone-walls">
@@ -1388,18 +1351,11 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               />
             </g>
 
-            {/* 2. Upper Agricultural & Farmstead Terrace (上层农作与拖拉机停驻台地) */}
-            <path
-              d="M-2400,270 Q-1200,275 -600,280 C-200,265 160,248 420,244 C720,250 1020,238 1350,258 C1580,270 2200,275 3600,280 L3600,450 C2400,440 1400,375 1060,360 C740,350 460,345 180,335 C-100,325 -360,315 -600,310 C-1200,315 -2400,320 Z"
-              fill={theme.hillGreenMid}
-            />
+            {/* (Legacy Upper Terrace removed — replaced by TerrainMass above) */}
 
-            {/* Upper Terrace Cel-Shaded Facets (上层台地背光面硬切面阴影多边形，强化等轴测立体高差) */}
-            <polygon points="420,244 600,258 720,250 540,274" fill="#36491e" opacity="0.48" />
-            <polygon points="1020,238 1200,262 1350,258 1160,278" fill="#32451b" opacity="0.5" />
-            <polygon points="-200,265 0,278 160,248 -60,290" fill="#36491e" opacity="0.46" />
+            {/* (Legacy Upper Terrace facets removed — replaced by TerrainMass above) */}
 
-            {/* 3. Authentic Yorkshire Dales Dry-Stone Wall on the Upper Ridge (远方起伏山脊上的经典干砌石墙，纯正英伦乡野意境) */}
+            {/* 3. Authentic Yorkshire Dales Dry-Stone Wall on the Upper Ridge */}
             <g id="yorkshire-drystone-wall" opacity="0.85">
               {/* Meandering drystone wall along the upper wheat terrace boundary */}
               <path
@@ -1424,28 +1380,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               ))}
             </g>
 
-            {/* 4. Unified Homestead Garden Lawn Plateau (主宅庭院广阔大台地，南缘紧贴中景起伏草甸) */}
-            <path
-              d="M-2400,305 Q-1200,310 -600,310 C-200,322 180,338 460,348 C760,358 1060,364 1350,372 C1580,378 2200,380 3600,385 L3600,430 C2400,440 1400,460 900,490 C550,520 220,535 70,545 C-100,560 -300,578 -650,605 C-1200,640 -2400,670 Z"
-              fill="url(#homesteadLawnGrad)"
-            />
-
-            {/* Homestead Plateau Cel-Shaded Facets (主庭院台地边缘清晰硬切面阴影，雕塑出台地饱满体积) */}
-            <polygon points="-280,332 0,355 40,372 -240,350" fill="#2d3e18" opacity="0.45" />
-            <polygon points="460,348 640,366 760,358 580,378" fill="#2d3e18" opacity="0.48" />
-            <polygon points="1060,364 1240,380 1350,372 1180,392" fill="#2a3a16" opacity="0.5" />
-
-            {/* Sunlit Terrace Ridge Line Highlight (向阳草坡顶脊微光) */}
-            <path
-              d="M-200,322 C180,338 460,348 760,358 C1060,364 1350,372 1580,378"
-              fill="none"
-              stroke="#b5cb58"
-              strokeWidth="1.6"
-              opacity="0.45"
-            />
+            {/* (Legacy Homestead Lawn Plateau + facets + ridge highlight removed — replaced by TerrainMass above) */}
 
             {/* ========================================================================= */}
-            {/* 4.1 EAST RIDGE TECH TERRACE & HILLSIDE SHOULDER (科技高地厚实山体支撑台地) */}
+            {/* 4.1 EAST RIDGE TECH TERRACE & HILLSIDE SHOULDER */}
             {/*     在建筑下方绘制！为右上角太空睡眠舱与电波站构筑厚重稳固的斜坡山包 */}
             {/* ========================================================================= */}
             <g id="east-tech-terrace-knoll">
@@ -1527,43 +1465,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             {/* 4.3 ROLLING MORANDI PASTURE KNOLLS & GENTLE SLOPES (起伏莫兰迪草丘缓坡底板) */}
             {/*     位于建筑与路网下方，沿2.5D轴测斜向自然流淌，彻底消解水平横切面 */}
             {/* ========================================================================= */}
-            <g id="rolling-pasture-base-terrain">
-              {/* Upper Midground Rolling Meadow Contour (自东北山脊斜向西南倾泻) */}
-              <path
-                d="M-2400,410 Q-1200,430 -500,450 C-100,465 240,460 620,445 C1000,430 1400,420 2200,400 L3600,390 L3600,2400 L-2400,2400 Z"
-                fill="url(#homesteadLawnGrad)"
-              />
-              {/* Cel-shaded organic slope facets */}
-              <polygon points="-120,460 180,472 340,465 80,482" fill="#2d3e18" opacity="0.32" />
-              <polygon points="560,452 780,456 940,442 720,468" fill="#2d3e18" opacity="0.35" />
-
-              {/* Main Rolling Pasture Swell (斜向大草甸·温润莫兰迪青苔草绿) */}
-              <path
-                d="M-2400,490 Q-1400,515 -600,530 C-150,540 280,530 720,515 C1180,500 1700,525 3600,500 L3600,2400 L-2400,2400 Z"
-                fill="url(#foregroundPastureGrad)"
-              />
-              {/* Sunlit Knoll Ridge Contour Highlights */}
-              <path
-                d="M-2400,490 Q-1400,515 -600,530 C-150,540 280,530 720,515 C1180,500 1700,525 3600,500"
-                fill="none"
-                stroke="#9ecb55"
-                strokeWidth="2.2"
-                opacity="0.65"
-              />
-
-              {/* Gentle Southern Foreground Knoll Swell (彻底移除僵硬生硬的深墨黑块，换以通透明朗的温润草坡) */}
-              <path
-                d="M-2400,570 Q-1100,590 -350,595 C140,600 650,575 1180,560 C1750,580 2600,600 3600,580 L3600,2400 L-2400,2400 Z"
-                fill="url(#foregroundPastureGrad)"
-              />
-              <path
-                d="M-2400,570 Q-1100,590 -350,595 C140,600 650,575 1180,560 C1750,580 2600,600 3600,580"
-                fill="none"
-                stroke="#a3c458"
-                strokeWidth="1.8"
-                opacity="0.6"
-              />
-
+            {/* (Legacy rolling pasture knolls removed — replaced by TerrainMass above; sheep track retained) */}
+            <g id="rolling-pasture-sheep-track">
               {/* Worn Sheep Track through foreground meadow (草坡间牧民与羊群踏出的自然土色浅痕) */}
               <path
                 d="M-400,635 Q180,630 650,622 Q1150,630 1800,625"
