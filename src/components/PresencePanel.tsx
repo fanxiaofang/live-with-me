@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Person, LifeStateId, RoomId } from '../types';
 import { LIFE_STATES, ROOMS } from '../data/initialData';
-import { Sparkles, Edit3, Image as ImageIcon, Armchair } from 'lucide-react';
+import { Sparkles, Edit3, Image as ImageIcon, Armchair, ChevronDown, ChevronUp, Users } from 'lucide-react';
 import { CharacterHead } from './CharacterAvatar';
 
 interface PresencePanelProps {
@@ -19,8 +19,26 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
   onOpenSvgExport,
   onOpenChairInspector,
 }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const me = people.find((p) => p.isSelf);
   const friends = people.filter((p) => !p.isSelf);
+
+  if (isCollapsed) {
+    return (
+      <aside aria-label="同住人状态" className="fixed top-14 left-5 z-20 pointer-events-auto">
+        <button
+          onClick={() => setIsCollapsed(false)}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1e1c19]/85 backdrop-blur-md border border-[#3b332b] shadow-xl text-xs text-[#cfc5b6] hover:text-white hover:border-[#524538] transition-all group"
+          title="展开同住人面板"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#52b788] animate-pulse" />
+          <Users className="w-3.5 h-3.5 text-[#d68c68]" />
+          <span className="font-medium text-[11px] text-[#e3ded4]">同一屋檐下 ({people.length})</span>
+          <ChevronDown className="w-3.5 h-3.5 text-[#8a7f72] group-hover:text-[#e3ded4]" />
+        </button>
+      </aside>
+    );
+  }
 
   return (
     <aside aria-label="同住人状态" className="fixed top-14 left-5 z-20 pointer-events-auto max-w-[280px]">
@@ -31,7 +49,16 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-[#52b788] animate-pulse" />
             <span className="font-medium text-[#e3ded4]">同一屋檐下</span>
           </div>
-          <span className="text-[10px] text-[#786e63]">静默在场</span>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-[#786e63]">静默在场</span>
+            <button
+              onClick={() => setIsCollapsed(true)}
+              className="text-[#8a7f72] hover:text-[#e3ded4] p-0.5 rounded transition-colors"
+              title="收起面板（查看完整约克郡风光）"
+            >
+              <ChevronUp className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         {/* My Status Card */}

@@ -57,7 +57,7 @@ export default function App() {
   const [isSvgExportOpen, setIsSvgExportOpen] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [isMemoriesOpen, setIsMemoriesOpen] = useState(false);
-  const [showManifesto, setShowManifesto] = useState(true);
+  const [showManifesto, setShowManifesto] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // 电脑桌椅子状态管理 (空椅态 vs 小人组合态)
@@ -371,6 +371,7 @@ export default function App() {
           isChairEmptyOverride={isChairEmptyOverride}
           onToggleChairSeated={handleToggleChairSeated}
           onOpenChairInspector={() => setIsChairModalOpen(true)}
+          onTriggerToast={triggerToast}
         />
       </div>
 

@@ -13,6 +13,12 @@ import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from './layout-gizmo';
 import { WallPostersGallery, PosterDetailModal, PosterId } from './wall-posters';
 import { LeftWallCraftBoard } from './LeftWallCraftBoard';
 import { CottageFoundation, TimberFlooring, CottageRoofFraming, CottageWallProfiles, CapsulePodHaven, WoodenCabinHaven } from './architecture';
+import {
+  YorkshireRiverBeck,
+  YorkshireDrystoneWalls,
+  YorkshireStoneBastion,
+  YorkshireSheepFlock,
+} from './scenery/YorkshireLandscape';
 
 interface ThreeWorldProps {
   timeOfDay: TimeOfDay;
@@ -38,18 +44,20 @@ interface ThreeWorldProps {
   isChairEmptyOverride?: boolean;
   onToggleChairSeated?: (seated?: boolean) => void;
   onOpenChairInspector?: () => void;
+  onTriggerToast?: (msg: string) => void;
 }
 
 // Room Camera Pan/Scale configurations in the 2.5D countryside landscape
+// 采用约克郡谷箱庭广角俯瞰 (scale: 0.66, y: 135)，腾出上方 35% 广袤纯净天际远山与火车高架桥，下方留足 35% 连贯莫兰迪色系草坡
 const ROOM_VIEWPORTS: Record<string, { x: number; y: number; scale: number }> = {
-  overview: { x: 0, y: 0, scale: 1.0 },
-  my_room: { x: 220, y: 150, scale: 1.6 },
-  living_nook: { x: 20, y: 130, scale: 1.6 },
-  friend_room: { x: -180, y: 140, scale: 1.6 },
-  porch_mailbox: { x: 40, y: -80, scale: 1.55 },
-  capsule_pod: { x: -330, y: 60, scale: 1.65 },
-  corn_lounge: { x: 260, y: -40, scale: 1.65 },
-  observatory: { x: -280, y: 280, scale: 1.65 },
+  overview: { x: 0, y: 135, scale: 0.66 },
+  my_room: { x: 220, y: 150, scale: 1.55 },
+  living_nook: { x: 20, y: 130, scale: 1.55 },
+  friend_room: { x: -180, y: 140, scale: 1.55 },
+  porch_mailbox: { x: 40, y: -80, scale: 1.5 },
+  capsule_pod: { x: -280, y: 60, scale: 1.6 },
+  corn_lounge: { x: 210, y: -30, scale: 1.6 },
+  observatory: { x: -280, y: 280, scale: 1.6 },
 };
 
 // Anime countryside atmospheric color palettes & lighting
@@ -186,12 +194,6 @@ const ALIEN_TRANSMISSIONS = [
   '✨ [宇宙无线电] 示波器上跳跃出一段舒缓的正弦波形——这是星系给守望者谱写的晚安曲。',
 ];
 
-interface Ripple {
-  id: number;
-  x: number;
-  y: number;
-}
-
 export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   timeOfDay,
   people,
@@ -216,6 +218,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   isChairEmptyOverride = false,
   onToggleChairSeated,
   onOpenChairInspector,
+  onTriggerToast,
 }) => {
   const currentLayout = roomLayout || cabinetLayout;
   const effectiveGizmoId = isInspectorOpen ? activeGizmoId : null;
@@ -225,10 +228,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const [selectedPosterId, setSelectedPosterId] = useState<PosterId | null>(null);
 
   // Pan & Zoom state for the 2.5D anime world
-  const [camera, setCamera] = useState<{ x: number; y: number; zoom: number }>({
-    x: 0,
-    y: 0,
-    zoom: 1.0,
+  const [camera, setCamera] = useState<{ x: number; y: number; zoom: number }>(() => {
+    const target = ROOM_VIEWPORTS[activeRoom] || ROOM_VIEWPORTS.overview;
+    return {
+      x: target.x,
+      y: target.y,
+      zoom: target.scale,
+    };
   });
   const [isDragging, setIsDragging] = useState(false);
 
@@ -238,11 +244,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const [alienTransmissionText, setAlienTransmissionText] = useState<string | null>(null);
   const [sofaSquish, setSofaSquish] = useState(false);
   const [sofaThought, setSofaThought] = useState<string | null>(null);
-  const [ripples, setRipples] = useState<Ripple[]>([
-    { id: 1, x: 520, y: 550 },
-    { id: 2, x: 680, y: 560 },
-    { id: 3, x: 340, y: 570 },
-  ]);
 
   // Freestanding Cast-Iron Stove Color Variant (支持陶土红砖、焦糖胡桃、柔和草席绿、经典炭黑等全套同色系)
   const [stoveColor, setStoveColor] = useState<StoveColorVariant>(() => {
@@ -279,37 +280,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     });
   }, [activeRoom]);
 
-  // Continuous gentle ripple generation in rainy mode
-  useEffect(() => {
-    if (!theme.isRainy) return;
-    const interval = setInterval(() => {
-      const rx = 100 + Math.random() * 950;
-      const ry = 530 + Math.random() * 60;
-      setRipples((prev) => [...prev.slice(-6), { id: Date.now(), x: rx, y: ry }]);
-    }, 800);
-    return () => clearInterval(interval);
-  }, [theme.isRainy]);
-
-  // Click on river creates interactive water ripples
-  const handleRiverClick = (e: React.MouseEvent<SVGGElement>) => {
-    const svg = e.currentTarget.ownerSVGElement;
-    if (svg && svg.getScreenCTM) {
-      const pt = svg.createSVGPoint();
-      pt.x = e.clientX;
-      pt.y = e.clientY;
-      const ctm = svg.getScreenCTM();
-      if (ctm) {
-        const svgP = pt.matrixTransform(ctm.inverse());
-        setRipples((prev) => [...prev.slice(-5), { id: Date.now(), x: svgP.x, y: svgP.y }]);
-        return;
-      }
-    }
-    const rect = e.currentTarget.getBoundingClientRect();
-    const svgPointX = ((e.clientX - rect.left) / rect.width) * 1200;
-    const svgPointY = ((e.clientY - rect.top) / rect.height) * 800;
-    setRipples((prev) => [...prev.slice(-5), { id: Date.now(), x: svgPointX, y: svgPointY }]);
-  };
-
   // Click on alien signal dish triggers cosmic transmission & decoded message
   const triggerAlienSignal = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -345,7 +315,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     const zoomDelta = -e.deltaY * 0.0012;
     setCamera((prev) => ({
       ...prev,
-      zoom: clamp(prev.zoom + zoomDelta, 0.7, 2.2),
+      zoom: clamp(prev.zoom + zoomDelta, 0.45, 2.5),
     }));
   }, []);
 
@@ -368,8 +338,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     }
     setCamera((prev) => ({
       ...prev,
-      x: clamp(cameraStartRef.current.x + dx / prev.zoom, -680, 680),
-      y: clamp(cameraStartRef.current.y + dy / prev.zoom, -450, 450),
+      x: clamp(cameraStartRef.current.x + dx / prev.zoom, -1000, 1000),
+      y: clamp(cameraStartRef.current.y + dy / prev.zoom, -650, 650),
     }));
   };
 
@@ -403,8 +373,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       }
       setCamera((prev) => ({
         ...prev,
-        x: clamp(cameraStartRef.current.x + dx / prev.zoom, -680, 680),
-        y: clamp(cameraStartRef.current.y + dy / prev.zoom, -450, 450),
+        x: clamp(cameraStartRef.current.x + dx / prev.zoom, -1000, 1000),
+        y: clamp(cameraStartRef.current.y + dy / prev.zoom, -650, 650),
       }));
     } else if (e.touches.length === 2 && touchStartRef.current.dist > 0) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -413,7 +383,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       const factor = (dist - touchStartRef.current.dist) * 0.003;
       setCamera((prev) => ({
         ...prev,
-        zoom: clamp(prev.zoom + factor, 0.7, 2.2),
+        zoom: clamp(prev.zoom + factor, 0.45, 2.5),
       }));
       touchStartRef.current.dist = dist;
     }
@@ -425,16 +395,20 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   };
 
   const handleZoomIn = () => {
-    setCamera((prev) => ({ ...prev, zoom: Math.min(prev.zoom + 0.25, 2.2) }));
+    setCamera((prev) => ({ ...prev, zoom: Math.min(prev.zoom + 0.25, 2.5) }));
   };
 
   const handleZoomOut = () => {
-    setCamera((prev) => ({ ...prev, zoom: Math.max(prev.zoom - 0.25, 0.7) }));
+    setCamera((prev) => ({ ...prev, zoom: Math.max(prev.zoom - 0.25, 0.45) }));
   };
 
   const handleResetOverview = () => {
     onSelectRoom('overview');
-    setCamera({ x: 0, y: 0, zoom: 1.0 });
+    setCamera({
+      x: ROOM_VIEWPORTS.overview.x,
+      y: ROOM_VIEWPORTS.overview.y,
+      zoom: ROOM_VIEWPORTS.overview.scale,
+    });
   };
 
   // Dynamic Scene-based View Mapping for Character Presence
@@ -834,6 +808,81 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               <stop offset="100%" stopColor="#ab4d15" />
             </linearGradient>
 
+            {/* --- NEW FOREGROUND & TERRACE GROUNDING SYSTEM GRADIENTS --- */}
+            {/* 1. Countryside Picnic Red-and-Cream Gingham Check Pattern */}
+            <pattern id="picnicGinghamPattern" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(22 0 0)">
+              <rect width="14" height="14" fill="#fffaf5" />
+              <rect width="7" height="14" fill="#e0533c" opacity="0.38" />
+              <rect width="14" height="7" fill="#e0533c" opacity="0.38" />
+              <rect width="7" height="7" fill="#b91c1c" opacity="0.65" />
+            </pattern>
+
+            {/* 2. Ha-ha Stone Retaining Terrace Wall Gradients (英式跌水石砌护坡体系) */}
+            <linearGradient id="terraceCopingGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#cfc2af" />
+              <stop offset="45%" stopColor="#ded3c1" />
+              <stop offset="85%" stopColor="#bdaf9b" />
+              <stop offset="100%" stopColor="#9a8d7a" />
+            </linearGradient>
+            <linearGradient id="terraceWallCoursesGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#5a4e40" />
+              <stop offset="35%" stopColor="#453b30" />
+              <stop offset="75%" stopColor="#322920" />
+              <stop offset="100%" stopColor="#1e1813" />
+            </linearGradient>
+
+            {/* 3. Wooden Boardwalk Pier & Pilings Gradients */}
+            <linearGradient id="boardwalkPlankGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#9c7a56" />
+              <stop offset="50%" stopColor="#ba976f" />
+              <stop offset="100%" stopColor="#876644" />
+            </linearGradient>
+            <linearGradient id="pierPilingGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#3d2b1a" />
+              <stop offset="50%" stopColor="#543c26" />
+              <stop offset="100%" stopColor="#2b1d11" />
+            </linearGradient>
+
+            {/* 4. Moored Wooden Rowboat Clinker Hull & Interior */}
+            <linearGradient id="rowboatClinkerGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#94592a" />
+              <stop offset="45%" stopColor="#75411a" />
+              <stop offset="100%" stopColor="#48250c" />
+            </linearGradient>
+            <linearGradient id="rowboatFloorGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ba854f" />
+              <stop offset="60%" stopColor="#966535" />
+              <stop offset="100%" stopColor="#69401d" />
+            </linearGradient>
+
+            {/* 5. Gnarled Old Apple Tree Bark & Foliage Gradients */}
+            <linearGradient id="oldAppleBarkGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#382a1d" />
+              <stop offset="35%" stopColor="#4f3c2a" />
+              <stop offset="70%" stopColor="#3a291b" />
+              <stop offset="100%" stopColor="#23170e" />
+            </linearGradient>
+            <radialGradient id="appleFruitHighlight" cx="35%" cy="35%" r="65%">
+              <stop offset="0%" stopColor="#fca5a5" />
+              <stop offset="40%" stopColor="#ef4444" />
+              <stop offset="85%" stopColor="#b91c1c" />
+              <stop offset="100%" stopColor="#7f1d1d" />
+            </radialGradient>
+
+            {/* 6. Diorama Island Strata Cutaway Base (沙盘微缩手办土壤切面基座) */}
+            <linearGradient id="dioramaIslandSoilGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#2e421c" />
+              <stop offset="12%" stopColor="#382516" />
+              <stop offset="45%" stopColor="#291a0e" />
+              <stop offset="85%" stopColor="#1c1108" />
+              <stop offset="100%" stopColor="#100a04" />
+            </linearGradient>
+            <linearGradient id="dioramaBasePlinthGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#45382b" />
+              <stop offset="50%" stopColor="#2e241a" />
+              <stop offset="100%" stopColor="#17120c" />
+            </linearGradient>
+
             {/* ========================================================================= */}
             {/* PRESERVED ASSET: SCANDINAVIAN CORNER MASONRY HEARTH                       */}
             {/* (用户要求保留当前石材壁炉作为资产的一部分，不在场景中使用，安全收录于此处) */}
@@ -921,6 +970,70 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 <polygon points="0,21.0 5.5,19.5 5.5,-88.1 0,-86.6" fill="#c8bcab" stroke="#b6a895" strokeWidth="0.4" />
                 <line x1="0" y1="21.0" x2="0" y2="-86.6" stroke="#faf5ed" strokeWidth="0.8" opacity="0.85" />
               </g>
+            </g>
+
+            {/* ========================================================================= */}
+            {/* PRESERVED ASSET: COUNTRYSIDE GINGHAM PICNIC SCENE & GNARLED APPLE TREE    */}
+            {/* (用户要求保留野餐垫及全套组件作为项目资产保留，不在场景中强塞，安全收录于此处) */}
+            {/* ========================================================================= */}
+            <g id="asset-country-picnic-scene">
+              <polygon points="162,652 278,630 306,686 188,708" fill="#152113" opacity="0.4" filter="url(#softShadow)" />
+              <polygon points="165,650 275,632 298,682 186,702" fill="url(#picnicGinghamPattern)" stroke="#e2d6c3" strokeWidth="0.8" />
+              <polygon points="167,651 273,634 296,680 188,699" fill="none" stroke="#c2410c" strokeWidth="0.6" strokeDasharray="3 2" opacity="0.5" />
+              <ellipse cx="168" cy="652" rx="3.5" ry="2" fill="#7a6c5a" stroke="#483d31" strokeWidth="0.4" />
+              <ellipse cx="272" cy="634" rx="4" ry="2.2" fill="#8c7d6b" stroke="#483d31" strokeWidth="0.4" />
+              <ellipse cx="295" cy="680" rx="3.8" ry="2" fill="#7a6c5a" stroke="#483d31" strokeWidth="0.4" />
+              <ellipse cx="188" cy="700" rx="4.2" ry="2.2" fill="#8c7d6b" stroke="#483d31" strokeWidth="0.4" />
+              <g transform="translate(255, 638)">
+                <ellipse cx="8" cy="16" rx="14" ry="5" fill="#141f12" opacity="0.35" />
+                <rect x="0" y="4" width="18" height="12" rx="2.5" fill="#b47b42" stroke="#694119" strokeWidth="0.8" />
+                <line x1="4" y1="4" x2="4" y2="16" stroke="#875322" strokeWidth="0.8" />
+                <line x1="9" y1="4" x2="9" y2="16" stroke="#875322" strokeWidth="0.8" />
+                <line x1="14" y1="4" x2="14" y2="16" stroke="#875322" strokeWidth="0.8" />
+                <line x1="0" y1="8" x2="18" y2="8" stroke="#875322" strokeWidth="0.8" />
+                <line x1="0" y1="12" x2="18" y2="12" stroke="#875322" strokeWidth="0.8" />
+                <polygon points="-2,4 10,-3 14,-2 2,5" fill="#a36b35" stroke="#5c3614" strokeWidth="0.7" />
+                <polygon points="1,4 8,0 12,6 3,7" fill="#fffaf5" />
+                <path d="M 3,4 Q 9,-4 15,4" fill="none" stroke="#694119" strokeWidth="1.2" strokeLinecap="round" />
+              </g>
+              <g transform="translate(210, 656)">
+                <ellipse cx="0" cy="5" rx="7" ry="3" fill="#182315" opacity="0.35" />
+                <ellipse cx="0" cy="0" rx="6" ry="4.8" fill="#ea580c" stroke="#9a3412" strokeWidth="0.7" />
+                <ellipse cx="0" cy="-4" rx="3.2" ry="1.4" fill="#fed7aa" stroke="#9a3412" strokeWidth="0.5" />
+                <circle cx="0" cy="-5" r="0.9" fill="#c2410c" />
+                <path d="M 5,-1 Q 9,-3 10,-5" fill="none" stroke="#9a3412" strokeWidth="1.4" strokeLinecap="round" />
+                <path d="M -5,1 Q -9,0 -7,-3 Q -5,-3 -5,-1" fill="none" stroke="#9a3412" strokeWidth="1.2" />
+                <g transform="translate(-10, 6)">
+                  <rect x="-2.5" y="-2" width="5" height="4" rx="1.2" fill="#fffaf0" stroke="#a89a85" strokeWidth="0.5" />
+                  <ellipse cx="0" cy="-2" rx="2.4" ry="1" fill="#92400e" />
+                </g>
+                <g transform="translate(10, 8)">
+                  <rect x="-2.5" y="-2" width="5" height="4" rx="1.2" fill="#fffaf0" stroke="#a89a85" strokeWidth="0.5" />
+                  <ellipse cx="0" cy="-2" rx="2.4" ry="1" fill="#92400e" />
+                </g>
+              </g>
+              <g transform="translate(185, 672)">
+                <polygon points="0,0 26,-6 32,8 6,14" fill="#a16207" stroke="#713f12" strokeWidth="0.7" />
+                <polygon points="2,1 25,-5 29,7 7,12" fill="#ca8a04" />
+                <ellipse cx="12" cy="3" rx="7" ry="4.5" fill="#b45309" stroke="#78350f" strokeWidth="0.7" />
+                <ellipse cx="23" cy="5" rx="3.5" ry="2.5" fill="#fef3c7" stroke="#92400e" strokeWidth="0.5" />
+                <polygon points="20,8 26,6 28,11 21,12" fill="#facc15" stroke="#ca8a04" strokeWidth="0.5" />
+              </g>
+              <g transform="translate(235, 680)">
+                <ellipse cx="0" cy="2" rx="13" ry="6.5" fill="#152014" opacity="0.32" />
+                <ellipse cx="0" cy="0" rx="12" ry="6" fill="#fef08a" stroke="#ca8a04" strokeWidth="0.6" />
+                <ellipse cx="0" cy="-1.5" rx="6" ry="3.5" fill="#eab308" stroke="#a16207" strokeWidth="0.6" />
+                <ellipse cx="0" cy="-0.2" rx="6.2" ry="3.2" fill="none" stroke="#3f6212" strokeWidth="1.2" />
+                <path d="M 5,2 Q 9,6 8,10" fill="none" stroke="#3f6212" strokeWidth="1.2" strokeLinecap="round" />
+              </g>
+            </g>
+            <g id="asset-gnarled-apple-tree">
+              <ellipse cx="50" cy="728" rx="26" ry="8" fill="#10190e" opacity="0.5" />
+              <path d="M 42,722 Q 28,728 18,730 M 58,722 Q 70,727 78,729" stroke="#26170d" strokeWidth="2.8" strokeLinecap="round" />
+              <path d="M 38,725 C 34,700 40,675 50,650 C 56,634 66,618 75,595 L 86,600 C 76,622 64,640 58,660 C 48,685 44,702 48,725 Z" fill="url(#oldAppleBarkGrad)" stroke="#1c1209" strokeWidth="1.2" />
+              <ellipse cx="75" cy="590" rx="36" ry="24" fill="#2b522d" />
+              <ellipse cx="115" cy="625" rx="28" ry="18" fill="#346337" />
+              <ellipse cx="70" cy="580" rx="30" ry="18" fill="#467e49" />
             </g>
           </defs>
 
@@ -1356,7 +1469,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               />
 
               {/* Terraced Stone Retaining Ledges supporting the Wooden Boardwalk */}
-              <g id="boardwalk-retaining-terrace">
+              <g id="boardwalk-retaining-terrace" transform="translate(-36, 0)">
                 <polygon points="796,368 912,372 908,388 792,384" fill="url(#stoneWallFaceGrad)" stroke="#2d261e" strokeWidth="0.8" />
                 <polygon points="796,368 912,372 914,375 798,371" fill="url(#stoneWallCapGrad)" />
                 <line x1="825" y1="369" x2="823" y2="385" stroke="#1d1712" strokeWidth="0.8" />
@@ -1366,7 +1479,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* Capsule Pod Grounded Bedrock Plinth */}
-              <g id="capsule-pod-ground-bedrock" transform="translate(930, 320)">
+              <g id="capsule-pod-ground-bedrock" transform="translate(894, 320)">
                 <polygon points="-75,44 0,32 75,44 0,58" fill="#58635a" stroke="#373e38" strokeWidth="1.2" />
                 <polygon points="-75,44 0,58 0,66 -75,52" fill="#2b322c" />
                 <polygon points="0,58 75,44 75,52 0,66" fill="#3c463e" />
@@ -1462,6 +1575,20 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               />
             </g>
 
+            {/* 🌟 YORKSHIRE MEANDERING BECK (左侧清澈河湾与卵石浅滩) */}
+            <YorkshireRiverBeck
+              theme={theme}
+              onTriggerToast={onTriggerToast}
+              setHoveredObject={setHoveredObject}
+            />
+
+            {/* 🌟 YORKSHIRE DRYSTONE WALLS & 5-BAR FIELD GATE (开阔干砌石墙与英伦大木栅栏门) */}
+            <YorkshireDrystoneWalls
+              theme={theme}
+              onTriggerToast={onTriggerToast}
+              setHoveredObject={setHoveredObject}
+            />
+
             {/* 5. Picturesque Organic Country Lane & S-Curved Garden Paths (顺应地势自然生长的S形有机小路与嵌入式石板步道) */}
             <g id="country-road-network" opacity="0.95">
               {/* Forecourt Flagstone & Pea-Gravel Apron in front of Cottage Veranda Steps (主屋门前迎宾石板碎石庭坪) */}
@@ -1485,17 +1612,17 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
               {/* ======================================================== */}
               {/* 🌟 ORGANIC S-SHAPED WEST PATHWAY TO WOODEN CABIN HAVEN   */}
-              {/* (大木屋正门顺应地势优雅舒缓蜿蜒至西翼小木屋踏步 x=156, y=396) */}
+              {/* (大木屋正门顺应地势优雅舒缓蜿蜒至西翼小木屋踏步 x=216, y=398) */}
               {/* ======================================================== */}
               <path
-                d="M525,496 C450,512 360,502 280,472 C220,446 185,425 156,398"
+                d="M525,496 C460,510 390,498 325,468 C270,442 240,422 216,398"
                 fill="none"
                 stroke="url(#countryRoadGrad)"
                 strokeWidth="15"
                 strokeLinecap="round"
               />
               <path
-                d="M525,496 C450,512 360,502 280,472 C220,446 185,425 156,398"
+                d="M525,496 C460,510 390,498 325,468 C270,442 240,422 216,398"
                 fill="none"
                 stroke="#73624e"
                 strokeWidth="1.4"
@@ -1504,14 +1631,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
               {/* Path Extension from Cabin Steps to West Garden & Pumpkin Patch */}
               <path
-                d="M156,398 C115,410 40,420 -50,426"
+                d="M216,398 C175,410 90,420 -20,426"
                 fill="none"
                 stroke="url(#countryRoadGrad)"
                 strokeWidth="11"
                 strokeLinecap="round"
               />
               <path
-                d="M156,398 C115,410 40,420 -50,426"
+                d="M216,398 C175,410 90,420 -20,426"
                 fill="none"
                 stroke="#73624e"
                 strokeWidth="1.0"
@@ -1522,16 +1649,15 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {[
                 { x: 495, y: 502, rx: 6.8, ry: 3.4, deg: 6 },
                 { x: 450, y: 508, rx: 7.2, ry: 3.5, deg: 4 },
-                { x: 400, y: 502, rx: 7.0, ry: 3.3, deg: -2 },
-                { x: 350, y: 490, rx: 7.4, ry: 3.5, deg: -8 },
-                { x: 300, y: 476, rx: 6.8, ry: 3.2, deg: -12 },
-                { x: 250, y: 458, rx: 7.2, ry: 3.4, deg: -14 },
-                { x: 210, y: 438, rx: 7.0, ry: 3.3, deg: -10 },
-                { x: 180, y: 418, rx: 6.9, ry: 3.2, deg: -6 },
-                { x: 156, y: 398, rx: 7.2, ry: 3.4, deg: -2 },
-                { x: 100, y: 414, rx: 6.5, ry: 3.1, deg: 2 },
-                { x: 40, y: 422, rx: 6.8, ry: 3.2, deg: 4 },
-                { x: -20, y: 426, rx: 6.6, ry: 3.0, deg: 4 },
+                { x: 405, y: 502, rx: 7.0, ry: 3.3, deg: -2 },
+                { x: 360, y: 488, rx: 7.4, ry: 3.5, deg: -8 },
+                { x: 315, y: 468, rx: 6.8, ry: 3.2, deg: -12 },
+                { x: 275, y: 446, rx: 7.2, ry: 3.4, deg: -14 },
+                { x: 242, y: 422, rx: 7.0, ry: 3.3, deg: -10 },
+                { x: 216, y: 398, rx: 7.2, ry: 3.4, deg: -2 },
+                { x: 160, y: 410, rx: 6.5, ry: 3.1, deg: 2 },
+                { x: 100, y: 418, rx: 6.8, ry: 3.2, deg: 4 },
+                { x: 30, y: 424, rx: 6.6, ry: 3.0, deg: 4 },
               ].map((pst, i) => (
                 <g key={`s-flag-${i}`} transform={`translate(${pst.x}, ${pst.y}) rotate(${pst.deg})`}>
                   <ellipse cx="0" cy="0.6" rx={pst.rx} ry={pst.ry} fill="#544537" opacity="0.45" />
@@ -1545,15 +1671,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {[
                   { x: 470, y: 516, col: '#fef08a' },
                   { x: 420, y: 496, col: '#ffffff' },
-                  { x: 380, y: 504, col: '#a855f7' },
-                  { x: 330, y: 478, col: '#ffffff' },
-                  { x: 280, y: 486, col: '#fef08a' },
-                  { x: 235, y: 448, col: '#ffffff' },
-                  { x: 195, y: 425, col: '#a855f7' },
-                  { x: 140, y: 410, col: '#fef08a' },
-                  { x: 80, y: 426, col: '#ffffff' },
-                  { x: 10, y: 432, col: '#fef08a' },
-                  { x: -40, y: 434, col: '#a855f7' },
+                  { x: 375, y: 500, col: '#a855f7' },
+                  { x: 330, y: 474, col: '#ffffff' },
+                  { x: 285, y: 460, col: '#fef08a' },
+                  { x: 245, y: 432, col: '#ffffff' },
+                  { x: 205, y: 408, col: '#a855f7' },
+                  { x: 150, y: 415, col: '#fef08a' },
+                  { x: 90, y: 422, col: '#ffffff' },
+                  { x: 20, y: 428, col: '#fef08a' },
                 ].map((fl, i) => (
                   <g key={`spf-${i}`} transform={`translate(${fl.x}, ${fl.y})`}>
                     <circle cx="0" cy="0" r="1.8" fill={fl.col} />
@@ -1567,14 +1692,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* (大木屋门前向东自然攀上右侧山丘台地与胶囊睡眠舱栈道)      */}
               {/* ======================================================== */}
               <path
-                d="M560,496 C630,486 710,460 760,425 C785,405 805,385 816,368"
+                d="M560,496 C625,486 695,460 740,425 C765,405 775,385 782,368"
                 fill="none"
                 stroke="url(#countryRoadGrad)"
                 strokeWidth="14"
                 strokeLinecap="round"
               />
               <path
-                d="M560,496 C630,486 710,460 760,425 C785,405 805,385 816,368"
+                d="M560,496 C625,486 695,460 740,425 C765,405 775,385 782,368"
                 fill="none"
                 stroke="#73624e"
                 strokeWidth="1.2"
@@ -1584,12 +1709,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* East Spur Embedded Stepping Stones */}
               {[
                 { x: 590, y: 490 },
-                { x: 635, y: 480 },
-                { x: 680, y: 466 },
-                { x: 725, y: 448 },
-                { x: 765, y: 422 },
-                { x: 795, y: 395 },
-                { x: 812, y: 372 },
+                { x: 630, y: 478 },
+                { x: 672, y: 462 },
+                { x: 712, y: 442 },
+                { x: 748, y: 418 },
+                { x: 772, y: 390 },
+                { x: 782, y: 368 },
               ].map((est, i) => (
                 <g key={`est-${i}`}>
                   <ellipse cx={est.x} cy={est.y + 0.6} rx="6.5" ry="3.2" fill="#544537" opacity="0.4" />
@@ -1598,21 +1723,21 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               ))}
 
               {/* ======================================================== */}
-              {/* SOUTH SPUR: ORGANIC PATHWAY TO SHEEP PASTURE & BENCH     */}
-              {/* (向南轻柔蜿蜒穿过起伏草丘，通向食草羊群与观景休憩长椅)    */}
+              {/* SOUTH SPUR: ORGANIC PATHWAY GENTLY CURVING INTO MEADOW   */}
+              {/* (向南轻柔弯延的草丘散步小道，连接草坡休憩长椅)           */}
               {/* ======================================================== */}
               <path
-                d="M535,505 C515,530 460,545 390,548 C320,550 260,540 230,528"
+                d="M535,505 C515,530 460,545 390,548 C320,550 260,538 230,520"
                 fill="none"
                 stroke="url(#countryRoadGrad)"
-                strokeWidth="13"
+                strokeWidth="12"
                 strokeLinecap="round"
               />
               <path
-                d="M535,505 C515,530 460,545 390,548 C320,550 260,540 230,528"
+                d="M535,505 C515,530 460,545 390,548 C320,550 260,538 230,520"
                 fill="none"
                 stroke="#73624e"
-                strokeWidth="1.1"
+                strokeWidth="1.0"
                 strokeDasharray="5 12"
               />
 
@@ -1893,10 +2018,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
             </g>
 
-            {/* Main Elevated SETI Alien Radio Station (Mountain Peak Y=82) */}
+            {/* Main Elevated SETI Alien Radio Station (Mountain Peak Y=88, harmonized scale) */}
             <g
               id="room-observatory"
-              transform="translate(890, 82)"
+              transform="translate(895, 88) scale(0.84)"
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('observatory');
               }}
@@ -1905,7 +2030,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               className="cursor-pointer group/observatory"
             >
               {/* Massive Cliff Outcrop Drop Shadow casting onto lower slopes */}
-              <ellipse cx="0" cy="52" rx="78" ry="20" fill="#1b231d" opacity="0.38" filter="url(#softShadow)" />
+              <ellipse cx="0" cy="52" rx="78" ry="20" fill="#1b231d" opacity="0.35" filter="url(#softShadow)" />
 
               {/* Active Room Focus Aura (Cosmic Emerald Glow) */}
               {activeRoom === 'observatory' && (
@@ -1914,9 +2039,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                   cy="-12"
                   rx="86"
                   ry="74"
-                  fill="rgba(56, 239, 125, 0.14)"
+                  fill="rgba(56, 239, 125, 0.12)"
                   stroke="#38ef7d"
-                  strokeWidth="2.5"
+                  strokeWidth="2.2"
                   strokeDasharray="7 5"
                   className="animate-[pulse_3s_infinite]"
                 />
@@ -2067,54 +2192,43 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {/* 🌟 GRAND PARABOLIC DISH (Angled skyward 34° toward Deep Space / Cosmos) */}
                 <g transform="translate(0, -22) rotate(-34 0 0)">
                   {/* Outer Dish Structural Shell & Dark Rim */}
-                  <ellipse cx="0" cy="0" rx="30" ry="20" fill="#232d26" stroke="#161c17" strokeWidth="1.8" filter="url(#softShadow)" />
+                  <ellipse cx="0" cy="0" rx="30" ry="20" fill="#28332a" stroke="#18201a" strokeWidth="1.6" filter="url(#softShadow)" />
 
-                  {/* Dish Interior Parabolic Reflecting Surface (Scientific Ivory-White) */}
-                  <ellipse cx="0" cy="0" rx="28" ry="18" fill="#edf4ee" stroke="#637667" strokeWidth="1.6" />
+                  {/* Dish Interior Parabolic Reflecting Surface (Weathered Sage / Mountain Titanium) */}
+                  <ellipse cx="0" cy="0" rx="28" ry="18" fill="#cddad0" stroke="#526356" strokeWidth="1.4" />
 
                   {/* Concentric Microwave Radar Reflective Wire Mesh Rings */}
-                  <ellipse cx="0" cy="0" rx="21" ry="13.5" fill="none" stroke="#68786d" strokeWidth="1" strokeDasharray="4 2.5" />
-                  <ellipse cx="0" cy="0" rx="14" ry="9" fill="none" stroke="#68786d" strokeWidth="1" strokeDasharray="3 2" />
-                  <ellipse cx="0" cy="0" rx="7" ry="4.5" fill="none" stroke="#68786d" strokeWidth="0.9" />
+                  <ellipse cx="0" cy="0" rx="21" ry="13.5" fill="none" stroke="#758879" strokeWidth="0.9" strokeDasharray="4 2.5" />
+                  <ellipse cx="0" cy="0" rx="14" ry="9" fill="none" stroke="#758879" strokeWidth="0.9" strokeDasharray="3 2" />
+                  <ellipse cx="0" cy="0" rx="7" ry="4.5" fill="none" stroke="#758879" strokeWidth="0.8" />
 
                   {/* Parabolic Radial Rib Spokes (8 structural sectors) */}
-                  <line x1="-27" y1="0" x2="27" y2="0" stroke="#87998c" strokeWidth="0.9" opacity="0.8" />
-                  <line x1="0" y1="-17" x2="0" y2="17" stroke="#87998c" strokeWidth="0.9" opacity="0.8" />
-                  <line x1="-20" y1="-12" x2="20" y2="12" stroke="#87998c" strokeWidth="0.8" opacity="0.65" />
-                  <line x1="-20" y1="12" x2="20" y2="-12" stroke="#87998c" strokeWidth="0.8" opacity="0.65" />
+                  <line x1="-27" y1="0" x2="27" y2="0" stroke="#687b6d" strokeWidth="0.8" opacity="0.75" />
+                  <line x1="0" y1="-17" x2="0" y2="17" stroke="#687b6d" strokeWidth="0.8" opacity="0.75" />
+                  <line x1="-20" y1="-12" x2="20" y2="12" stroke="#687b6d" strokeWidth="0.7" opacity="0.6" />
+                  <line x1="-20" y1="12" x2="20" y2="-12" stroke="#687b6d" strokeWidth="0.7" opacity="0.6" />
 
                   {/* Quad-pod Struts converging to Sub-Reflector Feed Horn Tip */}
-                  <line x1="-23" y1="0" x2="0" y2="-24" stroke="#324036" strokeWidth="1.6" />
-                  <line x1="23" y1="0" x2="0" y2="-24" stroke="#324036" strokeWidth="1.6" />
-                  <line x1="0" y1="16" x2="0" y2="-24" stroke="#324036" strokeWidth="1.6" />
-                  <line x1="0" y1="-16" x2="0" y2="-24" stroke="#324036" strokeWidth="1.6" />
+                  <line x1="-23" y1="0" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
+                  <line x1="23" y1="0" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
+                  <line x1="0" y1="16" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
+                  <line x1="0" y1="-16" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
 
                   {/* Central Sub-reflector Horn & Alien Detection Sensor Feed */}
-                  <circle cx="0" cy="-24" r="4.2" fill="#131d16" stroke="#38ef7d" strokeWidth="1.5" />
-                  <circle cx="0" cy="-24" r="2.8" fill="#38ef7d" className="animate-pulse" />
+                  <circle cx="0" cy="-24" r="4.0" fill="#152119" stroke="#34d399" strokeWidth="1.3" />
+                  <circle cx="0" cy="-24" r="2.5" fill="#34d399" />
                   {/* High Gain Core Sensor Tip */}
-                  <circle cx="0" cy="-24" r="1.4" fill="#ffffff" />
+                  <circle cx="0" cy="-24" r="1.2" fill="#ffffff" />
                 </g>
 
-                {/* 📡 COSMIC ALIEN WAVE RESONANCE & PULSES (从天线馈源激荡射向宇宙深空的动态外星电波) */}
-                <g transform="translate(14, -54)">
-                  {/* Steady Cosmic Ambient Wave Ripple */}
-                  <circle cx="0" cy="0" r="10" fill="#38ef7d" opacity="0.3" className="animate-ping pointer-events-none" />
-                  <circle cx="0" cy="0" r="20" fill="none" stroke="#38ef7d" strokeWidth="1.5" opacity="0.5" className="animate-[ping_2s_infinite] pointer-events-none" />
-
-                  {/* Expanded Multi-Ring Waves on Click Trigger */}
-                  {alienPulseEffect && (
-                    <>
-                      <circle cx="0" cy="0" r="32" fill="none" stroke="#38ef7d" strokeWidth="2.2" className="animate-ping pointer-events-none" />
-                      <circle cx="0" cy="0" r="54" fill="none" stroke="#38bdf8" strokeWidth="1.8" className="animate-ping pointer-events-none" />
-                      <circle cx="0" cy="0" r="76" fill="none" stroke="#a78bfa" strokeWidth="1.2" className="animate-ping pointer-events-none" />
-                    </>
-                  )}
-                </g>
-
-                {/* Signal Direction Beam Pointer Arc */}
-                <path d="M8,-58 Q24,-76 42,-90" stroke="#38ef7d" strokeWidth="1.4" strokeDasharray="3 4" fill="none" opacity="0.6" className="animate-pulse pointer-events-none" />
-                <polygon points="42,-90 35,-88 38,-82" fill="#38ef7d" opacity="0.8" />
+                {/* 📡 COSMIC ALIEN WAVE RESONANCE & PULSES (Click-triggered or subtle) */}
+                {alienPulseEffect && (
+                  <g transform="translate(14, -54)">
+                    <circle cx="0" cy="0" r="18" fill="none" stroke="#34d399" strokeWidth="1.8" className="animate-ping pointer-events-none" />
+                    <circle cx="0" cy="0" r="36" fill="none" stroke="#38bdf8" strokeWidth="1.6" className="animate-ping pointer-events-none" />
+                    <circle cx="0" cy="0" r="54" fill="none" stroke="#a78bfa" strokeWidth="1.2" className="animate-ping pointer-events-none" />
+                  </g>
+                )}
               </g>
 
               {/* 5. OUTDOOR FIELD TELEMETRY CONSOLE & CRT OSCILLOSCOPE (户外射电监听操作台与频谱示波器) */}
@@ -2309,6 +2423,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 <path d="M-10,-4 Q2,-10 14,-6" fill="none" stroke="#5fa06d" strokeWidth="1.6" strokeLinecap="round" />
               </g>
             </g>
+
+            {/* 🌟 2.5D COTTAGE HEARTH SCULPTED TURF MOUND & STONE BASE (约克郡风貌干砌石护坡主屋台地) */}
+            {/*    为大木屋构筑敦厚坚实、深扎大地的干砌灰岩石基座与迎宾石阶，彻底告别悬空漂浮感 */}
+            <YorkshireStoneBastion
+              theme={theme}
+              onTriggerToast={onTriggerToast}
+              setHoveredObject={setHoveredObject}
+            />
 
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation />
@@ -3709,276 +3831,75 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
             </g>
 
-            {/* Stepping Stones Path leading naturally from house porch step down to the garden path */}
+            {/* Stepping Stones Path leading naturally from house porch step through terrace courtyard to stone gate */}
             <g id="stepping-stones" opacity="0.88">
               <ellipse cx="6" cy="254" rx="15" ry="8" fill="#7a7065" stroke="#5c544b" strokeWidth="0.8" />
               <ellipse cx="14" cy="272" rx="16" ry="8.5" fill="#6e655c" stroke="#524a42" strokeWidth="0.8" />
               <ellipse cx="0" cy="294" rx="17" ry="9" fill="#7a7065" stroke="#5c544b" strokeWidth="0.8" />
+              <ellipse cx="-8" cy="324" rx="16" ry="8" fill="#6c6356" stroke="#50483c" strokeWidth="0.8" />
+              <ellipse cx="10" cy="358" rx="18" ry="9" fill="#786d5e" stroke="#564c40" strokeWidth="0.8" />
+              <ellipse cx="-4" cy="395" rx="17" ry="8.5" fill="#6a6154" stroke="#4e463a" strokeWidth="0.8" />
+              <ellipse cx="6" cy="430" rx="19" ry="9.5" fill="#7a6f60" stroke="#584e42" strokeWidth="0.8" />
+              <ellipse cx="0" cy="462" rx="22" ry="10" fill="#887c6c" stroke="#605445" strokeWidth="0.8" />
             </g>
           </g>
 
           {/* ======================================================== */}
           {/* 2.5 VINTAGE CAPSULE CABIN (屋旁旧胶囊仓 · 卧室/休息室)    */}
-          {/*     Renovated retro aerospace capsule bedroom & lounge   */}
-          {/*     Connected via 2.5D solid timber boardwalk platform  */}
+          {/*     向中央主木屋收拢靠拢，形成紧密温暖的生活聚落          */}
           {/* ======================================================== */}
-          <CapsulePodHaven
-            activeRoom={activeRoom}
-            onSelectRoom={onSelectRoom}
-            presenceSlots={presenceSlots}
-            onSelectPerson={onSelectPerson}
-            setHoveredObject={setHoveredObject}
-            hoveredObject={hoveredObject}
-            hasMovedRef={hasMovedRef}
-            theme={theme}
-          />
+          <g id="capsule-pod-cluster" transform="translate(-36, 0)">
+            <CapsulePodHaven
+              activeRoom={activeRoom}
+              onSelectRoom={onSelectRoom}
+              presenceSlots={presenceSlots}
+              onSelectPerson={onSelectPerson}
+              setHoveredObject={setHoveredObject}
+              hoveredObject={hoveredObject}
+              hasMovedRef={hasMovedRef}
+              theme={theme}
+            />
+          </g>
 
           {/* ======================================================== */}
           {/* 2.6 COZY TIMBER SLEEPING CABIN (左侧独立安睡小木屋 · 暖木卧房) */}
-          {/*     与右侧旧太空胶囊睡眠舱定位呼应，提供深沉甜梦与午休小天地   */}
+          {/*     向中央主木屋收拢靠拢，形成紧密温暖的生活聚落          */}
           {/* ======================================================== */}
-          <WoodenCabinHaven
-            activeRoom={activeRoom}
-            onSelectRoom={onSelectRoom}
-            presenceSlots={presenceSlots}
-            onSelectPerson={onSelectPerson}
-            setHoveredObject={setHoveredObject}
-            hoveredObject={hoveredObject}
-            hasMovedRef={hasMovedRef}
-            theme={theme}
-          />
+          <g id="wooden-cabin-cluster" transform="translate(60, 0)">
+            <WoodenCabinHaven
+              activeRoom={activeRoom}
+              onSelectRoom={onSelectRoom}
+              presenceSlots={presenceSlots}
+              onSelectPerson={onSelectPerson}
+              setHoveredObject={setHoveredObject}
+              hoveredObject={hoveredObject}
+              hasMovedRef={hasMovedRef}
+              theme={theme}
+            />
+          </g>
 
           {/* ======================================================== */}
-          {/* 3. FOREGROUND MEADOW, CORNER POND, SCATTERED SHEEP & LIFE */}
-          {/*    (前景生机：自然有机水系、错落散牧小羊群、湖畔观景长椅与野花草甸) */}
+          {/* 3. FOREGROUND MEADOW & TRANQUIL MORANDI NEGATIVE SPACE   */}
+          {/*    (前景大面积纯净留白负空间与点缀长椅，彻底解决杂乱与拥挤) */}
           {/* ======================================================== */}
           <g id="foreground-meadow-elements">
-            {/* 3.1 CORNER MEADOW SPRING POND & STREAM FEEDER (生态水景·自然有机蜿蜒水塘与山泉细流) */}
-            {/*     绝非突兀硬切贴纸：自东北山坡引来清澈细流，水岸具备缓坡湿地与青苔泥滩过渡 */}
-            {/* Mountain Spring Brooklet flowing into Pond */}
-            <g id="pond-spring-feeder" opacity="0.85">
-              <path
-                d="M980,440 C940,480 890,510 855,545"
-                fill="none"
-                stroke="#4d7870"
-                strokeWidth="4.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M980,440 C940,480 890,510 855,545"
-                fill="none"
-                stroke="#a7e3de"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeDasharray="6 4"
-                opacity="0.9"
-              />
-              {/* Moist Peat Shore Verge along brook */}
-              <path
-                d="M980,440 C940,480 890,510 855,545"
-                fill="none"
-                stroke="#473a2d"
-                strokeWidth="8"
-                opacity="0.25"
-              />
-            </g>
+            {/* 🌟 约克郡黑脸羊群生态 (Swaledale Sheep Flock) */}
+            <YorkshireSheepFlock
+              theme={theme}
+              onTriggerToast={onTriggerToast}
+              setHoveredObject={setHoveredObject}
+            />
 
-            <g
-              id="corner-spring-pond"
-              transform="translate(820, 555)"
-              onClick={handleRiverClick}
-              onMouseEnter={() => setHoveredObject('corner-pond')}
-              onMouseLeave={() => setHoveredObject(null)}
-              className="cursor-pointer group/pond"
-            >
-              {/* Soft Wetland Topographic Depression Shadow (大地凹陷软阴影，彻底消除浮空贴纸感) */}
-              <path
-                d="M-22,42 C-38,12 8,-20 65,-22 C125,-25 180,-2 192,30 C204,65 168,105 108,112 C48,118 -10,95 -22,42 Z"
-                fill="#162215"
-                opacity="0.45"
-                filter="url(#softShadow)"
-              />
-
-              {/* Moist Peat & Soft Mud Transition Fringe (泥炭草泽渗透过渡圈) */}
-              <path
-                d="M-18,40 C-32,15 10,-16 62,-18 C118,-20 172,-1 182,28 C192,60 160,98 102,105 C46,112 -8,90 -18,40 Z"
-                fill="#544332"
-                stroke="#382b1f"
-                strokeWidth="1.4"
-              />
-
-              {/* Natural Sandy Loam Pond Shore Rim with organic meanders */}
-              <path
-                d="M-12,38 C-25,16 14,-10 60,-12 C110,-14 162,2 170,26 C180,54 150,88 96,94 C46,100 -2,82 -12,38 Z"
-                fill="#7a6750"
-                stroke="#4d3e2e"
-                strokeWidth="1.2"
-              />
-
-              {/* Crystal Clear Teal Mountain Spring Basin */}
-              <path
-                d="M-6,36 C-18,18 18,-6 58,-8 C104,-10 152,4 160,26 C168,48 142,78 92,84 C48,90 2,74 -6,36 Z"
-                fill="url(#riverDepthGrad)"
-              />
-
-              {/* Sky and Cloud Glaze Reflections on Pond */}
-              <ellipse cx="72" cy="20" rx="52" ry="16" fill="#ffffff" opacity="0.32" />
-              <ellipse cx="92" cy="46" rx="34" ry="12" fill="#ffffff" opacity="0.22" />
-
-              {/* Half-submerged Natural River Stones along the Shore */}
-              <g id="pond-pebbles" opacity="0.92">
-                {[
-                  { x: -6, y: 34, rx: 7, ry: 3.5 },
-                  { x: 14, y: -2, rx: 8, ry: 4 },
-                  { x: 50, y: -10, rx: 9, ry: 4.2 },
-                  { x: 102, y: -11, rx: 8.5, ry: 4 },
-                  { x: 146, y: 5, rx: 7.5, ry: 3.6 },
-                  { x: 166, y: 34, rx: 8, ry: 4 },
-                  { x: 148, y: 70, rx: 9, ry: 4.5 },
-                  { x: 118, y: 90, rx: 8, ry: 4 },
-                  { x: 65, y: 96, rx: 9.5, ry: 4.6 },
-                  { x: 20, y: 86, rx: 7.5, ry: 3.8 },
-                ].map((pb, i) => (
-                  <ellipse key={`ppb-${i}`} cx={pb.x} cy={pb.y} rx={pb.rx} ry={pb.ry} fill="#9c876e" stroke="#5a4b3a" strokeWidth="0.6" />
-                ))}
-              </g>
-
-              {/* Floating Emerald Lily Pads & Water Lilies */}
-              <g id="pond-water-lilies">
-                <g transform="translate(38, 22)">
-                  <path d="M0,0 A 11 6.5 0 1 1 9,-2 L4,0 Z" fill="#2d5e38" stroke="#1d4025" strokeWidth="0.6" />
-                  <ellipse cx="6" cy="-2" rx="2" ry="1.3" fill="#3b7a4a" />
-                  <circle cx="2" cy="-1" r="3" fill="#ffffff" />
-                  <circle cx="2" cy="-1" r="1.8" fill="#fbcfe8" />
-                  <circle cx="2" cy="-1" r="0.9" fill="#facc15" />
-                </g>
-                <g transform="translate(88, 40)">
-                  <path d="M0,0 A 13 7.5 0 1 1 11,-2 L5,0 Z" fill="#285632" stroke="#183b21" strokeWidth="0.6" />
-                  <circle cx="3" cy="-1" r="3.4" fill="#ffffff" />
-                  <circle cx="3" cy="-1" r="2.0" fill="#fbcfe8" />
-                  <circle cx="3" cy="-1" r="1.0" fill="#facc15" />
-                </g>
-                <g transform="translate(116, 16)">
-                  <path d="M0,0 A 7.5 5 0 1 1 5.5,-1 L3,0 Z" fill="#33663e" />
-                </g>
-              </g>
-
-              {/* Wild Water Irises, Cattails & Shore Reeds */}
-              <g id="pond-reeds" transform="translate(144, 40)">
-                <ellipse cx="0" cy="5" rx="10" ry="4" fill="#1b2518" opacity="0.4" />
-                <line x1="-5" y1="5" x2="-10" y2="-18" stroke="#3b683e" strokeWidth="2.2" strokeLinecap="round" />
-                <line x1="2" y1="5" x2="5" y2="-25" stroke="#48804c" strokeWidth="2.0" strokeLinecap="round" />
-                <line x1="7" y1="5" x2="14" y2="-15" stroke="#3b683e" strokeWidth="1.8" strokeLinecap="round" />
-                <line x1="-1" y1="5" x2="-2" y2="-21" stroke="#5da162" strokeWidth="1.5" strokeLinecap="round" />
-                {/* Yellow Flag Iris Blossoms */}
-                <circle cx="5" cy="-25" r="2.2" fill="#facc15" />
-                <circle cx="-10" cy="-18" r="1.8" fill="#facc15" />
-              </g>
-
-              {/* Peaceful Wild Mallard Duck Pair swimming */}
-              <g transform="translate(65, 52)">
-                <ellipse cx="0" cy="0" rx="6.5" ry="3.8" fill="#3a2f26" />
-                <circle cx="-5" cy="-2.5" r="2.8" fill="#155e42" />
-                <circle cx="-7.5" cy="-2" r="1.2" fill="#eab308" />
-                <ellipse cx="2" cy="-0.5" rx="3.5" ry="2" fill="#785038" />
-                <ellipse cx="0" cy="3.5" rx="7" ry="1.5" fill="#1e3a35" opacity="0.4" />
-              </g>
-
-              {/* Water Ripples */}
-              {ripples.map((rip) => (
-                <g key={rip.id} className="pointer-events-none">
-                  <ellipse
-                    cx={rip.x - 820}
-                    cy={rip.y - 555}
-                    rx="26"
-                    ry="11"
-                    fill="none"
-                    stroke={theme.riverRipples}
-                    strokeWidth="1.6"
-                    opacity="0.8"
-                    className="animate-[ping_2.2s_cubic-bezier(0,0,0.2,1)_infinite]"
-                  />
-                  <ellipse
-                    cx={rip.x - 820}
-                    cy={rip.y - 555}
-                    rx="12"
-                    ry="5"
-                    fill="none"
-                    stroke="#ffffff"
-                    strokeWidth="1.2"
-                    opacity="0.85"
-                  />
-                </g>
-              ))}
-            </g>
-
-            {/* 3.2 🐑 NATURALLY SCATTERED SHEEP FLOCK (自然错落散布于向阳草丘，彻底告别道路排队) */}
-            <g
-              id="sheep-herd"
-              className="cursor-pointer transition-opacity hover:opacity-95"
-              onMouseEnter={() => setHoveredObject('sheep-pasture')}
-              onMouseLeave={() => setHoveredObject(null)}
-            >
-              {/* Sheep 1: Mother Grazing peacefully on the sunny knoll (x=210, y=525) */}
-              <g transform="translate(210, 525)">
-                <ellipse cx="14" cy="34" rx="20" ry="6" fill="#1b2819" opacity="0.3" />
-                <ellipse cx="16" cy="18" rx="19" ry="14" fill="#ffffff" stroke="#e2d9cc" strokeWidth="0.6" />
-                <circle cx="30" cy="12" r="7.5" fill="#2d2621" />
-                <circle cx="31" cy="10" r="1.4" fill="#ffffff" />
-                <ellipse cx="27" cy="8" rx="3.2" ry="1.8" fill="#2d2621" transform="rotate(-15 27 8)" />
-                <line x1="9" y1="26" x2="9" y2="35" stroke="#2d2621" strokeWidth="2.5" strokeLinecap="round" />
-                <line x1="21" y1="26" x2="21" y2="35" stroke="#2d2621" strokeWidth="2.5" strokeLinecap="round" />
-              </g>
-
-              {/* Sheep 2: Mother Head-Down Grazing in Clover Meadow (x=330, y=565) */}
-              <g transform="translate(330, 565)">
-                <ellipse cx="16" cy="36" rx="24" ry="7.5" fill="#1b2819" opacity="0.32" />
-                <ellipse cx="16" cy="18" rx="20" ry="15" fill="#ffffff" stroke="#e2d9cc" strokeWidth="0.6" />
-                <circle cx="32" cy="22" r="7.5" fill="#2d2621" />
-                <circle cx="33" cy="21" r="1.3" fill="#ffffff" />
-                <ellipse cx="28" cy="16" rx="3.5" ry="2" fill="#2d2621" transform="rotate(-20 28 16)" />
-                <line x1="8" y1="28" x2="8" y2="37" stroke="#2d2621" strokeWidth="2.8" strokeLinecap="round" />
-                <line x1="22" y1="28" x2="22" y2="37" stroke="#2d2621" strokeWidth="2.8" strokeLinecap="round" />
-              </g>
-
-              {/* Lamb 1: Playful Little Lamb hopping near mother (x=270, y=535) */}
-              <g transform="translate(270, 535)">
-                <ellipse cx="10" cy="22" rx="14" ry="5" fill="#1b2819" opacity="0.28" />
-                <ellipse cx="10" cy="10" rx="11" ry="8" fill="#ffffff" stroke="#e2d9cc" strokeWidth="0.5" />
-                <circle cx="20" cy="8" r="5" fill="#38302a" />
-                <circle cx="21" cy="7" r="1" fill="#ffffff" />
-                <line x1="5" y1="16" x2="5" y2="23" stroke="#38302a" strokeWidth="2" strokeLinecap="round" />
-                <line x1="14" y1="16" x2="14" y2="23" stroke="#38302a" strokeWidth="2" strokeLinecap="round" />
-              </g>
-
-              {/* Sheep 3: Resting Comfortably in Sea of Daisies (x=460, y=575) */}
-              <g transform="translate(460, 575)">
-                <ellipse cx="18" cy="22" rx="24" ry="7" fill="#1b2819" opacity="0.3" />
-                <ellipse cx="18" cy="16" rx="19" ry="13" fill="#f8fafc" stroke="#ded5c6" strokeWidth="0.6" />
-                <circle cx="2" cy="12" r="7.5" fill="#38302a" />
-                <circle cx="1" cy="11" r="1.2" fill="#ffffff" />
-                <ellipse cx="6" cy="9" rx="3" ry="1.8" fill="#38302a" transform="rotate(20 6 9)" />
-              </g>
-
-              {/* Sheep 4: Gentle Lamb near the pond knoll (x=660, y=540) */}
-              <g transform="translate(660, 540)">
-                <ellipse cx="14" cy="30" rx="18" ry="6" fill="#1b2819" opacity="0.28" />
-                <ellipse cx="14" cy="14" rx="15" ry="11" fill="#ffffff" stroke="#e2d9cc" strokeWidth="0.5" />
-                <circle cx="-1" cy="18" r="6" fill="#2d2621" />
-                <line x1="10" y1="22" x2="10" y2="31" stroke="#2d2621" strokeWidth="2.2" strokeLinecap="round" />
-                <line x1="20" y1="22" x2="20" y2="31" stroke="#2d2621" strokeWidth="2.2" strokeLinecap="round" />
-              </g>
-            </g>
-
-            {/* 3.3 RUSTIC TIMBER REST BENCH OVERLOOKING THE POND (湖畔向阳长椅·移至水塘缓坡，正门动线彻底解放！) */}
+            {/* 极简点缀：草坡原木小长椅 (缩小组团化放置于主木屋左侧草甸边缘) */}
             <g
               id="meadow-bench"
-              transform="translate(735, 515)"
+              transform="translate(295, 452) scale(0.68)"
               className="cursor-pointer transition-opacity hover:opacity-95"
               onMouseEnter={() => setHoveredObject('meadow-bench')}
               onMouseLeave={() => setHoveredObject(null)}
+              onClick={() => onTriggerToast?.('🪑 草甸原木长椅 · 向阳绿丘上的休憩处，迎着微风看远山与流云')}
             >
-              <ellipse cx="36" cy="45" rx="42" ry="8" fill="#1b2819" opacity="0.36" />
+              <ellipse cx="36" cy="45" rx="42" ry="8" fill="#152414" opacity="0.32" />
               <rect x="6" y="24" width="6.5" height="20" rx="1.5" fill="#4d321d" />
               <rect x="60" y="24" width="6.5" height="20" rx="1.5" fill="#4d321d" />
               <rect x="2" y="42" width="14" height="3.5" rx="1.5" fill="#3b2413" />
@@ -3992,7 +3913,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               <path d="M4,24 L4,15 L14,15" fill="none" stroke="#4d321d" strokeWidth="2.8" strokeLinecap="round" />
               <path d="M68,24 L68,15 L58,15" fill="none" stroke="#4d321d" strokeWidth="2.8" strokeLinecap="round" />
 
-              {/* Woven Picnic Basket on Bench */}
+              {/* Handcrafted Woven Basket on Bench */}
               <g transform="translate(42, 12)">
                 <rect x="0" y="0" width="18" height="12" rx="2.5" fill="#d4a359" stroke="#875822" strokeWidth="0.9" />
                 <path d="M5,0 C5,-5 13,-5 13,0" fill="none" stroke="#875822" strokeWidth="1.4" strokeLinecap="round" />
@@ -4006,29 +3927,20 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               <circle cx="78" cy="43" r="1" fill="#eab308" />
             </g>
 
-            {/* 3.4 Vibrant Wildflowers Sprinkled across the Pasture Knolls */}
-            <g id="pasture-wildflowers">
+            {/* 稀疏雅致的微型草花点缀（仅附着于小径旁，下方大面积纯净草坪全部留白） */}
+            <g id="pasture-wildflowers" opacity="0.8">
               {[
-                { x: 120, y: 530 }, { x: 180, y: 565 }, { x: 380, y: 550 },
-                { x: 440, y: 560 }, { x: 530, y: 545 }, { x: 720, y: 535 },
-                { x: 780, y: 555 }, { x: 810, y: 520 }, { x: 1040, y: 540 },
+                { x: 380, y: 535 }, { x: 440, y: 545 }, { x: 500, y: 530 }
               ].map((f, i) => (
-                <circle key={`pbf-${i}`} cx={f.x} cy={f.y} r={2.2} fill="#facc15" />
+                <circle key={`pbf-${i}`} cx={f.x} cy={f.y} r={2.0} fill="#facc15" />
               ))}
               {[
-                { x: 150, y: 545 }, { x: 330, y: 575 }, { x: 470, y: 535 },
-                { x: 670, y: 540 }, { x: 750, y: 570 }, { x: 920, y: 535 },
+                { x: 340, y: 520 }, { x: 470, y: 540 }
               ].map((f, i) => (
                 <g key={`pdf-${i}`}>
-                  <circle cx={f.x} cy={f.y} r={2.4} fill="#ffffff" />
-                  <circle cx={f.x} cy={f.y} r={0.9} fill="#eab308" />
+                  <circle cx={f.x} cy={f.y} r={2.2} fill="#ffffff" />
+                  <circle cx={f.x} cy={f.y} r={0.8} fill="#eab308" />
                 </g>
-              ))}
-              {[
-                { x: 200, y: 580 }, { x: 390, y: 570 }, { x: 560, y: 560 },
-                { x: 740, y: 545 }, { x: 990, y: 560 },
-              ].map((f, i) => (
-                <circle key={`plf-${i}`} cx={f.x} cy={f.y} r={2.0} fill="#a855f7" />
               ))}
             </g>
           </g>
@@ -4075,9 +3987,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       </div>
 
       {/* Subtle interaction whisper */}
-      <div className="absolute bottom-24 right-4 hidden md:block z-10 pointer-events-none opacity-60 hover:opacity-90 transition-opacity">
+      <div className="absolute bottom-6 right-6 hidden md:block z-10 pointer-events-none opacity-60 hover:opacity-90 transition-opacity">
         <span className="text-[11px] text-[#b8ab96] bg-[#141210]/70 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/5">
-          点击池塘荡漾水纹 · 滚轮缩放 · 拖拽平移
+          约克郡谷箱庭全景 · 滚轮自由缩放 · 拖拽漫游
         </span>
       </div>
 
@@ -4108,7 +4020,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {hoveredObject === 'alien-receiver' && '📡 外星信号接收装置 · 频率 1420.405 MHz 监听深空（点击捕获电波）'}
               {hoveredObject === 'sheep-pasture' && '🐑 阳光草丘牧场 · 悠闲吃草的小羊群与雏菊野花草甸'}
               {hoveredObject === 'meadow-bench' && '🪑 草甸原木长椅 · 向阳绿丘上的休憩处，迎着微风看小羊与流云'}
-              {hoveredObject === 'corner-pond' && '💧 山泉清漪池塘 · 睡莲浮萍与野鸭，点击荡漾水纹涟漪'}
+              {hoveredObject === 'corner-pond' && '💧 约克郡清冽山溪 · 涉水跳石小径与水生鸢尾，点击荡漾水纹涟漪'}
+              {(hoveredObject.startsWith('🐑') || hoveredObject.startsWith('🦆') || hoveredObject.startsWith('🚪')) && hoveredObject}
+              {![
+                'tractor', 'mailbox', 'person-self', 'daybed', 'bookshelf', 'cabinet', 'person-lin',
+                'person-study', 'lazy-sofa', 'person-yu', 'room-my_room', 'room-living_nook',
+                'room-friend_room', 'room-capsule_pod', 'room-corn_lounge', 'room-observatory',
+                'alien-receiver', 'sheep-pasture', 'meadow-bench', 'corner-pond'
+              ].includes(hoveredObject) && !hoveredObject.startsWith('bookshelf:') && !hoveredObject.startsWith('cabinet:') && !hoveredObject.startsWith('🐑') && !hoveredObject.startsWith('🦆') && !hoveredObject.startsWith('🚪') && hoveredObject}
             </span>
           </div>
         </div>
