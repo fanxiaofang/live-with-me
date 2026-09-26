@@ -1,222 +1,239 @@
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
-import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
+import { YORKSHIRE_LAYOUT, DEBUG_TERRAIN } from '../landscapeLayout';
 
 /**
- * 🏰 HouseTerrace (The Grand Terrace Bastion & Curved Retaining Wall)
+ * 🏡 HouseTerrace (Natural Raised Grassy Terrace with Limited Stone Retaining)
  *
- * Layer: 02 TERRAIN / House Terrace Plinth & Forecourt
+ * Layer: 02 TERRAIN / House Terrace
  * Spatial Region: YORKSHIRE_LAYOUT.mainTerrace
  *
- * Preserves the 38px thick stone plinth, curved retaining wall,
- * central welcoming stone steps, and rustic timber wicket gate.
+ * Phase 2 redesign: the house is embedded into a natural raised landform.
+ * - ~80% natural terrain (grass, gentle slopes)
+ * - ~20% visible retaining structure (stone steps, limited front edge stonework)
+ * - House appears rooted into the hillside, not sitting on a stone platform
+ * - Front terrain rolls down naturally toward middle foreground
+ * - Central entrance steps remain as compositional feature
  */
 export const HouseTerrace: React.FC<YorkshireCommonProps> = ({
   onTriggerToast,
   setHoveredObject,
   className,
 }) => {
-  const layout = YORKSHIRE_LAYOUT.mainTerrace;
+  const terrace = YORKSHIRE_LAYOUT.mainTerrace;
+
+  // Natural terrace outline: broad crown, gentle shoulders, soft front drop
+  // This is a large organic shape, not a diamond or rectangle
+  const terraceOutline = `
+    M${terrace.leftShoulder.x},${terrace.leftShoulder.y}
+    C${terrace.leftShoulder.x + 40},${terrace.leftShoulder.y - 30}
+     ${terrace.crown.x - 80},${terrace.crown.y - 20}
+     ${terrace.crown.x},${terrace.crown.y}
+    C${terrace.crown.x + 80},${terrace.crown.y - 20}
+     ${terrace.rightShoulder.x - 40},${terrace.rightShoulder.y - 30}
+     ${terrace.rightShoulder.x},${terrace.rightShoulder.y}
+    C${terrace.rightShoulder.x + 30},${terrace.rightShoulder.y + 40}
+     ${terrace.frontEdge.x + 120},${terrace.frontEdge.y - 60}
+     ${terrace.frontEdge.x},${terrace.frontEdge.y}
+    C${terrace.frontEdge.x - 120},${terrace.frontEdge.y - 60}
+     ${terrace.leftShoulder.x - 30},${terrace.leftShoulder.y + 40}
+     ${terrace.leftShoulder.x},${terrace.leftShoulder.y}
+    Z
+  `;
+
+  // Front drop: visible but not abrupt, rolls down naturally
+  const frontDropPath = `
+    M${terrace.leftShoulder.x + 20},${terrace.frontEdge.y - 40}
+    C${terrace.crown.x - 60},${terrace.frontEdge.y - 20}
+     ${terrace.crown.x + 60},${terrace.frontEdge.y - 20}
+     ${terrace.rightShoulder.x - 20},${terrace.frontEdge.y - 40}
+    L${terrace.rightShoulder.x - 10},${terrace.frontEdge.y + 20}
+    C${terrace.crown.x + 50},${terrace.frontEdge.y + 35}
+     ${terrace.crown.x - 50},${terrace.frontEdge.y + 35}
+     ${terrace.leftShoulder.x + 10},${terrace.frontEdge.y + 20}
+    Z
+  `;
 
   return (
-    <g id="homestead-grand-bastion-system" className={className}>
+    <g id="homestead-natural-terrace" className={className}>
       <defs>
-        {/* 规整风化灰砂岩墙体渐变 (暖调厚重石材) */}
-        <linearGradient id="ysBastionFaceGradV2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#766d61" />
-          <stop offset="35%" stopColor="#62594e" />
-          <stop offset="75%" stopColor="#4c4338" />
-          <stop offset="100%" stopColor="#352e26" />
-        </linearGradient>
-
-        {/* 饱满圆润石冠石帽渐变 (Coping Stones) */}
-        <linearGradient id="ysBastionCapGradV2" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#a89d8e" />
-          <stop offset="50%" stopColor="#beb3a4" />
-          <stop offset="100%" stopColor="#968b7d" />
-        </linearGradient>
-
-        {/* 台地草坪向阳渐变 (Terrace Courtyard Turf) */}
-        <linearGradient id="ysTerraceTurfGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#9eb54a" />
-          <stop offset="50%" stopColor="#80993c" />
+        {/* Natural terrace turf: warm, sunlit, rooted */}
+        <linearGradient id="naturalTerraceGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#a8bd55" />
+          <stop offset="35%" stopColor="#93ab48" />
+          <stop offset="70%" stopColor="#7a9438" />
           <stop offset="100%" stopColor="#5f772e" />
+        </linearGradient>
+
+        {/* Front drop shading: subtle depth, not cliff */}
+        <linearGradient id="frontDropGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#7a9438" />
+          <stop offset="50%" stopColor="#5f772e" />
+          <stop offset="100%" stopColor="#465e22" />
+        </linearGradient>
+
+        {/* Limited stone retaining: only at entrance front edge */}
+        <linearGradient id="limitedStoneGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#8a8072" />
+          <stop offset="50%" stopColor="#6e6557" />
+          <stop offset="100%" stopColor="#524a3e" />
         </linearGradient>
       </defs>
 
-      {/* ========================================================================= */}
-      {/* A. 紧贴主屋底部的垂直厚重石基 (Elevated House Plinth Foundation)            */}
-      {/* ========================================================================= */}
-      <g id="house-immediate-stone-plinth">
-        {/* 地基接触阴影 */}
-        <polygon points="-305,152 0,60 305,152 0,285" fill="#141c12" opacity="0.5" filter="url(#softShadow)" />
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {/* 1. NATURAL TERRACE MASS: The house sits IN the hillside             */}
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      <path
+        id="terrace-natural-mass"
+        d={terraceOutline}
+        fill="url(#naturalTerraceGrad)"
+      />
 
-        {/* 实心平整石台顶面 (Plinth Top Surface) */}
-        <polygon points="-300,150 0,62 300,150 0,242" fill="#756a5c" stroke="#483f34" strokeWidth="1.0" />
+      {/* Subtle crown highlight: sunlit top */}
+      <path
+        d={`M${terrace.crown.x - 60},${terrace.crown.y - 10}
+          C${terrace.crown.x - 30},${terrace.crown.y - 18}
+           ${terrace.crown.x + 30},${terrace.crown.y - 18}
+           ${terrace.crown.x + 60},${terrace.crown.y - 10}
+          L${terrace.crown.x + 40},${terrace.crown.y + 5}
+          C${terrace.crown.x},${terrace.crown.y + 12}
+           ${terrace.crown.x - 40},${terrace.crown.y + 5}
+           ${terrace.crown.x - 60},${terrace.crown.y - 10}
+          Z`}
+        fill="#b8cc60"
+        opacity={0.35}
+      />
 
-        {/* 西南垂直石立面 (South-West Plinth Face - 厚度 36px) */}
-        <polygon points="-300,150 0,242 0,278 -300,186" fill="url(#ysBastionFaceGradV2)" stroke="#261f18" strokeWidth="1.0" />
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {/* 2. FRONT DROP: Natural roll-down, not a wall                        */}
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      <path
+        id="terrace-front-drop"
+        d={frontDropPath}
+        fill="url(#frontDropGrad)"
+        opacity={0.9}
+      />
 
-        {/* 东南垂直石立面 (South-East Plinth Face) */}
-        <polygon points="0,242 300,150 300,186 0,278" fill="#3b332a" stroke="#261f18" strokeWidth="1.0" />
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {/* 3. LIMITED STONE RETAINING: Only at entrance, ~20% of perimeter     */}
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      <g id="terrace-limited-stonework">
+        {/* Left stone segment */}
+        <polygon
+          points={`
+            ${terrace.leftShoulder.x + 30},${terrace.frontEdge.y - 25}
+            ${terrace.crown.x - 45},${terrace.frontEdge.y - 15}
+            ${terrace.crown.x - 40},${terrace.frontEdge.y + 5}
+            ${terrace.leftShoulder.x + 40},${terrace.frontEdge.y - 5}
+          `}
+          fill="url(#limitedStoneGrad)"
+          stroke="#3a332a"
+          strokeWidth="0.7"
+        />
 
-        {/* 规整建筑石材水平错缝与竖向砌缝 (Masonry Coursing) */}
-        <g opacity="0.6">
-          <line x1="-300" y1="168" x2="0" y2="260" stroke="#1f1812" strokeWidth="1.2" />
-          <line x1="0" y1="260" x2="300" y2="168" stroke="#1c150f" strokeWidth="1.2" />
-          {[-240, -180, -120, -60].map((sx, i) => {
-            const syTop = 150 + ((sx + 300) / 300) * 92 + (i % 2 === 0 ? 0 : 18);
-            return <line key={`pl-seam-w-${sx}`} x1={sx} y1={syTop} x2={sx} y2={syTop + 18} stroke="#1f1812" strokeWidth="1.0" />;
-          })}
-          {[60, 120, 180, 240].map((sx, i) => {
-            const syTop = 242 - (sx / 300) * 92 + (i % 2 === 0 ? 0 : 18);
-            return <line key={`pl-seam-e-${sx}`} x1={sx} y1={syTop} x2={sx} y2={syTop + 18} stroke="#1c150f" strokeWidth="1.0" />;
-          })}
-        </g>
+        {/* Right stone segment */}
+        <polygon
+          points={`
+            ${terrace.crown.x + 45},${terrace.frontEdge.y - 15}
+            ${terrace.rightShoulder.x - 30},${terrace.frontEdge.y - 25}
+            ${terrace.rightShoulder.x - 40},${terrace.frontEdge.y - 5}
+            ${terrace.crown.x + 40},${terrace.frontEdge.y + 5}
+          `}
+          fill="url(#limitedStoneGrad)"
+          stroke="#3a332a"
+          strokeWidth="0.7"
+        />
 
-        {/* 基座顶边向阳高光倒角 */}
-        <line x1="-300" y1="150" x2="0" y2="242" stroke="#d5cabb" strokeWidth="1.5" strokeLinecap="round" />
-        <line x1="0" y1="242" x2="300" y2="150" stroke="#a49787" strokeWidth="1.2" strokeLinecap="round" />
+        {/* Stone cap highlights */}
+        <line
+          x1={terrace.leftShoulder.x + 30} y1={terrace.frontEdge.y - 25}
+          x2={terrace.crown.x - 45} y2={terrace.frontEdge.y - 15}
+          stroke="#b5ab9c" strokeWidth="1.2" opacity="0.7"
+        />
+        <line
+          x1={terrace.crown.x + 45} y1={terrace.frontEdge.y - 15}
+          x2={terrace.rightShoulder.x - 30} y2={terrace.frontEdge.y - 25}
+          stroke="#b5ab9c" strokeWidth="1.2" opacity="0.7"
+        />
       </g>
 
-      {/* ========================================================================= */}
-      {/* B. 主屋台地外围【弧形干砌石围墙与石台阶】(Curved Bastion & Steps)            */}
-      {/* ========================================================================= */}
-      <g id="curved-bastion-terrace-perimeter">
-        {/* 台地前庭平坦草皮 (Raised Terrace Forecourt Lawn) */}
-        <path
-          d="M-300,186 C-280,290 -240,410 -65,465 L65,465 C220,420 320,310 300,186 Z"
-          fill="url(#ysTerraceTurfGrad)"
-        />
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {/* 4. CENTRAL ENTRANCE STEPS: Connect upper terrace to lower slope     */}
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      <g
+        id="terrace-entrance-steps"
+        transform={`translate(${terrace.exposedStone.entranceSteps.anchor.x}, ${terrace.exposedStone.entranceSteps.anchor.y})`}
+      >
+        {/* Grounding shadow */}
+        <ellipse cx="0" cy="42" rx="65" ry="14" fill="#1a2414" opacity="0.35" />
 
-        {/* 弧形挡土石墙垂直立面 (Curved Retaining Wall Face) */}
-        {/* 西翼弧形段 */}
-        <path
-          d="M-280,260 C-260,350 -200,435 -65,465 L-65,491 C-200,461 -260,376 -280,286 Z"
-          fill="url(#ysBastionFaceGradV2)"
-          stroke="#261f18"
-          strokeWidth="0.9"
-        />
-        {/* 东翼弧形段 */}
-        <path
-          d="M65,465 C200,435 280,350 320,260 L320,286 C280,376 200,461 65,491 Z"
-          fill="#3e362d"
-          stroke="#261f18"
-          strokeWidth="0.9"
-        />
+        {/* Step 4 (bottom, embedded in slope) */}
+        <polygon points="-52,30 0,38 52,30 0,22" fill="#6e6557" stroke="#4a4339" strokeWidth="0.7" />
+        <polygon points="-52,30 0,38 0,43 -52,35" fill="#554d40" />
+        <polygon points="0,38 52,30 52,35 0,43" fill="#423a30" />
 
-        {/* 弧形墙体规整块面石缝阴影 (Masonry Seams on Curved Wall) */}
-        <g opacity="0.6">
-          <path d="M-280,273 C-260,363 -200,448 -65,478" fill="none" stroke="#211a14" strokeWidth="1.0" />
-          <path d="M65,478 C200,448 280,363 320,273" fill="none" stroke="#1f1812" strokeWidth="1.0" />
-          {[-230, -180, -130, -90].map((wx, i) => (
-            <line key={`cw-seam-w-${i}`} x1={wx} y1={330 + i * 32} x2={wx + 2} y2={344 + i * 32} stroke="#211a14" strokeWidth="1.0" />
-          ))}
-          {[90, 130, 180, 230].map((wx, i) => (
-            <line key={`cw-seam-e-${i}`} x1={wx} y1={426 - i * 32} x2={wx - 2} y2={440 - i * 32} stroke="#1f1812" strokeWidth="1.0" />
-          ))}
-        </g>
+        {/* Step 3 */}
+        <polygon points="-45,18 0,26 45,18 0,11" fill="#7d7262" stroke="#554d40" strokeWidth="0.7" />
+        <polygon points="-45,18 0,26 0,31 -45,23" fill="#625848" />
+        <polygon points="0,26 45,18 45,23 0,31" fill="#4e463a" />
 
-        {/* 墙顶厚实整齐的半圆石冠帽 (Coping Stones) */}
-        <path
-          d="M-280,260 C-260,350 -200,435 -65,465"
-          fill="none"
-          stroke="url(#ysBastionCapGradV2)"
-          strokeWidth="6.0"
-          strokeLinecap="round"
-        />
-        <path
-          d="M-280,258.5 C-260,348.5 -200,433.5 -65,463.5"
-          fill="none"
-          stroke="#dcd2c4"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          opacity="0.8"
-        />
+        {/* Step 2 */}
+        <polygon points="-38,7 0,14 38,7 0,0" fill="#8d8170" stroke="#625850" strokeWidth="0.7" />
+        <polygon points="-38,7 0,14 0,19 -38,12" fill="#706456" />
+        <polygon points="0,14 38,7 38,12 0,19" fill="#5a5044" />
 
-        <path
-          d="M65,465 C200,435 280,350 320,260"
-          fill="none"
-          stroke="url(#ysBastionCapGradV2)"
-          strokeWidth="6.0"
-          strokeLinecap="round"
-        />
-        <path
-          d="M65,463.5 C200,433.5 280,348.5 320,258.5"
-          fill="none"
-          stroke="#dcd2c4"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          opacity="0.8"
-        />
+        {/* Step 1 (top, flush with terrace) */}
+        <polygon points="-31,-3 0,4 31,-3 0,-9" fill="#9d9180" stroke="#6e6557" strokeWidth="0.7" />
+        <polygon points="-31,-3 0,4 0,9 -31,2" fill="#7d7262" />
+        <polygon points="0,4 31,-3 31,2 0,9" fill="#665c4e" />
 
-        {/* 🌟 台地正中宽阔迎宾大石阶 (Grand Terraced Steps) */}
-        <g id="bastion-central-stone-steps" transform={`translate(${layout.steps.anchor.x}, ${layout.steps.anchor.y})`}>
-          {/* 接地阴影 */}
-          <ellipse cx="0" cy="46" rx="72" ry="16" fill="#151e13" opacity="0.45" />
+        {/* Tread highlights */}
+        <line x1="-48" y1="30" x2="0" y2="37" stroke="#c5bbaa" strokeWidth="0.8" />
+        <line x1="-41" y1="18" x2="0" y2="24" stroke="#d0c6b6" strokeWidth="0.8" />
+        <line x1="-34" y1="7" x2="0" y2="12" stroke="#dbd1c2" strokeWidth="0.8" />
 
-          {/* 第4级 (底阶·嵌入中景缓坡) */}
-          <polygon points="-58,34 0,44 58,34 0,24" fill="#665b4f" stroke="#3d352b" strokeWidth="0.8" />
-          <polygon points="-58,34 0,44 0,50 -58,40" fill="#4d4338" />
-          <polygon points="0,44 58,34 58,40 0,50" fill="#383027" />
+        {/* Rustic wicket gate */}
+        <g
+          id="terrace-wicket-gate"
+          className="cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onTriggerToast?.('🚪 台地原木小门 · 拾级而下，通向阳光明媚的中景缓坡');
+          }}
+          onMouseEnter={() => setHoveredObject?.('🚪 台地田园小门 · 连通自然台地与下方缓坡牧场')}
+          onMouseLeave={() => setHoveredObject?.(null)}
+        >
+          <rect x="-58" y="-10" width="5" height="28" rx="1.2" fill="#4a3522" stroke="#2a1d12" strokeWidth="0.7" />
+          <polygon points="-59,-10 -55,-14 -51,-10" fill="#5f452e" />
+          <rect x="53" y="-10" width="5" height="28" rx="1.2" fill="#4a3522" stroke="#2a1d12" strokeWidth="0.7" />
+          <polygon points="52,-10 56,-14 60,-10" fill="#5f452e" />
 
-          {/* 第3级 */}
-          <polygon points="-50,22 0,31 50,22 0,13" fill="#786c5e" stroke="#483f34" strokeWidth="0.8" />
-          <polygon points="-50,22 0,31 0,37 -50,28" fill="#584e42" />
-          <polygon points="0,31 50,22 50,28 0,37" fill="#42392f" />
-
-          {/* 第2级 */}
-          <polygon points="-42,10 0,18 42,10 0,2" fill="#8a7c6c" stroke="#54493c" strokeWidth="0.8" />
-          <polygon points="-42,10 0,18 0,24 -42,16" fill="#635748" />
-          <polygon points="0,18 42,10 42,16 0,24" fill="#4c4136" />
-
-          {/* 第1级 (顶阶·与围墙台面齐平) */}
-          <polygon points="-34,-1 0,6 34,-1 0,-8" fill="#9e907e" stroke="#605445" strokeWidth="0.8" />
-          <polygon points="-34,-1 0,6 0,12 -34,5" fill="#6f6353" />
-          <polygon points="0,6 34,-1 34,5 0,12" fill="#54483b" />
-
-          {/* 台阶踏面高光微线 */}
-          <line x1="-54" y1="34" x2="0" y2="43" stroke="#b8ad9e" strokeWidth="0.9" />
-          <line x1="-46" y1="22" x2="0" y2="30" stroke="#c4b9aa" strokeWidth="0.9" />
-          <line x1="-38" y1="10" x2="0" y2="17" stroke="#d2c7b8" strokeWidth="0.9" />
-
-          {/* 台阶两侧英伦原木田园矮门 (Rustic Bastion Wicket Gate) */}
-          <g
-            id="terrace-wicket-gate"
-            className="cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              onTriggerToast?.('🚪 庄园台地原木小门 · 拾级而下，通向阳光明媚的中景缓坡');
-            }}
-            onMouseEnter={() => setHoveredObject?.('🚪 台地田园小门 · 连通主屋石台与下方中景缓坡牧场')}
-            onMouseLeave={() => setHoveredObject?.(null)}
-          >
-            {/* 左立柱与合页 */}
-            <rect x="-65" y="-12" width="6" height="32" rx="1.5" fill="#48321e" stroke="#26180c" strokeWidth="0.8" />
-            <polygon points="-66,-12 -62,-16 -58,-12" fill="#63452b" />
-            <rect x="-65" y="-4" width="10" height="2.5" fill="#1f2320" />
-            <rect x="-65" y="10" width="10" height="2.5" fill="#1f2320" />
-
-            {/* 右立柱与锁扣 */}
-            <rect x="59" y="-12" width="6" height="32" rx="1.5" fill="#48321e" stroke="#26180c" strokeWidth="0.8" />
-            <polygon points="58,-12 62,-16 66,-12" fill="#63452b" />
-
-            {/* 左右对开的木条小栅门 (Open Wicket Gates) */}
-            <g transform="rotate(-35 -65 0)">
-              <line x1="-65" y1="0" x2="-40" y2="0" stroke="#755234" strokeWidth="2.5" strokeLinecap="round" />
-              <line x1="-65" y1="10" x2="-40" y2="10" stroke="#755234" strokeWidth="2.5" strokeLinecap="round" />
-              <line x1="-42" y1="-4" x2="-42" y2="16" stroke="#5a3d24" strokeWidth="2.2" strokeLinecap="round" />
-              <line x1="-64" y1="10" x2="-42" y2="0" stroke="#5a3d24" strokeWidth="2.0" />
-            </g>
-            <g transform="rotate(35 65 0)">
-              <line x1="65" y1="0" x2="40" y2="0" stroke="#755234" strokeWidth="2.5" strokeLinecap="round" />
-              <line x1="65" y1="10" x2="40" y2="10" stroke="#755234" strokeWidth="2.5" strokeLinecap="round" />
-              <line x1="42" y1="-4" x2="42" y2="16" stroke="#5a3d24" strokeWidth="2.2" strokeLinecap="round" />
-              <line x1="64" y1="10" x2="42" y2="0" stroke="#5a3d24" strokeWidth="2.0" />
-            </g>
+          <g transform="rotate(-32 -58 0)">
+            <line x1="-58" y1="0" x2="-36" y2="0" stroke="#6b4e35" strokeWidth="2.2" strokeLinecap="round" />
+            <line x1="-58" y1="9" x2="-36" y2="9" stroke="#6b4e35" strokeWidth="2.2" strokeLinecap="round" />
+            <line x1="-38" y1="-3" x2="-38" y2="14" stroke="#543c26" strokeWidth="2" strokeLinecap="round" />
+            <line x1="-57" y1="9" x2="-38" y2="0" stroke="#543c26" strokeWidth="1.8" />
+          </g>
+          <g transform="rotate(32 58 0)">
+            <line x1="58" y1="0" x2="36" y2="0" stroke="#6b4e35" strokeWidth="2.2" strokeLinecap="round" />
+            <line x1="58" y1="9" x2="36" y2="9" stroke="#6b4e35" strokeWidth="2.2" strokeLinecap="round" />
+            <line x1="38" y1="-3" x2="38" y2="14" stroke="#543c26" strokeWidth="2" strokeLinecap="round" />
+            <line x1="57" y1="9" x2="38" y2="0" stroke="#543c26" strokeWidth="1.8" />
           </g>
         </g>
       </g>
+
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {/* DEBUG: Terrace boundary                                             */}
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {DEBUG_TERRAIN && (
+        <g id="debug-house-terrace" pointerEvents="none">
+          <path d={terraceOutline} fill="none" stroke="#ff0066" strokeWidth="2" strokeDasharray="8 4" opacity={0.6} />
+          <path d={frontDropPath} fill="none" stroke="#ff6699" strokeWidth="2" strokeDasharray="6 3" opacity={0.6} />
+          <circle cx={terrace.crown.x} cy={terrace.crown.y} r={5} fill="#ff0066" opacity={0.7} />
+          <circle cx={terrace.frontEdge.x} cy={terrace.frontEdge.y} r={5} fill="#ff6699" opacity={0.7} />
+        </g>
+      )}
     </g>
   );
 };

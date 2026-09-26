@@ -24,6 +24,7 @@ export const CommunicationHill: React.FC<CommunicationHillProps> = ({
   className,
 }) => {
   const hill = YORKSHIRE_LAYOUT.communicationHill;
+  const station = hill.station;
 
   return (
     <g id="hilltop-observatory-haven" className={className}>
@@ -44,7 +45,7 @@ export const CommunicationHill: React.FC<CommunicationHillProps> = ({
       {/* Main Elevated SETI Alien Radio Station */}
       <g
         id="room-observatory"
-        transform={`translate(${hill.center.x}, ${hill.center.y}) scale(0.84)`}
+        transform={`translate(${station.center.x}, ${station.center.y}) scale(0.84)`}
         onClick={() => {
           if (!hasMovedRef?.current) onSelectRoom?.('observatory');
         }}

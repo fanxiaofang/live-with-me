@@ -11,6 +11,7 @@ import { FarmsteadLandscape } from './infrastructure/FarmsteadLandscape';
 import { CommunicationHill } from './infrastructure/CommunicationHill';
 import { YorkshireDressing } from './dressing/YorkshireDressing';
 import { YorkshireDefs } from './landscapeTheme';
+import { DEBUG_TERRAIN } from './landscapeLayout';
 
 export interface YorkshireWorldProps extends YorkshireCommonProps {
   /** Optional communication hill props for interactive room navigation & alien signals */
@@ -100,6 +101,16 @@ export const YorkshireWorld: React.FC<YorkshireWorldProps> = ({
           onTriggerToast={onTriggerToast}
           setHoveredObject={setHoveredObject}
         />
+      )}
+
+      {/* DEBUG: Global terrain boundary overlay */}
+      {DEBUG_TERRAIN && (
+        <g id="debug-yorkshire-world" pointerEvents="none">
+          <rect x="-2400" y="0" width="6000" height="2400" fill="none" stroke="#ff00ff" strokeWidth="2" strokeDasharray="10 5" opacity="0.3" />
+          <text x="0" y="30" fill="#ff00ff" fontSize="14" textAnchor="middle" opacity={0.6}>
+            DEBUG_TERRAIN ACTIVE
+          </text>
+        </g>
       )}
     </g>
   );

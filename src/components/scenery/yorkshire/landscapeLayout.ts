@@ -1,11 +1,15 @@
 /**
  * 🗺️ YORKSHIRE LANDSCAPE SPATIAL CONTRACT & LAYOUT DEFINITION
  *
- * Single shared layout source establishing semantic spatial anchors,
- * coordinates, elevations, and scene regions.
- *
- * Strictly preserves current composition and coordinates during Phase 1 (Visual Freeze).
+ * Phase 2: Semantic terrain skeleton parameters.
+ * All major landforms are defined by control points and anchors,
+ * not raw SVG path strings.
  */
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEBUG: Development-only terrain visualization (never expose to users)
+// ─────────────────────────────────────────────────────────────────────────────
+export const DEBUG_TERRAIN = false;
 
 export const YORKSHIRE_LAYOUT = {
   scene: {
@@ -22,53 +26,100 @@ export const YORKSHIRE_LAYOUT = {
     },
   },
 
-  // 🏡 Main House (Homestead Cottage)
-  mainHouse: {
-    center: { x: 540, y: 210 },
-    localCenter: { x: 0, y: 0 },
-    footprint: {
-      width: 600,
-      depth: 300,
-      yBase: 150,
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🏔️ DISTANT RIDGES: 3-layer depth hierarchy (far / mid-far / mid)
+  // ───────────────────────────────────────────────────────────────────────────
+  distantRidges: {
+    far: {
+      id: 'ridge-far',
+      depth: 'far',
+      // Low-contrast, soft, layered upland silhouettes
+      anchors: [
+        { x: -2400, y: 200 }, { x: -1200, y: 170 }, { x: -600, y: 210 },
+        { x: -200, y: 160 }, { x: 180, y: 145 }, { x: 420, y: 172 },
+        { x: 680, y: 132 }, { x: 940, y: 158 }, { x: 1240, y: 140 },
+        { x: 1520, y: 165 }, { x: 2200, y: 145 }, { x: 2900, y: 170 },
+        { x: 3600, y: 200 },
+      ],
+      baseline: 500,
+      fill: 'hillGreenFar',
+      opacity: 1.0,
     },
-    elevation: 38,
+    midFar: {
+      id: 'ridge-mid-far',
+      depth: 'mid-far',
+      // Broader Yorkshire fell shapes, more presence
+      anchors: [
+        { x: -2400, y: 220 }, { x: -1200, y: 190 }, { x: -600, y: 230 },
+        { x: -150, y: 185 }, { x: 240, y: 178 }, { x: 560, y: 198 },
+        { x: 880, y: 168 }, { x: 1240, y: 192 }, { x: 1520, y: 182 },
+        { x: 2200, y: 190 }, { x: 2900, y: 195 }, { x: 3600, y: 220 },
+      ],
+      baseline: 500,
+      fill: 'hillGreenMid',
+      opacity: 1.0,
+    },
+    mid: {
+      id: 'ridge-mid',
+      depth: 'mid',
+      // Rolling landforms connecting toward communication hill and farm
+      anchors: [
+        { x: -2400, y: 235 }, { x: -1200, y: 210 }, { x: -600, y: 245 },
+        { x: -150, y: 210 }, { x: 240, y: 185 }, { x: 560, y: 210 },
+        { x: 880, y: 180 }, { x: 1240, y: 212 }, { x: 1520, y: 195 },
+        { x: 2200, y: 210 }, { x: 2900, y: 220 }, { x: 3600, y: 235 },
+      ],
+      baseline: 400,
+      fill: 'wheatFar',
+      opacity: 1.0,
+    },
   },
 
-  // 🏰 Main Terrace (Stone Bastion & Retaining Wall)
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🏡 CENTRAL LANDFORM: One coherent natural terrace beneath/behind house
+  // ───────────────────────────────────────────────────────────────────────────
   mainTerrace: {
-    center: { x: 0, y: 300 },
-    bounds: { minX: -300, maxX: 320, minY: 150, maxY: 515 },
-    plinth: {
-      pointsTop: '-300,150 0,62 300,150 0,242',
-      depth: 38,
-    },
-    curvedWall: {
-      westSpan: 'M-280,260 C-260,350 -200,435 -65,465',
-      eastSpan: 'M65,465 C200,435 280,350 320,260',
-      wallHeight: 26,
-    },
-    steps: {
-      anchor: { x: 0, y: 465 },
-      tiers: 4,
-    },
-    wicketGate: {
-      anchor: { x: 0, y: 465 },
-      postsWidth: 130,
+    // House sits at local (0,0); terrace extends outward in world space
+    houseLocalCenter: { x: 0, y: 0 },
+    crown: { x: 0, y: 150 },           // Broad crown beneath/behind house
+    leftShoulder: { x: -320, y: 240 }, // Gentle left slope
+    rightShoulder: { x: 340, y: 230 }, // Gentle right slope
+    frontEdge: { x: 0, y: 420 },       // Visible but not abrupt front drop
+    lowerSlope: { x: 0, y: 580 },      // Natural transition into middle fields
+    rearRise: { x: 0, y: 100 },        // Slight rise behind house
+    // ~80% natural terrain, ~20% visible retaining structure
+    exposedStone: {
+      entranceSteps: { anchor: { x: 0, y: 465 }, tiers: 4 },
+      wicketGate: { anchor: { x: 0, y: 465 }, postsWidth: 130 },
+      // Limited stonework at front edge only
+      frontRetaining: { yTop: 420, yBottom: 465, segments: 3 },
     },
   },
 
-  // 🌊 River Valley (Far-Left Beck & Meander)
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🌊 RIVER VALLEY: Broad west-side valley with embedded river
+  // ───────────────────────────────────────────────────────────────────────────
   riverValley: {
     region: 'west-valley',
-    anchor: { x: -600, y: 450 },
-    corridor: [
-      { x: -510, y: 218 },
-      { x: -595, y: 248 },
-      { x: -675, y: 438 },
-      { x: -552, y: 750 },
-      { x: -680, y: 770 },
-    ],
-    bounds: { minX: -850, maxX: -460, minY: 210, maxY: 800 },
+    // Valley structure: westBank descends → valleyFloor → eastBank rises
+    westBank: {
+      crest: { x: -850, y: 210 },   // Far western upland
+      toe: { x: -680, y: 480 },     // Valley floor edge
+      width: 170,
+    },
+    valleyFloor: {
+      centerline: [
+        { x: -510, y: 218 }, { x: -595, y: 248 }, { x: -675, y: 438 },
+        { x: -552, y: 750 }, { x: -680, y: 770 },
+      ],
+      width: 120,
+      depth: 25, // Visual depth below surrounding terrain
+    },
+    eastBank: {
+      toe: { x: -460, y: 370 },     // Where valley meets central fields
+      crest: { x: -310, y: 480 },   // Rising back to field level
+      width: 150,
+    },
     ducksAnchor: { x: -640, y: 480 },
     pebbles: [
       { cx: -605, cy: 270, rx: 9, ry: 5 },
@@ -78,7 +129,33 @@ export const YORKSHIRE_LAYOUT = {
     ],
   },
 
-  // 🌾 Pasture Parcels (Patchwork Dales Fields)
+  // ───────────────────────────────────────────────────────────────────────────
+  // 📡 COMMUNICATION HILL: Part of larger rear-right ridge system
+  // ───────────────────────────────────────────────────────────────────────────
+  communicationHill: {
+    // Station sits on a natural high point of a broader ridge
+    summit: { x: 895, y: 88 },
+    // Ridge connection: midground ridge → raised shoulder → summit
+    ridge: {
+      leftAnchor: { x: 740, y: 240 },
+      leftShoulder: { x: 820, y: 160 },
+      summit: { x: 895, y: 88 },
+      rightShoulder: { x: 980, y: 150 },
+      rightAnchor: { x: 1180, y: 280 },
+    },
+    // Slightly asymmetric, wind-shaped summit
+    summitSkew: -0.15, // Lean slightly left
+    base: { x: 895, y: 320 },
+    station: {
+      center: { x: 895, y: 88 },
+      radioCabin: { x: -40, y: 2 },
+      parabolicDish: { x: 16, y: 2 },
+    },
+  },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🌾 PASTURE PARCELS (preserved for Phase 3, not redesigned now)
+  // ───────────────────────────────────────────────────────────────────────────
   pastureParcels: {
     westBeckField: {
       id: 'field-west-beck',
@@ -97,7 +174,9 @@ export const YORKSHIRE_LAYOUT = {
     },
   },
 
-  // 🧱 Drystone Boundary Walls
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🧱 DRYSTONE WALLS (preserved for Phase 3, not redesigned now)
+  // ───────────────────────────────────────────────────────────────────────────
   drystoneWalls: {
     westWall: {
       id: 'wall-west',
@@ -119,7 +198,9 @@ export const YORKSHIRE_LAYOUT = {
     },
   },
 
-  // 🚂 Railway Infrastructure (Ribblehead Stone Viaduct)
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🚂 RAILWAY (preserved, not redesigned)
+  // ───────────────────────────────────────────────────────────────────────────
   railway: {
     anchor: { x: -160, y: 224 },
     deck: { minX: -430, maxX: 85, y: 180, height: 7 },
@@ -128,7 +209,9 @@ export const YORKSHIRE_LAYOUT = {
     locomotive: { x: -140, y: 168 },
   },
 
-  // 🚜 West Farm & Agricultural Ground
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🚜 WEST FARM (preserved, not redesigned)
+  // ───────────────────────────────────────────────────────────────────────────
   westFarm: {
     anchor: { x: 110, y: 220 },
     tractor: { x: 110, y: 220 },
@@ -138,89 +221,57 @@ export const YORKSHIRE_LAYOUT = {
     woodpile: { x: -130, y: 330 },
   },
 
-  // 📡 Communication Hill & Summit Radio Station
-  communicationHill: {
-    center: { x: 895, y: 88 },
-    bounds: { minX: 740, maxX: 1180, minY: 72, maxY: 310 },
-    peakElevation: 88,
-    rockCragAnchor: { x: 0, y: 0 },
-    terraceDeck: { x: 0, y: 20 },
-    radioCabin: { x: -40, y: 2 },
-    parabolicDish: { x: 16, y: 2 },
-  },
-
-  // 🏔️ Distant Ridges & Silhouettes
-  distantRidges: {
-    mountainRange1: {
-      horizonY: 145,
-      path: 'M-2400,200 Q-1200,170 -600,210 Q-200,160 180,145 Q420,172 680,132 Q940,158 1240,140 Q1520,165 2200,145 Q2900,170 3600,200 L3600,500 L-2400,500 Z',
-    },
-    mountainRange2: {
-      horizonY: 180,
-      path: 'M-2400,220 Q-1200,190 -600,230 Q-150,185 240,178 Q560,198 880,168 Q1240,192 1520,182 2200,190 Q2900,195 3600,220 L3600,500 L-2400,500 Z',
-    },
-    wheatSlopes: {
-      horizonY: 210,
-      path: 'M-2400,235 Q-1200,210 -600,245 Q-150,210 240,185 Q560,210 Q880,180 1240,212 Q1520,195 2200,210 Q2900,220 3600,235 L3600,400 Q2600,340 1800,320 Q1240,280 860,265 Q480,270 160,280 Q-150,290 -600,295 Q-1200,310 -2400,330 Z',
-    },
-    upperTerrace: {
-      horizonY: 270,
-      path: 'M-2400,270 Q-1200,275 -600,280 C-200,265 160,248 420,244 C720,250 1020,238 1350,258 C1580,270 2200,275 3600,280 L3600,450 C2400,440 1400,375 1060,360 C740,350 460,345 180,335 C-100,325 -360,315 -600,310 C-1200,315 -2400,320 Z',
-    },
-  },
-
-  // 🌿 Foreground Slope & Dressing
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🌿 FOREGROUND SLOPE: Gentle depth progression from terrace to bottom
+  // ───────────────────────────────────────────────────────────────────────────
   foregroundSlope: {
-    bounds: { minX: -2400, maxX: 3600, minY: 490, maxY: 2400 },
+    centralTerrace: { yTop: 420, yBottom: 520 },
+    middlePasture: { yTop: 520, yBottom: 620 },
+    lowerForeground: { yTop: 620, yBottom: 800 },
+    // Visual quietness: foreground should be simpler than house area
+    contourInterval: 45,
     benchAnchor: { x: 295, y: 452 },
     sheepFlock: [
-      {
-        id: 'sheep-1',
-        name: '西侧河畔啃草羊',
-        x: -420,
-        y: 460,
-        scale: 0.95,
-        quoteIndex: 0,
-        hoverText: '🐑 约克郡黑脸羊 · 在西侧开阔草场安静吃草（点击互动）',
-      },
-      {
-        id: 'sheep-2',
-        name: '中景草场安睡羊',
-        x: -50,
-        y: 610,
-        scale: 1.0,
-        quoteIndex: 1,
-        hoverText: '🐑 约克郡黑脸羊 · 在向阳草坡上惬意打盹（点击互动）',
-      },
-      {
-        id: 'sheep-3',
-        name: '东侧草场母羊',
-        x: 360,
-        y: 560,
-        scale: 1.0,
-        quoteIndex: 2,
-        hoverText: '🐑 约克郡母羊 · 在牧场大门旁照看着小羊（点击互动）',
-      },
-      {
-        id: 'sheep-4',
-        name: '欢脱小羊羔',
-        x: 410,
-        y: 575,
-        scale: 0.68,
-        quoteIndex: 3,
-        hoverText: '🐑 雀跃小羊羔 · 活蹦乱跳的黑脸小羊羔（点击互动）',
-      },
-      {
-        id: 'sheep-5',
-        name: '山麓探头小羊',
-        x: 640,
-        y: 420,
-        scale: 0.75,
-        quoteIndex: 4,
-        hoverText: '🐑 山麓小羊 · 静立在石墙边迎风远眺（点击互动）',
-      },
+      { id: 'sheep-1', name: '西侧河畔啃草羊', x: -420, y: 460, scale: 0.95, quoteIndex: 0, hoverText: '🐑 约克郡黑脸羊 · 在西侧开阔草场安静吃草（点击互动）' },
+      { id: 'sheep-2', name: '中景草场安睡羊', x: -50, y: 610, scale: 1.0, quoteIndex: 1, hoverText: '🐑 约克郡黑脸羊 · 在向阳草坡上惬意打盹（点击互动）' },
+      { id: 'sheep-3', name: '东侧草场母羊', x: 360, y: 560, scale: 1.0, quoteIndex: 2, hoverText: '🐑 约克郡母羊 · 在牧场大门旁照看着小羊（点击互动）' },
+      { id: 'sheep-4', name: '欢脱小羊羔', x: 410, y: 575, scale: 0.68, quoteIndex: 3, hoverText: '🐑 雀跃小羊羔 · 活蹦乱跳的黑脸小羊羔（点击互动）' },
+      { id: 'sheep-5', name: '山麓探头小羊', x: 640, y: 420, scale: 0.75, quoteIndex: 4, hoverText: '🐑 山麓小羊 · 静立在石墙边迎风远眺（点击互动）' },
     ],
   },
 } as const;
 
 export type YorkshireLayout = typeof YORKSHIRE_LAYOUT;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: Build SVG path from anchor points using cubic Bézier smoothing
+// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Build a smooth SVG path through anchor points (Catmull-Rom → cubic Bézier).
+ * If `baseline` is provided, the path is closed along the given Y baseline.
+ */
+export function anchorsToPath(
+  anchors: readonly { x: number; y: number }[],
+  baseline?: number
+): string {
+  if (anchors.length < 2) return '';
+  const pts = [...anchors];
+  let d = `M${pts[0].x},${pts[0].y}`;
+
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(0, i - 1)];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[Math.min(pts.length - 1, i + 2)];
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+    d += ` C${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
+  }
+
+  if (baseline !== undefined) {
+    d += ` L${pts[pts.length - 1].x},${baseline} L${pts[0].x},${baseline} Z`;
+  }
+  return d;
+}
