@@ -1203,35 +1203,27 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             </g>
 
             {/* (Legacy midground ridge-2 removed — replaced by TerrainSilhouette above) */}
-            {/* 🌟 MAJESTIC OBSERVATORY SUMMIT MOUNTAIN PEAK (巍峨山巅峰峦岩体·托举监听站彻底消灭浮空感) */}
+            {/* 📡 OBSERVATORY SUMMIT LOCAL FOOTING (监听站局部基座)
+                Phase 2.3: the old dark mountain promontory (which competed with
+                the new TerrainSilhouette communication ridge and read as a dark
+                triangle) is reduced to the MINIMUM local footing required to
+                ground the station. The large landform is now provided by the
+                terrain system; this only anchors the asset. */}
             <g id="observatory-summit-mountain-base">
-              {/* Grand High Mountain Promontory rising to y=76 to support Observatory at y=82 */}
+              {/* Small local summit mound — sits on the ridge, does not build a mountain */}
               <path
-                d="M740,210 Q800,140 840,105 Q880,72 920,86 Q960,115 1040,170 Q1120,205 1180,240 L1180,310 L740,310 Z"
-                fill="#485942"
+                d="M812,158 Q858,114 900,102 Q944,112 988,160 L1000,300 L804,300 Z"
+                fill="#74895c"
+                opacity="0.9"
               />
-              {/* Sunlit Western Mountain Rock Slope */}
-              <polygon points="760,205 840,105 880,72 875,160 805,215" fill="#62785a" />
-              {/* East-Facing Mountain Shadow Facet */}
-              <polygon points="880,72 920,86 1020,170 950,185 875,160" fill="#323f30" />
-              {/* Geological Stratified Rock Formations (水平风化岩层纹理) */}
-              <path d="M810,135 Q850,118 878,122 Q915,116 950,140" fill="none" stroke="#253023" strokeWidth="2.2" />
-              <path d="M780,170 Q835,150 872,154 Q920,148 980,175" fill="none" stroke="#253023" strokeWidth="2.4" />
-              {/* Craggy Mountain Pine Groves Clinging to Summit */}
-              <g opacity="0.9">
-                <g transform="translate(805, 155)">
-                  <polygon points="0,0 7,-18 14,0" fill="#1b2a1e" />
-                  <polygon points="2,-10 7,-24 12,-10" fill="#283e2c" />
-                </g>
-                <g transform="translate(945, 130)">
-                  <polygon points="0,0 8,-20 16,0" fill="#1b2a1e" />
-                  <polygon points="2,-12 8,-28 14,-12" fill="#283e2c" />
-                </g>
-                <g transform="translate(980, 160)">
-                  <polygon points="0,0 7,-18 14,0" fill="#1b2a1e" />
-                  <polygon points="2,-10 7,-24 12,-10" fill="#283e2c" />
-                </g>
-              </g>
+              {/* Sunlit west face of the local mound */}
+              <path
+                d="M820,156 Q862,118 900,104 L900,300 L816,300 Z"
+                fill="#879c68"
+                opacity="0.55"
+              />
+              {/* Faint rock fleck so the station still reads as grounded */}
+              <path d="M844,150 Q874,126 902,124" fill="none" stroke="#61764c" strokeWidth="1.6" opacity="0.5" />
             </g>
 
             {/* (Legacy ridge-2 facets removed — replaced by TerrainSilhouette above) */}
@@ -1387,25 +1379,11 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             {/*     在建筑下方绘制！为右上角太空睡眠舱与电波站构筑厚重稳固的斜坡山包 */}
             {/* ========================================================================= */}
             <g id="east-tech-terrace-knoll">
-              {/* Massive East Ridge Mountain Contour */}
-              <path
-                d="M740,240 C850,225 1020,240 1200,265 C1320,285 1400,320 1400,450 C1250,460 1060,450 880,440 C780,430 730,400 710,360 C700,310 720,260 740,240 Z"
-                fill="url(#homesteadLawnGrad)"
-              />
-              {/* Shaded Eastern Under-slope */}
-              <path
-                d="M880,390 C960,395 1100,410 1200,425 C1320,440 1400,450 1400,470 C1250,480 1060,470 880,440 Z"
-                fill="#263a18"
-                opacity="0.45"
-              />
-              {/* Sunlit Ridge Crest Highlight */}
-              <path
-                d="M740,240 C850,225 1020,240 1200,265"
-                fill="none"
-                stroke="#b5cb58"
-                strokeWidth="2.2"
-                opacity="0.55"
-              />
+              {/* Phase 2.3: the massive east-ridge mountain contour, its dark
+                  under-slope and the crest highlight were removed — the new
+                  TerrainMass eastern shoulder now provides that landform. Only
+                  the local footings for the boardwalk, capsule pod and slope
+                  dressing remain here. */}
 
               {/* Terraced Stone Retaining Ledges supporting the Wooden Boardwalk */}
               <g id="boardwalk-retaining-terrace" transform="translate(-36, 0)">
@@ -1449,15 +1427,16 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             {/* 4.2 WEST SLEEPING CABIN MEADOW TERRACE (西翼安睡木屋草坡基座台地) */}
             {/* ========================================================================= */}
             <g id="west-cabin-terrace-knoll">
+              {/* Phase 2.3: the broad homestead-lawn plateau blob and its dark
+                  under-slope were removed — the new TerrainMass central
+                  landform already provides this volume. Only a small local
+                  footing remains so the cabin reads as grounded. */}
               <path
-                d="M-400,320 C-280,310 -80,315 160,340 C280,355 350,390 320,440 C280,480 140,490 20,485 C-120,480 -280,460 -400,430 Z"
-                fill="url(#homesteadLawnGrad)"
-                opacity="0.9"
-              />
-              <path
-                d="M-80,440 C40,455 160,460 260,450 C290,460 280,478 240,485 C140,495 20,490 -80,470 Z"
-                fill="#263a18"
-                opacity="0.38"
+                d="M-240,392 C-150,378 -30,378 60,390 C120,400 150,418 132,442
+                   C104,464 0,472 -96,468 C-186,464 -258,444 -272,420
+                   C-280,406 -268,398 -240,392 Z"
+                fill="#7d9740"
+                opacity="0.55"
               />
             </g>
 

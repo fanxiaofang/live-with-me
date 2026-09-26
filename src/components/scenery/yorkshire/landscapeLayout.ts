@@ -32,49 +32,58 @@ export const YORKSHIRE_LAYOUT = {
   distantRidges: {
     // Phase 2.1: each depth tier has its own anchor rhythm —
     // no tier may read as a scaled copy of another.
+    // Phase 2.3: the ridge system was raised into the readable band between
+    // the house and the near-terrain top edge, AND the amplitudes were
+    // increased so the crests actually read at the overview zoom (0.66).
+    // Previously amplitudes of 16–34 world units rendered as 9–19 screen px,
+    // i.e. three flat horizontal colour stripes.
+    // The whole distant system now lives inside a ~110-unit band
+    // (y ≈ 92 … 214) so all three tiers stay visible.
     far: {
       id: 'ridge-far',
       depth: 'far',
-      // Long, slow, low-amplitude upland silhouette: few crests, wide spans,
-      // minimal local undulation (7 anchors over the full 6000px world).
+      // Quietest tier: long wavelength, few major crests, one gentle notch.
       anchors: [
-        { x: -2400, y: 196 }, { x: -1250, y: 176 }, { x: -200, y: 186 },
-        { x: 720, y: 166 }, { x: 1550, y: 180 }, { x: 2450, y: 170 },
-        { x: 3600, y: 194 },
+        { x: -2400, y: 100 }, { x: -1700, y: 80 }, { x: -1000, y: 96 },
+        { x: -350, y: 78 }, { x: 300, y: 100 }, { x: 950, y: 80 },
+        { x: 1600, y: 98 }, { x: 2250, y: 104 }, { x: 2900, y: 90 },
+        { x: 3600, y: 82 },
       ],
-      baseline: 500,
+      baseline: 800,
       fill: 'hillGreenFar',
       opacity: 1.0,
     },
     midFar: {
       id: 'ridge-mid-far',
       depth: 'mid-far',
-      // Broader fell shoulders with two asymmetric rises (left one dominant),
-      // deliberately uneven anchor spacing so the waveform never repeats.
+      // Carries most of the rolling fell character: broad shoulders, two
+      // asymmetric rises, a shallow notch, deliberately uneven spacing.
       anchors: [
-        { x: -2400, y: 244 }, { x: -1600, y: 200 }, { x: -1080, y: 170 },
-        { x: -480, y: 218 }, { x: 200, y: 232 }, { x: 820, y: 186 },
-        { x: 1350, y: 212 }, { x: 2100, y: 228 }, { x: 2900, y: 214 },
-        { x: 3600, y: 242 },
+        { x: -2400, y: 140 }, { x: -1900, y: 116 }, { x: -1400, y: 106 },
+        { x: -1000, y: 130 }, { x: -600, y: 112 }, { x: -200, y: 138 },
+        { x: 100, y: 114 }, { x: 450, y: 134 }, { x: 800, y: 108 },
+        { x: 1150, y: 132 }, { x: 1500, y: 116 }, { x: 1900, y: 140 },
+        { x: 2400, y: 110 }, { x: 3000, y: 134 }, { x: 3600, y: 118 },
       ],
-      baseline: 500,
+      baseline: 800,
       fill: 'hillGreenMid',
       opacity: 1.0,
     },
     mid: {
       id: 'ridge-mid',
       depth: 'mid',
-      // Terrain-specific: gentle rise behind the farm belt, shallow dip,
-      // then climbs to meet the communication hill leftAnchor (660,252),
-      // falling away again behind it. Not a copy of the far waveform.
+      // Terrain-specific: rolls behind the farm belt, dips, then climbs to
+      // meet the communication hill (leftAnchor 600,172) and falls away.
+      // Not a copy of the far or mid-far waveform.
       anchors: [
-        { x: -2400, y: 258 }, { x: -1500, y: 236 }, { x: -760, y: 252 },
-        { x: -220, y: 238 }, { x: 160, y: 254 }, { x: 470, y: 246 },
-        { x: 660, y: 252 }, { x: 920, y: 266 }, { x: 1250, y: 280 },
-        { x: 1800, y: 254 }, { x: 2600, y: 268 }, { x: 3600, y: 280 },
+        { x: -2400, y: 168 }, { x: -1800, y: 150 }, { x: -1200, y: 166 },
+        { x: -700, y: 146 }, { x: -300, y: 162 }, { x: 100, y: 150 },
+        { x: 480, y: 160 }, { x: 600, y: 172 }, { x: 900, y: 152 },
+        { x: 1300, y: 168 }, { x: 1800, y: 148 }, { x: 2400, y: 164 },
+        { x: 3000, y: 152 }, { x: 3600, y: 168 },
       ],
-      baseline: 400,
-      fill: 'wheatFar',
+      baseline: 800,
+      fill: 'hillGreenNear',
       opacity: 1.0,
     },
   },
@@ -85,12 +94,21 @@ export const YORKSHIRE_LAYOUT = {
   mainTerrace: {
     // House sits at local (0,0); terrace extends outward in world space
     houseLocalCenter: { x: 0, y: 0 },
-    crown: { x: 0, y: 150 },           // Broad crown beneath/behind house
-    leftShoulder: { x: -320, y: 240 }, // Gentle left slope, slightly higher
-    rightShoulder: { x: 368, y: 236 }, // Phase 2.1: wider & lower than left — mild asymmetry
-    frontEdge: { x: 0, y: 420 },       // Visible but not abrupt front drop
-    lowerSlope: { x: 0, y: 580 },      // Natural transition into middle fields
-    rearRise: { x: 0, y: 100 },        // Slight rise behind house
+    // Phase 2.3: tightened the crown so the house reads as embedded in a
+    // LOCAL rise instead of sitting on a giant green cushion/platform.
+    crown: { x: 20, y: 168 },          // Smaller, concentrated crown under house
+    leftShoulder: { x: -268, y: 268 }, // Left shoulder — clear drop-off
+    rightShoulder: { x: 322, y: 262 }, // Right shoulder — mild asymmetry (lower)
+    frontEdge: { x: 20, y: 430 },      // Visible but not abrupt front drop
+    lowerSlope: { x: 20, y: 588 },     // Natural transition into middle fields
+    rearRise: { x: 20, y: 126 },       // Slight rise behind house
+    // Phase 2.3: secondary terrain planes (volume, not parcels)
+    // 3 large planes max — left shadow plane, sunlit upper slope, darker front.
+    planes: {
+      leftShadow: { x: -300, y: 330 },   // Softer shadow plane on left shoulder
+      sunlitUpper: { x: 90, y: 240 },    // Sunlit plane on central upper slope
+      frontLower: { x: 130, y: 560 },    // Darker lower front slope
+    },
     // ~80% natural terrain, ~20% visible retaining structure
     exposedStone: {
       entranceSteps: { anchor: { x: 0, y: 465 }, tiers: 4 },
@@ -108,23 +126,26 @@ export const YORKSHIRE_LAYOUT = {
     // Valley structure: westBank descends → valleyFloor → eastBank rises
     // Phase 2.1: the two banks are deliberately unequal in character —
     // west bank = long, soft, compound descent; east bank = short, firm rise.
+    // Phase 2.3: broadened the valley mouth — added a shallow mid-bank bench
+    // and pulled the east bank back from a sharp V-cut into a soft return.
     westBank: {
-      crest: { x: -1010, y: 232 },  // Far western upland — pushed further west for a longer run
-      toe: { x: -680, y: 480 },     // Valley floor edge
-      width: 330,                   // Long horizontal run of the descent
+      crest: { x: -1180, y: 246 },  // Far western upland — pushed further west for a longer run
+      bench: { x: -960, y: 360 },   // Shallow mid-bank bench (softens the descent)
+      toe: { x: -780, y: 500 },     // Valley floor edge — further west, wider mouth
+      width: 400,                   // Long horizontal run of the descent
     },
     valleyFloor: {
       centerline: [
-        { x: -510, y: 218 }, { x: -595, y: 248 }, { x: -675, y: 438 },
-        { x: -552, y: 750 }, { x: -680, y: 770 },
+        { x: -560, y: 232 }, { x: -650, y: 260 }, { x: -740, y: 452 },
+        { x: -620, y: 760 }, { x: -740, y: 778 },
       ],
-      width: 120,
+      width: 130,
       depth: 25, // Visual depth below surrounding terrain
     },
     eastBank: {
-      toe: { x: -450, y: 372 },     // Where valley meets central fields
-      crest: { x: -338, y: 440 },   // Rising back to field level — short & firm
-      width: 112,
+      toe: { x: -520, y: 410 },     // Where valley meets central fields — pulled west, softer
+      crest: { x: -420, y: 470 },   // Rising back to field level — gentle, not a wall
+      width: 100,
     },
     ducksAnchor: { x: -640, y: 480 },
     pebbles: [
@@ -142,14 +163,19 @@ export const YORKSHIRE_LAYOUT = {
     // Station sits on a natural high point of a broader ridge
     summit: { x: 895, y: 88 },
     // Ridge connection: midground ridge → raised shoulder → communication summit
-    // Phase 2.1: longer west shoulder, tighter east falloff — mild asymmetry
-    // baked into the explicit Bézier silhouette in TerrainSilhouette.
+    // Phase 2.3: re-composed as a broad high SHOULDER (not a dark triangle) —
+    // long rising west shoulder → broad high shoulder → small summit platform
+    // → shorter east descent. Wide enough to ground the station naturally.
     ridge: {
-      leftAnchor: { x: 660, y: 252 },   // Meets the mid ridge anchor of the same position
-      leftShoulder: { x: 806, y: 168 }, // Long, gentle west shoulder
-      summit: { x: 895, y: 88 },        // Preserved station position
-      rightShoulder: { x: 950, y: 172 }, // Tighter east falloff
-      rightAnchor: { x: 1130, y: 288 },
+      // Phase 2.3: re-anchored onto the raised mid ridge so the hill reads as
+      // a high shoulder of a larger fell, not a detached mound. The summit
+      // (station position) is unchanged.
+      leftAnchor: { x: 600, y: 172 },    // Meets the mid ridge (west end)
+      leftShoulder: { x: 760, y: 142 },  // Long rising west shoulder
+      highShoulder: { x: 830, y: 120 },  // Broad high shoulder before summit
+      summit: { x: 895, y: 104 },        // Slightly softened — no sharp apex
+      rightShoulder: { x: 960, y: 122 }, // Shorter east descent
+      rightAnchor: { x: 1160, y: 204 },
     },
     base: { x: 895, y: 320 },
     station: {
@@ -243,6 +269,10 @@ export const YORKSHIRE_LAYOUT = {
     ],
     contourInterval: 45,
     benchAnchor: { x: 295, y: 452 },
+    // Phase 2.3: subtle depth via terrain only (no parcels) —
+    // one lower shadow basin + one soft lateral shoulder.
+    shadowBasin: { x: -120, y: 690 },
+    lateralShoulder: { x: 760, y: 620 },
     sheepFlock: [
       { id: 'sheep-1', name: '西侧河畔啃草羊', x: -420, y: 460, scale: 0.95, quoteIndex: 0, hoverText: '🐑 约克郡黑脸羊 · 在西侧开阔草场安静吃草（点击互动）' },
       { id: 'sheep-2', name: '中景草场安睡羊', x: -50, y: 610, scale: 1.0, quoteIndex: 1, hoverText: '🐑 约克郡黑脸羊 · 在向阳草坡上惬意打盹（点击互动）' },

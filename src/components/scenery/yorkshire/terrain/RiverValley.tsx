@@ -24,27 +24,32 @@ export const RiverValley: React.FC<YorkshireCommonProps> = ({
   const layout = YORKSHIRE_LAYOUT.riverValley;
 
   // West bank: LONG, SOFT descent — explicit Bézier with a compound rhythm:
-  // gentle start off the crest, a mid-slope concave bench, soft arrival at
-  // the valley floor. The long run (330px) keeps the gradient easy.
+  // gentle start off the crest, a shallow mid-bank BENCH where the slope
+  // eases, then a soft arrival at the valley floor. The long run keeps the
+  // gradient easy and the valley mouth open (no carved-wedge feel).
   const westBankPath = `
     M${layout.westBank.crest.x},${layout.westBank.crest.y}
-    C${layout.westBank.crest.x - 14},${layout.westBank.crest.y + 74}
-     ${layout.westBank.crest.x + 64},${layout.westBank.crest.y + 158}
-     ${layout.westBank.toe.x - 92},${layout.westBank.toe.y - 58}
-    C${layout.westBank.toe.x - 52},${layout.westBank.toe.y - 22}
-     ${layout.westBank.toe.x - 12},${layout.westBank.toe.y - 4}
+    C${layout.westBank.crest.x + 40},${layout.westBank.crest.y + 46}
+     ${layout.westBank.bench.x - 70},${layout.westBank.bench.y - 28}
+     ${layout.westBank.bench.x},${layout.westBank.bench.y}
+    C${layout.westBank.bench.x + 70},${layout.westBank.bench.y + 30}
+     ${layout.westBank.toe.x - 60},${layout.westBank.toe.y - 30}
      ${layout.westBank.toe.x},${layout.westBank.toe.y}
     L${layout.westBank.toe.x},800 L${layout.westBank.crest.x},800 Z
   `;
 
-  // East bank: SHORT, FIRM rise — one taut curve back to the house-side
-  // pasture. Deliberately different in character from the west bank.
+  // East bank: SHORT, FIRM but SOFTER return — a gently taut curve back to
+  // the house-side pasture. Deliberately different in character from the
+  // west bank, but no longer a wall.
   const eastBankPath = `
     M${layout.eastBank.toe.x},${layout.eastBank.toe.y}
-    C${layout.eastBank.toe.x + 16},${layout.eastBank.toe.y + 28}
-     ${layout.eastBank.toe.x + 54},${layout.eastBank.toe.y + 46}
+    C${layout.eastBank.toe.x + 22},${layout.eastBank.toe.y + 22}
+     ${layout.eastBank.toe.x + 52},${layout.eastBank.toe.y + 40}
      ${layout.eastBank.crest.x},${layout.eastBank.crest.y}
-    L${layout.eastBank.crest.x},800 L${layout.eastBank.toe.x},800 Z
+    C${layout.eastBank.crest.x + 26},${layout.eastBank.crest.y + 26}
+     ${layout.eastBank.crest.x + 34},${layout.eastBank.crest.y + 44}
+     ${layout.eastBank.crest.x + 40},${layout.eastBank.crest.y + 62}
+    L${layout.eastBank.crest.x + 40},800 L${layout.eastBank.toe.x},800 Z
   `;
 
   // Valley floor: the low point between banks
