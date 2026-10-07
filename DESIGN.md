@@ -70,6 +70,8 @@ src/index.css 保留 Tailwind 入口；景观专属动画在 world/render/landsc
 
 浮层按首次打开加载，已有信箱草稿等状态在关闭后保留。稳定事件回调与 React.memo 让相机移动避免重画无关建筑和景观。指标及限制见执行记录；大型主屋 SVG 仍在首屏，不能把拆文件等同于性能改善。
 
+未捕获的 React 渲染异常、全局事件异常及 Promise 异常由独立于 root 的错误卡片显示，提供前端堆栈复制和保留已保存布局的重载入口。AI Studio 校准器问题的后续证据与结论边界见 [排查记录](docs/architecture/AI_STUDIO_CALIBRATOR_DIAGNOSTICS.md)。
+
 - npm run lint：TypeScript 类型检查。
 - npm run test:unit：Node 内置测试 + tsx。
 - npm run test:e2e：非视觉浏览器回归。
