@@ -260,27 +260,9 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ className }) => {
       </g>
 
       {/* ========================================================================= */}
-      {/* 3. 东翼胶囊仓基岩与木栈道质朴挡土矮墙 (Bedrock & Retaining Ledge)           */}
+      {/* 3. 东翼胶囊仓区域草地 (Clean Seamless Pasture Grounds)                    */}
       {/* ========================================================================= */}
-      <g id="terrace-embedded-features">
-        {/* 胶囊仓天然基岩支座 (Capsule Pod Ground Bedrock Plinth) */}
-        <g id="capsule-pod-ground-bedrock" transform="translate(894, 320)">
-          <polygon points="-75,44 0,32 75,44 0,58" fill="#58635a" stroke="#373e38" strokeWidth="1.2" />
-          <polygon points="-75,44 0,58 0,66 -75,52" fill="#2b322c" />
-          <polygon points="0,58 75,44 75,52 0,66" fill="#3c463e" />
-          <polygon points="-52,43 -32,43 -42,48" fill="#4a6344" />
-          <polygon points="26,45 48,45 38,50" fill="#4a6344" />
-        </g>
-
-        {/* 木栈道石砌挡土矮墙 (Terraced Stone Retaining Ledges) */}
-        <g id="boardwalk-retaining-terrace" transform="translate(-36, 0)">
-          <polygon points="796,368 912,372 908,388 792,384" fill="url(#stoneWallFaceGrad)" stroke="#2d261e" strokeWidth="0.8" />
-          <polygon points="796,368 912,372 914,375 798,371" fill="url(#stoneWallCapGrad)" />
-          <line x1="825" y1="369" x2="823" y2="385" stroke="#1d1712" strokeWidth="0.8" />
-          <line x1="855" y1="370" x2="853" y2="386" stroke="#1d1712" strokeWidth="0.8" />
-          <line x1="885" y1="371" x2="883" y2="387" stroke="#1d1712" strokeWidth="0.8" />
-        </g>
-      </g>
+      <g id="terrace-embedded-features" />
     </g>
   );
 };

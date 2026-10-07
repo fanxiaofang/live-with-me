@@ -35,27 +35,10 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
       </defs>
 
       {/* ----------------------------------------------------------------------- */}
-      {/* 东侧草坡低矮干砌石矮墙与经典五杠原木门 (East Pasture Boundary & 5-Bar Gate) */}
-      {/* 仅保留规整低矮的田园界石与木门，开阔通透，杜绝多余铁栅栏杂乱感           */}
+      {/* 经典五杠原木牧场门 (5-Bar Field Gate)                                  */}
+      {/* 仅保留独立的原木牧场门，去除所有石墙，展现无界的开阔草场                   */}
       {/* ----------------------------------------------------------------------- */}
       <g id={walls.eastWall.id} opacity="0.9">
-        {/* 低矮质朴石墙段 */}
-        <polygon
-          points="320,480 440,460 440,466 320,486"
-          fill="url(#ysFieldWallFaceGrad)"
-          stroke="#211a14"
-          strokeWidth="0.7"
-        />
-        <line
-          x1="320"
-          y1="480"
-          x2="440"
-          y2="460"
-          stroke="url(#ysFieldWallCapGrad)"
-          strokeWidth="3.5"
-          strokeLinecap="round"
-        />
-
         {/* 🌟 标志性五杠斜撑原木牧场门 (5-Bar Field Gate) */}
         <g
           id="east-5bar-pasture-gate"
@@ -84,23 +67,6 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
           ))}
           <line x1="4" y1="16" x2="50" y2="7" stroke="#5a3d24" strokeWidth="2.0" strokeLinecap="round" />
         </g>
-
-        {/* 木门右侧衔接的低矮干砌石墙 */}
-        <polygon
-          points="496,467 590,448 590,454 496,473"
-          fill="url(#ysFieldWallFaceGrad)"
-          stroke="#211a14"
-          strokeWidth="0.7"
-        />
-        <line
-          x1="496"
-          y1="467"
-          x2="590"
-          y2="448"
-          stroke="url(#ysFieldWallCapGrad)"
-          strokeWidth="3.5"
-          strokeLinecap="round"
-        />
       </g>
     </g>
   );

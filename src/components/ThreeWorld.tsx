@@ -61,7 +61,7 @@ const ROOM_VIEWPORTS: Record<string, { x: number; y: number; scale: number }> = 
   porch_mailbox: { x: 40, y: -80, scale: 1.5 },
   capsule_pod: { x: -280, y: 60, scale: 1.6 },
   corn_lounge: { x: 210, y: -30, scale: 1.6 },
-  observatory: { x: -280, y: 280, scale: 1.6 },
+  observatory: { x: -380, y: 30, scale: 1.6 },
 };
 
 // Anime countryside atmospheric color palettes & lighting
@@ -1457,10 +1457,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
             </g>
 
-            {/* Main Elevated SETI Alien Radio Station (Mountain Peak Y=88, harmonized scale) */}
+            {/* Main Elevated SETI Alien Radio Station (Moved to Right Meadow Lawn at Green Box Location) */}
             <g
               id="room-observatory"
-              transform="translate(895, 88) scale(0.84)"
+              transform="translate(1000, 460) scale(0.80)"
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('observatory');
               }}
@@ -3279,43 +3279,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               setHoveredObject={setHoveredObject}
             />
 
-            {/* 极简点缀：草坡原木小长椅 (缩小组团化放置于主木屋左侧草甸边缘) */}
-            <g
-              id="meadow-bench"
-              transform="translate(295, 452) scale(0.68)"
-              className="cursor-pointer transition-opacity hover:opacity-95"
-              onMouseEnter={() => setHoveredObject('meadow-bench')}
-              onMouseLeave={() => setHoveredObject(null)}
-              onClick={() => onTriggerToast?.('🪑 草甸原木长椅 · 向阳绿丘上的休憩处，迎着微风看远山与流云')}
-            >
-              <ellipse cx="36" cy="45" rx="42" ry="8" fill="#152414" opacity="0.32" />
-              <rect x="6" y="24" width="6.5" height="20" rx="1.5" fill="#4d321d" />
-              <rect x="60" y="24" width="6.5" height="20" rx="1.5" fill="#4d321d" />
-              <rect x="2" y="42" width="14" height="3.5" rx="1.5" fill="#3b2413" />
-              <rect x="56" y="42" width="14" height="3.5" rx="1.5" fill="#3b2413" />
-              <rect x="8" y="4" width="5" height="24" rx="1.5" fill="#4d321d" />
-              <rect x="59" y="4" width="5" height="24" rx="1.5" fill="#4d321d" />
-              <rect x="0" y="5" width="72" height="6.5" rx="2" fill="#94653a" stroke="#52351c" strokeWidth="0.8" />
-              <rect x="0" y="14" width="72" height="6.5" rx="2" fill="#885b32" stroke="#52351c" strokeWidth="0.8" />
-              <rect x="-2" y="23" width="76" height="7" rx="2" fill="#a07042" stroke="#52351c" strokeWidth="0.9" />
-              <rect x="0" y="29" width="72" height="3.5" rx="1" fill="#754b26" />
-              <path d="M4,24 L4,15 L14,15" fill="none" stroke="#4d321d" strokeWidth="2.8" strokeLinecap="round" />
-              <path d="M68,24 L68,15 L58,15" fill="none" stroke="#4d321d" strokeWidth="2.8" strokeLinecap="round" />
-
-              {/* Handcrafted Woven Basket on Bench */}
-              <g transform="translate(42, 12)">
-                <rect x="0" y="0" width="18" height="12" rx="2.5" fill="#d4a359" stroke="#875822" strokeWidth="0.9" />
-                <path d="M5,0 C5,-5 13,-5 13,0" fill="none" stroke="#875822" strokeWidth="1.4" strokeLinecap="round" />
-                <rect x="7" y="4" width="9" height="4" fill="#e25353" rx="0.8" />
-              </g>
-
-              {/* Tiny Daisies beside bench */}
-              <circle cx="-3" cy="44" r="2.8" fill="#ffffff" />
-              <circle cx="-3" cy="44" r="1" fill="#eab308" />
-              <circle cx="78" cy="43" r="2.8" fill="#ffffff" />
-              <circle cx="78" cy="43" r="1" fill="#eab308" />
-            </g>
-
             {/* 稀疏雅致的微型草花点缀（仅附着于小径旁，下方大面积纯净草坪全部留白） */}
             <g id="pasture-wildflowers" opacity="0.8">
               {[
@@ -3408,14 +3371,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {hoveredObject === 'room-observatory' && '📡 山巅外星电波监听站 · 频率 1420.405 MHz 监听地外文明电波（点击对焦参观）'}
               {hoveredObject === 'alien-receiver' && '📡 外星信号接收装置 · 频率 1420.405 MHz 监听深空（点击捕获电波）'}
               {hoveredObject === 'sheep-pasture' && '🐑 阳光草丘牧场 · 悠闲吃草的小羊群与雏菊野花草甸'}
-              {hoveredObject === 'meadow-bench' && '🪑 草甸原木长椅 · 向阳绿丘上的休憩处，迎着微风看小羊与流云'}
               {hoveredObject === 'corner-pond' && '💧 约克郡清冽山溪 · 涉水跳石小径与水生鸢尾，点击荡漾水纹涟漪'}
               {(hoveredObject.startsWith('🐑') || hoveredObject.startsWith('🦆') || hoveredObject.startsWith('🚪')) && hoveredObject}
               {![
                 'tractor', 'mailbox', 'person-self', 'daybed', 'bookshelf', 'cabinet', 'person-lin',
                 'person-study', 'lazy-sofa', 'person-yu', 'room-my_room', 'room-living_nook',
                 'room-friend_room', 'room-capsule_pod', 'room-corn_lounge', 'room-observatory',
-                'alien-receiver', 'sheep-pasture', 'meadow-bench', 'corner-pond'
+                'alien-receiver', 'sheep-pasture', 'corner-pond'
               ].includes(hoveredObject) && !hoveredObject.startsWith('bookshelf:') && !hoveredObject.startsWith('cabinet:') && !hoveredObject.startsWith('🐑') && !hoveredObject.startsWith('🦆') && !hoveredObject.startsWith('🚪') && hoveredObject}
             </span>
           </div>

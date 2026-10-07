@@ -226,11 +226,11 @@ export const YORKSHIRE_LAYOUT = {
     woodpile: { x: -130, y: 330 },
   },
 
-  // 📡 Communication Hill & Summit Radio Station
+  // 📡 Communication Hill & Radio Station
   communicationHill: {
-    center: { x: 895, y: 88 },
-    bounds: { minX: 740, maxX: 1180, minY: 72, maxY: 310 },
-    peakElevation: 88,
+    center: { x: 1000, y: 460 },
+    bounds: { minX: 840, maxX: 1140, minY: 370, maxY: 520 },
+    peakElevation: 455,
     rockCragAnchor: { x: 0, y: 0 },
     terraceDeck: { x: 0, y: 20 },
     radioCabin: { x: -40, y: 2 },
