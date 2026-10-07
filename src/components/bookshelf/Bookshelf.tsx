@@ -539,7 +539,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
     }
 
     switch (preset) {
-      case 'reading-lin':
+      case 'reading_lin':
         return PRESET_READING_LIN_TIERS;
       case 'empty':
         return PRESET_EMPTY_TIERS;

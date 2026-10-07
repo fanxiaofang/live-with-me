@@ -29,7 +29,10 @@ export function describeInteraction(target: InteractionTarget, context: Descript
     case 'person': { const p = context.people.find(p => p.id === target.id); return p?.isSelf ? '🌿 我 · 点击更新生活状态' : `${p?.name ?? '同住人'} · 点击查看状态与留下便笺`; }
     case 'poster': return POSTER_DESCRIPTIONS[target.id];
     case 'book': { const b = context.tiers.find(t => t.index === target.tierIndex)?.books?.find(b => b.id === target.id); return b ? `📖 《${b.title}》${b.author ? ` · ${b.author}` : ''}${b.isPulled ? ' (正在阅读中)' : ''}` : '📖 藏书 · 点击检视'; }
-    case 'furniture-part': return `${DEFAULT_ROOM_LAYOUT[target.id].name}${context.editing ? ' (点击可调优坐标)' : ''}`;
+    case 'furniture-part': {
+      const item = Object.hasOwn(DEFAULT_ROOM_LAYOUT, target.id) ? DEFAULT_ROOM_LAYOUT[target.id] : undefined;
+      return item ? `${item.name}${context.editing ? ' (点击可调优坐标)' : ''}` : '家具部件';
+    }
     case 'entity': return ENTITY_REGISTRY[target.id] ?? context.tiers.flatMap(t => t.decorations ?? []).find(d => d.id === target.id)?.label ?? '原木书架摆件';
   }
 }

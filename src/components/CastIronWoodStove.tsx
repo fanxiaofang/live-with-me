@@ -670,8 +670,8 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
         transform={stoveTransform}
         onClick={handleStoveClick}
         className="cursor-pointer"
-        title={`点击切换炉子颜色 (当前: ${p.label} - ${p.subtitle})`}
       >
+        <title>{`点击切换炉子颜色 (当前: ${p.label} - ${p.subtitle})`}</title>
         {/* 3.1 远景后方粗实支撑后腿 (Stout Rear Legs) */}
         <g id="cast-iron-back-legs">
           <polygon

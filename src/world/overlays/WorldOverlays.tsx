@@ -52,7 +52,7 @@ export function WorldOverlays({ handleZoomIn, handleZoomOut, handleResetOverview
 
       {/* Contextual Hover Whispers */}
       {hoveredObject && (
-        <div className="absolute top-5 left-1/2 -translate-x-1/2 pointer-events-none z-20">
+        <div role="tooltip" className="absolute top-5 left-1/2 -translate-x-1/2 pointer-events-none z-20">
           <div className="px-3.5 py-1.5 rounded-full bg-[#1e1c1a]/85 backdrop-blur-md border border-[#ffffff]/10 text-xs text-[#e6ded0] shadow-lg flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#d68c68] animate-pulse" />
             <span>

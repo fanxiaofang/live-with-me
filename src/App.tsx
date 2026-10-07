@@ -284,12 +284,13 @@ export default function App() {
           setIsBookshelfModalOpen(false);
           setSelectedBookshelfItem(null);
         }}
-        activePreset={bookshelfPreset}
+        currentPreset={bookshelfPreset}
         onSelectPreset={handleSelectBookshelfPreset}
         tiers={customBookshelfTiers}
         onToggleBookPulled={handleToggleBookPulled}
-        onAddBook={handleAddCustomBook}
+        onAddCustomBook={handleAddCustomBook}
         selectedItem={selectedBookshelfItem}
+        onSelectItem={setSelectedBookshelfItem}
       /></Suspense>)}
 
       {/* 11. 4-View SVG Export Modal */}

@@ -2,6 +2,31 @@ import { expect, test } from '@playwright/test';
 import { DEFAULT_ROOM_LAYOUT } from '../../src/components/layout-gizmo/layoutStore';
 import { stableScene } from './helpers';
 
+for (const editing of [false, true]) {
+  for (const [id, selector] of [['coffee-beans', '#cabinet-coffee-beans'], ['ceramic-cups', '#cabinet-ceramic-cups']] as const) {
+    test(`cabinet ${id} hover and click with editor=${editing} preserve the world`, async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', error => errors.push(error.message));
+      await stableScene(page);
+      if (editing) await page.getByRole('button', { name: '全屋 2.5D 布局校准器', exact: true }).click();
+      // Enter the actual cabinet child, rather than selecting it through the panel.
+      const part = page.locator(selector);
+      await part.dispatchEvent('mouseover');
+      await expect(page.getByRole('tooltip')).toContainText(DEFAULT_ROOM_LAYOUT[id].name);
+      await part.dispatchEvent('click');
+      await expect(page.locator('#iso-interactive-gizmo')).toHaveCount(editing ? 1 : 0);
+      await expect(page.locator('#panoramic-world-stage')).toBeVisible();
+      await expect(page.getByRole('alert', { name: '页面运行错误' })).toHaveCount(0);
+      expect(errors).toEqual([]);
+      if (editing) {
+        await page.getByRole('complementary', { name: '2.5D 室内全屋布局校准面板' }).getByRole('button', { name: '→', exact: true }).click();
+        const saved = await page.evaluate(id => JSON.parse(localStorage.getItem('live_with_me_room_layout_v6')!)[id].screen.x, id);
+        expect(saved).toBe(Number((DEFAULT_ROOM_LAYOUT[id].screen.x + 1).toFixed(1)));
+      }
+    });
+  }
+}
+
 test('layout editor opens, selects and nudges every v6 item without unmounting the world', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));

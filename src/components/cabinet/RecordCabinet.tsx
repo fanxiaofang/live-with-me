@@ -32,7 +32,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
   onSelectGizmo,
   onDragGizmoDelta,
   onDragGizmoEnd,
-}) => {
+}: RecordCabinetProps) => {
   // 坐标优先取 layout 动态状态，缺省兜底
   const beansPos = layout['coffee-beans'].screen;
   const cupsPos = layout['ceramic-cups'].screen;
@@ -73,7 +73,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.({ kind: 'furniture-part', id: 'cabinet-beans' });
+            onHoverObject?.({ kind: 'furniture-part', id: 'coffee-beans' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();
@@ -94,7 +94,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.({ kind: 'furniture-part', id: 'cabinet-cups' });
+            onHoverObject?.({ kind: 'furniture-part', id: 'ceramic-cups' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();

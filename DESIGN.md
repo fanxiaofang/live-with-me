@@ -60,7 +60,7 @@ features/presence/presenceAllocation.ts 是唯一候选与容量规则。App 派
 
 ## 交互、状态与 CSS 生命周期
 
-InteractionTarget 使用 entity、room、person、book、poster、furniture-part 六种类型。registry 保存静态描述，dispatcher 接收运行时上下文并执行业务回调。人物姓名、书名和动态文字不作为 ID。主要 SVG 入口支持 Enter / Space，与鼠标路径一致。
+InteractionTarget 使用 entity、room、person、book、poster、furniture-part 六种类型。registry 保存静态描述，dispatcher 接收运行时上下文并执行业务回调。人物姓名、书名和动态文字不作为 ID。主要 SVG 入口支持 Enter / Space，与鼠标路径一致。家具描述仅读取布局表自身的合法 ID，未知运行时 ID 返回通用文案，避免悬停文字异常卸载场景。React 类型声明作为锁定开发依赖提供 props 与家具 ID 的编译检查。
 
 App 的 usePresenceState、useMailbox、useBookshelf、useLayoutEditor、useToast 管理业务状态；相机、hover、站点和沙发反馈由对应 controller 管理。TimerScope 使用命名期限，重复触发替换前一次期限，关闭浮层或卸载清理；音频引擎卸载时停止 interval、声源和 AudioContext。
 
