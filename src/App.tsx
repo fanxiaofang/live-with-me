@@ -1,3 +1,4 @@
+import { useLayoutEditor } from './features/layout-editor/useLayoutEditor';
 /**
  * Live With Me
  * 低打扰陪伴空间 · Presence without conversation
@@ -44,12 +45,9 @@ export default function App() {
   const [people, setPeople] = useState<Person[]>(INITIAL_PEOPLE);
   const [letters, setLetters] = useState<MailLetter[]>(INITIAL_LETTERS);
   const [memories, setMemories] = useState<LivingMemory[]>(INITIAL_MEMORIES);
-  const [activeRoom, setActiveRoom] = useState<RoomId | 'overview'>('overview');
-
-  // 2.5D 全屋轴测拖拽对齐组件布局状态
-  const [roomLayout, setRoomLayout] = useState<RoomLayoutConfig>(() => loadSavedRoomLayout());
-  const [activeGizmoId, setActiveGizmoId] = useState<EditableObjectId | null>(null);
-  const [isLayoutInspectorOpen, setIsLayoutInspectorOpen] = useState(false);
+  const [activeRoom, setRoom] = useState<RoomId | 'overview'>('overview');
+  const [focusRevision, setFocusRevision] = useState(0);
+  const setActiveRoom = (room: RoomId | 'overview') => { setRoom(room); setFocusRevision(value => value + 1); };
 
   // Modals
   const [isMailboxOpen, setIsMailboxOpen] = useState(false);
@@ -276,37 +274,9 @@ export default function App() {
     triggerToast(`✨ 已将《${bookItem.title}》安放到书架第 ${tierIndex} 层插槽`);
   };
 
-  // 2.5D 全屋轴测拖拽对齐操作
-  const handleUpdateLayoutPosition = (id: EditableObjectId, pos: { x: number; y: number }) => {
-    setRoomLayout((prev) => {
-      const next = {
-        ...prev,
-        [id]: {
-          ...prev[id],
-          screen: pos,
-        },
-      };
-      saveRoomLayout(next);
-      return next;
-    });
-  };
-
-  const handleDragGizmoDelta = (dx: number, dy: number) => {
-    if (!activeGizmoId) return;
-    const cur = roomLayout[activeGizmoId]?.screen;
-    if (!cur) return;
-    const nextPos = {
-      x: Number((cur.x + dx).toFixed(1)),
-      y: Number((cur.y + dy).toFixed(1)),
-    };
-    handleUpdateLayoutPosition(activeGizmoId, nextPos);
-  };
-
-  const handleResetLayoutDefaults = () => {
-    clearSavedRoomLayout();
-    setRoomLayout(DEFAULT_ROOM_LAYOUT);
-    triggerToast('↺ 已恢复全屋家具与摆件默认 2.5D 摆放位置');
-  };
+  const {roomLayout,activeGizmoId,setActiveGizmoId,isLayoutInspectorOpen,setIsLayoutInspectorOpen,
+    updatePosition:handleUpdateLayoutPosition,dragDelta:handleDragGizmoDelta,
+    beginDrag,commitDrag,cancelDrag,reset:handleResetLayoutDefaults} = useLayoutEditor(triggerToast);
 
   return (
     <main className="relative w-screen h-screen overflow-hidden bg-[#141210] font-sans">
@@ -342,6 +312,7 @@ export default function App() {
           timeOfDay={timeOfDay}
           people={people}
           activeRoom={activeRoom}
+          focusRevision={focusRevision}
           unreadMailCount={unreadCount}
           onSelectPerson={(p) => {
             if (p.isSelf) {
@@ -368,6 +339,9 @@ export default function App() {
             }
           }}
           onDragGizmoDelta={handleDragGizmoDelta}
+          onDragGizmoBegin={beginDrag}
+          onDragGizmoEnd={commitDrag}
+          onDragGizmoCancel={cancelDrag}
           isChairEmptyOverride={isChairEmptyOverride}
           onToggleChairSeated={handleToggleChairSeated}
           onOpenChairInspector={() => setIsChairModalOpen(true)}

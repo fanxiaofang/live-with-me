@@ -1,4 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { LayoutGestureContext } from '../../features/layout-editor/LayoutGestureContext';
+import { FURNITURE_PARENTS } from '../../features/layout-editor/furnitureParents';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { ISO_CONSTANTS, projectIsoToScreen, unprojectScreenToIso, IsoPoint3D } from './isoMath';
 
 interface IsoGizmoProps {
@@ -32,7 +34,10 @@ export const IsoGizmo: React.FC<IsoGizmoProps> = ({
 }) => {
   const displayName = objectName || label || '组件';
   const [activeAxis, setActiveAxis] = useState<'free' | 'u' | 'v' | 'w' | null>(null);
-  const dragStartRef = useRef<{ clientX: number; clientY: number } | null>(null);
+  const owner=useContext(LayoutGestureContext);
+  const ownerRef=useRef(owner); ownerRef.current=owner;
+  const drag=useRef<{id:number;axis:'free'|'u'|'v'|'w';matrix:DOMMatrix;previous:DOMPoint;dx:number;dy:number}|null>(null);
+  useEffect(()=>()=>{if(drag.current) ownerRef.current?.cancel();},[]);
 
   // 轴线向量与长度
   const axisLen = 14;
@@ -43,52 +48,44 @@ export const IsoGizmo: React.FC<IsoGizmoProps> = ({
   // w轴屏幕矢量: (0, -1.0)
   const wVector = { x: 0, y: -1.0 * axisLen };
 
-  const handlePointerDown = (e: React.PointerEvent, axis: 'free' | 'u' | 'v' | 'w') => {
-    e.stopPropagation();
-    (e.target as Element).setPointerCapture(e.pointerId);
-    setActiveAxis(axis);
-    dragStartRef.current = { clientX: e.clientX, clientY: e.clientY };
+  const handlePointerDown = (e: React.PointerEvent<SVGGElement>, axis: 'free'|'u'|'v'|'w') => {
+    if(e.button!==0 || drag.current) return;
+    e.preventDefault();e.stopPropagation();
+    const id=owner?.activeId;
+    const parent=id ? e.currentTarget.ownerSVGElement?.querySelector<SVGGraphicsElement>(FURNITURE_PARENTS[id].selector) : e.currentTarget.parentElement as unknown as SVGGraphicsElement;
+    const matrix=parent?.getScreenCTM()?.inverse();
+    if(!matrix) return;
+    owner?.begin();
+    drag.current={id:e.pointerId,axis,matrix,previous:new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix),dx:0,dy:0};
+    e.currentTarget.setPointerCapture(e.pointerId);setActiveAxis(axis);
   };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!activeAxis || !dragStartRef.current) return;
-    e.stopPropagation();
-
-    // 屏幕像素差 (在带有 SVG 缩放的画布中，大致按照微小像素增量缩放)
-    const rawDx = (e.clientX - dragStartRef.current.clientX) * 0.45;
-    const rawDy = (e.clientY - dragStartRef.current.clientY) * 0.45;
-
-    dragStartRef.current = { clientX: e.clientX, clientY: e.clientY };
-
-    if (activeAxis === 'free') {
-      onDragDelta(rawDx, rawDy);
-    } else if (activeAxis === 'u') {
-      // 沿 u 轴投影: 投影到单位矢量 (1.0, -0.2852) 长度约 1.04
-      const lenU = Math.hypot(1.0, -0.2852);
-      const dot = (rawDx * 1.0 + rawDy * -0.2852) / (lenU * lenU);
-      onDragDelta(dot * 1.0, dot * -0.2852);
-    } else if (activeAxis === 'v') {
-      // 沿 v 轴投影: (0.8, 0.228) 长度约 0.832
-      const lenV = Math.hypot(0.8, 0.228);
-      const dot = (rawDx * 0.8 + rawDy * 0.228) / (lenV * lenV);
-      onDragDelta(dot * 0.8, dot * 0.228);
-    } else if (activeAxis === 'w') {
-      // 沿 w 垂直轴投影: (0, 1.0)
-      onDragDelta(0, rawDy);
-    }
+  const handlePointerMove=(e:React.PointerEvent<SVGGElement>)=>{
+    const session=drag.current;
+    if(!session||session.id!==e.pointerId) return;
+    e.preventDefault();e.stopPropagation();
+    const point=new DOMPoint(e.clientX,e.clientY).matrixTransform(session.matrix);
+    let dx=point.x-session.previous.x,dy=point.y-session.previous.y;
+    session.previous=point;
+    if(session.axis==='u'||session.axis==='v') {
+      const x=session.axis==='u'?ISO_CONSTANTS.cosU:ISO_CONSTANTS.cosV;
+      const y=session.axis==='u'?ISO_CONSTANTS.sinU:ISO_CONSTANTS.sinV;
+      const dot=(dx*x+dy*y)/(x*x+y*y);dx=dot*x;dy=dot*y;
+    } else if(session.axis==='w') dx=0;
+    session.dx+=dx;session.dy+=dy;
+    if(Math.hypot(dx,dy)>0) owner?.markMoved();
+    onDragDelta(dx,dy);
   };
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    if (activeAxis) {
-      e.stopPropagation();
-      try {
-        (e.target as Element).releasePointerCapture(e.pointerId);
-      } catch {}
-      setActiveAxis(null);
-      dragStartRef.current = null;
-      onDragEnd?.();
-    }
+  const finish=(e:React.PointerEvent<SVGGElement>,cancelled=false)=>{
+    const session=drag.current;
+    if(!session||session.id!==e.pointerId) return;
+    e.stopPropagation();drag.current=null;setActiveAxis(null);
+    if(cancelled) {if(owner) owner.cancel();else onDragDelta(-session.dx,-session.dy);}
+    else {if(owner) owner.commit();else onDragEnd?.();}
+    if(e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
   };
+  const handlePointerUp=(e:React.PointerEvent<SVGGElement>)=>finish(e);
+  const handlePointerCancel=(e:React.PointerEvent<SVGGElement>)=>finish(e,true);
+  const handleLostPointerCapture=(e:React.PointerEvent<SVGGElement>)=>{if(e.target===e.currentTarget) finish(e,true);};
 
   const targetPos = displayCoords || pos;
   const isoCoords: IsoPoint3D = unprojectScreenToIso(targetPos, fixedW);
@@ -115,9 +112,12 @@ export const IsoGizmo: React.FC<IsoGizmoProps> = ({
       {/* 2. U轴 (长边红轴: 向右下) */}
       <g
         className="cursor-ew-resize hover:opacity-100 opacity-90 transition-opacity"
+        data-gizmo-axis="u"
         onPointerDown={(e) => handlePointerDown(e, 'u')}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onLostPointerCapture={handleLostPointerCapture}
       >
         <line
           x1="0"
@@ -144,9 +144,12 @@ export const IsoGizmo: React.FC<IsoGizmoProps> = ({
       {/* 3. V轴 (进深绿轴: 向右上) */}
       <g
         className="cursor-ns-resize hover:opacity-100 opacity-90 transition-opacity"
+        data-gizmo-axis="v"
         onPointerDown={(e) => handlePointerDown(e, 'v')}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onLostPointerCapture={handleLostPointerCapture}
       >
         <line
           x1="0"
@@ -172,9 +175,12 @@ export const IsoGizmo: React.FC<IsoGizmoProps> = ({
       {/* 4. W轴 (垂直蓝轴: 向上高度) */}
       <g
         className="cursor-row-resize hover:opacity-100 opacity-90 transition-opacity"
+        data-gizmo-axis="w"
         onPointerDown={(e) => handlePointerDown(e, 'w')}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onLostPointerCapture={handleLostPointerCapture}
       >
         <line
           x1="0"
@@ -200,9 +206,12 @@ export const IsoGizmo: React.FC<IsoGizmoProps> = ({
       {/* 5. 中心自由拖拽核心圆点 (Free Drag Center) */}
       <g
         className="cursor-grab active:cursor-grabbing"
+        data-gizmo-axis="free"
         onPointerDown={(e) => handlePointerDown(e, 'free')}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onLostPointerCapture={handleLostPointerCapture}
       >
         <circle cx="0" cy="0" r="3.2" fill="#f59e0b" stroke="#ffffff" strokeWidth="0.8" />
         <circle cx="0" cy="0" r="1.4" fill="#78350f" />

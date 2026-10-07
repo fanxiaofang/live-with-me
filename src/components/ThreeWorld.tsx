@@ -1,3 +1,5 @@
+import { useWorldCamera } from '../world/camera/useWorldCamera';
+import { LayoutGestureContext } from '../features/layout-editor/LayoutGestureContext';
 import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
 import { ObservatoryHaven } from './architecture/ObservatoryHaven';
 import { SceneEntity } from '../world/render/SceneEntity';
@@ -32,6 +34,9 @@ import {
 
 interface ThreeWorldProps {
   sceneLayout?: SceneLayout;
+  focusRevision?: number;
+  onDragGizmoBegin?: () => void;
+  onDragGizmoCancel?: () => void;
   timeOfDay: TimeOfDay;
   people: Person[];
   activeRoom: RoomId | 'overview';
@@ -57,19 +62,6 @@ interface ThreeWorldProps {
   onOpenChairInspector?: () => void;
   onTriggerToast?: (msg: string) => void;
 }
-
-// Room Camera Pan/Scale configurations in the 2.5D countryside landscape
-// 采用约克郡谷箱庭广角俯瞰 (scale: 0.66, y: 135)，腾出上方 35% 广袤纯净天际远山与火车高架桥，下方留足 35% 连贯莫兰迪色系草坡
-const ROOM_VIEWPORTS: Record<string, { x: number; y: number; scale: number }> = {
-  overview: { x: 0, y: 135, scale: 0.66 },
-  my_room: { x: 220, y: 150, scale: 1.55 },
-  living_nook: { x: 20, y: 130, scale: 1.55 },
-  friend_room: { x: -180, y: 140, scale: 1.55 },
-  porch_mailbox: { x: 40, y: -80, scale: 1.5 },
-  capsule_pod: { x: -280, y: 60, scale: 1.6 },
-  corn_lounge: { x: 210, y: -30, scale: 1.6 },
-  observatory: { x: -380, y: 30, scale: 1.6 },
-};
 
 // Anime countryside atmospheric color palettes & lighting
 const COUNTRYSIDE_THEMES: Record<
@@ -207,13 +199,16 @@ const ALIEN_TRANSMISSIONS = [
 
 export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   sceneLayout = DEFAULT_SCENE_LAYOUT,
+  focusRevision = 0,
+  onDragGizmoBegin,
+  onDragGizmoCancel,
   timeOfDay,
   people,
   activeRoom,
   unreadMailCount,
   onSelectPerson,
   onSelectMailbox,
-  onSelectRoom,
+  onSelectRoom: requestRoom,
   onFireplaceClick,
   bookshelfPreset,
   onBookshelfClick,
@@ -232,6 +227,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   onOpenChairInspector,
   onTriggerToast,
 }) => {
+  const onSelectRoom = (room: RoomId | 'overview') => { if (!isInspectorOpen) requestRoom(room); };
   const currentLayout = roomLayout || cabinetLayout || DEFAULT_ROOM_LAYOUT;
   const effectiveGizmoId = isInspectorOpen ? activeGizmoId : null;
   const containerRef = useRef<HTMLDivElement>(null);
@@ -239,17 +235,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   // Active Wall Poster Modal State (右墙电影海报高清艺术展陈卡片)
   const [selectedPosterId, setSelectedPosterId] = useState<PosterId | null>(null);
 
-  // Pan & Zoom state for the 2.5D anime world
-  const [camera, setCamera] = useState<{ x: number; y: number; zoom: number }>(() => {
-    const derived = resolveRoomCamera(activeRoom, sceneLayout);
-    const target = activeRoom === 'observatory' ? { x: derived.x, y: derived.y, scale: derived.zoom } : ROOM_VIEWPORTS[activeRoom] || ROOM_VIEWPORTS.overview;
-    return {
-      x: target.x,
-      y: target.y,
-      zoom: target.scale,
-    };
-  });
-  const [isDragging, setIsDragging] = useState(false);
+  const { camera, isDragging, svgRef, hasMovedRef, pointerHandlers, zoomBy, restoreFocus } = useWorldCamera(activeRoom, sceneLayout, focusRevision, isInspectorOpen);
 
   const [hoveredObject, setHoveredObject] = useState<string | null>(null);
   const [alienMsgIndex, setAlienMsgIndex] = useState(0);
@@ -275,24 +261,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     return 'terracotta'; // 默认优先采用与室外红砖烟囱、红瓦屋顶 100% 呼应的同色系暖陶土红
   });
 
-  // Drag interaction state
-  const isDraggingRef = useRef(false);
-  const dragStartRef = useRef({ x: 0, y: 0 });
-  const cameraStartRef = useRef({ x: 0, y: 0 });
-  const hasMovedRef = useRef(false);
-
   const theme = COUNTRYSIDE_THEMES[timeOfDay] || COUNTRYSIDE_THEMES.afternoon;
-
-  // Align camera with active room changes
-  useEffect(() => {
-    const derived = resolveRoomCamera(activeRoom, sceneLayout);
-    const target = activeRoom === 'observatory' ? { x: derived.x, y: derived.y, scale: derived.zoom } : ROOM_VIEWPORTS[activeRoom] || ROOM_VIEWPORTS.overview;
-    setCamera({
-      x: target.x,
-      y: target.y,
-      zoom: target.scale,
-    });
-  }, [activeRoom, sceneLayout]);
 
   // Click on alien signal dish triggers cosmic transmission & decoded message
   const triggerAlienSignal = (e?: React.MouseEvent) => {
@@ -320,118 +289,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     setTimeout(() => setSofaThought(null), 3600);
   };
 
-  // Clamping helper
-  const clamp = (val: number, min: number, max: number) => Math.min(Math.max(val, min), max);
-
-  // 镜头拖拽漫游边界：严格限定在田园主画幅内（左侧以高架桥西端为界，右至观星山麓/守护树，上下以天际线与草甸为界）
-  const PAN_BOUNDS = {
-    minX: -420, // 右侧边界
-    maxX: 420,  // 左侧边界（高架桥西侧末端）
-    minY: -120, // 下方边界
-    maxY: 300,  // 上方边界
-  };
-
-  // Mouse wheel zoom
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    const zoomDelta = -e.deltaY * 0.0012;
-    setCamera((prev) => ({
-      ...prev,
-      zoom: clamp(prev.zoom + zoomDelta, 0.45, 2.5),
-    }));
-  }, []);
-
-  // Mouse drag to pan
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0) return;
-    isDraggingRef.current = true;
-    setIsDragging(true);
-    hasMovedRef.current = false;
-    dragStartRef.current = { x: e.clientX, y: e.clientY };
-    cameraStartRef.current = { x: camera.x, y: camera.y };
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDraggingRef.current) return;
-    const dx = e.clientX - dragStartRef.current.x;
-    const dy = e.clientY - dragStartRef.current.y;
-    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
-      hasMovedRef.current = true;
-    }
-    setCamera((prev) => ({
-      ...prev,
-      x: clamp(cameraStartRef.current.x + dx / prev.zoom, PAN_BOUNDS.minX, PAN_BOUNDS.maxX),
-      y: clamp(cameraStartRef.current.y + dy / prev.zoom, PAN_BOUNDS.minY, PAN_BOUNDS.maxY),
-    }));
-  };
-
-  const handleMouseUp = () => {
-    isDraggingRef.current = false;
-    setIsDragging(false);
-  };
-
-  // Touch handlers for mobile
-  const touchStartRef = useRef({ x: 0, y: 0, dist: 0 });
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length === 1) {
-      isDraggingRef.current = true;
-      setIsDragging(true);
-      hasMovedRef.current = false;
-      dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      cameraStartRef.current = { x: camera.x, y: camera.y };
-    } else if (e.touches.length === 2) {
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      touchStartRef.current.dist = Math.hypot(dx, dy);
-    }
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (e.touches.length === 1 && isDraggingRef.current) {
-      const dx = e.touches[0].clientX - dragStartRef.current.x;
-      const dy = e.touches[0].clientY - dragStartRef.current.y;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
-        hasMovedRef.current = true;
-      }
-      setCamera((prev) => ({
-        ...prev,
-        x: clamp(cameraStartRef.current.x + dx / prev.zoom, PAN_BOUNDS.minX, PAN_BOUNDS.maxX),
-        y: clamp(cameraStartRef.current.y + dy / prev.zoom, PAN_BOUNDS.minY, PAN_BOUNDS.maxY),
-      }));
-    } else if (e.touches.length === 2 && touchStartRef.current.dist > 0) {
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      const dist = Math.hypot(dx, dy);
-      const factor = (dist - touchStartRef.current.dist) * 0.003;
-      setCamera((prev) => ({
-        ...prev,
-        zoom: clamp(prev.zoom + factor, 0.45, 2.5),
-      }));
-      touchStartRef.current.dist = dist;
-    }
-  };
-
-  const handleTouchEnd = () => {
-    isDraggingRef.current = false;
-    setIsDragging(false);
-  };
-
-  const handleZoomIn = () => {
-    setCamera((prev) => ({ ...prev, zoom: Math.min(prev.zoom + 0.25, 2.5) }));
-  };
-
-  const handleZoomOut = () => {
-    setCamera((prev) => ({ ...prev, zoom: Math.max(prev.zoom - 0.25, 0.45) }));
-  };
-
-  const handleResetOverview = () => {
-    onSelectRoom('overview');
-    setCamera({
-      x: ROOM_VIEWPORTS.overview.x,
-      y: ROOM_VIEWPORTS.overview.y,
-      zoom: ROOM_VIEWPORTS.overview.scale,
-    });
-  };
+  const handleZoomIn = () => zoomBy(0.25);
+  const handleZoomOut = () => zoomBy(-0.25);
+  const handleResetOverview = () => { requestRoom('overview'); restoreFocus(); };
 
   // Dynamic Scene-based View Mapping for Character Presence
   const { slots: presenceSlots } = resolvePresenceSlots(people);
@@ -443,17 +303,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const isLinReading = presenceSlots.sofa_lounge?.occupant?.id === 'lin';
 
   return (
+    <LayoutGestureContext.Provider value={{ activeId: effectiveGizmoId ?? null, begin: () => { hasMovedRef.current = false; onDragGizmoBegin?.(); }, commit: () => onDragGizmoEnd?.(), cancel: () => onDragGizmoCancel?.(), markMoved: () => { hasMovedRef.current = true; } }}>
     <div
       ref={containerRef}
-      onWheel={handleWheel}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      {...pointerHandlers}
       className="relative w-full h-full overflow-hidden select-none cursor-grab active:cursor-grabbing"
       style={{
+        touchAction: 'none',
         background: `linear-gradient(180deg, ${theme.skyTop} 0%, ${theme.skyBottom} 100%)`,
         transition: 'background 1.4s ease-in-out',
       }}
@@ -488,6 +344,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
         {/* Main 2.5D Anime Landscape SVG (Full-bleed panoramic canvas permanently locked to viewport) */}
         <svg
+          ref={svgRef}
           viewBox="0 0 1200 800"
           preserveAspectRatio="xMidYMid slice"
           className="absolute inset-0 w-full h-full pointer-events-auto"
@@ -1063,6 +920,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/* ======================================================== */}
           <g
             id="panoramic-world-stage"
+            data-zoom={camera.zoom}
             style={{
               transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.zoom})`,
               transformOrigin: '600px 400px',
@@ -3085,5 +2943,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
         }}
       />
     </div>
+    </LayoutGestureContext.Provider>
   );
 };

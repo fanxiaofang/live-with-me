@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThreeWorld } from '../../src/components/ThreeWorld';
 import { INITIAL_PEOPLE } from '../../src/data/initialData';
@@ -6,6 +6,8 @@ import { loadSavedRoomLayout } from '../../src/components/layout-gizmo/layoutSto
 import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
 import type { EntityId } from '../../src/world/scene/sceneTypes';
 import type { RoomId } from '../../src/types';
+import type { EditableObjectId } from '../../src/components/layout-gizmo/layoutStore';
+import { useLayoutEditor } from '../../src/features/layout-editor/useLayoutEditor';
 import '../../src/index.css';
 
 const query = new URLSearchParams(location.search);
@@ -20,10 +22,32 @@ if (entity && entity in sceneLayout) sceneLayout[entity] = {
 };
 const occupantRoom = query.has('observer') ? 'observatory' : query.get('occupantRoom') as RoomId;
 const people = query.has('empty') ? [] : INITIAL_PEOPLE.map(p => occupantRoom && p.isSelf ? { ...p, currentRoom: occupantRoom } : p);
-createRoot(document.getElementById('root')!).render(
-  <div style={{ width: '100vw', height: '100vh' }}>
+function Fixture() {
+  const editor=useLayoutEditor(() => {});
+  const [requestedZoom,setRequestedZoom]=useState<number|null>(null);
+  const [activeRoom,setActiveRoom]=useState<RoomId|'overview'>(query.has('focusStation') ? 'observatory' : (query.get('focusRoom') as RoomId) || 'overview');
+  useEffect(()=>{
+    if(query.has('edit')){editor.setIsLayoutInspectorOpen(true);editor.setActiveGizmoId(query.get('edit') as EditableObjectId);}
+  },[]);
+  useEffect(()=>{
+    if(requestedZoom===null) return;
+    const stage=document.querySelector('#panoramic-world-stage')!;
+    const current=Number(stage.getAttribute('data-zoom'));
+    const svg=stage.closest('svg')!;
+    svg.dispatchEvent(new WheelEvent('wheel',{deltaY:(current-requestedZoom)/0.0012,bubbles:true,cancelable:true}));
+    editor.setIsLayoutInspectorOpen(true);
+    editor.setActiveGizmoId(query.get('edit') as EditableObjectId);
+  },[requestedZoom]);
+  return <div style={{ width: '100vw', height: '100vh' }}>
+    {query.has('edit')&&<input aria-label="Fixture camera zoom" data-testid="fixture-zoom" type="number" step="0.01"
+      style={{position:'absolute',zIndex:100,left:0,top:0,width:70}}
+      onChange={e=>{editor.setIsLayoutInspectorOpen(false);setRequestedZoom(Number(e.target.value));}} />}
     <ThreeWorld timeOfDay="afternoon" people={people} sceneLayout={sceneLayout}
-      activeRoom={query.has('focusStation') ? 'observatory' : 'overview'} roomLayout={loadSavedRoomLayout()} unreadMailCount={2} onSelectPerson={() => {}}
-      onSelectMailbox={() => {}} onSelectRoom={() => {}} />
-  </div>,
-);
+      activeRoom={activeRoom} roomLayout={editor.roomLayout} unreadMailCount={2} onSelectPerson={() => {}}
+      onSelectMailbox={() => {}} onSelectRoom={setActiveRoom}
+      isInspectorOpen={editor.isLayoutInspectorOpen} activeGizmoId={editor.activeGizmoId}
+      onDragGizmoDelta={editor.dragDelta} onDragGizmoBegin={editor.beginDrag}
+      onDragGizmoEnd={editor.commitDrag} onDragGizmoCancel={editor.cancelDrag} />
+  </div>;
+}
+createRoot(document.getElementById('root')!).render(<Fixture />);
