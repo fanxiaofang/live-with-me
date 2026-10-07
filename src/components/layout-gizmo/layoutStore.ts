@@ -355,35 +355,40 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
   },
 };
 
-const STORAGE_KEY = 'live_with_me_room_layout_v6';
+export const STORAGE_KEY = 'live_with_me_room_layout_v6';
+
+/** v6 remains an object keyed by ID; saved metadata never overrides code. */
+export function resolveRoomLayout(input: unknown): RoomLayoutConfig {
+  const overrides = input && typeof input === 'object' ? input as Record<string, unknown> : {};
+  return Object.fromEntries(Object.entries(DEFAULT_ROOM_LAYOUT).map(([id, defaults]) => {
+    const item = overrides[id] as { screen?: { x?: unknown; y?: unknown }; scale?: unknown } | undefined;
+    const validPoint = item?.screen && typeof item.screen.x === 'number' && Number.isFinite(item.screen.x)
+      && typeof item.screen.y === 'number' && Number.isFinite(item.screen.y);
+    const validScale = item?.scale === undefined || (typeof item.scale === 'number' && Number.isFinite(item.scale) && item.scale > 0);
+    return [id, { ...defaults, screen: validPoint && validScale ? { x: item.screen.x, y: item.screen.y } : { ...defaults.screen },
+      ...(validPoint && validScale && item.scale !== undefined ? { scale: item.scale } : {}) }];
+  })) as RoomLayoutConfig;
+}
 
 export function loadSavedRoomLayout(): RoomLayoutConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_ROOM_LAYOUT;
-    const parsed = JSON.parse(raw);
-    const result: Partial<RoomLayoutConfig> = {};
-    (Object.keys(DEFAULT_ROOM_LAYOUT) as EditableObjectId[]).forEach((key) => {
-      result[key] = {
-        ...DEFAULT_ROOM_LAYOUT[key],
-        ...(parsed[key] || {}),
-        screen: {
-          ...DEFAULT_ROOM_LAYOUT[key].screen,
-          ...(parsed[key]?.screen || {}),
-        },
-      };
-    });
-    return result as RoomLayoutConfig;
+    return resolveRoomLayout(raw ? JSON.parse(raw) : undefined);
   } catch {
-    return DEFAULT_ROOM_LAYOUT;
+    return resolveRoomLayout(undefined);
   }
 }
 
-export function saveRoomLayout(config: RoomLayoutConfig) {
+export function saveRoomLayout(config: RoomLayoutConfig): boolean {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+    const resolved = resolveRoomLayout(config);
+    const edits = Object.fromEntries(Object.entries(resolved).map(([id, item]) => [id, {
+      screen: item.screen, ...(item.scale !== undefined ? { scale: item.scale } : {}),
+    }]));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(edits));
+    return true;
   } catch (e) {
-    console.error('Failed to save room layout', e);
+    return false;
   }
 }
 

@@ -1,3 +1,4 @@
+import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React from 'react';
 import { DeskFrame } from './DeskFrame';
 import { LaptopDisplay, BankerLampDisplay, CoffeeMugDisplay } from './DeskItems';
@@ -21,7 +22,7 @@ export interface AtticDeskProps {
  * 4. 三个摆件插槽也可基于桌子局部坐标系各自独立拖拽校准微调
  */
 export const AtticDesk: React.FC<AtticDeskProps> = ({
-  layout,
+  layout = DEFAULT_ROOM_LAYOUT,
   activeGizmoId,
   isInspectorOpen = false,
   onSelectGizmo,
@@ -30,9 +31,9 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
   onHoverObject,
 }) => {
   // 相对桌子局部坐标系的插槽位置
-  const laptopPos = layout?.['desk-laptop']?.screen ?? { x: 15.0, y: -1.0 };
-  const lampPos = layout?.['desk-lamp']?.screen ?? { x: -25.0, y: 6.0 };
-  const cupPos = layout?.['desk-cup']?.screen ?? { x: 41.0, y: -7.0 };
+  const laptopPos = layout['desk-laptop'].screen;
+  const lampPos = layout['desk-lamp'].screen;
+  const cupPos = layout['desk-cup'].screen;
 
   const isDeskChild = Boolean(
     isInspectorOpen &&

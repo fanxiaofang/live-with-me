@@ -70,7 +70,6 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = ({
       {/* Main Wooden Cabin Interactive Group (位于主宅西翼安睡台地 x=160, y=340，与东翼太空舱完美对称呼应) */}
       <g
         id="room-corn_lounge"
-        transform="translate(160, 340)"
         onClick={() => {
           if (!hasMovedRef.current) onSelectRoom('corn_lounge');
         }}

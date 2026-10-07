@@ -1,3 +1,4 @@
+import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React from 'react';
 import { CabinetFrame } from './CabinetFrame';
 import { RetroTurntable } from './RetroTurntable';
@@ -23,7 +24,7 @@ export interface RecordCabinetProps {
 export const RecordCabinet: React.FC<RecordCabinetProps> = ({
   onHoverObject,
   isPlaying = true,
-  layout,
+  layout = DEFAULT_ROOM_LAYOUT,
   activeGizmoId,
   isInspectorOpen = false,
   onSelectGizmo,
@@ -31,15 +32,15 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
   onDragGizmoEnd,
 }) => {
   // 坐标优先取 layout 动态状态，缺省兜底
-  const beansPos = layout?.['coffee-beans'].screen ?? { x: -2.1, y: -10.6 };
-  const cupsPos = layout?.['ceramic-cups'].screen ?? { x: 18.5, y: -15.7 };
-  const turntablePos = layout?.['record-player'].screen ?? { x: -6.7, y: -24.6 };
-  const mokaPos = layout?.['moka-pot'].screen ?? { x: 13.7, y: -32.1 };
+  const beansPos = layout['coffee-beans'].screen;
+  const cupsPos = layout['ceramic-cups'].screen;
+  const turntablePos = layout['record-player'].screen;
+  const mokaPos = layout['moka-pot'].screen;
 
-  const beansScale = layout?.['coffee-beans'].scale ?? 0.85;
-  const cupsScale = layout?.['ceramic-cups'].scale ?? 0.85;
-  const turntableScale = layout?.['record-player'].scale ?? 0.68;
-  const mokaScale = layout?.['moka-pot'].scale ?? 0.85;
+  const beansScale = layout['coffee-beans'].scale;
+  const cupsScale = layout['ceramic-cups'].scale;
+  const turntableScale = layout['record-player'].scale;
+  const mokaScale = layout['moka-pot'].scale;
 
   const isCabinetChild =
     Boolean(isInspectorOpen && activeGizmoId &&

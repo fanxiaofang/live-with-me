@@ -1,3 +1,4 @@
+import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React, { useMemo } from 'react';
 import {
   BookItemConfig,
@@ -502,7 +503,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
   onHoverObject,
   className = '',
   isLinReadingHere = false,
-  layout,
+  layout = DEFAULT_ROOM_LAYOUT,
   activeGizmoId,
   isInspectorOpen = false,
   onSelectGizmo,
@@ -565,9 +566,9 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
     const bookSlotId = getBooksSlotId(tierIndex);
     let bookDeltaX = 0;
     let bookDeltaY = 0;
-    if (bookSlotId && layout?.[bookSlotId]?.screen) {
-      const defaultSlotX = tierIndex === 1 ? -3.0 : -5.0;
-      const defaultSlotY = tierIndex === 1 ? -9.9 : tierIndex === 2 ? -24.5 : -38.5;
+    if (bookSlotId && layout[bookSlotId].screen) {
+      const defaultSlotX = DEFAULT_ROOM_LAYOUT[bookSlotId].screen.x;
+      const defaultSlotY = DEFAULT_ROOM_LAYOUT[bookSlotId].screen.y;
       bookDeltaX = layout[bookSlotId].screen.x - defaultSlotX;
       bookDeltaY = layout[bookSlotId].screen.y - defaultSlotY;
     }
@@ -588,7 +589,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
           onMouseEnter={(e) => {
             if (isInspectorOpen && bookSlotId) {
               e.stopPropagation();
-              onHoverObject?.(`bookshelf:${layout?.[bookSlotId]?.name ?? '藏书区'} (点击可调优坐标)`);
+              onHoverObject?.(`bookshelf:${layout[bookSlotId]?.name ?? '藏书区'} (点击可调优坐标)`);
             }
           }}
           onMouseLeave={() => {
@@ -644,7 +645,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
         {tier.decorations?.map((dec) => {
           const slotId = getDecorationSlotId(dec, tierIndex);
           let pos: { x: number; y: number };
-          if (slotId && layout?.[slotId]?.screen) {
+          if (slotId && layout[slotId].screen) {
             pos = {
               x: 193.0 + layout[slotId].screen.x,
               y: 124.0 + layout[slotId].screen.y,
@@ -673,7 +674,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
                 e.stopPropagation();
                 if (isInspectorOpen && slotId) {
                   onHoverObject?.(
-                    `bookshelf:${layout?.[slotId]?.name ?? dec.label ?? '摆件槽位'} (点击可调优坐标)`
+                    `bookshelf:${layout[slotId]?.name ?? dec.label ?? '摆件槽位'} (点击可调优坐标)`
                   );
                 } else {
                   onHoverObject?.(dec.label ? `✨ ${dec.label}` : '✨ 原木书架摆件');

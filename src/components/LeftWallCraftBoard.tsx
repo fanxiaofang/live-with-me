@@ -1,3 +1,4 @@
+import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Heart, Users, Sparkles } from 'lucide-react';
@@ -33,7 +34,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
   selfPerson,
   linPerson,
   yuPerson,
-  layout,
+  layout = DEFAULT_ROOM_LAYOUT,
   effectiveGizmoId,
   isInspectorOpen = false,
   onSelectGizmo,
@@ -76,14 +77,14 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
 
   // 坐标解算：支持 2.5D 布局校准器独立移动各部件 (若未自定义，采用默认相对位移)
   // 基准原点: (-124, 6)
-  const toolWallX = layout?.['craft-tool-wall']?.screen.x !== undefined ? layout['craft-tool-wall'].screen.x - (-124) : 0;
-  const toolWallY = layout?.['craft-tool-wall']?.screen.y !== undefined ? layout['craft-tool-wall'].screen.y - 6 : -32;
+  const toolWallX = layout['craft-tool-wall'].screen.x - (-124);
+  const toolWallY = layout['craft-tool-wall'].screen.y - (6);
 
-  const windChimeX = layout?.['craft-wind-chime']?.screen.x !== undefined ? layout['craft-wind-chime'].screen.x - (-124) : 52;
-  const windChimeY = layout?.['craft-wind-chime']?.screen.y !== undefined ? layout['craft-wind-chime'].screen.y - 6 : -42;
+  const windChimeX = layout['craft-wind-chime'].screen.x - (-124);
+  const windChimeY = layout['craft-wind-chime'].screen.y - (6);
 
-  const photosX = layout?.['left-wall-photos']?.screen.x !== undefined ? layout['left-wall-photos'].screen.x - (-124) : 6;
-  const photosY = layout?.['left-wall-photos']?.screen.y !== undefined ? layout['left-wall-photos'].screen.y - 6 : 7;
+  const photosX = layout['left-wall-photos'].screen.x - (-124);
+  const photosY = layout['left-wall-photos'].screen.y - (6);
 
   return (
     <>
@@ -249,7 +250,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
           {effectiveGizmoId === 'craft-tool-wall' && (
             <IsoGizmo
               pos={{ x: 22, y: 16 }}
-              displayCoords={layout?.['craft-tool-wall']?.screen}
+              displayCoords={layout['craft-tool-wall'].screen}
               fixedW={0}
               label="工具洞洞板"
               onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -329,7 +330,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
           {effectiveGizmoId === 'craft-wind-chime' && (
             <IsoGizmo
               pos={{ x: 10, y: 15 }}
-              displayCoords={layout?.['craft-wind-chime']?.screen}
+              displayCoords={layout['craft-wind-chime'].screen}
               fixedW={0}
               label="陶艺风铃"
               onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -503,7 +504,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
           {effectiveGizmoId === 'left-wall-photos' && (
             <IsoGizmo
               pos={{ x: 14.5, y: 17 }}
-              displayCoords={layout?.['left-wall-photos']?.screen}
+              displayCoords={layout['left-wall-photos'].screen}
               fixedW={0}
               label="三人合照"
               onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}

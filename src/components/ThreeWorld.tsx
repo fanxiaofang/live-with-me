@@ -1,3 +1,4 @@
+import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
 import { ObservatoryHaven } from './architecture/ObservatoryHaven';
 import { SceneEntity } from '../world/render/SceneEntity';
 import { DEFAULT_SCENE_LAYOUT } from '../world/scene/sceneLayout';
@@ -231,7 +232,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   onOpenChairInspector,
   onTriggerToast,
 }) => {
-  const currentLayout = roomLayout || cabinetLayout;
+  const currentLayout = roomLayout || cabinetLayout || DEFAULT_ROOM_LAYOUT;
   const effectiveGizmoId = isInspectorOpen ? activeGizmoId : null;
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -1485,7 +1486,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/* 2. THE COTTAGE HAVEN (NOW SITUATED ACROSS THE ROAD)       */}
           {/*    Surrounded by lawn, stone path & garden               */}
           {/* ======================================================== */}
-          <g id="living-cottage-haven" transform="translate(540, 210)">
+          <SceneEntity entityId="main_cottage" layout={sceneLayout} id="living-cottage-haven">
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation />
 
@@ -1640,7 +1641,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 1.2 2.5D LIGHTWEIGHT CRAFT DESK (独立 SVG 结构与桌面插槽系统：支持整桌移动与摆件独立微调) */}
               <g
                 id="isometric-desk-container"
-                transform={`translate(${currentLayout?.['desk-group']?.screen.x ?? -147}, ${currentLayout?.['desk-group']?.screen.y ?? 95})`}
+                transform={`translate(${currentLayout['desk-group'].screen.x}, ${currentLayout['desk-group'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -1662,7 +1663,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'desk-group' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 15 }}
-                    displayCoords={currentLayout?.['desk-group']?.screen}
+                    displayCoords={currentLayout['desk-group'].screen}
                     fixedW={0}
                     label="阁楼手工书桌"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -1674,7 +1675,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 1.3 2.5D POTTED MONSTERA DELICIOSA (书桌左侧生机龟背竹盆栽：带开背深裂叶、沃土粗陶盆与微风摇曳) */}
               <g
                 id="isometric-monstera-container"
-                transform={`translate(${currentLayout?.['desk-monstera']?.screen.x ?? -198}, ${currentLayout?.['desk-monstera']?.screen.y ?? 122})`}
+                transform={`translate(${currentLayout['desk-monstera'].screen.x}, ${currentLayout['desk-monstera'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -1697,7 +1698,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'desk-monstera' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 11 }}
-                    displayCoords={currentLayout?.['desk-monstera']?.screen}
+                    displayCoords={currentLayout['desk-monstera'].screen}
                     fixedW={0}
                     label="书桌生机龟背竹"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -1709,7 +1710,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 1.4 2.5D ERGONOMIC WORK CHAIR & CHARACTER: Self (阁楼手作白橡木温莎椅与工作人物：支持椅子与人物随动校准，修正朝向) */}
               <g
                 id="isometric-chair-container"
-                transform={`translate(${currentLayout?.['attic-chair']?.screen.x ?? -132}, ${currentLayout?.['attic-chair']?.screen.y ?? 101})`}
+                transform={`translate(${currentLayout['attic-chair'].screen.x}, ${currentLayout['attic-chair'].screen.y})`}
                 className={isInspectorOpen ? 'cursor-pointer' : ''}
               >
                 {(() => {
@@ -1742,7 +1743,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'attic-chair' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 19.5 }}
-                    displayCoords={currentLayout?.['attic-chair']?.screen}
+                    displayCoords={currentLayout['attic-chair'].screen}
                     fixedW={0}
                     label="手作白橡木温莎椅"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -1765,7 +1766,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 2.1 2.5D FREESTANDING CAST-IRON WOOD STOVE (经典铸铁柴火暖炉：支持2.5D轴测校准对齐与即时换色) */}
               <g
                 id="isometric-wood-stove"
-                transform={`translate(${currentLayout?.['wood-stove']?.screen.x ?? 0}, ${currentLayout?.['wood-stove']?.screen.y ?? 0})`}
+                transform={`translate(${currentLayout['wood-stove'].screen.x}, ${currentLayout['wood-stove'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -1799,7 +1800,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'wood-stove' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 66 }}
-                    displayCoords={currentLayout?.['wood-stove']?.screen}
+                    displayCoords={currentLayout['wood-stove'].screen}
                     fixedW={0}
                     label="铸铁柴火暖炉"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -1811,7 +1812,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 2.15 2.5D RECONSTRUCTED SOLID WOOD TATAMI DAYBED (全新重构日式实木榻榻米休闲榻：与铸铁暖炉保持适宜的生活安全间距与透视呼吸感) */}
               <g
                 id="isometric-daybed"
-                transform={`translate(${(currentLayout?.['daybed']?.screen.x ?? 0) + 14}, ${(currentLayout?.['daybed']?.screen.y ?? 0) + 4})`}
+                transform={`translate(${(currentLayout['daybed'].screen.x) + 14}, ${(currentLayout['daybed'].screen.y) + 4})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -2079,7 +2080,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'daybed' && (
                   <IsoGizmo
                     pos={{ x: 60, y: 74 }}
-                    displayCoords={currentLayout?.['daybed']?.screen}
+                    displayCoords={currentLayout['daybed'].screen}
                     fixedW={0}
                     label="榻榻米休闲榻"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2091,7 +2092,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 2.2 2.5D 轻盈日式咖啡黑胶边柜 (告别笨重沉闷实木，纤细斜腿，收纳咖啡豆、手作杯子、摩卡壶与黑胶唱片机) */}
               <g
                 id="isometric-turntable-console"
-                transform={`translate(${currentLayout?.['cabinet-group']?.screen.x ?? -72}, ${currentLayout?.['cabinet-group']?.screen.y ?? 75})`}
+                transform={`translate(${currentLayout['cabinet-group'].screen.x}, ${currentLayout['cabinet-group'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -2113,7 +2114,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'cabinet-group' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 0 }}
-                    displayCoords={currentLayout?.['cabinet-group']?.screen}
+                    displayCoords={currentLayout['cabinet-group'].screen}
                     fixedW={0}
                     label="咖啡黑胶边柜"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2163,7 +2164,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 2.4 2.5D SOLID WOOD ELEVATED LOW TEA TABLE (日式原木圆矮茶几：重构真实三维离地高度、外八实木腿、桌底通透结构与标准圆柱厚度立面) */}
               <g
                 id="isometric-tea-table"
-                transform={`translate(${currentLayout?.['tea-table']?.screen.x ?? 10}, ${currentLayout?.['tea-table']?.screen.y ?? 128})`}
+                transform={`translate(${currentLayout['tea-table'].screen.x}, ${currentLayout['tea-table'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -2298,7 +2299,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'tea-table' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 10 }}
-                    displayCoords={currentLayout?.['tea-table']?.screen}
+                    displayCoords={currentLayout['tea-table'].screen}
                     fixedW={0}
                     label="圆矮茶几"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2322,14 +2323,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                     ? 'tea-cushion-west'
                     : 'tea-cushion-south';
 
-                // 茶桌基准中心坐标
-                const tableBaseX = currentLayout?.['tea-table']?.screen.x ?? 10;
-                const tableBaseY = currentLayout?.['tea-table']?.screen.y ?? 128;
-                // 若 layout 中存在独立蒲团坐标，优先采用；否则按茶桌默认偏移量
-                const defaultX = tableBaseX + slotCfg.offset.dx;
-                const defaultY = tableBaseY + slotCfg.offset.dy;
-                const posX = currentLayout?.[gizmoKey]?.screen.x ?? defaultX;
-                const posY = currentLayout?.[gizmoKey]?.screen.y ?? defaultY;
+                // v6 tea seats remain independently editable in cottage space.
+                const posX = currentLayout[gizmoKey].screen.x;
+                const posY = currentLayout[gizmoKey].screen.y;
 
                 const isGizmoActive = effectiveGizmoId === gizmoKey;
 
@@ -2457,7 +2453,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                     {isGizmoActive && (
                       <IsoGizmo
                         pos={{ x: 0, y: 4 }}
-                        displayCoords={currentLayout?.[gizmoKey]?.screen}
+                        displayCoords={currentLayout[gizmoKey].screen}
                         fixedW={0}
                         label={slotCfg.slotName}
                         onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2491,7 +2487,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 3.0 2.5D HARMONIOUS RIGHT WALL ART GALLERY (全新右墙艺术海报三联组：《泳者之心》+《还有明天》+《红辣椒》) */}
               <g
                 id="isometric-wall-posters-container"
-                transform={`translate(${currentLayout?.['wall-posters']?.screen.x ?? 0}, ${currentLayout?.['wall-posters']?.screen.y ?? 0})`}
+                transform={`translate(${currentLayout['wall-posters'].screen.x}, ${currentLayout['wall-posters'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -2515,7 +2511,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'wall-posters' && (
                   <IsoGizmo
                     pos={{ x: 101, y: 15 }}
-                    displayCoords={currentLayout?.['wall-posters']?.screen}
+                    displayCoords={currentLayout['wall-posters'].screen}
                     fixedW={0}
                     label="右墙海报三联组"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2527,7 +2523,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 3.1 2.5D RUSTIC HANDCRAFTED 5-TIER LOG BOOKSHELF (纯净架体 + 参数化插槽解耦资产，支持整体与槽位独立校准) */}
               <g
                 id="isometric-bookshelf-container"
-                transform={`translate(${(currentLayout?.['bookshelf-group']?.screen.x ?? 193) - 193}, ${(currentLayout?.['bookshelf-group']?.screen.y ?? 124) - 124})`}
+                transform={`translate(${(currentLayout['bookshelf-group'].screen.x) - 193}, ${(currentLayout['bookshelf-group'].screen.y) - 124})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -2575,7 +2571,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'bookshelf-group' && (
                   <IsoGizmo
                     pos={{ x: 193, y: 124 }}
-                    displayCoords={currentLayout?.['bookshelf-group']?.screen}
+                    displayCoords={currentLayout['bookshelf-group'].screen}
                     fixedW={0}
                     label="原木四层书架 (整体)"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2587,7 +2583,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 3.2 2.5D ARTISAN NORDIC POTTED FIDDLE-LEAF FIG (北欧哑光燕麦竖棱陶筒盆 + 天然胡桃木十字高脚架 + 生态感琴叶榕) */}
               <g
                 id="isometric-houseplant"
-                transform={`translate(${currentLayout?.['fiddle-plant']?.screen.x ?? 112}, ${currentLayout?.['fiddle-plant']?.screen.y ?? 90})`}
+                transform={`translate(${currentLayout['fiddle-plant'].screen.x}, ${currentLayout['fiddle-plant'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -2610,7 +2606,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'fiddle-plant' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 15 }}
-                    displayCoords={currentLayout?.['fiddle-plant']?.screen}
+                    displayCoords={currentLayout['fiddle-plant'].screen}
                     fixedW={0}
                     label="客厅生机琴叶榕"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2622,7 +2618,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* 3.3 2.5D ULTRA-COZY ISOMETRIC LAZY BEANBAG SOFA (紧凑小巧的软糯面包懒人沙发 · 比例恰当不显屋小) */}
               <g
                 id="isometric-lazy-sofa"
-                transform={`translate(${currentLayout?.['lazy-sofa']?.screen.x ?? 142}, ${currentLayout?.['lazy-sofa']?.screen.y ?? 118})`}
+                transform={`translate(${currentLayout['lazy-sofa'].screen.x}, ${currentLayout['lazy-sofa'].screen.y})`}
                 onClick={(e) => {
                   e.stopPropagation();
                   triggerSofaSquish();
@@ -2683,7 +2679,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'lazy-sofa' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 11 }}
-                    displayCoords={currentLayout?.['lazy-sofa']?.screen}
+                    displayCoords={currentLayout['lazy-sofa'].screen}
                     fixedW={0}
                     label="懒人沙发"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2701,7 +2697,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 return (
                   <g
                     id={`person-study-${sofaOccupant.id}`}
-                    transform={`translate(${currentLayout?.['lazy-sofa']?.screen.x ?? 142}, ${(currentLayout?.['lazy-sofa']?.screen.y ?? 118) - 4})`}
+                    transform={`translate(${currentLayout['lazy-sofa'].screen.x}, ${(currentLayout['lazy-sofa'].screen.y) - 4})`}
                     onClick={(e) => {
                       if (isInspectorOpen) {
                         e.stopPropagation();
@@ -2796,7 +2792,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               {/* Sleeping Shiba Inu in Woven Pet Bed (睡在编织软窝垫上的柴犬) */}
               <g
                 id="shiba-inu"
-                transform={`translate(${currentLayout?.['shiba-inu']?.screen.x ?? -70}, ${currentLayout?.['shiba-inu']?.screen.y ?? 172})`}
+                transform={`translate(${currentLayout['shiba-inu'].screen.x}, ${currentLayout['shiba-inu'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
@@ -2827,7 +2823,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 {effectiveGizmoId === 'shiba-inu' && (
                   <IsoGizmo
                     pos={{ x: 0, y: 10 }}
-                    displayCoords={currentLayout?.['shiba-inu']?.screen}
+                    displayCoords={currentLayout['shiba-inu'].screen}
                     fixedW={0}
                     label="柴犬宠物窝"
                     onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
@@ -2884,13 +2880,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 </g>
               </g>
             </g>
-          </g>
+          </SceneEntity>
 
           {/* ======================================================== */}
           {/* 2.5 VINTAGE CAPSULE CABIN (屋旁旧胶囊仓 · 卧室/休息室)    */}
           {/*     向中央主木屋收拢靠拢，形成紧密温暖的生活聚落          */}
           {/* ======================================================== */}
-          <g id="capsule-pod-cluster" transform="translate(-36, 0)">
+          <SceneEntity entityId="capsule_pod" layout={sceneLayout} id="capsule-pod-cluster">
             <CapsulePodHaven
               activeRoom={activeRoom}
               onSelectRoom={onSelectRoom}
@@ -2901,13 +2897,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               hasMovedRef={hasMovedRef}
               theme={theme}
             />
-          </g>
+          </SceneEntity>
 
           {/* ======================================================== */}
           {/* 2.6 COZY TIMBER SLEEPING CABIN (左侧独立安睡小木屋 · 暖木卧房) */}
           {/*     向中央主木屋收拢靠拢，形成紧密温暖的生活聚落          */}
           {/* ======================================================== */}
-          <g id="wooden-cabin-cluster" transform="translate(60, 0)">
+          <SceneEntity entityId="wooden_cabin" layout={sceneLayout} id="wooden-cabin-cluster">
             <WoodenCabinHaven
               activeRoom={activeRoom}
               onSelectRoom={onSelectRoom}
@@ -2918,7 +2914,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               hasMovedRef={hasMovedRef}
               theme={theme}
             />
-          </g>
+          </SceneEntity>
 
           {/* ======================================================== */}
           {/* 3. FOREGROUND MEADOW & TRANQUIL MORANDI NEGATIVE SPACE   */}

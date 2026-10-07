@@ -171,7 +171,6 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = ({
       {/* ========================================================================= */}
       <g
         id="room-capsule_pod"
-        transform="translate(930, 320)"
         onClick={() => {
           if (!hasMovedRef.current) onSelectRoom('capsule_pod');
         }}
