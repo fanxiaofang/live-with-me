@@ -1,5 +1,4 @@
 import type { InteractionTarget } from '../../../world/interactions/interactionTypes';
-import React from 'react';
 
 /**
  * 🎨 Yorkshire Countryside Theme tokens
@@ -32,19 +31,6 @@ export interface YorkshireCommonProps {
   onTriggerToast?: (msg: string) => void;
   setHoveredObject?: (target: InteractionTarget | null) => void;
   className?: string;
-}
-
-/**
- * Props for interactive infrastructure like Communication Hill
- */
-export interface CommunicationHillProps extends YorkshireCommonProps {
-  activeRoom?: string;
-  onSelectRoom?: (roomId: any) => void;
-  onSelectPerson?: (person: any) => void;
-  presenceSlots?: Record<string, any>;
-  alienPulseEffect?: boolean;
-  triggerAlienSignal?: (e?: React.MouseEvent) => void;
-  hasMovedRef?: React.RefObject<boolean>;
 }
 
 /**

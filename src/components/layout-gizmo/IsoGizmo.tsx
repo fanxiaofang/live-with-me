@@ -1,7 +1,7 @@
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { LayoutGestureContext } from '../../features/layout-editor/LayoutGestureContext';
 import { FURNITURE_PARENTS } from '../../features/layout-editor/furnitureParents';
-import React, { useRef, useState, useEffect, useContext } from 'react';
-import { ISO_CONSTANTS, projectIsoToScreen, unprojectScreenToIso, IsoPoint3D } from './isoMath';
+import { ISO_CONSTANTS, IsoPoint3D, unprojectScreenToIso } from './isoMath';
 
 interface IsoGizmoProps {
   pos?: { x: number; y: number }; // 局部偏移坐标

@@ -1,4 +1,4 @@
-import { LifeState, RoomInfo, GiftItem, MailLetter, Person, TimePreset, LivingMemory, TimeOfDay } from '../types';
+import { GiftItem, LifeState, LivingMemory, MailLetter, Person, RoomInfo, TimeOfDay, TimePreset } from '../types';
 
 export const LIFE_STATES: Record<string, LifeState> = {
   coding: {
@@ -129,64 +129,48 @@ export const ROOMS: Record<string, RoomInfo> = {
     name: '整栋小屋',
     enName: 'Shared Cottage',
     desc: '一个让彼此安静呼吸的小世界',
-    cameraTarget: [0, 0.9, 0.4],
-    zoom: 0.92,
   },
   my_room: {
     id: 'my_room',
     name: '我的阁楼房间',
     enName: 'My Attic Studio',
     desc: '有窗台、工作台与厚被子的私人小天地',
-    cameraTarget: [-2.8, 1.2, -1.8],
-    zoom: 1.6,
   },
   living_nook: {
     id: 'living_nook',
     name: '公共起居角 & 壁炉',
     enName: 'Cozy Hearth Nook',
     desc: '温暖的壁炉火光、低矮茶几与唱片机',
-    cameraTarget: [0, 0.9, -1.0],
-    zoom: 1.6,
   },
   friend_room: {
     id: 'friend_room',
     name: '林木的书房 · 懒人沙发',
     enName: "Lin's Reading Room & Beanbag",
     desc: '堆满旧书、绿植与超松软懒人沙发的惬意朝阳房间，整个人可以深陷其中静静翻书',
-    cameraTarget: [2.8, 1.2, -1.8],
-    zoom: 1.6,
   },
   porch_mailbox: {
     id: 'porch_mailbox',
     name: '前廊 & 木信箱',
     enName: 'Front Porch & Mailbox',
     desc: '放慢节奏的信箱，存放着朋友留下的心意',
-    cameraTarget: [0, 0.6, 4.0],
-    zoom: 1.6,
   },
   capsule_pod: {
     id: 'capsule_pod',
     name: '旧胶囊仓 · 卧室休息室',
     enName: 'Vintage Capsule Cabin',
     desc: '屋旁由退役太空舱改造的私人卧房与午休小天地，有圆舷窗、羽绒厚被与星图',
-    cameraTarget: [4.2, 1.0, -0.2],
-    zoom: 1.65,
   },
   observatory: {
     id: 'observatory',
     name: '山巅外星电波监听站',
     enName: 'Mountain Deep-Space SETI Station',
     desc: '耸立在远山高耸石脊上的深空射电监听站，配备高精度微波抛物面天线塔架、CRT示波器与外星信号解调接收机',
-    cameraTarget: [3.6, 2.3, -2.4],
-    zoom: 1.6,
   },
   corn_lounge: {
     id: 'corn_lounge',
     name: '林间小木屋 · 暖木卧房',
     enName: 'Cozy Timber Sleeping Cabin',
     desc: '主宅西翼的独立安睡小木屋，与东翼旧太空胶囊睡眠舱定位呼应，提供深沉甜梦与午休小天地。散发着天然雪松原木幽香，坡顶瓦檐下有暖黄壁灯、工匠松木大床、柔软云朵软枕与红陶羊毛被，是静心小憩与安稳沉睡的温馨卧室。',
-    cameraTarget: [-3.2, 0.8, 1.2],
-    zoom: 1.65,
   },
 };
 

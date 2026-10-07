@@ -1,6 +1,6 @@
+import { Check, Copy, Download, ExternalLink, Eye, Image as ImageIcon, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useTimerScope } from '../shared/timers/useTimerScope';
-import React, { useState, useEffect } from 'react';
-import { Download, Copy, Check, ExternalLink, X, Image as ImageIcon, Eye } from 'lucide-react';
 
 interface SvgExportModalProps {
   isOpen: boolean;
@@ -113,6 +113,7 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
           <button
             type="button"
             onClick={onClose}
+            aria-label="关闭导出窗口"
             className="p-1.5 rounded-lg text-[#8c7f71] hover:text-[#ded5c7] hover:bg-[#2b231d] transition-colors"
           >
             <X className="w-5 h-5" />

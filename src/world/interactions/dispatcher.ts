@@ -1,7 +1,7 @@
-import type { Person, RoomId } from '../../types';
 import type { BookItemConfig, TierConfig } from '../../components/bookshelf/bookshelfTypes';
 import type { EditableObjectId } from '../../components/layout-gizmo/layoutStore';
 import type { PosterId } from '../../components/wall-posters/posterTypes';
+import type { Person, RoomId } from '../../types';
 import type { InteractionTarget } from './interactionTypes';
 export interface InteractionCommands {
   focusRoom: (id: RoomId | 'overview') => void;

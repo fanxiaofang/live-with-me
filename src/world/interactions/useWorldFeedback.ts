@@ -1,7 +1,7 @@
-import { useTimerScope } from '../../shared/timers/useTimerScope';
-import React, { useState, useRef } from 'react';
-import type { InteractionTarget } from './interactionTypes';
+import React, { useCallback, useRef, useState } from 'react';
 import type { StoveColorVariant } from '../../components/CastIronWoodStove';
+import { useTimerScope } from '../../shared/timers/useTimerScope';
+import type { InteractionTarget } from './interactionTypes';
 const ALIEN_TRANSMISSIONS = [
   '📡 [SETI 频率 1420.405 MHz · 宇宙中性氢波段] 正在捕获来自猎户座大星云的微弱脉冲信号，信噪比极佳...',
   '✦ [深空信号解码] “01001100... 无论跨越多少光年，请在你们温柔的小世界里好好生活。”',
@@ -37,17 +37,17 @@ export function useWorldFeedback() {
   });
 
   // Click on alien signal dish triggers cosmic transmission & decoded message
-  const triggerAlienSignal = (e?: React.MouseEvent) => {
+  const triggerAlienSignal = useCallback((e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setAlienPulseEffect(true);
     timers.schedule('feedback-0', () => setAlienPulseEffect(false), 1400);
     const msg = ALIEN_TRANSMISSIONS[alienMsgIndex.current];
     setAlienTransmissionText(msg);
     alienMsgIndex.current = (alienMsgIndex.current + 1) % ALIEN_TRANSMISSIONS.length;
-  };
+  }, [timers]);
 
   // Click on lazy beanbag sofa triggers cozy squish & thoughts
-  const triggerSofaSquish = (e?: React.MouseEvent) => {
+  const triggerSofaSquish = useCallback((e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setSofaSquish(true);
     timers.schedule('feedback-1', () => setSofaSquish(false), 500);
@@ -60,7 +60,7 @@ export function useWorldFeedback() {
     ];
     setSofaThought(thoughts[Math.floor(Math.random() * thoughts.length)]);
     timers.schedule('feedback-2', () => setSofaThought(null), 3600);
-  };
+  }, [timers]);
 
   return { hoveredObject, setHoveredObject, alienPulseEffect, alienTransmissionText, setAlienTransmissionText, sofaSquish, sofaThought, stoveColor, setStoveColor, triggerAlienSignal, triggerSofaSquish };
 }

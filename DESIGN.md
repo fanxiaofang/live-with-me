@@ -1,146 +1,85 @@
-# Live With Me — 2.5D 田园景观与建筑系统设计文档 (Design Specification)
+# Live With Me：当前设计与架构
 
-> **文档状态**: 基于真实项目代码全量扫描与运行画面重构校准  
-> **生成时间**: 2026-10-07 00:35:00 (UTC-7)  
-> **代码版本 (Commit ID)**: `Workspace Snapshot / Git Commit: N/A`  
-> *(注：当前 AI Studio Applet 预览容器运行在独立 Snapshot 运行时环境，Applet ID: `abf6f9cc-0a5c-4966-aa2c-84908391cdd2`，结合真实渲染页面与代码审查进行了全量校准)*
+更新：2026-10-07（Asia/Shanghai）。本文对应 P0–P7 重构后的真实生产代码。原始设计文档保存在 [历史设计](docs/architecture/history/DESIGN_BEFORE_REFACTOR.md)，逐批证据见 [执行记录](docs/architecture/EXECUTION_STATUS.md)。
 
----
+## 产品与技术栈
 
-## 1. 系统总体设计架构 (System Architecture)
+Live With Me 是低打扰的陪伴空间。继续使用 React 19、TypeScript、Vite、SVG、CSS / Tailwind CSS 4；CSS 负责布局、浮层、响应式、主题和动画，TypeScript 负责场景数据及坐标转换，SVG 保留手绘资产。npm 及 package-lock.json 是安装入口；dev 端口仍为 3000，DISABLE_HMR 配置保留。
 
-`Live With Me` 是一款低打扰陪伴空间（*Presence without conversation*）。系统架构采用 **React 19 + TypeScript + Vite + Tailwind CSS** 技术栈，基于 **纯粹 2.5D SVG 矢量渲染引擎** 搭建全景舞台（`#panoramic-world-stage`，全局 `viewBox="0 0 1200 800"`）。
+本轮保留 RoomId、人物状态、SVG 导出、家具编辑、原构图与资产遮挡顺序。没有引入 ECS、全局状态库、后端或多人同步。房间状态、信件及家具布局仍由 App 的功能 hooks 所有。
 
-```
-                        ┌────────────────────────────────────────────────────────┐
-                        │                  App.tsx / ThreeWorld                  │
-                        │      (全景舞台镜头: Zoom 0.45..2.5, Pan, 昼夜 Theme)  │
-                        └───────────────────────────┬────────────────────────────┘
-                                                    │
-               ┌────────────────────────────────────┴────────────────────────────────────┐
-               ▼                                                                         ▼
-┌───────────────────────────────┐                                       ┌───────────────────────────────┐
-│     YorkshireWorld 景观系统    │                                       │      Architecture 建筑系统     │
-│ (天空、远山、高架桥、草台箱庭)│                                       │ (中央主屋、安睡木屋、旧胶囊仓) │
-└──────────────┬────────────────┘                                       └───────────────┬───────────────┘
-               │                                                                         │
-               └────────────────────────────────────┬────────────────────────────────────┘
-                                                    ▼
-                                    ┌───────────────────────────────┐
-                                    │  VISUAL_GROUND_PROJECTION     │
-                                    │  (视觉斜率 ±0.283088 / 15.8°) │
-                                    └───────────────────────────────┘
-```
+## 生产调用链与渲染顺序
 
-### 1.1 2.5D 缓坡轴测投影契约 (Ground Projection Contract)
+唯一主入口为 main.tsx → App → ThreeWorld。ThreeWorld 组合 WorldDefs、BackgroundLandscape、远山 DistantPines、ObservatoryHaven、MainCottageHaven、CapsulePodHaven、WoodenCabinHaven、ForegroundLandscape 及浮层。旧 YorkshireWorld 和 CommunicationHill 已移除。
 
-与传统 2:1 (±26.565°) 轴测视角不同，本项目采用专为广角英国田园透视定制的 **±15.806° 缓坡轴测投影契约**（定义于 `src/world/liveWithMeProjection.ts` 及 `docs/visual-system/live-with-me-projection-spec.md`）：
+四处建筑均由 world/render/SceneEntity 执行 placement，建筑资产只保留内部几何、床内偏移、墙面剪切及原绘制顺序。主屋内部地板、墙面、家具、人物、玻璃、屋顶顺序按原生产 JSX 保留，未按新的类别重排。远山松树位于场景层，不随电波站移动。defs 保持现有标识和引用。
 
-- **视觉地面斜率**: `|dy/dx| = 0.283088 ≈ ±15.806°`
-- **地面轴向量**:
-  - `Axis A` (右深轴): `( 0.96219,  0.272379)`（与水平线夹角 +15.806°）
-  - `Axis B` (左宽轴): `( 0.96219, -0.272379)`（与水平线夹角 -15.806°）
-  - `Vertical` (高度轴): `( 0, -1)`（纯屏幕垂直）
-- **投影出处**: 主屋木地板 `TimberFlooring.tsx` 显式几何数值 (`<polygon points="-272,135 0,58 272,135 0,212" />`)。
-- **双契约分离机制**:
-  - `VISUAL_GROUND_PROJECTION`: 用于草地、步道、建筑落地。
-  - `INTERACTION_GIZMO_PROJECTION_REFERENCE` (`isoMath.ts`): 专用于室内家具拖拽操纵（带有 `cosV = 0.8` 进深压缩）。
+| 实体 | scene position | scale |
+| --- | --- | --- |
+| main_cottage | (540,210) | 1 |
+| capsule_pod | (894,320) | 1 |
+| wooden_cabin | (220,340) | 1 |
+| observatory | (1000,460) | 0.80 |
 
----
+定义入口：src/world/scene/sceneLayout.ts。主屋大段几何位于 components/architecture/MainCottageHaven.tsx；景观、主题、浮层分别位于 world/render、world/theme、world/overlays。
 
-## 2. 主页面景观层次与实际代码实现 (Scenery Layering System)
+## 坐标、相机与手势
 
-经过真实代码审查与最新画面优化，项目去除了长椅、连接平台、地面石基、挡土矮墙、杂乱石墙、碎石散水及断头山溪，形成了以**“无界极简绿丘草台”**为核心的纯净画面，外星电波监听站已调整置于草台右侧绿框草地：
+sceneTypes 区分 LocalPoint、ScenePoint、ViewBoxPoint、ClientPoint 及对应位移。局部点显式携带 parent。SVG viewBox 保持 1200×800，preserveAspectRatio 为 xMidYMid slice。
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ 00 BACKGROUND MATTE (英伦高空天空渐变 + 柔和大气薄雾 + 远山云影)              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 01 & 05 DISTANT SCENERY & INFRASTRUCTURE                                    │
-│ ├── 远景起伏山丘 (TerrainSilhouette.tsx)                                   │
-│ └── 高架石拱桥与行进列车 (RailwayLandscape.tsx)                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 02 & 03 MIDGROUND PASTURE & HARVEST                                         │
-│ └── 中景金黄麦田、耕作红色拖拉机与南瓜堆 (PastureFields.tsx)                 │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 04 FIELD BOUNDARY (DrystoneWalls.tsx)                                       │
-│ └── 极简纯净：仅保留独立原木 5-Bar 牧场大门，去除周围所有石墙                     │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ CENTRAL GREEN HILL ISLAND (绿丘草台箱庭)                                     │
-│ ├── 环形暗角包围的椭圆绿丘草台 (纯净留白负空间)                               │
-│ ├── 右侧绿框草甸外星电波监听站 (CommunicationHill.tsx · x=1000, y=460)         │
-│ ├── 前廊右侧“守护之树” (带手工挂牌)                                         │
-│ ├── 散落的 Swaledale 黑脸绵羊、微型野花与立式木信箱                           │
-│ └── [水系 RiverValley 说明]: 已彻底退役 (`return null`)，消除视觉切割感        │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+相机由 useWorldCamera 管理，公式为 q = origin + zoom × (p − origin) + translation，origin=(600,400)，zoom 范围 0.45–2.5。RoomFocus 用 targetEntity、localAnchor、zoom、compositionPoint；anchor 反推自原镜头，本轮未重新取景，允许 anchor 位于建筑外。overview 是独立 preset。房间 focus 不被旧边界截断；手动范围包含旧边界与派生 focus 的包围范围。手动操作进入漫游，重新选择同一房间也恢复 focus。
 
-### 2.1 00 天空与背景基底 (`BackgroundYorkshireMatte.tsx`)
-- **动态昼夜调色**: 根据 `timeOfDay`（`morning` 清晨 / `afternoon` 午后 / `dusk` 黄昏 / `night` 夜晚）动态切换。例如午后采用英伦夏日蔚蓝渐变至暖金奶油色 (`#4a7896` -> `#faedd6`)。
-- **无缝渐变消隐 (Fade-to-Transparent)**: 每条远山山脊线均叠加 `linearGradient` 向下方透明过渡，彻底消除了贴图切割感。
+| 视角 | 初始 translation | zoom |
+| --- | --- | --- |
+| overview | (0,135) | 0.66 |
+| my_room | (220,150) | 1.55 |
+| living_nook | (20,130) | 1.55 |
+| friend_room | (-180,140) | 1.55 |
+| capsule_pod | (-280,60) | 1.6 |
+| corn_lounge | (210,-30) | 1.6 |
+| observatory | (-380,30) | 1.6 |
+| porch_mailbox | (40,-80) | 1.5 |
 
-### 2.2 01 & 05 远景山丘与高架桥 (`TerrainSilhouette`, `RailwayLandscape`)
-- **远景山脊 (`TerrainSilhouette.tsx`)**: 起伏的绿灰色山丘，带极细日照高光边。
-- **高架石拱桥与列车 (`RailwayLandscape.tsx`)**: 位于画面左侧地平线，石拱桥洞下蒸汽/柴油列车穿行。
+相机 pan 使用根 SVG 坐标差；Gizmo 把两次 client 指针位置通过保存坐标所属 parent 的 getScreenCTM 逆矩阵转换后求 delta，包含相机、嵌套 scale 与左墙剪切。轴向把手保留原 isoMath authoring 方向，不再乘固定 0.45。
 
-### 2.3 02 & 03 中景田野与南瓜丰收 (`PastureFields.tsx`)
-- 中景为开阔的莫兰迪色系麦田，左侧停放着一台发动的红色复古拖拉机，车灯喷吐微光，旁边堆放着丰收的南瓜。
+统一 Pointer Events；优先级为把手编辑、场景漫游、点击。移动超过 4 CSS 像素取消点击；编辑禁止同时漫游及导航。pointercancel / lost capture 回到手势起点、不保存。双指切换重建起点并处理 capture 转移。
 
-### 2.4 04 边界、监听站与水系的真实代码状态
-- **外星电波监听站 (`CommunicationHill.tsx` / `ThreeWorld.tsx`) 真实位置**:
-  已根据绿框目标区域，从远方山巅真正平移至**主庭院右侧草甸**（`x = 1000, y = 460`，即旧胶囊仓右侧平地），带有钢构桁架基座、巨型 SETI 抛物面天线（`1420.405 MHz`）与太阳能板，支持点击接收外星解码电波。
-- **牧场大门与石墙 (`DrystoneWalls.tsx`) 状态**:
-  移除了大门两侧的所有低矮石墙，仅保留独立的**英伦原木五木杠牧场大门 (`5-Bar Field Gate`)**，展现无界的开阔草场视角。
-- **溪流水系 (`RiverValley.tsx`) 状态**:
-  组件已彻底退役（`return null`），消除了对草坡的视觉切割感。
+## 家具归属与存储
 
-### 2.5 绿丘草台箱庭 (Central Oval Terrace Island)
-- 整个生活区聚焦于中央一个被温和暗角（`#frameVignetteRadial`）包围的**椭圆绿丘草台**上。
-- 草台右前方立着一棵茂盛的**“守护之树”**（挂有手工木牌），右侧设有点缀于草地上的外星电波监听站（`x=1000, y=460`），周围散落着黑脸绵羊群、雏菊野花与立式信箱。
+家具静态元数据和默认值统一在 layoutStore，归属表在 features/layout-editor/furnitureParents.ts。柜体摆件属于 cabinet-group，桌面摆件属于 desk-group，书架摆件属于 bookshelf-group，左墙物件使用 craft-wall 剪切空间；桌椅保持同级，茶席保持独立。
 
----
+保留 live_with_me_room_layout_v6 的 key 和兼容对象结构。加载只接受合法 ID、有限 x/y 及正 scale；坏条目单独回退默认值，存储不能覆盖名称、类别、parent 等静态元数据。渲染、面板复制和保存消费同一 resolved layout。
 
-## 3. 建筑集群与景观的关系 (Architecture & Scenery Integration)
+拖动仅改内存，pointer up 提交保存；面板坐标修改、键盘微调和 reset 提交后保存。存储失败保留内存结果并显示一次轻提示。取消拖动不落盘；回退业务提交不需要清空用户布局。
 
-庄园采用了**“一主两翼 + 右侧监听站”**（中央主木屋 + 左翼安睡木屋 + 右翼旧胶囊仓 + 右草甸电波站）的独立聚落布局：
+## 人物分配
 
-```
-                    [ 远山 / 高架桥列车 ]
-                              │
-    ┌─────────────────────────┼─────────────────────────┐
-    ▼                         ▼                         ▼
-┌────────────────────┐   ┌────────────────────┐   ┌────────────────────┐
-│ 左翼：林间小木屋    │   │    中央主木屋      │   │ 右翼：旧太空胶囊仓 │
-│ (WoodenCabinHaven) │   │  (Main Cottage)    │   │ (CapsulePodHaven)  │
-│ [ 标识: 安睡木屋 ] │   │  [ 标识: 整栋小屋 ]│   │ [ 标识: 旧胶囊仓 ] │
-└─────────┬──────────┘   └─────────┬──────────┘   └─────────┬──────────┘
-          │                        │                        │
-          └────────────────────────┼────────────────────────┘
-                                   ▼
-          [ 极简绿丘草台 & 守护之树 & 外星电波监听站 (x=1000, y=460) ]
-```
+features/presence/presenceAllocation.ts 是唯一候选与容量规则。App 派生一次 slots、personToSlot、unplaced，提供给场景及陪伴面板。预览调用同一分配函数。
 
-### 3.1 建筑与设施组件坐标配置
+按 people 输入顺序分配；显式房间优先于生活状态。阁楼使用工作椅、书房使用沙发、起居角按东/西/南茶席顺序选择、两个睡眠房间使用各自床位、观测台使用监听席。每人最多一席，每席容量为 1。同房间满员不跨房间安置、不改写 currentRoom，不增加场景站位；面板显示“该房间席位已满，状态已保留”。前廊不分配室内席位，也不显示满员。
 
-| 组件 | 空间位置与 Transform | 交互标识 (Badge) | 功能与景观交互 |
-|---|---|---|---|
-| **中央主木屋** (`Main Cottage`) | 位于中心草台 `translate(540, 210)` | `整栋小屋` | 开放式 2.5D 结构，包含阁楼书房、暖炉起居角、林木书房。屋顶立有**红砖烟囱**（飘出白云慢烟）。 |
-| **林间小木屋** (`WoodenCabinHaven`) | 位于主屋左侧 `translate(60, 0)` | `安睡木屋` | 温馨雪松原木卧房，提供大床、云朵软枕与夜读台灯，独立安放于左侧纯净草甸之上。 |
-| **旧太空胶囊仓** (`CapsulePodHaven`) | 位于主屋右侧 `translate(-36, 0)` | `旧胶囊仓` | 复古航天舱卧房，带圆舷窗与独立液压活塞支脚，独立站立于右侧草坡。 |
-| **外星电波监听站** (`CommunicationHill`) | 位于右侧草甸 `translate(1000, 460)` | `山巅外星电波监听站` | 人工钢构观星高台与 1420.405 MHz SETI 接收器，独立矗立在右侧开阔绿丘上（绿框目标区域）。 |
+## 交互、状态与 CSS 生命周期
 
----
+InteractionTarget 使用 entity、room、person、book、poster、furniture-part 六种类型。registry 保存静态描述，dispatcher 接收运行时上下文并执行业务回调。人物姓名、书名和动态文字不作为 ID。主要 SVG 入口支持 Enter / Space，与鼠标路径一致。
 
-## 4. 代码文件索引 (Code Index)
+App 的 usePresenceState、useMailbox、useBookshelf、useLayoutEditor、useToast 管理业务状态；相机、hover、站点和沙发反馈由对应 controller 管理。TimerScope 使用命名期限，重复触发替换前一次期限，关闭浮层或卸载清理；音频引擎卸载时停止 interval、声源和 AudioContext。
 
-- **全景主舞台**: `src/components/ThreeWorld.tsx`
-- **景观编排器**: `src/components/scenery/yorkshire/YorkshireWorld.tsx`
-- **天空与背景**: `src/components/scenery/yorkshire/background/BackgroundYorkshireMatte.tsx`
-- **远山与高架桥**: `src/components/scenery/yorkshire/terrain/TerrainSilhouette.tsx` & `RailwayLandscape.tsx`
-- **外星电波监听站**: `src/components/scenery/yorkshire/infrastructure/CommunicationHill.tsx`
-- **牧场大门**: `src/components/scenery/yorkshire/boundaries/DrystoneWalls.tsx`
-- **水系文件 (退役状态)**: `src/components/scenery/yorkshire/terrain/RiverValley.tsx` (`return null`)
-- **中央主木屋基底**: `src/components/architecture/CottageFoundation.tsx`
-- **左翼安睡木屋**: `src/components/architecture/WoodenCabinHaven.tsx`
-- **右翼旧胶囊仓**: `src/components/architecture/CapsulePodHaven.tsx`
-- **投影契约文档**: `docs/visual-system/live-with-me-projection-spec.md` & `src/world/liveWithMeProjection.ts`
+src/index.css 保留 Tailwind 入口；景观专属动画在 world/render/landscape.css。动态位置由计算结果驱动，有定位的反馈使用外层 transform、内层 CSS 动画，避免互相覆盖。支持 morning、afternoon、dusk、night、rainy 五种主题。
+
+## 加载、测量与测试
+
+浮层按首次打开加载，已有信箱草稿等状态在关闭后保留。稳定事件回调与 React.memo 让相机移动避免重画无关建筑和景观。指标及限制见执行记录；大型主屋 SVG 仍在首屏，不能把拆文件等同于性能改善。
+
+- npm run lint：TypeScript 类型检查。
+- npm run test:unit：Node 内置测试 + tsx。
+- npm run test:e2e：非视觉浏览器回归。
+- npm run test:visual：11 个视觉场景。
+- npm run build 后 npm run test:preview：真实生产构建的导航、编辑、浮层和导出。
+
+Playwright 1.56.1 / Chromium 141.0.7390.37 固定于开发和 CI，浏览器安装不进入启动脚本或 postinstall。视觉基线使用 Windows、DPR=1、字体等待、暂停 CSS/SMIL 动画，差异像素上限 0.1%，建筑无遮罩。跨操作系统字体渲染不作为同一截图环境。
+
+## 保留的投影契约与延后工作
+
+手绘资产继续使用各自局部几何；主屋地面视觉斜率约 ±0.283088，家具 authoring 轴保留 isoMath 的进深压缩，两者没有统一成一个矩阵。world/liveWithMeProjection.ts 与投影提取文档是 authoring 参考资料，不属于生产相机或拖拽调用链。拖拽正确性由实际父节点 CTM 保证。
+
+镜头重新取景、家具整组随动、投影统一、额外性能预算和资产进一步拆分属于后续独立体验工作。本轮没有借架构迁移调整这些行为。

@@ -1,7 +1,7 @@
-import youngWomanPosterImg from '../../assets/images/yw_flat_poster_1789804725776.jpg';
 import ancoraDomaniPosterImg from '../../assets/images/cd_flat_poster_1789804741230.jpg';
-import paprikaPosterImg from '../../assets/images/pk_flat_poster_1789804763105.jpg';
 import pastoralValleyPosterImg from '../../assets/images/country_sheep_viaduct_1789892269659.jpg';
+import paprikaPosterImg from '../../assets/images/pk_flat_poster_1789804763105.jpg';
+import youngWomanPosterImg from '../../assets/images/yw_flat_poster_1789804725776.jpg';
 
 export type PosterId = 'young-woman' | 'ancora-domani' | 'paprika' | 'pastoral-valley';
 

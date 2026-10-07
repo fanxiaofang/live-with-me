@@ -1,7 +1,7 @@
+import { Clock, Coffee, MapPin, Send, X } from 'lucide-react';
 import React from 'react';
-import { Person } from '../types';
 import { LIFE_STATES, ROOMS } from '../data/initialData';
-import { X, Send, Gift, MapPin, Clock, Heart, Coffee } from 'lucide-react';
+import { Person } from '../types';
 import { CharacterHead } from './CharacterAvatar';
 
 interface FriendCardModalProps {

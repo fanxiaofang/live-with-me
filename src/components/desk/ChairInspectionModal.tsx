@@ -1,8 +1,8 @@
+import { Armchair, Check, Compass, Sparkles, UserCheck, X, ZoomIn, ZoomOut } from 'lucide-react';
 import React, { useState } from 'react';
-import { X, Check, Armchair, UserCheck, ZoomIn, ZoomOut, Sparkles, Compass, Eye } from 'lucide-react';
 import { Person } from '../../types';
-import { WindsorChair } from './WindsorChair';
 import { LaptopDisplay } from './DeskItems';
+import { WindsorChair } from './WindsorChair';
 
 export interface ChairInspectionModalProps {
   isOpen: boolean;

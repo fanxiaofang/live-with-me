@@ -1,7 +1,7 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import React from 'react';
-import { PosterId, POSTER_CATALOG } from './posterTypes';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
+import { POSTER_CATALOG, PosterId } from './posterTypes';
 
 interface WallPostersGalleryProps {
   onSelectPoster: (id: PosterId) => void;

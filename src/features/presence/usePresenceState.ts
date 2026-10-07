@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { INITIAL_PEOPLE, LIFE_STATES } from '../../data/initialData';
-import type { Person, LifeStateId, RoomId } from '../../types';
+import type { LifeStateId, Person, RoomId } from '../../types';
 import { resolvePresenceSlots } from './presenceAllocation';
 export type PersonAppearance = Partial<Pick<Person, 'skinColor' | 'beanieColor' | 'hairColor' | 'hairStyle' | 'shirtColor' | 'hasPompom'>>;
 export function usePresenceState(notify: (message: string) => void) {

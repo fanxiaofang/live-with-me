@@ -1,11 +1,11 @@
-import './landscape.css';
 import React from 'react';
-import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import { YorkshireDefs } from '../../components/scenery/yorkshire';
+import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
+import './landscape.css';
 export interface WorldDefsProps {
   theme: YorkshireSceneTheme;
 }
-export function WorldDefs({ theme }: WorldDefsProps) {
+function WorldDefsAsset({ theme }: WorldDefsProps) {
   return <><defs>
             {/* Unified Low-Poly Theme Defs, Gradients & Patterns */}
             <YorkshireDefs theme={theme} />
@@ -555,3 +555,5 @@ export function WorldDefs({ theme }: WorldDefsProps) {
           </defs>
   </>;
 }
+
+export const WorldDefs = React.memo(WorldDefsAsset);

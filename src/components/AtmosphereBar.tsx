@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { TimeOfDay, RoomId } from '../types';
-import { TIME_PRESETS, ROOMS } from '../data/initialData';
-import { ambientAudio } from '../audio/ambientAudio';
 import {
-  Volume2,
-  VolumeX,
-  Sun,
-  Moon,
-  CloudRain,
-  Sunset,
-  Sunrise,
-  Home,
-  Sliders,
-  Sparkles,
+CloudRain,
+Home,
+Moon,
+Sliders,
+Sparkles,
+Sun,
+Sunrise,
+Sunset,
+Volume2,
+VolumeX,
 } from 'lucide-react';
+import React, { useState } from 'react';
+import { ambientAudio } from '../audio/ambientAudio';
+import { ROOMS } from '../data/initialData';
+import { RoomId, TimeOfDay } from '../types';
 
 interface AtmosphereBarProps {
   timeOfDay: TimeOfDay;

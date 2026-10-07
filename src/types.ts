@@ -31,8 +31,6 @@ export interface RoomInfo {
   name: string;
   enName: string;
   desc: string;
-  cameraTarget: [number, number, number];
-  zoom: number;
 }
 
 export type GiftType = 'coffee' | 'plant' | 'tea' | 'cookie' | 'postcard' | 'book' | 'candle';

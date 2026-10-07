@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { LifeStateId, RoomId, Person } from '../types';
+import { Check, Download, MapPin, Palette, Sparkles, X } from 'lucide-react';
+import React, { lazy, Suspense, useState } from 'react';
 import { LIFE_STATES, ROOMS } from '../data/initialData';
-import { X, Check, MapPin, Sparkles, User, Palette, Download } from 'lucide-react';
-import { CharacterAvatar, CharacterHead } from './CharacterAvatar';
-import { SvgExportModal } from './SvgExportModal';
+import { LifeStateId, Person, RoomId } from '../types';
+import { CharacterHead } from './CharacterAvatar';
 
-import { previewPresence, isRoomFull, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
+import { isRoomFull, previewPresence, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
+
+const SvgExportModal = lazy(() => import('./SvgExportModal').then(module => ({ default: module.SvgExportModal })));
 
 interface StatusPickerModalProps {
   isOpen: boolean;
@@ -666,10 +667,10 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
       </div>
 
       {/* 4 视图 SVG 导出弹窗 */}
-      <SvgExportModal
+      {showSvgExportModal && (<Suspense fallback={null}><SvgExportModal
         isOpen={showSvgExportModal}
         onClose={() => setShowSvgExportModal(false)}
-      />
+      /></Suspense>)}
     </div>
   );
 };

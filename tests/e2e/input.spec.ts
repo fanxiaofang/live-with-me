@@ -1,5 +1,5 @@
-import {test,expect} from '@playwright/test';
-import {stableScene} from './helpers';
+import { expect, test } from '@playwright/test';
+import { stableScene } from './helpers';
 
 for(const viewport of [{width:1200,height:800},{width:1600,height:900},{width:390,height:844}]) {
   for(const zoom of [0.66,1.6,2.5]) {

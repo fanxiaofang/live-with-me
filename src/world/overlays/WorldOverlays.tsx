@@ -1,7 +1,7 @@
+import { RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
 import React from 'react';
-import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import type { Person } from '../../types';
 import type { TierConfig } from '../../components/bookshelf/bookshelfTypes';
+import type { Person } from '../../types';
 import type { InteractionTarget } from '../interactions/interactionTypes';
 import { describeInteraction } from '../interactions/registry';
 export interface WorldOverlaysProps {

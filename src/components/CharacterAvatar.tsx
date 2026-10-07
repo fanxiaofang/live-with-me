@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IsoDirection4, normalizeIsoFacing } from '../utils/isometric';
+import { IsoDirection4, normalizeIsoFacing } from '../utils/characterFacing';
 
 /**
  * 2.5D Isometric Character Avatar System

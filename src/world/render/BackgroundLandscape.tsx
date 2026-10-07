@@ -1,14 +1,13 @@
 import React from 'react';
+import { DrystoneWalls, PastureFields, RailwayLandscape, TerrainMass, TerrainSilhouette } from '../../components/scenery/yorkshire';
 import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import type { HoverTarget } from '../interactions/interactionTypes';
-import { svgAction } from '../interactions/svgAction';
-import { TerrainSilhouette, RailwayLandscape, TerrainMass, RiverValley, PastureFields, DrystoneWalls, YorkshireDressing } from '../../components/scenery/yorkshire';
 export interface BackgroundLandscapeProps {
   theme: YorkshireSceneTheme;
   setHoveredObject: HoverTarget;
   onTriggerToast?: (message: string) => void;
 }
-export function BackgroundLandscape({ theme, setHoveredObject, onTriggerToast }: BackgroundLandscapeProps) {
+function BackgroundLandscapeAsset({ theme, setHoveredObject, onTriggerToast }: BackgroundLandscapeProps) {
   return <><g id="sky-and-clouds" transform="translate(0, -115)">
             {/* --- Layer 1: High-Altitude Atmospheric Stratiform & Cirrus Ribbon (极远处慢速舒展云带) --- */}
             <g id="sky-clouds-far-layer" className="cloud-drift-far" filter="url(#cloudAtmosphereBlur)">
@@ -75,13 +74,6 @@ export function BackgroundLandscape({ theme, setHoveredObject, onTriggerToast }:
 
             {/* 02 TERRAIN MASS (平整低多边形各级台地、主庭院大台面与底板) */}
             <TerrainMass theme={theme} />
-
-            {/* 02 TERRAIN: River Valley (纯净连贯无断流谷地) */}
-            <RiverValley
-              theme={theme}
-              onTriggerToast={onTriggerToast}
-              setHoveredObject={setHoveredObject}
-            />
 
             {/* 03 LAND PARCELS (低多边形几何草甸分块与平整田亩) */}
             <PastureFields theme={theme} />
@@ -390,3 +382,5 @@ export function BackgroundLandscape({ theme, setHoveredObject, onTriggerToast }:
           
   </>;
 }
+
+export const BackgroundLandscape = React.memo(BackgroundLandscapeAsset);

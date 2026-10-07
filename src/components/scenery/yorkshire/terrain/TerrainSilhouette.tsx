@@ -1,6 +1,5 @@
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
-import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 
 /**
  * 🏔️ TerrainSilhouette (Distant Mountain Ridges, Silhouettes & Horizons)

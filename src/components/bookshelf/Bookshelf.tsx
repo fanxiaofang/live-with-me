@@ -1,27 +1,27 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
-import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React, { useMemo } from 'react';
-import {
-  BookItemConfig,
-  ShelfDecorationConfig,
-  TierConfig,
-  BookshelfPreset,
-} from './bookshelfTypes';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
+import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
+import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import { BookItem } from './BookItem';
+import {
+BookItemConfig,
+BookshelfPreset,
+ShelfDecorationConfig,
+TierConfig,
+} from './bookshelfTypes';
 import { RenderShelfDecoration } from './ShelfDecorations';
 import {
-  ShelfBaseFeet,
-  Tier1Plank,
-  Tier2Plank,
-  Tier3Plank,
-  Tier4CrownPlank,
-  PillarsTier1To2,
-  PillarsTier2To3,
-  PillarsTier3To4,
-  getTierPosition,
+PillarsTier1To2,
+PillarsTier2To3,
+PillarsTier3To4,
+ShelfBaseFeet,
+Tier1Plank,
+Tier2Plank,
+Tier3Plank,
+Tier4CrownPlank,
+getTierPosition,
 } from './ShelfFrame';
-import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from '../layout-gizmo';
 
 /**
  * 经典预设数据配置库 (四层参数化原木书架)

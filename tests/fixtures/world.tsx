@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { Profiler, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import type { EditableObjectId } from '../../src/components/layout-gizmo/layoutStore';
 import { ThreeWorld } from '../../src/components/ThreeWorld';
 import { INITIAL_PEOPLE } from '../../src/data/initialData';
-import { loadSavedRoomLayout } from '../../src/components/layout-gizmo/layoutStore';
-import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
-import type { EntityId } from '../../src/world/scene/sceneTypes';
-import type { RoomId } from '../../src/types';
-import type { EditableObjectId } from '../../src/components/layout-gizmo/layoutStore';
 import { useLayoutEditor } from '../../src/features/layout-editor/useLayoutEditor';
 import { resolvePresenceSlots } from '../../src/features/presence/presenceAllocation';
 import '../../src/index.css';
+import type { RoomId } from '../../src/types';
+import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
+import type { EntityId } from '../../src/world/scene/sceneTypes';
 
 const query = new URLSearchParams(location.search);
+const renderSamples: number[] = [];
+if (query.has('profile')) (window as unknown as { renderSamples: number[] }).renderSamples = renderSamples;
 const stationX = Number(query.get('stationX') ?? 1000);
 const sceneLayout = { ...DEFAULT_SCENE_LAYOUT, observatory: {
   ...DEFAULT_SCENE_LAYOUT.observatory, position: { ...DEFAULT_SCENE_LAYOUT.observatory.position, x: stationX },
@@ -43,12 +44,14 @@ function Fixture() {
     {query.has('edit')&&<input aria-label="Fixture camera zoom" data-testid="fixture-zoom" type="number" step="0.01"
       style={{position:'absolute',zIndex:100,left:0,top:0,width:70}}
       onChange={e=>{editor.setIsLayoutInspectorOpen(false);setRequestedZoom(Number(e.target.value));}} />}
+    <Profiler id="world" onRender={(_, __, duration) => { if (query.has('profile')) renderSamples.push(duration); }}>
     <ThreeWorld timeOfDay="afternoon" people={people} presenceAllocation={resolvePresenceSlots(people)} sceneLayout={sceneLayout}
       activeRoom={activeRoom} roomLayout={editor.roomLayout} unreadMailCount={2} onSelectPerson={() => {}}
       onSelectMailbox={() => {}} onSelectRoom={setActiveRoom}
       isInspectorOpen={editor.isLayoutInspectorOpen} activeGizmoId={editor.activeGizmoId}
       onDragGizmoDelta={editor.dragDelta} onDragGizmoBegin={editor.beginDrag}
       onDragGizmoEnd={editor.commitDrag} onDragGizmoCancel={editor.cancelDrag} />
+    </Profiler>
   </div>;
 }
 createRoot(document.getElementById('root')!).render(<Fixture />);

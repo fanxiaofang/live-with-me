@@ -1,50 +1,31 @@
-import { useToast } from './features/feedback/useToast';
-import { usePresenceState } from './features/presence/usePresenceState';
-import { useMailbox } from './features/mailbox/useMailbox';
 import { useBookshelf } from './features/bookshelf/useBookshelf';
+import { useToast } from './features/feedback/useToast';
 import { useLayoutEditor } from './features/layout-editor/useLayoutEditor';
+import { useMailbox } from './features/mailbox/useMailbox';
+import { usePresenceState } from './features/presence/usePresenceState';
+import { useDeferredMount } from './shared/hooks/useDeferredMount';
 /**
  * Live With Me
  * 低打扰陪伴空间 · Presence without conversation
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { TimeOfDay, Person, RoomId, MailLetter, LifeStateId, LivingMemory } from './types';
-import { INITIAL_PEOPLE, INITIAL_LETTERS, INITIAL_MEMORIES, LIFE_STATES, ROOMS } from './data/initialData';
-import { ThreeWorld } from './components/ThreeWorld';
+import { Sparkles, X } from 'lucide-react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { ambientAudio } from './audio/ambientAudio';
 import { AtmosphereBar } from './components/AtmosphereBar';
 import { PresencePanel } from './components/PresencePanel';
-import { MailboxModal } from './components/MailboxModal';
-import { StatusPickerModal } from './components/StatusPickerModal';
-import { SvgExportModal } from './components/SvgExportModal';
-import { FriendCardModal } from './components/FriendCardModal';
-import { MemoryLogModal } from './components/MemoryLogModal';
-import {
-  BookshelfModal,
-  BookshelfPreset,
-  BookItemConfig,
-  ShelfDecorationConfig,
-  TierConfig,
-  PRESET_COZY_TIERS,
-  PRESET_READING_LIN_TIERS,
-  PRESET_EMPTY_TIERS,
-  PRESET_PACKED_TIERS,
-  PRESET_BOTANICAL_TIERS,
-} from './components/bookshelf';
-import { ambientAudio } from './audio/ambientAudio';
-import { Sparkles, Info, X } from 'lucide-react';
-import { ChairInspectionModal } from './components/desk';
-import {
-  RoomLayoutConfig,
-  EditableObjectId,
-  DEFAULT_ROOM_LAYOUT,
-  loadSavedRoomLayout,
-  saveRoomLayout,
-  clearSavedRoomLayout,
-  LayoutInspectorPanel,
-} from './components/layout-gizmo';
+import { ThreeWorld } from './components/ThreeWorld';
+import { LayoutInspectorPanel } from './components/layout-gizmo';
+import { INITIAL_MEMORIES } from './data/initialData';
+import { LivingMemory, Person, RoomId, TimeOfDay } from './types';
 
-import { resolvePresenceSlots } from './features/presence/presenceAllocation';
+const BookshelfModal = lazy(() => import('./components/bookshelf/BookshelfModal').then(module => ({ default: module.BookshelfModal })));
+const MemoryLogModal = lazy(() => import('./components/MemoryLogModal').then(module => ({ default: module.MemoryLogModal })));
+const FriendCardModal = lazy(() => import('./components/FriendCardModal').then(module => ({ default: module.FriendCardModal })));
+const SvgExportModal = lazy(() => import('./components/SvgExportModal').then(module => ({ default: module.SvgExportModal })));
+const StatusPickerModal = lazy(() => import('./components/StatusPickerModal').then(module => ({ default: module.StatusPickerModal })));
+const MailboxModal = lazy(() => import('./components/MailboxModal').then(module => ({ default: module.MailboxModal })));
+const ChairInspectionModal = lazy(() => import('./components/desk/ChairInspectionModal').then(module => ({ default: module.ChairInspectionModal })));
 
 export default function App() {
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('afternoon');
@@ -74,6 +55,11 @@ export default function App() {
 
   // Bookshelf state
   const [isBookshelfModalOpen, setIsBookshelfModalOpen] = useState(false);
+  const mountMailbox = useDeferredMount(isMailboxOpen);
+  const mountMemories = useDeferredMount(isMemoriesOpen);
+  const mountBookshelf = useDeferredMount(isBookshelfModalOpen);
+  const mountSvgExport = useDeferredMount(isSvgExportOpen);
+  const mountChair = useDeferredMount(isChairModalOpen);
   const { people, presenceAllocation, saveStatus: handleSaveMyStatus } = usePresenceState(triggerToast);
   const { letters, unreadCount, sendLetter: handleSendLetter, markRead: handleMarkLetterRead } = useMailbox(people, memory => setMemories(previous => [memory, ...previous]), triggerToast);
   const { bookshelfPreset, customBookshelfTiers, selectedBookshelfItem, setSelectedBookshelfItem, handleSelectBookshelfPreset, handleToggleBookPulled, handleAddCustomBook } = useBookshelf(triggerToast);
@@ -236,7 +222,7 @@ export default function App() {
       )}
 
       {/* 6. Mailbox Modal (Iconic core product symbol) */}
-      <MailboxModal
+      {mountMailbox && (<Suspense fallback={null}><MailboxModal
         isOpen={isMailboxOpen}
         onClose={() => setIsMailboxOpen(false)}
         letters={letters}
@@ -244,13 +230,13 @@ export default function App() {
         currentUserId="self"
         onSendLetter={handleSendLetter}
         onMarkAsRead={handleMarkLetterRead}
-      />
+      /></Suspense>)}
 
       {/* 7. Life State Picker Modal */}
       {isStatusPickerOpen && (() => {
         const selfPerson = people.find((p) => p.isSelf);
         return (
-          <StatusPickerModal
+          <Suspense fallback={null}><StatusPickerModal
             isOpen={isStatusPickerOpen}
             people={people}
             personId={selfPerson?.id || 'self'}
@@ -267,13 +253,13 @@ export default function App() {
               hasPompom: selfPerson?.hasPompom,
             }}
             onSaveStatus={handleSaveMyStatus}
-          />
+          /></Suspense>
         );
       })()}
 
       {/* 8. Friend Presence Details Modal */}
       {selectedPerson && (
-        <FriendCardModal
+        <Suspense fallback={null}><FriendCardModal
           isOpen={!!selectedPerson}
           onClose={() => setSelectedPerson(null)}
           person={selectedPerson}
@@ -281,18 +267,18 @@ export default function App() {
             setIsMailboxOpen(true);
           }}
           onSendQuickGift={handleSendQuickGift}
-        />
+        /></Suspense>
       )}
 
       {/* 9. Shared Memories Modal */}
-      <MemoryLogModal
+      {mountMemories && (<Suspense fallback={null}><MemoryLogModal
         isOpen={isMemoriesOpen}
         onClose={() => setIsMemoriesOpen(false)}
         memories={memories}
-      />
+      /></Suspense>)}
 
       {/* 10. Modular Bookshelf System Modal */}
-      <BookshelfModal
+      {mountBookshelf && (<Suspense fallback={null}><BookshelfModal
         isOpen={isBookshelfModalOpen}
         onClose={() => {
           setIsBookshelfModalOpen(false);
@@ -304,16 +290,16 @@ export default function App() {
         onToggleBookPulled={handleToggleBookPulled}
         onAddBook={handleAddCustomBook}
         selectedItem={selectedBookshelfItem}
-      />
+      /></Suspense>)}
 
       {/* 11. 4-View SVG Export Modal */}
-      <SvgExportModal
+      {mountSvgExport && (<Suspense fallback={null}><SvgExportModal
         isOpen={isSvgExportOpen}
         onClose={() => setIsSvgExportOpen(false)}
-      />
+      /></Suspense>)}
 
       {/* 12. 电脑桌工位座椅透视与就座组合态检视弹窗 */}
-      <ChairInspectionModal
+      {mountChair && (<Suspense fallback={null}><ChairInspectionModal
         isOpen={isChairModalOpen}
         onClose={() => setIsChairModalOpen(false)}
         isSeatedInRoom={!isChairEmptyOverride}
@@ -322,7 +308,7 @@ export default function App() {
           triggerToast(seated ? '💻 已应用【小人组合态】' : '🪑 已应用【空椅子态】');
         }}
         currentPerson={people.find((p) => p.isSelf)}
-      />
+      /></Suspense>)}
     </main>
   );
 }

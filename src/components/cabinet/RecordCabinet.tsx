@@ -1,17 +1,17 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
-import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React from 'react';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
+import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
+import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import { CabinetFrame } from './CabinetFrame';
-import { RetroTurntable } from './RetroTurntable';
+import { CeramicCupsDisplay, CoffeeBeansDisplay } from './CoffeeCorner';
 import { MokaPot } from './MokaPot';
-import { CoffeeBeansDisplay, CeramicCupsDisplay } from './CoffeeCorner';
-import { CabinetLayoutConfig, EditableObjectId, IsoGizmo } from '../layout-gizmo';
+import { RetroTurntable } from './RetroTurntable';
 
 export interface RecordCabinetProps {
   onHoverObject?: (target: InteractionTarget | null) => void;
   isPlaying?: boolean;
-  layout?: CabinetLayoutConfig;
+  layout?: RoomLayoutConfig;
   activeGizmoId?: EditableObjectId | null;
   isInspectorOpen?: boolean;
   onSelectGizmo?: (id: EditableObjectId | null) => void;

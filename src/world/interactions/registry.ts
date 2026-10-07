@@ -1,7 +1,7 @@
-import { ROOMS } from '../../data/initialData';
-import { DEFAULT_ROOM_LAYOUT } from '../../components/layout-gizmo/layoutStore';
-import type { Person } from '../../types';
 import type { TierConfig } from '../../components/bookshelf/bookshelfTypes';
+import { DEFAULT_ROOM_LAYOUT } from '../../components/layout-gizmo/layoutStore';
+import { ROOMS } from '../../data/initialData';
+import type { Person } from '../../types';
 import type { InteractionTarget } from './interactionTypes';
 
 export const ENTITY_REGISTRY: Readonly<Record<string, string>> = {

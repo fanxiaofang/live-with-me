@@ -1,14 +1,13 @@
 import React from 'react';
+import { YorkshireDressing } from '../../components/scenery/yorkshire';
 import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import type { HoverTarget } from '../interactions/interactionTypes';
-import { svgAction } from '../interactions/svgAction';
-import { TerrainSilhouette, RailwayLandscape, TerrainMass, RiverValley, PastureFields, DrystoneWalls, YorkshireDressing } from '../../components/scenery/yorkshire';
 export interface ForegroundLandscapeProps {
   theme: YorkshireSceneTheme;
   setHoveredObject: HoverTarget;
   onTriggerToast?: (message: string) => void;
 }
-export function ForegroundLandscape({ theme, setHoveredObject, onTriggerToast }: ForegroundLandscapeProps) {
+function ForegroundLandscapeAsset({ theme, setHoveredObject, onTriggerToast }: ForegroundLandscapeProps) {
   return <><g id="foreground-meadow-elements">
             {/* 🌟 06 DRESSING: Swaledale Sheep Flock & Meadow Elements */}
             <YorkshireDressing
@@ -36,3 +35,5 @@ export function ForegroundLandscape({ theme, setHoveredObject, onTriggerToast }:
           </g>
   </>;
 }
+
+export const ForegroundLandscape = React.memo(ForegroundLandscapeAsset);

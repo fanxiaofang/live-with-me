@@ -1,9 +1,9 @@
-import { useTimerScope } from '../shared/timers/useTimerScope';
-import React, { useState, useEffect } from 'react';
-import { MailLetter, GiftType, Person } from '../types';
-import { GIFTS } from '../data/initialData';
+import { Check, Mail, Send, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { ambientAudio } from '../audio/ambientAudio';
-import { Mail, Send, X, Gift, Heart, Coffee, Sparkles, Check } from 'lucide-react';
+import { GIFTS } from '../data/initialData';
+import { useTimerScope } from '../shared/timers/useTimerScope';
+import { GiftType, MailLetter, Person } from '../types';
 
 interface MailboxModalProps {
   isOpen: boolean;
@@ -107,6 +107,7 @@ export const MailboxModal: React.FC<MailboxModalProps> = ({
           </div>
           <button
             id="close-mailbox-btn"
+            aria-label="关闭信箱"
             onClick={onClose}
             className="w-8 h-8 rounded-lg flex items-center justify-center text-[#9c9186] hover:text-[#f2ece2] hover:bg-[#38312b] transition-colors"
           >

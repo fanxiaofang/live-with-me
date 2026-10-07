@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { INITIAL_LETTERS } from '../../data/initialData';
-import type { Person, MailLetter, LivingMemory } from '../../types';
+import type { LivingMemory, MailLetter, Person } from '../../types';
 export function useMailbox(people: readonly Person[], recordMemory: (memory: LivingMemory) => void, notify: (message: string) => void) {
   const [letters, setLetters] = useState<MailLetter[]>(INITIAL_LETTERS);
   const unreadCount = letters.filter(l => l.toId === 'self' && !l.read).length;

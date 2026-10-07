@@ -58,36 +58,26 @@ a59c25a6c8adc52570092b6b19f7570f8ed4e2d9ccf9458f109431b851af5c40
 
 ## 复核与平台门槛
 
-复核锁文件不需要额外依赖：
+独立工具迁移提交 bc501a2 已在用户授权后推送。2026-10-07 用户确认 Google AI Studio 能拉取运行，工具兼容门槛通过。平台结果由用户提供，没有编造其 Node/npm 版本或安装日志。
 
-```powershell
-node scripts/verify-npm-migration.mjs
-```
-
-若需要重现本地完整验证，在全新检出的迁移分支中执行：
+npm-migration-baseline.json 保留迁移前版本与摘要证据。冻结校验脚本只适用于工具提交的 manifest，P0 增加测试依赖后不再是当前门槛，P7 已移除。需要复现该脚本时在独立 checkout 中检出 bc501a2。当前完整验证使用：
 
 ```powershell
 npm ci --no-audit --no-fund
-node scripts/verify-npm-migration.mjs .
 npm run lint
+npm run test:unit
 npm run build
-$env:DISABLE_HMR = 'true'
-npm run dev
+# 开发/CI 首次浏览器准备，不加入启动或 postinstall
+npx playwright install chromium
+npm run test:e2e
+npm run test:visual
+npm run test:preview
 ```
 
-带安装目录参数的校验用于本批 Windows 基线重现。其它操作系统可运行不带参数的锁文件检查；平台可选包的实际安装集合不同，不应要求与 Windows 的 222 个实例完全相同。该脚本是迁移冻结门槛，后续正式新增测试依赖时需同步调整或移除。
-
-Google 官方文档确认 Node.js/npm 包支持和 GitHub 拉取能力，但没有保证导入时的锁文件选择策略。相关说明：[AI Studio Build mode](https://ai.google.dev/gemini-api/docs/aistudio-build-mode)、[Full-stack apps](https://ai.google.dev/gemini-api/docs/aistudio-fullstack)。本地锁文件检查只证明 Linux 原生包元数据完整，没有验证 Linux/AI Studio 实际运行。
-
-后续获授权的同步阶段需要：
-
-1. 推送这份独立工具迁移提交，并在 AI Studio 拉取，核对实际提交 SHA。
-2. 确认平台使用 npm 锁文件完成依赖安装，预览启动成功，记录其 Node/npm 版本与安装结果。
-3. 检查八个房间入口、家具编辑及刷新；确认 `DISABLE_HMR` 环境下仍能预览。
-4. 成功后登记平台证据，门槛通过再进入 P0。失败则回退工具迁移提交，准备 Bun 环境并复核后继续；不能用后续业务修改绕过安装失败。
+不同平台可选包的实际安装集合不同，不要求 Linux 与 Windows 的 222 个迁移前实例集合完全相同。dev 端口 3000 和 DISABLE_HMR 配置继续保留。此处的 222 个版本证据只描述工具迁移阶段，不包含后续 Playwright 测试依赖。
 
 ## 回退
 
-工具迁移独立提交的主题为 `chore: migrate dependency lock to npm`。对该提交执行 `git revert <迁移提交 SHA>` 即可恢复原 `bun.lock`、撤销 npm 锁文件及本批验证文件。原业务代码及 `live_with_me_room_layout_v6` 结构未改动；无须清空或转换布局。
+对 bc501a2 执行 git revert 可恢复原 bun.lock、撤销 npm 锁文件及迁移验证文件。若已有后续批次，须先按依赖逆序回退并准备 Bun 环境；不应把仅恢复旧锁文件视为后续依赖也能安装的证明。
 
-本轮没有执行外部推送、AI Studio 同步或回退；本地验证通过不等于整轮架构重构完成。
+迁移提交未改业务代码及 live_with_me_room_layout_v6 格式，无须清空或转换布局。后续业务批次有独立回退点，见 EXECUTION_STATUS.md。工具迁移的 AI Studio 通过报告不替代最终重构代码重新同步后的平台验证。

@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { stableScene, ROOM_VIEWS } from './helpers';
+import { expect, test } from '@playwright/test';
+import { ROOM_VIEWS, stableScene } from './helpers';
 
 test('all eight navigation entries and the v6 editor remain usable', async ({ page }) => {
   const errors: string[] = [];
@@ -15,6 +15,11 @@ test('all eight navigation entries and the v6 editor remain usable', async ({ pa
   await page.reload();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('live_with_me_room_layout_v6')!));
   expect(saved['cabinet-group'].screen).toEqual({ x: -71, y: 75 });
+  await page.getByRole('button', { name: '全屋 2.5D 布局校准器', exact: true }).click();
+  await page.getByRole('button', { name: '恢复默认', exact: true }).click();
+  await page.reload();
+  const reset = await page.evaluate(() => JSON.parse(localStorage.getItem('live_with_me_room_layout_v6')!));
+  expect(reset['cabinet-group'].screen).toEqual({ x: -72, y: 75 });
   expect(errors).toEqual([]);
 });
 

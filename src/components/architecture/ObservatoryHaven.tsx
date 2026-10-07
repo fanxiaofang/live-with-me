@@ -1,9 +1,9 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import React from 'react';
-import { CharacterHead } from '../CharacterAvatar';
+import type { ResolvedPresenceSlot } from '../../features/presence/presenceAllocation';
 import type { Person, RoomId } from '../../types';
-import type { ResolvedPresenceSlot } from '../../utils/sceneViewMapping';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
+import { CharacterHead } from '../CharacterAvatar';
 
 export interface ObservatoryHavenProps {
   activeRoom?: RoomId | 'overview';
@@ -13,7 +13,7 @@ export interface ObservatoryHavenProps {
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
 }
-export function ObservatoryHaven({ activeRoom, presenceSlots, alienPulseEffect, triggerAlienSignal, onSelectPerson, setHoveredObject }: ObservatoryHavenProps) {
+function ObservatoryHavenAsset({ activeRoom, presenceSlots, alienPulseEffect, triggerAlienSignal, onSelectPerson, setHoveredObject }: ObservatoryHavenProps) {
   return <>
               {/* Massive Cliff Outcrop Drop Shadow casting onto lower slopes */}
               <ellipse cx="0" cy="52" rx="78" ry="20" fill="#1b231d" opacity="0.35" filter="url(#softShadow)" />
@@ -374,3 +374,5 @@ export function ObservatoryHaven({ activeRoom, presenceSlots, alienPulseEffect, 
               </g>
             </>;
 }
+
+export const ObservatoryHaven = React.memo(ObservatoryHavenAsset);

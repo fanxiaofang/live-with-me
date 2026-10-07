@@ -1,26 +1,6 @@
+import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import type { TimeOfDay } from '../../types';
-export const COUNTRYSIDE_THEMES: Record<
-  TimeOfDay,
-  {
-    skyTop: string;
-    skyBottom: string;
-    hillGreenFar: string;
-    hillGreenMid: string;
-    hillGreenNear: string;
-    wheatFar: string;
-    wheatNear: string;
-    roadColor: string;
-    riverColor: string;
-    riverReflect: string;
-    riverRipples: string;
-    ambientTint: string;
-    cottageGlow: string;
-    tractorLightGlow: string;
-    roofColor: string;
-    isNight: boolean;
-    isRainy: boolean;
-  }
-> = {
+export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
   afternoon: {
     // Exact palette extracted from "All Creatures Great and Small" (万物生灵) intro reference:
     // Sky: English summer cerulean into warm golden buttercream horizon glow

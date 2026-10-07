@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { stableScene } from './helpers';
 test('status preview and real placement agree; overflow stays visible in the panel', async ({ page }) => {
   await stableScene(page);

@@ -1,7 +1,7 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import React from 'react';
 import { Person } from '../../types';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
 
 export interface WindsorChairProps {

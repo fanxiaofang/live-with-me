@@ -1,24 +1,19 @@
-import React, { useState } from 'react';
 import {
-  BookshelfPreset,
-  BookItemConfig,
-  ShelfDecorationConfig,
-  TierConfig,
-} from './bookshelfTypes';
+Check,
+Eye,
+Layers,
+Plus,
+Sparkles,
+X
+} from 'lucide-react';
+import React, { useState } from 'react';
 import { Bookshelf } from './Bookshelf';
 import {
-  BookOpen,
-  Bookmark,
-  Sparkles,
-  Layers,
-  X,
-  Plus,
-  RotateCcw,
-  Check,
-  Feather,
-  Info,
-  Eye,
-} from 'lucide-react';
+BookItemConfig,
+BookshelfPreset,
+ShelfDecorationConfig,
+TierConfig,
+} from './bookshelfTypes';
 
 interface BookshelfModalProps {
   isOpen: boolean;

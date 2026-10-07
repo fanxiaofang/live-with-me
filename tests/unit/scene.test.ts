@@ -1,8 +1,8 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { DEFAULT_SCENE_LAYOUT, entityPointToScene } from '../../src/world/scene/sceneLayout';
-import { ROOM_FOCUS, resolveRoomCamera } from '../../src/world/scene/roomTargets';
+import { test } from 'node:test';
 import { sceneToViewBox, viewBoxToScene } from '../../src/world/camera/cameraMath';
+import { ROOM_FOCUS, resolveRoomCamera } from '../../src/world/scene/roomTargets';
+import { DEFAULT_SCENE_LAYOUT, entityPointToScene } from '../../src/world/scene/sceneLayout';
 import { scenePoint } from '../../src/world/scene/sceneTypes';
 
 test('all compatibility anchors reproduce the original camera framing', () => {

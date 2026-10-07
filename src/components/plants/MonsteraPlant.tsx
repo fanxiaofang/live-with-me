@@ -1,5 +1,5 @@
-import { useTimerScope } from '../../shared/timers/useTimerScope';
 import React, { useState } from 'react';
+import { useTimerScope } from '../../shared/timers/useTimerScope';
 
 export interface MonsteraPlantProps {
   onHover?: (hovered: boolean) => void;

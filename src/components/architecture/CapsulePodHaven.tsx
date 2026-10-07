@@ -1,8 +1,8 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
-import type { RoomId, Person } from '../../types';
-import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
 import React from 'react';
+import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
+import type { Person, RoomId } from '../../types';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
 
 export interface CapsulePodHavenProps {
@@ -11,7 +11,6 @@ export interface CapsulePodHavenProps {
   presenceSlots: PresenceAllocation['slots'];
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
-  hoveredObject?: InteractionTarget | null;
   hasMovedRef: React.MutableRefObject<boolean> | React.RefObject<boolean>;
   theme: {
     cottageGlow: string;
@@ -47,7 +46,7 @@ export interface CapsulePodHavenProps {
  *    - 强化舷窗金属框内侧的深邃阴影 (Inner Shadow)，营造 15cm 航天复合舱壁的真实深邃厚度；
  *    - 优化床铺绗缝羽绒被、饱满睡枕、木质吸音格栅与安睡角色的层次感。
  */
-export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = ({
+export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
   activeRoom,
   onSelectRoom,
   presenceSlots,
@@ -797,4 +796,4 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = ({
       </g>
     </g>
   );
-};
+});

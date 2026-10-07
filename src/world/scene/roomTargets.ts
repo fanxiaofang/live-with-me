@@ -1,7 +1,7 @@
 import type { RoomId } from '../../types';
-import { localPoint, type EntityId, type LocalPoint, type SceneLayout } from './sceneTypes';
-import { DEFAULT_SCENE_LAYOUT, entityPointToScene } from './sceneLayout';
 import { CAMERA_ORIGIN, OVERVIEW_CAMERA, focusCamera } from '../camera/cameraMath';
+import { DEFAULT_SCENE_LAYOUT, entityPointToScene } from './sceneLayout';
+import { localPoint, type EntityId, type LocalPoint, type SceneLayout } from './sceneTypes';
 
 export interface RoomFocus {
   targetEntity: EntityId;

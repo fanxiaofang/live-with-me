@@ -391,18 +391,3 @@ export function saveRoomLayout(config: RoomLayoutConfig): boolean {
     return false;
   }
 }
-
-export function clearSavedRoomLayout() {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch (e) {
-    console.error('Failed to clear room layout', e);
-  }
-}
-
-// 兼容别名导出
-export type CabinetLayoutConfig = RoomLayoutConfig;
-export const DEFAULT_CABINET_LAYOUT = DEFAULT_ROOM_LAYOUT;
-export const loadSavedCabinetLayout = loadSavedRoomLayout;
-export const saveCabinetLayout = saveRoomLayout;
-export const clearSavedCabinetLayout = clearSavedRoomLayout;

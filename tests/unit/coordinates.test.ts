@@ -1,8 +1,8 @@
-import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {inverse,multiply,transformPoint,transformDelta} from '../../src/world/coordinates/affine2d';
-import {sliceViewport} from '../../src/world/coordinates/viewport';
-import {panBounds} from '../../src/world/camera/cameraMath';
+import { test } from 'node:test';
+import { panBounds } from '../../src/world/camera/cameraMath';
+import { inverse, multiply, transformDelta, transformPoint } from '../../src/world/coordinates/affine2d';
+import { sliceViewport } from '../../src/world/coordinates/viewport';
 
 test('slice, camera, building and nested parent matrices round-trip CSS points and deltas',()=>{
   for(const [width,height] of [[1200,800],[1600,900],[390,844]]) for(const zoom of [0.66,1.6,2.5]) {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { YorkshireCommonProps } from '../landscapeTypes';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
+import { YorkshireCommonProps } from '../landscapeTypes';
 
 /**
  * 🚂 RailwayLandscape (Ribblehead Stone Railway Viaduct & Mountain Tunnel Portal)

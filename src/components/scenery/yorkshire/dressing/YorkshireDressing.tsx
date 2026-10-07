@@ -1,8 +1,7 @@
+import React, { useState } from 'react';
 import { useTimerScope } from '../../../../shared/timers/useTimerScope';
 import { svgAction } from '../../../../world/interactions/svgAction';
-import React, { useState } from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
-import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 
 /**
  * 🐑 YorkshireDressing (Swaledale Sheep Flock, Meadow Dressing & The Guardian Heritage Tree)

@@ -1,7 +1,7 @@
 import React, { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { useWorldFeedback } from '../../src/world/interactions/useWorldFeedback';
 import { useToast } from '../../src/features/feedback/useToast';
+import { useWorldFeedback } from '../../src/world/interactions/useWorldFeedback';
 function Feedback() {
   const { toastMessage, triggerToast } = useToast();
   const feedback = useWorldFeedback();

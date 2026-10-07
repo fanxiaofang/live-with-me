@@ -1,4 +1,4 @@
-import { viewBoxPoint, scenePoint, type ScenePoint, type ViewBoxPoint } from '../scene/sceneTypes';
+import { scenePoint, viewBoxPoint, type ScenePoint, type ViewBoxPoint } from '../scene/sceneTypes';
 
 export const CAMERA_ORIGIN = viewBoxPoint(600, 400);
 export interface Camera { x: number; y: number; zoom: number }

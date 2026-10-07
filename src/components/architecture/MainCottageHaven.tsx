@@ -1,22 +1,22 @@
 import React from 'react';
-import type { Person, RoomId } from '../../types';
 import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
+import type { Person, RoomId } from '../../types';
 import type { HoverTarget, InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
-import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
-import { CharacterHead } from '../CharacterAvatar';
-import { Bookshelf, BookshelfPreset, BookItemConfig, TierConfig } from '../bookshelf';
 import { CastIronWoodStove, StoveColorVariant } from '../CastIronWoodStove';
+import { CharacterHead } from '../CharacterAvatar';
+import { LeftWallCraftBoard } from '../LeftWallCraftBoard';
+import { BookItemConfig, Bookshelf, BookshelfPreset, TierConfig } from '../bookshelf';
 import { RecordCabinet } from '../cabinet';
 import { AtticDesk, WindsorChair } from '../desk';
-import { MonsteraPlant, FiddleLeafFig } from '../plants';
-import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from '../layout-gizmo';
+import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
+import { FiddleLeafFig, MonsteraPlant } from '../plants';
+import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 import { WallPostersGallery } from '../wall-posters';
-import { LeftWallCraftBoard } from '../LeftWallCraftBoard';
 import { CottageFoundation } from './CottageFoundation';
-import { TimberFlooring } from './TimberFlooring';
 import { CottageRoofFraming } from './CottageRoofFraming';
 import { CottageWallProfiles } from './CottageWallProfiles';
+import { TimberFlooring } from './TimberFlooring';
 export interface MainCottageHavenProps {
   theme: YorkshireSceneTheme;
   hasMovedRef: React.RefObject<boolean>;
@@ -51,7 +51,7 @@ export interface MainCottageHavenProps {
   onSelectMailbox: () => void;
   unreadMailCount: number;
 }
-export function MainCottageHaven({ theme, hasMovedRef, onSelectRoom, setHoveredObject, activeRoom, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount }: MainCottageHavenProps) {
+function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, activeRoom, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount }: MainCottageHavenProps) {
   return <>
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation />
@@ -1448,3 +1448,5 @@ export function MainCottageHaven({ theme, hasMovedRef, onSelectRoom, setHoveredO
           
   </>;
 }
+
+export const MainCottageHaven = React.memo(MainCottageHavenAsset);

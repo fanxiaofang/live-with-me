@@ -1,8 +1,8 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
-import type { RoomId, Person } from '../../types';
-import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
 import React from 'react';
+import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
+import type { Person, RoomId } from '../../types';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
 
 export interface WoodenCabinHavenProps {
@@ -11,7 +11,6 @@ export interface WoodenCabinHavenProps {
   presenceSlots: PresenceAllocation['slots'];
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
-  hoveredObject?: InteractionTarget | null;
   hasMovedRef: React.MutableRefObject<boolean> | React.RefObject<boolean>;
   theme: {
     cottageGlow: string;
@@ -28,7 +27,7 @@ export interface WoodenCabinHavenProps {
  * - 内部是纯正温馨的雪松原木卧房：工匠松木大床、饱满云朵软枕、红陶羊毛暖冬被、百褶床头小台灯、睡前读物与热饮；
  * - 槽位 tatami_corn 人物安详熟睡，有呼噜浮标与专属身份展牌。
  */
-export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = ({
+export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
   activeRoom,
   onSelectRoom,
   presenceSlots,
@@ -663,4 +662,4 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = ({
       </g>
     </g>
   );
-};
+});

@@ -1,5 +1,5 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { TimerScope, type TimerClock } from '../../src/shared/timers/TimerScope';
 function fakeClock() {
   let now = 0, nextId = 0;

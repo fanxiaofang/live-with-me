@@ -1,5 +1,5 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { DEFAULT_ROOM_LAYOUT, resolveRoomLayout, saveRoomLayout } from '../../src/components/layout-gizmo/layoutStore';
 import { FURNITURE_PARENTS, furnitureScenePoint } from '../../src/features/layout-editor/furnitureParents';
 

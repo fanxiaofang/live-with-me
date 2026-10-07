@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { stableScene } from './helpers';
 
 test('one station: facility, occupant, hit area and focus follow placement; distant pines stay put', async ({ page }) => {

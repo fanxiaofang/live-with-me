@@ -1,5 +1,5 @@
-import { svgAction } from '../world/interactions/svgAction';
 import React from 'react';
+import { svgAction } from '../world/interactions/svgAction';
 
 export type StoveColorVariant = 'terracotta' | 'walnut' | 'sage' | 'charcoal' | 'forest_green';
 

@@ -1,5 +1,7 @@
 # LiveWithMeProjectionSpec
 
+> 2026-10-07 P7 状态：下文保留原投影提取数据和历史文件引用，属于 authoring 参考。旧 ProjectionCalibration 调试组件与 utils/isometric 已在无消费者检查后删除。当前 SceneEntity placement、相机公式及 parent CTM 拖拽契约见 [DESIGN.md](../../DESIGN.md)。liveWithMeProjection.ts 不参与生产相机或输入转换；资产局部几何没有改为统一投影。
+
 > **Phase 0 — Live With Me 现有 2.5D 投影 / 地面关系提取**
 > **Phase 0.1 — Projection Extraction Semantic Cleanup**
 >

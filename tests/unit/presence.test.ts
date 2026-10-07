@@ -1,7 +1,7 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { INITIAL_PEOPLE } from '../../src/data/initialData';
-import { resolvePresenceSlots, previewPresence, isRoomFull } from '../../src/features/presence/presenceAllocation';
+import { isRoomFull, previewPresence, resolvePresenceSlots } from '../../src/features/presence/presenceAllocation';
 import type { Person, RoomId } from '../../src/types';
 const peopleIn = (room: RoomId, count: number): Person[] => Array.from({ length: count }, (_, i) => ({ ...INITIAL_PEOPLE[0], id: `p${i}`, currentRoom: room }));
 

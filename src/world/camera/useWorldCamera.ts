@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { RoomId } from '../../types';
+import { clientToSvg } from '../coordinates/viewport';
+import { resolveRoomCamera } from '../scene/roomTargets';
 import type { SceneLayout } from '../scene/sceneTypes';
 import { viewBoxPoint } from '../scene/sceneTypes';
-import { resolveRoomCamera } from '../scene/roomTargets';
-import { clientToSvg } from '../coordinates/viewport';
-import { clampZoom, clampPan, focusCamera, viewBoxToScene, type Camera } from './cameraMath';
+import { clampPan, clampZoom, focusCamera, viewBoxToScene, type Camera } from './cameraMath';
 
 export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRevision=0,editing=false) {
   const svgRef=useRef<SVGSVGElement>(null);

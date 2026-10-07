@@ -1,10 +1,10 @@
-import { svgAction } from '../../world/interactions/svgAction';
-import type { InteractionTarget } from '../../world/interactions/interactionTypes';
-import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React from 'react';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { svgAction } from '../../world/interactions/svgAction';
+import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
+import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import { DeskFrame } from './DeskFrame';
-import { LaptopDisplay, BankerLampDisplay, CoffeeMugDisplay } from './DeskItems';
-import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from '../layout-gizmo';
+import { BankerLampDisplay, CoffeeMugDisplay, LaptopDisplay } from './DeskItems';
 
 export interface AtticDeskProps {
   layout?: RoomLayoutConfig;

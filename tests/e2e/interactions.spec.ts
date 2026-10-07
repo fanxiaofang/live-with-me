@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { stableScene } from './helpers';
 test('SVG room, mailbox, book, poster, stove, person and station entries activate from the keyboard', async ({ page }) => {
   await stableScene(page);

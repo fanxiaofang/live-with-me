@@ -1,4 +1,4 @@
-import { scenePoint, type SceneLayout, type EntityId, type LocalPoint } from './sceneTypes';
+import { scenePoint, type EntityId, type LocalPoint, type SceneLayout } from './sceneTypes';
 
 export const DEFAULT_SCENE_LAYOUT: SceneLayout = {
   main_cottage: { position: scenePoint(540, 210), scale: 1 },

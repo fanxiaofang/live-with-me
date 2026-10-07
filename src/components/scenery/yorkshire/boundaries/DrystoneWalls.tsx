@@ -1,7 +1,7 @@
-import { svgAction } from '../../../../world/interactions/svgAction';
 import React from 'react';
-import { YorkshireCommonProps } from '../landscapeTypes';
+import { svgAction } from '../../../../world/interactions/svgAction';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
+import { YorkshireCommonProps } from '../landscapeTypes';
 
 /**
  * 🧱 DrystoneWalls (Yorkshire Authentic Low Field Boundaries & 5-Bar Gate)

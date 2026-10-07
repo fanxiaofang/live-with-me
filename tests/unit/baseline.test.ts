@@ -1,9 +1,9 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { projectIsoToScreen, unprojectScreenToIso } from '../../src/components/layout-gizmo/isoMath';
 import { DEFAULT_ROOM_LAYOUT, loadSavedRoomLayout } from '../../src/components/layout-gizmo/layoutStore';
 import { INITIAL_PEOPLE } from '../../src/data/initialData';
-import { resolvePresenceSlots } from '../../src/utils/sceneViewMapping';
+import { resolvePresenceSlots } from '../../src/features/presence/presenceAllocation';
 
 test('the existing furniture projection round-trips to its display precision', () => {
   for (const point of [{ u: -167.52, v: 119.4, w: 0 }, { u: 12.2, v: -9.4, w: 28.2 }]) {

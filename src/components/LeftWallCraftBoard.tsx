@@ -1,11 +1,11 @@
-import { useTimerScope } from '../shared/timers/useTimerScope';
-import { svgAction } from '../world/interactions/svgAction';
-import type { InteractionTarget } from '../world/interactions/interactionTypes';
-import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
+import { Users, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Heart, Users, Sparkles } from 'lucide-react';
-import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from './layout-gizmo';
+import { useTimerScope } from '../shared/timers/useTimerScope';
+import type { InteractionTarget } from '../world/interactions/interactionTypes';
+import { svgAction } from '../world/interactions/svgAction';
+import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from './layout-gizmo';
+import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
 
 interface LeftWallCraftBoardProps {
   onHover?: (target: InteractionTarget | null) => void;

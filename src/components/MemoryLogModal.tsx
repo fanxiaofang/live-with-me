@@ -1,6 +1,6 @@
+import { Calendar, Sparkles, Users, X } from 'lucide-react';
 import React from 'react';
 import { LivingMemory } from '../types';
-import { X, Sparkles, Calendar, Users, Heart } from 'lucide-react';
 
 interface MemoryLogModalProps {
   isOpen: boolean;

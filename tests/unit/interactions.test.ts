@@ -1,9 +1,9 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import type { TierConfig } from '../../src/components/bookshelf/bookshelfTypes';
+import { INITIAL_PEOPLE } from '../../src/data/initialData';
 import { createInteractionDispatcher } from '../../src/world/interactions/dispatcher';
 import { describeInteraction } from '../../src/world/interactions/registry';
-import { INITIAL_PEOPLE } from '../../src/data/initialData';
-import type { TierConfig } from '../../src/components/bookshelf/bookshelfTypes';
 const tiers: TierConfig[] = [{ index: 1, books: [{ id: 'stable-book', title: '题名:可变', thickness: 2, height: 8, color: '#fff' }] }];
 test('stable typed IDs dispatch runtime commands and resolve current display text', () => {
   const calls: string[] = [];

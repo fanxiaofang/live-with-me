@@ -1,49 +1,31 @@
-import { useWorldFeedback } from '../world/interactions/useWorldFeedback';
-import { COUNTRYSIDE_THEMES } from '../world/theme/worldTheme';
-import { WorldOverlays } from '../world/overlays/WorldOverlays';
-import { ForegroundLandscape } from '../world/render/ForegroundLandscape';
-import { MainCottageHaven } from './architecture/MainCottageHaven';
-import { DistantPines } from '../world/render/DistantPines';
-import { BackgroundLandscape } from '../world/render/BackgroundLandscape';
-import { WorldDefs } from '../world/render/WorldDefs';
-import { AtmosphereOverlay } from '../world/overlays/AtmosphereOverlay';
-import type { InteractionTarget } from '../world/interactions/interactionTypes';
-import { svgAction } from '../world/interactions/svgAction';
-import { describeInteraction } from '../world/interactions/registry';
-import { createInteractionDispatcher } from '../world/interactions/dispatcher';
-import { useWorldCamera } from '../world/camera/useWorldCamera';
+import React, { lazy, Suspense, useRef, useState } from 'react';
 import { LayoutGestureContext } from '../features/layout-editor/LayoutGestureContext';
-import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
-import { ObservatoryHaven } from './architecture/ObservatoryHaven';
+import { PresenceAllocation } from '../features/presence/presenceAllocation';
+import { useEventCallback } from '../shared/hooks/useEventCallback';
+import { Person, RoomId, TimeOfDay } from '../types';
+import { useWorldCamera } from '../world/camera/useWorldCamera';
+import { createInteractionDispatcher } from '../world/interactions/dispatcher';
+import { svgAction } from '../world/interactions/svgAction';
+import { useWorldFeedback } from '../world/interactions/useWorldFeedback';
+import { AtmosphereOverlay } from '../world/overlays/AtmosphereOverlay';
+import { WorldOverlays } from '../world/overlays/WorldOverlays';
+import { BackgroundLandscape } from '../world/render/BackgroundLandscape';
+import { DistantPines } from '../world/render/DistantPines';
+import { ForegroundLandscape } from '../world/render/ForegroundLandscape';
 import { SceneEntity } from '../world/render/SceneEntity';
+import { WorldDefs } from '../world/render/WorldDefs';
 import { DEFAULT_SCENE_LAYOUT } from '../world/scene/sceneLayout';
 import type { SceneLayout } from '../world/scene/sceneTypes';
-import { resolveRoomCamera } from '../world/scene/roomTargets';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import { TimeOfDay, Person, RoomId } from '../types';
-import { ROOMS } from '../data/initialData';
-import { CharacterHead } from './CharacterAvatar';
-import { PresenceAllocation, SceneSlotConfig } from '../utils/sceneViewMapping';
-import { Bookshelf, BookshelfPreset, BookItemConfig, TierConfig, PRESET_COZY_TIERS } from './bookshelf';
-import { CastIronWoodStove, StoveColorVariant } from './CastIronWoodStove';
-import { RecordCabinet, RetroTurntable } from './cabinet';
-import { AtticDesk, WindsorChair } from './desk';
-import { MonsteraPlant, FiddleLeafFig } from './plants';
-import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from './layout-gizmo';
-import { WallPostersGallery, PosterDetailModal, PosterId } from './wall-posters';
-import { LeftWallCraftBoard } from './LeftWallCraftBoard';
-import { CottageFoundation, TimberFlooring, CottageRoofFraming, CottageWallProfiles, CapsulePodHaven, WoodenCabinHaven } from './architecture';
-import {
-  YorkshireDefs,
-  TerrainSilhouette,
-  RailwayLandscape,
-  TerrainMass,
-  RiverValley,
-  PastureFields,
-  DrystoneWalls,
-  YorkshireDressing,
-} from './scenery/yorkshire';
+import { COUNTRYSIDE_THEMES } from '../world/theme/worldTheme';
+import { CapsulePodHaven, WoodenCabinHaven } from './architecture';
+import { MainCottageHaven } from './architecture/MainCottageHaven';
+import { ObservatoryHaven } from './architecture/ObservatoryHaven';
+import { BookItemConfig, BookshelfPreset, PRESET_COZY_TIERS, TierConfig } from './bookshelf';
+import { EditableObjectId, RoomLayoutConfig } from './layout-gizmo';
+import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
+import { PosterId } from './wall-posters';
+
+const PosterDetailModal = lazy(() => import('./wall-posters/PosterDetailModal').then(module => ({ default: module.PosterDetailModal })));
 
 interface ThreeWorldProps {
   sceneLayout?: SceneLayout;
@@ -64,7 +46,6 @@ interface ThreeWorldProps {
   onBookClick?: (book: BookItemConfig, tierIndex: number) => void;
   customBookshelfTiers?: TierConfig[];
   roomLayout?: RoomLayoutConfig;
-  cabinetLayout?: RoomLayoutConfig; // 兼容
   activeGizmoId?: EditableObjectId | null;
   isInspectorOpen?: boolean;
   onSelectGizmo?: (id: EditableObjectId | null) => void;
@@ -97,19 +78,26 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   onBookClick: selectBook,
   customBookshelfTiers,
   roomLayout,
-  cabinetLayout,
   activeGizmoId,
   isInspectorOpen = false,
   onSelectGizmo,
-  onDragGizmoDelta,
-  onDragGizmoEnd,
+  onDragGizmoDelta: onDragGizmoDeltaProp,
+  onDragGizmoEnd: onDragGizmoEndProp,
   onSelectPoster,
   isChairEmptyOverride = false,
-  onToggleChairSeated,
-  onOpenChairInspector,
+  onToggleChairSeated: onToggleChairSeatedProp,
+  onOpenChairInspector: onOpenChairInspectorProp,
   onTriggerToast,
 }) => {
-  const currentLayout = roomLayout || cabinetLayout || DEFAULT_ROOM_LAYOUT;
+  const onDragGizmoDeltaEvent = useEventCallback((dx: number, dy: number) => onDragGizmoDeltaProp?.(dx, dy));
+  const onDragGizmoDelta = onDragGizmoDeltaProp ? onDragGizmoDeltaEvent : undefined;
+  const onDragGizmoEndEvent = useEventCallback(() => onDragGizmoEndProp?.());
+  const onDragGizmoEnd = onDragGizmoEndProp ? onDragGizmoEndEvent : undefined;
+  const onOpenChairInspectorEvent = useEventCallback(() => onOpenChairInspectorProp?.());
+  const onOpenChairInspector = onOpenChairInspectorProp ? onOpenChairInspectorEvent : undefined;
+  const onToggleChairSeatedEvent = useEventCallback((seated?: boolean) => onToggleChairSeatedProp?.(seated));
+  const onToggleChairSeated = onToggleChairSeatedProp ? onToggleChairSeatedEvent : undefined;
+  const currentLayout = roomLayout || DEFAULT_ROOM_LAYOUT;
   const effectiveGizmoId = isInspectorOpen ? activeGizmoId : null;
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -123,16 +111,17 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const theme = COUNTRYSIDE_THEMES[timeOfDay] || COUNTRYSIDE_THEMES.afternoon;
 
   const interactionTiers = customBookshelfTiers ?? PRESET_COZY_TIERS;
-  const dispatchInteraction = createInteractionDispatcher({
+  const dispatchInteraction = useEventCallback(createInteractionDispatcher({
     focusRoom: requestRoom, selectPerson, openMailbox: selectMailbox, openBookshelf, selectBook,
     selectPoster: id => { setSelectedPosterId(id); onSelectPoster?.(id); },
     captureSignal: () => triggerAlienSignal(), selectFurniture: onSelectGizmo, fireplace: onFireplaceClick,
-  }, { people, tiers: interactionTiers, editing: isInspectorOpen, activeFurniture: effectiveGizmoId });
-  const onSelectRoom = (id: RoomId | 'overview') => dispatchInteraction({ kind: 'room', id });
-  const onSelectPerson = (person: Person) => dispatchInteraction({ kind: 'person', id: person.id });
-  const onSelectMailbox = () => dispatchInteraction({ kind: 'entity', id: 'mailbox' });
-  const onBookshelfClick = () => dispatchInteraction({ kind: 'furniture-part', id: 'bookshelf-group' });
-  const onBookClick = (book: BookItemConfig, tierIndex: number) => dispatchInteraction({ kind: 'book', id: book.id, tierIndex });
+  }, { people, tiers: interactionTiers, editing: isInspectorOpen, activeFurniture: effectiveGizmoId }));
+  const onSelectRoom = useEventCallback((id: RoomId | 'overview') => dispatchInteraction({ kind: 'room', id }));
+  const onSelectPerson = useEventCallback((person: Person) => dispatchInteraction({ kind: 'person', id: person.id }));
+  const onSelectMailbox = useEventCallback(() => dispatchInteraction({ kind: 'entity', id: 'mailbox' }));
+  const captureSignal = useEventCallback(() => dispatchInteraction({ kind: 'entity', id: 'alien-receiver' }));
+  const onBookshelfClick = useEventCallback(() => dispatchInteraction({ kind: 'furniture-part', id: 'bookshelf-group' }));
+  const onBookClick = useEventCallback((book: BookItemConfig, tierIndex: number) => dispatchInteraction({ kind: 'book', id: book.id, tierIndex }));
 
   const handleZoomIn = () => zoomBy(0.25);
   const handleZoomOut = () => zoomBy(-0.25);
@@ -210,7 +199,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               className="cursor-pointer group/observatory"
             >
   <ObservatoryHaven activeRoom={activeRoom} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
-    triggerAlienSignal={() => dispatchInteraction({ kind: 'entity', id: 'alien-receiver' })} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
+    triggerAlienSignal={captureSignal} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
 </SceneEntity>
           </g>
 
@@ -233,7 +222,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               presenceSlots={presenceSlots}
               onSelectPerson={onSelectPerson}
               setHoveredObject={setHoveredObject}
-              hoveredObject={hoveredObject}
               hasMovedRef={hasMovedRef}
               theme={theme}
             />
@@ -250,7 +238,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               presenceSlots={presenceSlots}
               onSelectPerson={onSelectPerson}
               setHoveredObject={setHoveredObject}
-              hoveredObject={hoveredObject}
               hasMovedRef={hasMovedRef}
               theme={theme}
             />
@@ -279,14 +266,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       {/* ======================================================== */}
 <WorldOverlays handleZoomIn={handleZoomIn} handleZoomOut={handleZoomOut} handleResetOverview={handleResetOverview} hoveredObject={hoveredObject} people={people} interactionTiers={interactionTiers} isInspectorOpen={isInspectorOpen} alienTransmissionText={alienTransmissionText} setAlienTransmissionText={setAlienTransmissionText} triggerAlienSignal={triggerAlienSignal} />
       {/* 4.0 电影海报高清艺术展陈与背景故事展牌 (点击海报任意画作唤出) */}
-      <PosterDetailModal
+      {selectedPosterId && (<Suspense fallback={null}><PosterDetailModal
         activePosterId={selectedPosterId}
         onClose={() => setSelectedPosterId(null)}
         onSelectPoster={(id) => {
           setSelectedPosterId(id);
           onSelectPoster?.(id);
         }}
-      />
+      /></Suspense>)}
     </div>
     </LayoutGestureContext.Provider>
   );

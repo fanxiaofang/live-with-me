@@ -1,29 +1,28 @@
-import { useTimerScope } from '../../shared/timers/useTimerScope';
-import React, { useState, useEffect } from 'react';
 import {
-  RoomLayoutConfig,
-  EditableObjectId,
-  RoomCategory,
-  DEFAULT_ROOM_LAYOUT,
-} from './layoutStore';
+Armchair,
+BookOpen,
+Check,
+ChevronDown,
+ChevronUp,
+Coffee,
+Copy,
+Home,
+Keyboard,
+Laptop,
+Layers,
+Library,
+Move,
+RotateCcw,
+Wrench,
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useTimerScope } from '../../shared/timers/useTimerScope';
 import { unprojectScreenToIso } from './isoMath';
 import {
-  Move,
-  RotateCcw,
-  Copy,
-  Check,
-  Wrench,
-  ChevronUp,
-  ChevronDown,
-  Layers,
-  Coffee,
-  Armchair,
-  BookOpen,
-  Home,
-  Laptop,
-  Library,
-  Keyboard,
-} from 'lucide-react';
+EditableObjectId,
+RoomCategory,
+RoomLayoutConfig
+} from './layoutStore';
 
 interface LayoutInspectorPanelProps {
   layout: RoomLayoutConfig;

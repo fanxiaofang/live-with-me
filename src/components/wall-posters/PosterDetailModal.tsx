@@ -1,6 +1,6 @@
+import { ChevronLeft, ChevronRight, Compass, Film, Quote, X } from 'lucide-react';
 import React from 'react';
-import { PosterId, POSTER_CATALOG } from './posterTypes';
-import { X, ChevronLeft, ChevronRight, Film, Sparkles, Quote, Compass } from 'lucide-react';
+import { POSTER_CATALOG, PosterId } from './posterTypes';
 
 interface PosterDetailModalProps {
   activePosterId: PosterId | null;

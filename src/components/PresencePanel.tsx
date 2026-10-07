@@ -1,10 +1,10 @@
+import { Armchair, ChevronDown, ChevronUp, Edit3, Image as ImageIcon, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import { Person, LifeStateId, RoomId } from '../types';
 import { LIFE_STATES, ROOMS } from '../data/initialData';
-import { Sparkles, Edit3, Image as ImageIcon, Armchair, ChevronDown, ChevronUp, Users } from 'lucide-react';
+import { Person } from '../types';
 import { CharacterHead } from './CharacterAvatar';
 
-import { PresenceAllocation, isRoomFull, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
+import { isRoomFull, PresenceAllocation, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
 
 interface PresencePanelProps {
   people: Person[];

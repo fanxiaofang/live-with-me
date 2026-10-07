@@ -3,7 +3,7 @@ import React from 'react';
 export interface DistantPinesProps {
 
 }
-export function DistantPines({  }: DistantPinesProps) {
+function DistantPinesAsset({  }: DistantPinesProps) {
   return <><g id="mountain-ridge-pines" opacity="0.85">
               <g transform="translate(820, 165)">
                 <polygon points="0,0 8,-20 16,0" fill="#294833" />
@@ -18,3 +18,5 @@ export function DistantPines({  }: DistantPinesProps) {
             </g>
   </>;
 }
+
+export const DistantPines = React.memo(DistantPinesAsset);
