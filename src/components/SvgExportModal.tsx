@@ -36,6 +36,13 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
 
   const views = [
     {
+      id: 'hills',
+      title: '约克郡田园山丘完整地貌 (Hills & Mountains Landscape)',
+      desc: '包含折纸低多边形山脉、阶梯麦田、山脚森林树林带与连绵草坡台地',
+      filename: 'yorkshire-hills-landscape.svg',
+      preview: '/yorkshire-hills-landscape.svg',
+    },
+    {
       id: 'all',
       title: '短发 4 视图设计全表 (Turnaround Sheet)',
       desc: '包含正面(SE)、左侧(SW)、正后(NW)、右侧(NE) 4 大视图与标准色板',

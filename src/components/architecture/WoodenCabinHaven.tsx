@@ -67,13 +67,6 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = ({
         </radialGradient>
       </defs>
 
-      {/* Natural Limestone Welcome Steps leading from Garden Path to Cabin Entrance */}
-      <g id="cabin-stepping-stones" opacity="0.88">
-        <ellipse cx="156" cy="396" rx="9.5" ry="4.8" fill="#6e655a" stroke="#4d453b" strokeWidth="0.6" />
-        <ellipse cx="168" cy="404" rx="10.5" ry="5.2" fill="#7a7064" stroke="#544b41" strokeWidth="0.6" />
-        <ellipse cx="180" cy="412" rx="9" ry="4.5" fill="#84796c" stroke="#5a5045" strokeWidth="0.6" />
-      </g>
-
       {/* Main Wooden Cabin Interactive Group (位于主宅西翼安睡台地 x=160, y=340，与东翼太空舱完美对称呼应) */}
       <g
         id="room-corn_lounge"

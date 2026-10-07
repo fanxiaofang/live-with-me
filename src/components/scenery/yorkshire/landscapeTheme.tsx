@@ -8,11 +8,73 @@ import { YorkshireSceneTheme } from './landscapeTypes';
 export const YorkshireDefs: React.FC<{ theme: YorkshireSceneTheme }> = ({ theme }) => {
   return (
     <defs>
-      {/* 溪水河湾清澈碧青渐变 (Teal-Cyan Beck) */}
-      <linearGradient id="ysRiverGradClean" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor={theme.riverColor} />
-        <stop offset="50%" stopColor={theme.riverReflect} />
-        <stop offset="100%" stopColor={theme.riverColor} />
+      {/* 🌿 纯净无胡茬草坪底纹 (Empty pattern - completely removes stiff stubble lines) */}
+      <pattern id="ysUnifiedLowPolyGrassPattern" width="1" height="1" patternUnits="userSpaceOnUse" />
+
+      {/* 🔷 全景统一轴测大地渐变 (Seamless Master Axonometric Ground Gradient) */}
+      <linearGradient id="isoGroundPastureGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#849f42" />
+        <stop offset="25%" stopColor={theme.hillGreenMid} />
+        <stop offset="65%" stopColor="#5e7b2d" />
+        <stop offset="100%" stopColor={theme.hillGreenNear} />
+      </linearGradient>
+
+      {/* 🔷 自然温润的庭院草坪渐变 (Organic Pastoral Lawn Turf Gradient - 去除塑料青荧感) */}
+      <linearGradient id="isoTerraceTurfGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#8ea846" />
+        <stop offset="35%" stopColor="#7d9a3b" />
+        <stop offset="70%" stopColor="#698730" />
+        <stop offset="100%" stopColor="#557225" />
+      </linearGradient>
+
+      {/* 🔷 轴测台地轻微下沉收边阴影 (Subtle Axonometric Terrace Bevel Shadow) */}
+      <linearGradient id="isoTerraceBevelGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#4c6623" />
+        <stop offset="100%" stopColor="#364917" />
+      </linearGradient>
+
+      {/* 🔷 低多边形向阳顶面草地渐变 (Low-Poly Sunlit Planar Facet) */}
+      <linearGradient id="lowPolySunlitFacetGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#9ec052" />
+        <stop offset="60%" stopColor="#8eb045" />
+        <stop offset="100%" stopColor="#7fa03a" />
+      </linearGradient>
+
+      {/* 🔷 低多边形平整中间台地渐变 (Low-Poly Flat Mid-Plane Facet) */}
+      <linearGradient id="lowPolyMidFacetGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#8ba943" />
+        <stop offset="45%" stopColor={theme.hillGreenMid} />
+        <stop offset="85%" stopColor="#67832f" />
+        <stop offset="100%" stopColor="#557025" />
+      </linearGradient>
+
+      {/* 🔷 低多边形背光阴影硬切面 (Low-Poly Faceted Shadow / Slope Drop) */}
+      <linearGradient id="lowPolyShadowFacetGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#4c6623" />
+        <stop offset="50%" stopColor="#3d531b" />
+        <stop offset="100%" stopColor="#2e4014" />
+      </linearGradient>
+
+      {/* 🔷 低多边形远山受光面 (Distant Mountain Sunlit Facet) */}
+      <linearGradient id="lowPolyMountainLitGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#859c78" />
+        <stop offset="100%" stopColor={theme.hillGreenFar} />
+      </linearGradient>
+
+      {/* 🔷 低多边形远山背光阴影面 (Distant Mountain Shadow Facet) */}
+      <linearGradient id="lowPolyMountainShadeGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#485c3f" />
+        <stop offset="100%" stopColor="#36472e" />
+      </linearGradient>
+
+      {/* 🔷 低多边形金色麦田分块受光面与阴影面 */}
+      <linearGradient id="lowPolyWheatLitGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#e5c56d" />
+        <stop offset="100%" stopColor={theme.wheatFar} />
+      </linearGradient>
+      <linearGradient id="lowPolyWheatShadeGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#ba933c" />
+        <stop offset="100%" stopColor="#9e7b2e" />
       </linearGradient>
 
       {/* 规整风化灰砂岩墙体渐变 (暖调厚重石材) */}

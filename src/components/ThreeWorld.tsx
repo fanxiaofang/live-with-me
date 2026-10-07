@@ -14,13 +14,13 @@ import { WallPostersGallery, PosterDetailModal, PosterId } from './wall-posters'
 import { LeftWallCraftBoard } from './LeftWallCraftBoard';
 import { CottageFoundation, TimberFlooring, CottageRoofFraming, CottageWallProfiles, CapsulePodHaven, WoodenCabinHaven } from './architecture';
 import {
-  BackgroundYorkshireMatte,
+  YorkshireDefs,
   TerrainSilhouette,
+  RailwayLandscape,
   TerrainMass,
   RiverValley,
   PastureFields,
   DrystoneWalls,
-  HouseTerrace,
   YorkshireDressing,
 } from './scenery/yorkshire';
 
@@ -313,6 +313,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   // Clamping helper
   const clamp = (val: number, min: number, max: number) => Math.min(Math.max(val, min), max);
 
+  // 镜头拖拽漫游边界：严格限定在田园主画幅内（左侧以高架桥西端为界，右至观星山麓/守护树，上下以天际线与草甸为界）
+  const PAN_BOUNDS = {
+    minX: -420, // 右侧边界
+    maxX: 420,  // 左侧边界（高架桥西侧末端）
+    minY: -120, // 下方边界
+    maxY: 300,  // 上方边界
+  };
+
   // Mouse wheel zoom
   const handleWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
@@ -342,8 +350,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     }
     setCamera((prev) => ({
       ...prev,
-      x: clamp(cameraStartRef.current.x + dx / prev.zoom, -1000, 1000),
-      y: clamp(cameraStartRef.current.y + dy / prev.zoom, -650, 650),
+      x: clamp(cameraStartRef.current.x + dx / prev.zoom, PAN_BOUNDS.minX, PAN_BOUNDS.maxX),
+      y: clamp(cameraStartRef.current.y + dy / prev.zoom, PAN_BOUNDS.minY, PAN_BOUNDS.maxY),
     }));
   };
 
@@ -377,8 +385,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       }
       setCamera((prev) => ({
         ...prev,
-        x: clamp(cameraStartRef.current.x + dx / prev.zoom, -1000, 1000),
-        y: clamp(cameraStartRef.current.y + dy / prev.zoom, -650, 650),
+        x: clamp(cameraStartRef.current.x + dx / prev.zoom, PAN_BOUNDS.minX, PAN_BOUNDS.maxX),
+        y: clamp(cameraStartRef.current.y + dy / prev.zoom, PAN_BOUNDS.minY, PAN_BOUNDS.maxY),
       }));
     } else if (e.touches.length === 2 && touchStartRef.current.dist > 0) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -475,6 +483,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           className="absolute inset-0 w-full h-full pointer-events-auto"
         >
           <defs>
+            {/* Unified Low-Poly Theme Defs, Gradients & Patterns */}
+            <YorkshireDefs theme={theme} />
+
             {/* Seamless Panoramic Sky Fill Gradient (万物生灵参考图经典4阶渐变：夏日灰蓝天际 -> 柔和浅青 -> 暖金晨雾 -> 地平线奶油杏黄) */}
             <linearGradient id="skyFillGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={theme.skyTop} />
@@ -779,13 +790,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               <stop offset="100%" stopColor="#0a1008" stopOpacity="0.55" />
             </linearGradient>
 
-            {/* Continuous Country Flagstone & Loam Road Gradient (贯穿全景的乡间泥土与石板主干道) */}
-            <linearGradient id="countryRoadGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#b5a591" />
-              <stop offset="50%" stopColor="#9e8d78" />
-              <stop offset="100%" stopColor="#847460" />
-            </linearGradient>
-
             {/* Cast-Iron Stove Surface Gradients (独立式铸铁柴火炉材质渐变) */}
             <linearGradient id="castIronBodyGrad" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#3d3731" />
@@ -1058,9 +1062,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
           {/* ======================================================== */}
           {/* 1. BACKGROUND: RETRO ANIME ATMOSPHERIC CLOUDS & RIDGE MIST */}
-          {/* (微缩景观Diorama重构：彻底摒弃死板圆弧与高对比纯白，改用吉卜力长条波浪连笔长云与山间流岚) */}
+          {/* (微缩景观Diorama重构：连动远山向上平移，保持背景天空与云彩在远山脊上方舒展) */}
           {/* ======================================================== */}
-          <g id="sky-and-clouds">
+          <g id="sky-and-clouds" transform="translate(0, -115)">
             {/* --- Layer 1: High-Altitude Atmospheric Stratiform & Cirrus Ribbon (极远处慢速舒展云带) --- */}
             <g id="sky-clouds-far-layer" className="cloud-drift-far" filter="url(#cloudAtmosphereBlur)">
               {/* Upper delicate wispy cirrus filaments (高空手绘舒卷轻羽云) */}
@@ -1109,554 +1113,81 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             <rect x="-3000" y="80" width="7400" height="200" fill="url(#distantHazeGrad)" />
           </g>
 
-          {/* ✅ 00 BACKGROUND MATTE (Painted distant Yorkshire countryside backdrop) */}
-          <BackgroundYorkshireMatte theme={theme} />
-
-          {/* ✅ 01 TERRAIN SILHOUETTE (Horizon transition / haze blend only) */}
-          <TerrainSilhouette theme={theme} />
-
-          {/* ✅ 02 TERRAIN MASS (Midground + playspace terrain only) */}
-          <TerrainMass theme={theme} />
-
-          {/* Rolling Terraced Hills & Sunny Wheat Slopes */}
+          {/* ========================================================================= */}
+          {/* 🌟 REFACTORED LOW-POLY COUNTRYSIDE TERRAIN & PRESERVED RAILWAY INFRASTRUCTURE */}
+          {/*    100% 低多边形设计风格 · 严格遵循 2.5D 轴测平面层级与中景金色麦田过渡     */}
+          {/*    远山峰峦与中远景麦田/高架桥往后移，草地扩大包围主屋草台后方              */}
+          {/* ========================================================================= */}
           <g id="hills">
-            {/* (Legacy distant-range terrain removed — replaced by TerrainSilhouette above) */}
-            {/* Yorkshire Dales Stone Railway Viaduct (Ribblehead Viaduct - 万物生灵经典石砌高架铁路拱桥) */}
-            <g id="yorkshire-railway-viaduct" opacity="0.95">
-              {/* Viaduct Ground Drop Shadow in Valley Fold */}
-              <ellipse cx="-160" cy="224" rx="270" ry="14" fill="#1b291d" opacity="0.25" filter="url(#softShadow)" />
+            {/* 01 & 05 DISTANT MOUNTAINS, WHEAT TERRACES & RAILWAY (整体往后平移至远景层) */}
+            <g id="distant-mountain-wheat-railway-depth" transform="translate(0, -115)">
+              {/* 01 TERRAIN SILHOUETTE (低多边形折纸远山峰峦与阶梯麦田) */}
+              <TerrainSilhouette theme={theme} />
 
-              {/* Main Continuous Masonry Track Deck & Parapet Wall */}
-              <rect x="-430" y="180" width="515" height="7" fill="url(#viaductStoneGrad)" />
-              <line x1="-430" y1="180" x2="85" y2="180" stroke="#a89f92" strokeWidth="0.9" />
-              <line x1="-430" y1="187" x2="85" y2="187" stroke="#484239" strokeWidth="1.2" />
-
-              {/* 7 Classical Roman Ashlar Stone Arches & Tapered Piers */}
-              {[-385, -315, -245, -175, -105, -35, 35].map((px, idx) => {
-                const pierHeight = 33 + Math.sin(idx * 0.55) * 9;
-                return (
-                  <g key={`viaduct-pier-${idx}`}>
-                    {/* Shaded Arch Barrel Soffit (拱券内部深色背光阴影) */}
-                    {idx < 6 && (
-                      <g>
-                        <path
-                          d={`M ${px + 20},187 A 15 15 0 0 1 ${px + 50},187 Z`}
-                          fill="url(#viaductArchShade)"
-                        />
-                        <path
-                          d={`M ${px + 20},187 A 15 15 0 0 1 ${px + 50},187`}
-                          fill="none"
-                          stroke="#565046"
-                          strokeWidth="2.4"
-                        />
-                      </g>
-                    )}
-                    {/* Tapered Ashlar Stone Pier */}
-                    <polygon
-                      points={`${px},187 ${px + 20},187 ${px + 22},${187 + pierHeight} ${px - 2},${187 + pierHeight}`}
-                      fill="url(#viaductStoneGrad)"
-                      stroke="#524c42"
-                      strokeWidth="0.8"
-                    />
-                    {/* Shaded Right Edge of Pier (Cel-shaded facet) */}
-                    <polygon
-                      points={`${px + 14},187 ${px + 20},187 ${px + 22},${187 + pierHeight} ${px + 16},${187 + pierHeight}`}
-                      fill="#3d372f"
-                      opacity="0.45"
-                    />
-                    {/* Stone Pier Base Plinth */}
-                    <rect x={px - 4} y={187 + pierHeight - 2} width="28" height="4" rx="0.5" fill="#4d473e" />
-                  </g>
-                );
-              })}
-
-              {/* Mountain Railway Tunnel Portal (石砌高架铁路穿山隧道口，告别突兀截断穿帮) */}
-              <g id="viaduct-tunnel-portal" transform="translate(82, 158)">
-                <polygon points="0,0 28,-10 38,36 0,36" fill="#3a4c22" />
-                <polygon points="0,3 20,-4 25,34 0,34" fill="url(#viaductStoneGrad)" stroke="#4d473e" strokeWidth="0.8" />
-                {/* Dark Arched Tunnel Mouth */}
-                <path d="M0,34 L0,16 A 11 11 0 0 1 22,16 L22,34 Z" fill="#0d120f" stroke="#25201b" strokeWidth="1.4" />
-                {/* Ashlar Stone Voussoirs (拱形拱顶石) */}
-                <path d="M-2,34 L-2,14 A 13 13 0 0 1 24,14 L24,34" fill="none" stroke="#686054" strokeWidth="2.4" />
-                <circle cx="11" cy="2" r="1.5" fill="#d97706" />
-                {/* Wild Hillside Ivy Clinging to Tunnel Masonry */}
-                <ellipse cx="6" cy="8" rx="7" ry="3.2" fill="#2d4221" />
-                <ellipse cx="18" cy="10" rx="6" ry="2.8" fill="#3a562b" />
-              </g>
-
-              {/* Vintage Countryside Steam Locomotive crossing the Viaduct */}
-              <g transform="translate(-140, 168)" opacity="0.95">
-                {/* Locomotive Body (British Brunswick Green & Dark Cab) */}
-                <rect x="0" y="5" width="22" height="7" rx="1" fill="#2c4431" />
-                <rect x="18" y="1" width="10" height="11" rx="1" fill="#1e3022" />
-                <circle cx="10" cy="5" r="1.8" fill="#d99b38" />
-                <rect x="3" y="1" width="3" height="4" fill="#1b1c1e" />
-                {/* Carriage 1 & 2 */}
-                <rect x="-24" y="4" width="20" height="8" rx="1" fill="#783424" />
-                <rect x="-48" y="4" width="20" height="8" rx="1" fill="#783424" />
-                {/* Carriage Windows */}
-                {[-44, -36, -20, -12].map((wx, i) => (
-                  <rect key={i} x={wx} y="6" width="4" height="3" fill="#fdf0d5" opacity="0.8" />
-                ))}
-                {/* Puffing White Steam Clouds Drifting gracefully into the dale */}
-                <circle cx="4" cy="-2" r="3.5" fill="#ffffff" opacity="0.75" className="animate-[pulse_3s_infinite]" />
-                <circle cx="-5" cy="-6" r="5" fill="#ffffff" opacity="0.55" className="animate-[bounce_3.5s_infinite]" />
-                <circle cx="-16" cy="-10" r="6.5" fill="#ffffff" opacity="0.4" />
-                <circle cx="-30" cy="-14" r="8" fill="#ffffff" opacity="0.22" />
-              </g>
+              {/* 05 INFRASTRUCTURE: RAILWAY (经典石拱高架桥、穿山隧道与复古蒸汽机车) */}
+              <RailwayLandscape theme={theme} />
             </g>
 
-            {/* (Legacy midground ridge-2 removed — replaced by TerrainSilhouette above) */}
-            {/* 📡 OBSERVATORY SUMMIT LOCAL FOOTING (监听站局部基座)
-                Phase 2.3: the old dark mountain promontory (which competed with
-                the new TerrainSilhouette communication ridge and read as a dark
-                triangle) is reduced to the MINIMUM local footing required to
-                ground the station. The large landform is now provided by the
-                terrain system; this only anchors the asset. */}
-            <g id="observatory-summit-mountain-base">
-              {/* Small local summit mound — sits on the ridge, does not build a mountain */}
-              <path
-                d="M812,158 Q858,114 900,102 Q944,112 988,160 L1000,300 L804,300 Z"
-                fill="#74895c"
-                opacity="0.9"
-              />
-              {/* Sunlit west face of the local mound */}
-              <path
-                d="M820,156 Q862,118 900,104 L900,300 L816,300 Z"
-                fill="#879c68"
-                opacity="0.55"
-              />
-              {/* Faint rock fleck so the station still reads as grounded */}
-              <path d="M844,150 Q874,126 902,124" fill="none" stroke="#61764c" strokeWidth="1.6" opacity="0.5" />
-            </g>
+            {/* 02 TERRAIN MASS (平整低多边形各级台地、主庭院大台面与底板) */}
+            <TerrainMass theme={theme} />
 
-            {/* (Legacy ridge-2 facets removed — replaced by TerrainSilhouette above) */}
-            {/* Distant farmsteads */}
-            <g transform="translate(720, 150)">
-              <rect x="0" y="8" width="18" height="12" fill="#fffaf2" />
-              <polygon points="-2,8 9,0 20,8" fill="#a84e34" />
-            </g>
-            <g transform="translate(1100, 135)">
-              <rect x="0" y="6" width="15" height="10" fill="#fffaf2" />
-              <polygon points="-2,6 7,0 17,6" fill="#a84e34" />
-            </g>
-
-            {/* (Legacy golden wheat slopes removed — replaced by TerrainSilhouette above) */}
-
-            {/* Yorkshire Dales Drystone Walls (万物生灵灵魂元素：攀附丘陵与田亩边界的干砌石墙网) */}
-            <g id="yorkshire-drystone-walls">
-              {/* Wall 1: Descending from Upper Left Fell toward Tractor Yard */}
-              <g id="drystone-wall-upper-left">
-                <path
-                  d="M-560,225 C-420,238 -320,252 -180,270 L-180,278 C-320,260 -420,246 -560,233 Z"
-                  fill="url(#drystoneFaceGrad)"
-                />
-                <path
-                  d="M-560,225 C-420,238 -320,252 -180,270"
-                  fill="none"
-                  stroke="url(#drystoneCapGrad)"
-                  strokeWidth="3.2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M-560,225 C-420,238 -320,252 -180,270"
-                  fill="none"
-                  stroke="#24211c"
-                  strokeWidth="0.8"
-                  strokeDasharray="2 12"
-                />
-              </g>
-
-              {/* Wall 2: Upper Pasture Terrace Boundary with Rustic Wooden Stile */}
-              <g id="drystone-wall-mid-terrace">
-                <path
-                  d="M260,238 C420,248 580,246 760,256 L760,264 C580,254 420,256 260,246 Z"
-                  fill="url(#drystoneFaceGrad)"
-                />
-                <path
-                  d="M260,238 C420,248 580,246 760,256"
-                  fill="none"
-                  stroke="url(#drystoneCapGrad)"
-                  strokeWidth="3.2"
-                  strokeLinecap="round"
-                />
-                {/* Small stone stile gate opening */}
-                <rect x="520" y="244" width="8" height="12" fill="#523924" rx="1" />
-              </g>
-
-              {/* Wall 3: East Ridge Slope Climbing towards Wild Pine Crest (英伦约克郡蜿蜒干砌石矮墙，消解生硬黑线) */}
-              <g id="drystone-wall-east-ridge" opacity="0.85">
-                <path
-                  d="M960,188 C1050,206 1160,222 1320,242"
-                  fill="none"
-                  stroke="#5c5042"
-                  strokeWidth="3.2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M960,186.5 C1050,204.5 1160,220.5 1320,240.5"
-                  fill="none"
-                  stroke="#9e917f"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeDasharray="6 3"
-                />
-                {/* Weathered Limestone Stile & Moss Flecks */}
-                {[990, 1070, 1150, 1230, 1290].map((wx, i) => (
-                  <circle key={`erw-${i}`} cx={wx} cy={192 + i * 10} r="1.6" fill="#3d5435" opacity="0.75" />
-                ))}
-                {/* Rustic timber field gate opening on east hillside */}
-                <line x1="1100" y1="211" x2="1100" y2="220" stroke="#3b2716" strokeWidth="2.2" strokeLinecap="round" />
-                <line x1="1120" y1="215" x2="1120" y2="224" stroke="#3b2716" strokeWidth="2.2" strokeLinecap="round" />
-                <line x1="1098" y1="214" x2="1122" y2="218" stroke="#5a3d24" strokeWidth="1.2" />
-                <line x1="1098" y1="218" x2="1122" y2="222" stroke="#5a3d24" strokeWidth="1.2" />
-              </g>
-            </g>
-
-            {/* Distant Hedgerow & Countryside Trees (远方绿篱与行道树列，自然区隔远景农田与家园草坪) */}
-            <g opacity="0.8">
-              {[-360, -240, -120, -20, 80, 180, 280, 390, 680, 790, 910, 1040, 1150, 1280, 1420, 1600, 1800, 2050].map((tx) => (
-                <g key={`hedge-${tx}`} transform={`translate(${tx}, ${268 + (tx % 15) - 7})`}>
-                  <ellipse cx="0" cy="0" rx="16" ry="6.5" fill={theme.hillGreenFar} />
-                  <ellipse cx="-3" cy="-1.5" rx="10" ry="4.5" fill={theme.hillGreenMid} opacity="0.65" />
-                </g>
-              ))}
-            </g>
-
-            {/* ======================================================== */}
-            {/* 2.5D ISOMETRIC TOPOGRAPHY & TERRACED HOMESTEAD SYSTEM      */}
-            {/*    彻底告别扁平横条与贴纸感，建立多级真实等轴测台地、护土墙与连贯路网 */}
-            {/* ======================================================== */}
-
-            {/* 1. Mountain Trail Switchback from Observatory to Valley (从山巅观星台蜿蜒而下的山道) */}
-            <g id="mountain-switchback-trail" opacity="0.8">
-              <path
-                d="M890,110 Q830,135 840,165 Q850,195 780,215 Q710,235 620,250 Q500,265 380,270 Q240,285 140,295"
-                fill="none"
-                stroke="#baa58c"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeDasharray="12 4"
-              />
-              <path
-                d="M890,110 Q830,135 840,165 Q850,195 780,215 Q710,235 620,250 Q500,265 380,270 Q240,285 140,295"
-                fill="none"
-                stroke="#8c7760"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </g>
-
-            {/* (Legacy Upper Terrace removed — replaced by TerrainMass above) */}
-
-            {/* (Legacy Upper Terrace facets removed — replaced by TerrainMass above) */}
-
-            {/* 3. Authentic Yorkshire Dales Dry-Stone Wall on the Upper Ridge */}
-            <g id="yorkshire-drystone-wall" opacity="0.85">
-              {/* Meandering drystone wall along the upper wheat terrace boundary */}
-              <path
-                d="M-280,248 C-120,252 60,242 220,246 C340,250 480,242 620,248 C760,254 900,244 1080,252"
-                fill="none"
-                stroke="#635749"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-              {/* Weathered limestone wall top highlight line */}
-              <path
-                d="M-280,246.5 C-120,250.5 60,240.5 220,244.5 C340,248.5 480,240.5 620,246.5 C760,252.5 900,242.5 1080,250.5"
-                fill="none"
-                stroke="#9c8e7c"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeDasharray="8 3"
-              />
-              {/* Natural stone textures and climbing moss flecks along wall */}
-              {[-160, -40, 110, 290, 430, 560, 710, 850, 980].map((wx, i) => (
-                <circle key={`wms-${i}`} cx={wx} cy={246 + (i % 3) * 1.5} r="2.2" fill="#3a5234" opacity="0.75" />
-              ))}
-            </g>
-
-            {/* (Legacy Homestead Lawn Plateau + facets + ridge highlight removed — replaced by TerrainMass above) */}
-
-            {/* ========================================================================= */}
-            {/* 4.1 EAST RIDGE TECH TERRACE & HILLSIDE SHOULDER */}
-            {/*     在建筑下方绘制！为右上角太空睡眠舱与电波站构筑厚重稳固的斜坡山包 */}
-            {/* ========================================================================= */}
-            <g id="east-tech-terrace-knoll">
-              {/* Phase 2.3: the massive east-ridge mountain contour, its dark
-                  under-slope and the crest highlight were removed — the new
-                  TerrainMass eastern shoulder now provides that landform. Only
-                  the local footings for the boardwalk, capsule pod and slope
-                  dressing remain here. */}
-
-              {/* Terraced Stone Retaining Ledges supporting the Wooden Boardwalk */}
-              <g id="boardwalk-retaining-terrace" transform="translate(-36, 0)">
-                <polygon points="796,368 912,372 908,388 792,384" fill="url(#stoneWallFaceGrad)" stroke="#2d261e" strokeWidth="0.8" />
-                <polygon points="796,368 912,372 914,375 798,371" fill="url(#stoneWallCapGrad)" />
-                <line x1="825" y1="369" x2="823" y2="385" stroke="#1d1712" strokeWidth="0.8" />
-                <line x1="855" y1="370" x2="853" y2="386" stroke="#1d1712" strokeWidth="0.8" />
-                <line x1="885" y1="371" x2="883" y2="387" stroke="#1d1712" strokeWidth="0.8" />
-                <line x1="796" y1="378" x2="910" y2="382" stroke="#1d1712" strokeWidth="0.7" strokeDasharray="6 3" />
-              </g>
-
-              {/* Capsule Pod Grounded Bedrock Plinth */}
-              <g id="capsule-pod-ground-bedrock" transform="translate(894, 320)">
-                <polygon points="-75,44 0,32 75,44 0,58" fill="#58635a" stroke="#373e38" strokeWidth="1.2" />
-                <polygon points="-75,44 0,58 0,66 -75,52" fill="#2b322c" />
-                <polygon points="0,58 75,44 75,52 0,66" fill="#3c463e" />
-                <ellipse cx="-42" cy="46" rx="10" ry="3.5" fill="#4a6344" />
-                <ellipse cx="38" cy="48" rx="12" ry="4" fill="#4a6344" />
-                <ellipse cx="2" cy="54" rx="8" ry="3" fill="#384f33" />
-              </g>
-
-              {/* Alpine Dwarf Pines & Outcrop Stones on East Slope */}
-              <g id="east-terrace-wildlife" opacity="0.9">
-                <g transform="translate(775, 360)">
-                  <ellipse cx="0" cy="8" rx="8" ry="3" fill="#141f14" opacity="0.4" />
-                  <path d="M-6,8 Q-2,-2 0,-12 Q2,-2 6,8" fill="#254228" stroke="#182c1b" strokeWidth="0.6" />
-                  <path d="M-4,-2 Q0,-10 0,-16 Q0,-10 4,-2" fill="#345938" />
-                </g>
-                <g transform="translate(1015, 305)">
-                  <ellipse cx="0" cy="12" rx="10" ry="4" fill="#141f14" opacity="0.4" />
-                  <path d="M-8,12 Q-3,-4 0,-18 Q3,-4 8,12" fill="#254228" stroke="#182c1b" strokeWidth="0.6" />
-                  <path d="M-5,-4 Q0,-15 0,-24 Q0,-15 5,-4" fill="#345938" />
-                </g>
-                <ellipse cx="760" cy="385" rx="6.5" ry="3.2" fill="#756b5e" stroke="#524a40" strokeWidth="0.6" />
-                <ellipse cx="785" cy="405" rx="8" ry="3.8" fill="#696054" stroke="#484238" strokeWidth="0.6" />
-                <ellipse cx="995" cy="375" rx="7.5" ry="3.5" fill="#706659" stroke="#4a4339" strokeWidth="0.6" />
-              </g>
-            </g>
-
-            {/* ========================================================================= */}
-            {/* 4.2 WEST SLEEPING CABIN MEADOW TERRACE (西翼安睡木屋草坡基座台地) */}
-            {/* ========================================================================= */}
-            <g id="west-cabin-terrace-knoll">
-              {/* Phase 2.3: the broad homestead-lawn plateau blob and its dark
-                  under-slope were removed — the new TerrainMass central
-                  landform already provides this volume. Only a small local
-                  footing remains so the cabin reads as grounded. */}
-              <path
-                d="M-240,392 C-150,378 -30,378 60,390 C120,400 150,418 132,442
-                   C104,464 0,472 -96,468 C-186,464 -258,444 -272,420
-                   C-280,406 -268,398 -240,392 Z"
-                fill="#7d9740"
-                opacity="0.55"
-              />
-            </g>
-
-            {/* ========================================================================= */}
-            {/* 4.3 ROLLING MORANDI PASTURE KNOLLS & GENTLE SLOPES (起伏莫兰迪草丘缓坡底板) */}
-            {/*     位于建筑与路网下方，沿2.5D轴测斜向自然流淌，彻底消解水平横切面 */}
-            {/* ========================================================================= */}
-            {/* (Legacy rolling pasture knolls removed — replaced by TerrainMass above; sheep track retained) */}
-            <g id="rolling-pasture-sheep-track">
-              {/* Worn Sheep Track through foreground meadow (草坡间牧民与羊群踏出的自然土色浅痕) */}
-              <path
-                d="M-400,635 Q180,630 650,622 Q1150,630 1800,625"
-                fill="none"
-                stroke="#70854d"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeDasharray="18 10"
-                opacity="0.45"
-              />
-            </g>
-
-            {/* 🌟 02 TERRAIN: River Valley (左侧清澈河湾与卵石浅滩) */}
+            {/* 02 TERRAIN: River Valley (纯净连贯无断流谷地) */}
             <RiverValley
               theme={theme}
               onTriggerToast={onTriggerToast}
               setHoveredObject={setHoveredObject}
             />
 
-            {/* 🌟 03 LAND PARCELS (Patchwork Dales Fields) */}
-            <PastureFields
-              theme={theme}
-            />
+            {/* 03 LAND PARCELS (低多边形几何草甸分块与平整田亩) */}
+            <PastureFields theme={theme} />
 
-            {/* 🌟 04 BOUNDARIES (Authentic Drystone Boundary Walls & 5-Bar Gate) */}
+            {/* 04 BOUNDARIES (低多边形石墙与标志性五杠原木门) */}
             <DrystoneWalls
               theme={theme}
               onTriggerToast={onTriggerToast}
               setHoveredObject={setHoveredObject}
             />
 
-            {/* 5. Picturesque Organic Country Lane & S-Curved Garden Paths (顺应地势自然生长的S形有机小路与嵌入式石板步道) */}
-            <g id="country-road-network" opacity="0.95">
-              {/* Forecourt Flagstone & Pea-Gravel Apron in front of Cottage Veranda Steps (主屋门前迎宾石板碎石庭坪) */}
-              <ellipse cx="540" cy="495" rx="55" ry="18" fill="url(#countryRoadGrad)" />
-              <ellipse cx="540" cy="495" rx="50" ry="15" fill="none" stroke="#968572" strokeWidth="0.8" strokeDasharray="5 7" />
-
-              {/* Hand-laid weathered limestone flagstones embedded into the forecourt */}
+            {/* 5. Natural Meadow Flora & Wildflowers (纯净草甸上的点缀野花 · 全景微风律动) */}
+            <g id="meadow-flanking-flora" opacity="0.9">
               {[
-                { x: 520, y: 492, rx: 7, ry: 3.5 },
-                { x: 542, y: 497, rx: 8, ry: 4 },
-                { x: 560, y: 493, rx: 7.5, ry: 3.6 },
-                { x: 532, y: 488, rx: 6.5, ry: 3.2 },
-                { x: 550, y: 501, rx: 7, ry: 3.4 },
-              ].map((st, i) => (
-                <g key={`fc-st-${i}`}>
-                  <ellipse cx={st.x} cy={st.y + 0.6} rx={st.rx} ry={st.ry} fill="#69594a" opacity="0.5" />
-                  <ellipse cx={st.x} cy={st.y} rx={st.rx} ry={st.ry} fill="#baa993" stroke="#8c7a65" strokeWidth="0.6" />
-                  <ellipse cx={st.x - 1} cy={st.y - 0.5} rx={st.rx * 0.5} ry={st.ry * 0.45} fill="#d4c7b2" opacity="0.6" />
-                </g>
-              ))}
-
-              {/* ======================================================== */}
-              {/* 🌟 ORGANIC S-SHAPED WEST PATHWAY TO WOODEN CABIN HAVEN   */}
-              {/* (大木屋正门顺应地势优雅舒缓蜿蜒至西翼小木屋踏步 x=216, y=398) */}
-              {/* ======================================================== */}
-              <path
-                d="M525,496 C460,510 390,498 325,468 C270,442 240,422 216,398"
-                fill="none"
-                stroke="url(#countryRoadGrad)"
-                strokeWidth="15"
-                strokeLinecap="round"
-              />
-              <path
-                d="M525,496 C460,510 390,498 325,468 C270,442 240,422 216,398"
-                fill="none"
-                stroke="#73624e"
-                strokeWidth="1.4"
-                strokeDasharray="8 14"
-              />
-
-              {/* Path Extension from Cabin Steps to West Garden & Pumpkin Patch */}
-              <path
-                d="M216,398 C175,410 90,420 -20,426"
-                fill="none"
-                stroke="url(#countryRoadGrad)"
-                strokeWidth="11"
-                strokeLinecap="round"
-              />
-              <path
-                d="M216,398 C175,410 90,420 -20,426"
-                fill="none"
-                stroke="#73624e"
-                strokeWidth="1.0"
-                strokeDasharray="5 10"
-              />
-
-              {/* Flush Embedded Limestone Flagstones along the S-Curve */}
-              {[
-                { x: 495, y: 502, rx: 6.8, ry: 3.4, deg: 6 },
-                { x: 450, y: 508, rx: 7.2, ry: 3.5, deg: 4 },
-                { x: 405, y: 502, rx: 7.0, ry: 3.3, deg: -2 },
-                { x: 360, y: 488, rx: 7.4, ry: 3.5, deg: -8 },
-                { x: 315, y: 468, rx: 6.8, ry: 3.2, deg: -12 },
-                { x: 275, y: 446, rx: 7.2, ry: 3.4, deg: -14 },
-                { x: 242, y: 422, rx: 7.0, ry: 3.3, deg: -10 },
-                { x: 216, y: 398, rx: 7.2, ry: 3.4, deg: -2 },
-                { x: 160, y: 410, rx: 6.5, ry: 3.1, deg: 2 },
-                { x: 100, y: 418, rx: 6.8, ry: 3.2, deg: 4 },
-                { x: 30, y: 424, rx: 6.6, ry: 3.0, deg: 4 },
-              ].map((pst, i) => (
-                <g key={`s-flag-${i}`} transform={`translate(${pst.x}, ${pst.y}) rotate(${pst.deg})`}>
-                  <ellipse cx="0" cy="0.6" rx={pst.rx} ry={pst.ry} fill="#544537" opacity="0.45" />
-                  <ellipse cx="0" cy="0" rx={pst.rx} ry={pst.ry} fill="#b3a28c" stroke="#877561" strokeWidth="0.5" />
-                  <ellipse cx="-0.8" cy="-0.4" rx={pst.rx * 0.55} ry={pst.ry * 0.45} fill="#d4c6b2" opacity="0.55" />
-                </g>
-              ))}
-
-              {/* Natural Organic Roadside Flanking Flora & Low Bushes */}
-              <g id="s-path-flanking-flora" opacity="0.88">
-                {[
-                  { x: 470, y: 516, col: '#fef08a' },
-                  { x: 420, y: 496, col: '#ffffff' },
-                  { x: 375, y: 500, col: '#a855f7' },
-                  { x: 330, y: 474, col: '#ffffff' },
-                  { x: 285, y: 460, col: '#fef08a' },
-                  { x: 245, y: 432, col: '#ffffff' },
-                  { x: 205, y: 408, col: '#a855f7' },
-                  { x: 150, y: 415, col: '#fef08a' },
-                  { x: 90, y: 422, col: '#ffffff' },
-                  { x: 20, y: 428, col: '#fef08a' },
-                ].map((fl, i) => (
+                { x: 470, y: 516, col: '#fef08a', h: 8, curv: 1 },
+                { x: 420, y: 496, col: '#ffffff', h: 9, curv: -1 },
+                { x: 375, y: 500, col: '#a855f7', h: 8, curv: 1 },
+                { x: 330, y: 474, col: '#ffffff', h: 9, curv: -1 },
+                { x: 285, y: 460, col: '#fef08a', h: 7, curv: 1 },
+                { x: 245, y: 432, col: '#ffffff', h: 8, curv: -1 },
+                { x: 205, y: 408, col: '#a855f7', h: 7, curv: 1 },
+                { x: 150, y: 415, col: '#fef08a', h: 8, curv: -1 },
+                { x: 90, y: 422, col: '#ffffff', h: 7, curv: 1 },
+                { x: 20, y: 428, col: '#fef08a', h: 8, curv: -1 },
+              ].map((fl, i) => {
+                const flDelay = Number(((fl.x + 300) * 0.003).toFixed(2));
+                return (
                   <g key={`spf-${i}`} transform={`translate(${fl.x}, ${fl.y})`}>
-                    <circle cx="0" cy="0" r="1.8" fill={fl.col} />
-                    {fl.col === '#ffffff' && <circle cx="0" cy="0" r="0.7" fill="#facc15" />}
+                    <g
+                      className="animate-wind-flower"
+                      style={{
+                        animationDelay: `${flDelay}s`,
+                        transformOrigin: '0px 0px',
+                      }}
+                    >
+                      <path
+                        d={`M0,0 Q${fl.curv},${-fl.h * 0.5} 0,${-fl.h}`}
+                        stroke="#486d26"
+                        strokeWidth="0.8"
+                        strokeLinecap="round"
+                        fill="none"
+                      />
+                      <g transform={`translate(0, ${-fl.h})`}>
+                        <circle cx="0" cy="0" r="1.9" fill={fl.col} />
+                        {fl.col === '#ffffff' && <circle cx="0" cy="0" r="0.7" fill="#facc15" />}
+                        {fl.col === '#fef08a' && <circle cx="0" cy="0" r="0.65" fill="#ca8a04" />}
+                      </g>
+                    </g>
                   </g>
-                ))}
-              </g>
-
-              {/* ======================================================== */}
-              {/* EAST SPUR: PATHWAY TO TECH TERRACE & CAPSULE POD HAVEN   */}
-              {/* (大木屋门前向东自然攀上右侧山丘台地与胶囊睡眠舱栈道)      */}
-              {/* ======================================================== */}
-              <path
-                d="M560,496 C625,486 695,460 740,425 C765,405 775,385 782,368"
-                fill="none"
-                stroke="url(#countryRoadGrad)"
-                strokeWidth="14"
-                strokeLinecap="round"
-              />
-              <path
-                d="M560,496 C625,486 695,460 740,425 C765,405 775,385 782,368"
-                fill="none"
-                stroke="#73624e"
-                strokeWidth="1.2"
-                strokeDasharray="6 14"
-              />
-
-              {/* East Spur Embedded Stepping Stones */}
-              {[
-                { x: 590, y: 490 },
-                { x: 630, y: 478 },
-                { x: 672, y: 462 },
-                { x: 712, y: 442 },
-                { x: 748, y: 418 },
-                { x: 772, y: 390 },
-                { x: 782, y: 368 },
-              ].map((est, i) => (
-                <g key={`est-${i}`}>
-                  <ellipse cx={est.x} cy={est.y + 0.6} rx="6.5" ry="3.2" fill="#544537" opacity="0.4" />
-                  <ellipse cx={est.x} cy={est.y} rx="6.5" ry="3.2" fill="#b09f89" stroke="#877561" strokeWidth="0.5" />
-                </g>
-              ))}
-
-              {/* ======================================================== */}
-              {/* SOUTH SPUR: ORGANIC PATHWAY GENTLY CURVING INTO MEADOW   */}
-              {/* (向南轻柔弯延的草丘散步小道，连接草坡休憩长椅)           */}
-              {/* ======================================================== */}
-              <path
-                d="M535,505 C515,530 460,545 390,548 C320,550 260,538 230,520"
-                fill="none"
-                stroke="url(#countryRoadGrad)"
-                strokeWidth="12"
-                strokeLinecap="round"
-              />
-              <path
-                d="M535,505 C515,530 460,545 390,548 C320,550 260,538 230,520"
-                fill="none"
-                stroke="#73624e"
-                strokeWidth="1.0"
-                strokeDasharray="5 12"
-              />
-
-              {/* South-East Fork to Rest Bench */}
-              <path
-                d="M480,536 C520,540 560,532 590,520"
-                fill="none"
-                stroke="url(#countryRoadGrad)"
-                strokeWidth="10"
-                strokeLinecap="round"
-              />
-
-              {/* North-East Lane connecting to Upper Wheat Terrace & Farm Tractor */}
-              <path
-                d="M585,465 C620,410 655,340 685,280"
-                fill="none"
-                stroke="url(#countryRoadGrad)"
-                strokeWidth="11"
-                strokeLinecap="round"
-              />
-              <path
-                d="M585,465 C620,410 655,340 685,280"
-                fill="none"
-                stroke="#73624e"
-                strokeWidth="1.0"
-                strokeDasharray="5 10"
-              />
+                );
+              })}
             </g>
 
             {/* 6. COTTAGE VEGETABLE & PUMPKIN GARDEN (西翼阳光缓坡南瓜菜圃与香草地) */}
@@ -1747,28 +1278,44 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 <circle key={`wlog-${i}`} cx={lg.x} cy={lg.y} r={lg.r} fill="#d8cbba" stroke="#382618" strokeWidth="0.6" />
               ))}
 
-              {/* Flowering Lavender Clump */}
+              {/* Flowering Lavender Clump (迎风轻曳薰衣草) */}
               <g transform="translate(24, 14)">
-                <path d="M-2,5 Q-4,-4 -6,-10 M0,5 Q0,-5 0,-12 M2,5 Q4,-4 5,-9" stroke="#385434" strokeWidth="1.2" fill="none" />
-                <circle cx="-6" cy="-10" r="1.6" fill="#a855f7" />
-                <circle cx="0" cy="-12" r="1.8" fill="#9333ea" />
-                <circle cx="5" cy="-9" r="1.5" fill="#c084fc" />
+                <g className="animate-wind-flower" style={{ animationDelay: '0.6s', transformOrigin: '0px 0px' }}>
+                  <path d="M-2,5 Q-4,-4 -6,-10 M0,5 Q0,-5 0,-12 M2,5 Q4,-4 5,-9" stroke="#385434" strokeWidth="1.2" fill="none" />
+                  <circle cx="-6" cy="-10" r="1.6" fill="#a855f7" />
+                  <circle cx="0" cy="-12" r="1.8" fill="#9333ea" />
+                  <circle cx="5" cy="-9" r="1.5" fill="#c084fc" />
+                </g>
               </g>
             </g>
 
-            {/* Delicate Homestead Garden Flora (野甘菊与三叶草，自然点缀主屋四周的开阔庭院草地) */}
-            <g id="homestead-garden-flora" opacity="0.75">
+            {/* Delicate Homestead Garden Flora (野甘菊与三叶草，自然点缀主屋四周的开阔庭院草地 · 连动微风律动) */}
+            <g id="homestead-garden-flora" opacity="0.85">
               {[
                 { x: -160, y: 350 }, { x: -80, y: 360 }, { x: 80, y: 370 },
                 { x: -40, y: 440 }, { x: 140, y: 460 }, { x: -180, y: 480 },
                 { x: -90, y: 520 }, { x: 160, y: 510 }, { x: 320, y: 480 },
                 { x: 440, y: 460 }, { x: 620, y: 420 }, { x: 740, y: 430 },
-              ].map((fl, i) => (
-                <g key={`hfl-${i}`} transform={`translate(${fl.x}, ${fl.y})`}>
-                  <circle cx="0" cy="0" r="1.6" fill="#ffffff" />
-                  <circle cx="0" cy="0" r="0.6" fill="#fef08a" />
-                </g>
-              ))}
+              ].map((fl, i) => {
+                const hflDelay = Number(((fl.x + 200) * 0.003 + (fl.y - 350) * 0.001).toFixed(2));
+                return (
+                  <g key={`hfl-${i}`} transform={`translate(${fl.x}, ${fl.y})`}>
+                    <g
+                      className="animate-wind-flower"
+                      style={{
+                        animationDelay: `${hflDelay}s`,
+                        transformOrigin: '0px 0px',
+                      }}
+                    >
+                      <path d="M0,0 Q0.5,-3 0,-6" stroke="#486d26" strokeWidth="0.75" fill="none" />
+                      <g transform="translate(0, -6)">
+                        <circle cx="0" cy="0" r="1.7" fill="#ffffff" />
+                        <circle cx="0" cy="0" r="0.65" fill="#fef08a" />
+                      </g>
+                    </g>
+                  </g>
+                );
+              })}
             </g>
           </g>
 
@@ -1939,42 +1486,88 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 />
               )}
 
-              {/* 1. MOUNTAIN SUMMIT CLIFF CRAG / ROCKY PROMONTORY (山巅悬崖基座) */}
-              <g id="summit-cliff-crag">
-                {/* Stratified Craggy Rock Faces raising the station high into the air */}
-                <polygon points="-65,22 0,4 66,22 4,50 -65,22" fill="#363f38" stroke="#242c26" strokeWidth="1.5" />
-                {/* Left Shadow Facet */}
-                <polygon points="-65,22 4,50 4,62 -65,34" fill="#252c26" />
-                {/* Center / Right Lit Rock Facet */}
-                <polygon points="4,50 66,22 66,34 4,62" fill="#2f3731" />
-                {/* Stratification & Geological Crevice Lines */}
-                <path d="M-40,28 L-10,42 L35,28" stroke="#1d231e" strokeWidth="1.8" fill="none" />
-                <path d="M-20,38 L15,48 L50,34" stroke="#1d231e" strokeWidth="1.6" fill="none" />
-                {/* Alpine Lichen & Grass Tuffs on Cliff Ledges */}
-                <ellipse cx="-45" cy="24" rx="8" ry="3.5" fill="#4d6953" />
-                <ellipse cx="38" cy="26" rx="10" ry="4" fill="#4d6953" />
-                <ellipse cx="2" cy="46" rx="7" ry="3" fill="#3f5744" />
+              {/* ========================================================================= */}
+              {/* A. ENGINEERED STRUCTURAL STAGING PYLONS & GANTRY LEGS (人工钢构桁架基座)   */}
+              {/* ========================================================================= */}
+              <g id="staging-deck-structural-pylons">
+                {/* Concrete / Ashlar Stone Anchorage Pier Footings (4个稳固的混凝土锚固基座) */}
+                <rect x="-66" y="44" width="16" height="12" rx="2" fill="#505a52" stroke="#2d352f" strokeWidth="1" />
+                <polygon points="-66,44 -50,44 -46,38 -62,38" fill="#6a776c" />
+                <rect x="50" y="44" width="16" height="12" rx="2" fill="#465048" stroke="#2d352f" strokeWidth="1" />
+                <polygon points="50,44 66,44 62,38 46,38" fill="#5a665c" />
+                <rect x="-24" y="48" width="14" height="10" rx="2" fill="#4a544c" stroke="#28302a" strokeWidth="1" />
+                <rect x="10" y="48" width="14" height="10" rx="2" fill="#404a42" stroke="#28302a" strokeWidth="1" />
+
+                {/* Heavy Structural Steel Columns (高强度工字钢立柱) */}
+                <line x1="-58" y1="44" x2="-58" y2="24" stroke="#222b24" strokeWidth="5" strokeLinecap="round" />
+                <line x1="-58" y1="44" x2="-58" y2="24" stroke="#48594d" strokeWidth="2.5" strokeLinecap="round" />
+
+                <line x1="58" y1="44" x2="58" y2="24" stroke="#222b24" strokeWidth="5" strokeLinecap="round" />
+                <line x1="58" y1="44" x2="58" y2="24" stroke="#48594d" strokeWidth="2.5" strokeLinecap="round" />
+
+                <line x1="-17" y1="48" x2="-17" y2="25" stroke="#1f2721" strokeWidth="4.5" strokeLinecap="round" />
+                <line x1="17" y1="48" x2="17" y2="25" stroke="#1f2721" strokeWidth="4.5" strokeLinecap="round" />
+
+                {/* Diagonal Steel Lattice Cross Bracing (桁架交叉斜撑与节点螺栓) */}
+                <line x1="-58" y1="40" x2="-17" y2="26" stroke="#334036" strokeWidth="2.2" />
+                <line x1="-17" y1="44" x2="-58" y2="26" stroke="#334036" strokeWidth="2.2" />
+                <line x1="58" y1="40" x2="17" y2="26" stroke="#334036" strokeWidth="2.2" />
+                <line x1="17" y1="44" x2="58" y2="26" stroke="#334036" strokeWidth="2.2" />
+                <line x1="-17" y1="44" x2="17" y2="26" stroke="#334036" strokeWidth="2.2" />
+                <line x1="17" y1="44" x2="-17" y2="26" stroke="#334036" strokeWidth="2.2" />
+
+                {/* Access Ladder on the Left (金属检修爬梯) */}
+                <line x1="-66" y1="48" x2="-66" y2="22" stroke="#3d4c41" strokeWidth="1.8" />
+                <line x1="-61" y1="48" x2="-61" y2="22" stroke="#3d4c41" strokeWidth="1.8" />
+                {[26, 31, 36, 41, 46].map((ly) => (
+                  <line key={`ld-${ly}`} x1="-66" y1={ly} x2="-61" y2={ly} stroke="#738c7a" strokeWidth="1.2" />
+                ))}
               </g>
 
-              {/* 2. Natural Mountain Stone Terrace Platform */}
-              <g id="observatory-terrace-deck">
-                <polygon points="-62,22 0,6 64,22 0,38" fill="#525d54" stroke="#333b35" strokeWidth="1.4" />
-                {/* Stone Flagstones Surface */}
-                <polygon points="-58,21 0,8 60,21 0,35" fill="#717e73" />
-                <line x1="-36" y1="16" x2="-8" y2="29" stroke="#48524a" strokeWidth="1.2" opacity="0.65" />
-                <line x1="8" y1="12" x2="38" y2="25" stroke="#48524a" strokeWidth="1.2" opacity="0.65" />
-                <line x1="-15" y1="11" x2="16" y2="24" stroke="#48524a" strokeWidth="1" opacity="0.5" />
+              {/* ========================================================================= */}
+              {/* B. CANTILEVERED OBSERVATION PLATFORM DECK (悬挑人工观测平台台面)           */}
+              {/* ========================================================================= */}
+              <g id="cantilevered-observation-deck">
+                {/* Deck Plinth Edge (深色防滑钢构收边大梁) */}
+                <polygon points="-75,20 0,6 75,20 0,34" fill="#2d3730" stroke="#1a221c" strokeWidth="1.2" />
+                <polygon points="-75,20 0,34 0,40 -75,26" fill="#1e2621" />
+                <polygon points="0,34 75,20 75,26 0,40" fill="#252f28" />
 
-                {/* Heavy Wrought Iron Perimeter Safety Railing with Brass Stanchions */}
-                <g id="observatory-railing" opacity="0.9">
-                  <line x1="-58" y1="18" x2="58" y2="18" stroke="#252c27" strokeWidth="2.2" />
-                  <line x1="-58" y1="13" x2="58" y2="13" stroke="#252c27" strokeWidth="1.4" />
-                  {[-54, -36, -18, 0, 18, 36, 54].map((rx) => (
-                    <g key={rx}>
-                      <line x1={rx} y1="21" x2={rx} y2="10" stroke="#252c27" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx={rx} cy="10" r="1.3" fill="#d4af37" />
-                    </g>
-                  ))}
+                {/* Yellow & Black Industrial Warning Strip on Platform Edge (安全警示斜纹) */}
+                <polygon points="-73,21 0,34 0,36 -73,23" fill="#eab308" opacity="0.8" />
+                <polygon points="0,34 73,21 73,23 0,36" fill="#ca8a04" opacity="0.8" />
+
+                {/* Platform Floor Surface (平整宽敞的网纹防滑钢板台面) */}
+                <polygon points="-72,19 0,7 72,19 0,31" fill="#4d5a50" />
+                <polygon points="-70,18.5 0,7.5 70,18.5 0,29.5" fill="#5a685e" />
+
+                {/* Isometric Floor Panel Seams (等轴测分块缝隙) */}
+                <line x1="-36" y1="13" x2="-10" y2="24" stroke="#38443b" strokeWidth="1.2" opacity="0.6" />
+                <line x1="10" y1="24" x2="36" y2="13" stroke="#38443b" strokeWidth="1.2" opacity="0.6" />
+                <line x1="0" y1="8" x2="0" y2="30" stroke="#38443b" strokeWidth="1.2" opacity="0.5" />
+
+                {/* Heavy Safety Handrail with Corner Caution Lanterns (工业防护栏杆与角位航标灯) */}
+                <g id="deck-perimeter-handrail">
+                  <line x1="-70" y1="14" x2="0" y2="2" stroke="#252f28" strokeWidth="2.2" />
+                  <line x1="0" y1="2" x2="70" y2="14" stroke="#252f28" strokeWidth="2.2" />
+                  <line x1="-70" y1="9" x2="0" y2="-3" stroke="#36433a" strokeWidth="1.6" />
+                  <line x1="0" y1="-3" x2="70" y2="9" stroke="#36433a" strokeWidth="1.6" />
+
+                  {/* Handrail Vertical Stanchions (立柱) */}
+                  {[-68, -48, -28, -8, 8, 28, 48, 68].map((sx) => {
+                    const syTop = sx < 0 ? 14 + (sx / 68) * 12 - 7 : 2 + (sx / 70) * 12 - 5;
+                    const syBase = sx < 0 ? 19 + (sx / 68) * 12 : 7 + (sx / 70) * 12 + 5;
+                    return (
+                      <g key={`st-${sx}`}>
+                        <line x1={sx} y1={syBase} x2={sx} y2={syTop} stroke="#252f28" strokeWidth="2.0" strokeLinecap="round" />
+                        <circle cx={sx} cy={syTop} r="1.3" fill="#ca8a04" />
+                      </g>
+                    );
+                  })}
+
+                  {/* Green & Red Perimeter Navigation Marker LEDs (平台角位安全指示信号灯) */}
+                  <circle cx="-70" cy="8" r="2.2" fill="#22c55e" className="animate-pulse" />
+                  <circle cx="70" cy="8" r="2.2" fill="#ef4444" className="animate-pulse" />
                 </g>
               </g>
 
@@ -2237,92 +1830,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
           {/* ======================================================== */}
           {/* 2. THE COTTAGE HAVEN (NOW SITUATED ACROSS THE ROAD)       */}
-          {/*    Surrounded by lawn, stone path, garden & trees        */}
+          {/*    Surrounded by lawn, stone path & garden               */}
           {/* ======================================================== */}
           <g id="living-cottage-haven" transform="translate(540, 210)">
-            {/* Rear Cottage Woodland Copse (打破机械对称排布，重构为高低起伏、左密右疏的自然英伦山野林冠) */}
-            <g id="cottage-rear-foliage" opacity="0.96">
-              {/* Left Rear: Stately English Oak & Silver Birch Copse (左后方·丰茂苍劲的百年古橡树与银白桦群落) */}
-              <g transform="translate(-215, -45)">
-                {/* Ground Root Shadow & Mossy Earth */}
-                <ellipse cx="0" cy="88" rx="36" ry="9" fill="#142113" opacity="0.5" />
-                <path d="M-12,85 Q-20,89 -28,90 M6,85 Q16,88 24,90" stroke="#2b1d11" strokeWidth="2.4" strokeLinecap="round" />
-
-                {/* Stately Gnarly Oak Trunk */}
-                <path d="M-9,25 Q-4,58 -10,88 L10,88 Q6,58 7,25 Z" fill="#3b2718" stroke="#22150c" strokeWidth="0.9" />
-                <line x1="-2" y1="30" x2="-3" y2="84" stroke="#523922" strokeWidth="1.4" opacity="0.75" />
-
-                {/* Sprawling, Layered Deciduous Foliage Clouds (吉卜力/万物生灵式饱满云团叶冠，告别僵硬三角雪糕筒) */}
-                {/* Deep Shaded Under-canopy */}
-                <ellipse cx="-18" cy="28" rx="32" ry="22" fill="#1d3420" />
-                <ellipse cx="16" cy="30" rx="30" ry="20" fill="#1d3420" />
-                {/* Mid-tone Canopy Mass */}
-                <ellipse cx="-20" cy="10" rx="35" ry="24" fill="#28482d" />
-                <ellipse cx="18" cy="12" rx="33" ry="22" fill="#2d5233" />
-                <ellipse cx="0" cy="-6" rx="38" ry="26" fill="#335c39" />
-                {/* Sunlit Leaf Crest Highlights */}
-                <ellipse cx="-12" cy="-14" rx="28" ry="18" fill="#427349" />
-                <ellipse cx="15" cy="-8" rx="25" ry="16" fill="#4a8052" />
-                <ellipse cx="2" cy="-24" rx="22" ry="15" fill="#589662" />
-                <circle cx="-5" cy="-28" r="8" fill="#6ba875" opacity="0.85" />
-
-                {/* Slender Companion Silver Birch beside Oak (纤巧高雅的银白桦，黑白相间树干) */}
-                <g transform="translate(42, 6)">
-                  <path d="M-2,20 Q0,50 -2,80 L2,80 Q3,50 1,20 Z" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="0.6" />
-                  <line x1="-2" y1="35" x2="1" y2="35" stroke="#1e293b" strokeWidth="0.8" />
-                  <line x1="-1" y1="52" x2="2" y2="52" stroke="#1e293b" strokeWidth="0.8" />
-                  <line x1="-2" y1="68" x2="1" y2="68" stroke="#1e293b" strokeWidth="0.8" />
-                  {/* Birch Fluttering Golden-Green Leaves */}
-                  <ellipse cx="0" cy="14" rx="16" ry="11" fill="#4d7c38" opacity="0.9" />
-                  <ellipse cx="4" cy="2" rx="14" ry="9" fill="#659e49" opacity="0.9" />
-                  <ellipse cx="-2" cy="-8" rx="11" ry="7" fill="#84be5e" opacity="0.95" />
-                </g>
-              </g>
-
-              {/* Center Rear Distant Mountain Horizon (中央屋脊正后方·舒缓低矮山脊，彻底解放烟囱与棉花糖慢烟，透气空灵) */}
-              <g id="distant-ridge-treeline" opacity="0.75">
-                <path
-                  d="M-280,-42 Q-200,-52 -120,-46 Q-40,-50 0,-44 Q40,-50 120,-46 Q200,-52 280,-42 L280,-20 L-280,-20 Z"
-                  fill="#1b2a1e"
-                />
-                <path
-                  d="M-260,-44 Q-190,-54 -110,-48 Q-30,-52 0,-46 Q30,-52 110,-48 Q190,-54 260,-44"
-                  fill="none"
-                  stroke="#2d4432"
-                  strokeWidth="1.5"
-                />
-              </g>
-
-              {/* Right Rear: Mountain Scotch Pine & Rowan Grove (右后方·依傍东侧山峦的高低错落欧洲赤松与花楸) */}
-              <g transform="translate(235, -45)">
-                <ellipse cx="0" cy="88" rx="28" ry="7" fill="#142113" opacity="0.5" />
-                <path d="M-6,84 Q-14,88 -20,89 M5,84 Q12,87 18,89" stroke="#2b1d11" strokeWidth="2.2" strokeLinecap="round" />
-
-                {/* Characterful Weathered Amber-Red Pine Trunk */}
-                <path d="M-5,16 Q-1,52 -6,88 L7,88 Q5,52 6,16 Z" fill="#4a2e1d" stroke="#2a180d" strokeWidth="0.8" />
-                <line x1="1" y1="20" x2="1" y2="84" stroke="#6e452b" strokeWidth="1.2" opacity="0.75" />
-
-                {/* Natural Asymmetrical Horizontal Pine Needle Clouds (横向舒展的赤松冠层) */}
-                <ellipse cx="-16" cy="38" rx="24" ry="9" fill="#192d1e" />
-                <ellipse cx="14" cy="32" rx="26" ry="10" fill="#1e3624" />
-                <ellipse cx="-10" cy="18" rx="22" ry="8.5" fill="#25422c" />
-                <ellipse cx="12" cy="12" rx="20" ry="8" fill="#2d4e35" />
-                <ellipse cx="0" cy="-4" rx="18" ry="7.5" fill="#386142" />
-                <ellipse cx="2" cy="-18" rx="13" ry="6" fill="#487853" />
-                {/* Sunlit Pine Needles Rim */}
-                <path d="M-26,36 Q-10,30 6,34" fill="none" stroke="#366240" strokeWidth="1.8" strokeLinecap="round" />
-                <path d="M-18,16 Q0,10 16,14" fill="none" stroke="#487a52" strokeWidth="1.8" strokeLinecap="round" />
-                <path d="M-10,-4 Q2,-10 14,-6" fill="none" stroke="#5fa06d" strokeWidth="1.6" strokeLinecap="round" />
-              </g>
-            </g>
-
-            {/* 🌟 02 TERRAIN: House Terrace (约克郡风貌干砌石护坡主屋台地与石阶) */}
-            <HouseTerrace
-              theme={theme}
-              onTriggerToast={onTriggerToast}
-              setHoveredObject={setHoveredObject}
-            />
-
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation />
 
@@ -3720,18 +3230,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                   )}
                 </g>
               </g>
-            </g>
-
-            {/* Stepping Stones Path leading naturally from house porch step through terrace courtyard to stone gate */}
-            <g id="stepping-stones" opacity="0.88">
-              <ellipse cx="6" cy="254" rx="15" ry="8" fill="#7a7065" stroke="#5c544b" strokeWidth="0.8" />
-              <ellipse cx="14" cy="272" rx="16" ry="8.5" fill="#6e655c" stroke="#524a42" strokeWidth="0.8" />
-              <ellipse cx="0" cy="294" rx="17" ry="9" fill="#7a7065" stroke="#5c544b" strokeWidth="0.8" />
-              <ellipse cx="-8" cy="324" rx="16" ry="8" fill="#6c6356" stroke="#50483c" strokeWidth="0.8" />
-              <ellipse cx="10" cy="358" rx="18" ry="9" fill="#786d5e" stroke="#564c40" strokeWidth="0.8" />
-              <ellipse cx="-4" cy="395" rx="17" ry="8.5" fill="#6a6154" stroke="#4e463a" strokeWidth="0.8" />
-              <ellipse cx="6" cy="430" rx="19" ry="9.5" fill="#7a6f60" stroke="#584e42" strokeWidth="0.8" />
-              <ellipse cx="0" cy="462" rx="22" ry="10" fill="#887c6c" stroke="#605445" strokeWidth="0.8" />
             </g>
           </g>
 

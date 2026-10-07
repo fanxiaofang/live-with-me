@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1200 0 2400 900" width="100%" height="100%">
+  <defs>
+    <!-- ================================================================= -->
+    <!-- 🎨 1. GRADIENTS & PATTERNS (材质、渐变与纹理定义)                  -->
+    <!-- ================================================================= -->
+    
+    <!-- 天空背景渐变 (Atmospheric Sky Gradient) -->
+    <linearGradient id="hillSkyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#4a7896" />
+      <stop offset="50%" stopColor="#96bac5" />
+      <stop offset="85%" stopColor="#dbe8e0" />
+      <stop offset="100%" stopColor="#faedd6" />
+    </linearGradient>
+
+    <!-- 远山低多边形受光面渐变 (Distant Mountain Sunlit Facet) -->
+    <linearGradient id="lowPolyMountainLitGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stopColor="#859c78" />
+      <stop offset="100%" stopColor="#73896b" />
+    </linearGradient>
+
+    <!-- 远山低多边形阴影背光面渐变 (Distant Mountain Shadow Facet) -->
+    <linearGradient id="lowPolyMountainShadeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#485c3f" />
+      <stop offset="100%" stopColor="#36472e" />
+    </linearGradient>
+
+    <!-- 阶梯麦田受光与背光渐变 (Stepped Wheat Facets) -->
+    <linearGradient id="lowPolyWheatLitGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stopColor="#e5c56d" />
+      <stop offset="100%" stopColor="#dab757" />
+    </linearGradient>
+    <linearGradient id="lowPolyWheatShadeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#ba933c" />
+      <stop offset="100%" stopColor="#9e7b2e" />
+    </linearGradient>
+
+    <!-- 麦浪细腻纹理 (Wheat Texture Pattern) -->
+    <pattern id="wheatPattern" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
+      <line x1="0" y1="0" x2="0" y2="16" stroke="#fef08a" strokeWidth="1.2" opacity="0.65" />
+      <line x1="8" y1="0" x2="8" y2="16" stroke="#ca8a04" strokeWidth="0.8" opacity="0.4" />
+    </pattern>
+
+    <!-- 全景统一轴测大地草坪渐变 (Master Ground Pasture Gradient) -->
+    <linearGradient id="isoGroundPastureGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#849f42" />
+      <stop offset="25%" stopColor="#8ea344" />
+      <stop offset="65%" stopColor="#5e7b2d" />
+      <stop offset="100%" stopColor="#485f2a" />
+    </linearGradient>
+
+    <!-- 低多边形向阳草坡分面 (Low-Poly Sunlit Planar Facet) -->
+    <linearGradient id="lowPolySunlitFacetGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stopColor="#9ec052" />
+      <stop offset="60%" stopColor="#8eb045" />
+      <stop offset="100%" stopColor="#7fa03a" />
+    </linearGradient>
+
+    <!-- 低多边形平整中间台地渐变 (Low-Poly Flat Mid-Plane Facet) -->
+    <linearGradient id="lowPolyMidFacetGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#8ba943" />
+      <stop offset="45%" stopColor="#8ea344" />
+      <stop offset="85%" stopColor="#67832f" />
+      <stop offset="100%" stopColor="#557025" />
+    </linearGradient>
+
+    <!-- 低多边形背光阴影硬切面 (Low-Poly Faceted Shadow / Slope Drop) -->
+    <linearGradient id="lowPolyShadowFacetGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#4c6623" />
+      <stop offset="50%" stopColor="#3d531b" />
+      <stop offset="100%" stopColor="#2e4014" />
+    </linearGradient>
+  </defs>
+
+  <!-- ================================================================= -->
+  <!-- 🌅 LAYER 0: SKY BACKDROP (天空背景底色)                            -->
+  <!-- ================================================================= -->
+  <g id="layer-0-sky">
+    <rect x="-2000" y="0" width="4000" height="900" fill="url(#hillSkyGrad)" />
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- 🏔️ LAYER 1: DISTANT LOW-POLY MOUNTAINS (远景折纸低多边形山峰)      -->
+  <!-- ================================================================= -->
+  <g id="layer-1-distant-mountains">
+    <!-- 远山全幅贯穿低多边形折线天际线基底 (Base Horizon Silhouette) -->
+    <polygon
+      points="-3200,500 -3200,160 -2400,130 -1800,170 -1200,140 -700,175 -250,150 180,135 450,172 680,122 920,165 1180,128 1450,165 1850,135 2400,170 3200,130 4200,160 4200,500"
+      fill="#73896b"
+    />
+
+    <!-- Peak 1: 西侧远山 (x: -1200 to -600) -->
+    <polygon id="mountain-peak-west-lit" points="-1200,140 -850,115 -700,175 -980,185" fill="url(#lowPolyMountainLitGrad)" opacity="0.9" />
+    <polygon id="mountain-peak-west-shade" points="-850,115 -600,160 -700,175" fill="url(#lowPolyMountainShadeGrad)" opacity="0.85" />
+
+    <!-- Peak 2: 谷地左翼山丘 (x: -700 to 0) -->
+    <polygon id="mountain-peak-valley-left-lit" points="-700,175 -420,135 -250,150 -520,195" fill="url(#lowPolyMountainLitGrad)" opacity="0.88" />
+    <polygon id="mountain-peak-valley-left-shade" points="-420,135 -150,175 -250,150" fill="url(#lowPolyMountainShadeGrad)" opacity="0.9" />
+
+    <!-- Peak 3: 穿山隧道依托的东侧主山体 (x: 52 to 420) -->
+    <polygon id="mountain-peak-tunnel-lit" points="52,182.5 52,160 76,147 200,118 260,185" fill="url(#lowPolyMountainLitGrad)" />
+    <polygon id="mountain-peak-tunnel-shade" points="200,118 360,145 420,165 260,185" fill="url(#lowPolyMountainShadeGrad)" />
+    <polygon id="mountain-peak-tunnel-base" points="76,147 86,150 86,182.5 260,185 200,118" fill="#4a5f3f" opacity="0.45" />
+
+    <!-- Peak 4: 中央向阳主峰 (x: 420 to 920) -->
+    <polygon id="mountain-peak-center-lit" points="420,165 680,122 790,155 580,190" fill="url(#lowPolyMountainLitGrad)" />
+    <polygon id="mountain-peak-center-shade" points="680,122 880,145 920,165 790,155" fill="url(#lowPolyMountainShadeGrad)" />
+
+    <!-- Peak 5: 观星台后方东翼山脊 (x: 920 to 1450) -->
+    <polygon id="mountain-peak-east-lit" points="920,165 1180,128 1310,155 1060,190" fill="url(#lowPolyMountainLitGrad)" />
+    <polygon id="mountain-peak-east-shade" points="1180,128 1450,165 1310,155" fill="url(#lowPolyMountainShadeGrad)" />
+
+    <!-- 远山棱角山脊微光线 (Crisp Ridge Lines) -->
+    <line x1="-850" y1="115" x2="-700" y2="175" stroke="#a4be96" strokeWidth="1.2" opacity="0.75" />
+    <line x1="-420" y1="135" x2="-250" y2="150" stroke="#a4be96" strokeWidth="1.2" opacity="0.75" />
+    <line x1="76" y1="147" x2="200" y2="118" stroke="#a4be96" strokeWidth="1.4" opacity="0.85" />
+    <line x1="200" y1="118" x2="360" y2="145" stroke="#364930" strokeWidth="1.2" opacity="0.6" />
+    <line x1="680" y1="122" x2="790" y2="155" stroke="#364930" strokeWidth="1.2" opacity="0.6" />
+    <line x1="1180" y1="128" x2="1310" y2="155" stroke="#364930" strokeWidth="1.2" opacity="0.6" />
+
+    <!-- 远景空气透视低多边形薄雾层 (Atmospheric Planar Haze) -->
+    <polygon
+      points="-3200,215 -1800,185 -900,210 0,180 800,205 1600,185 2800,210 4200,195 4200,320 -3200,320"
+      fill="#faedd6"
+      opacity="0.30"
+    />
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- 🌲 LAYER 2: CREST PINES & DISTANT FARMSTEADS (山脊赤松与远方农舍)    -->
+  <!-- ================================================================= -->
+  <g id="layer-2-crest-elements">
+    <!-- 远方微型低多边形农舍 (Distant Low-Poly Farmsteads) -->
+    <g transform="translate(740, 158)">
+      <polygon points="0,10 16,10 16,18 0,18" fill="#f8fafc" />
+      <polygon points="-2,10 8,2 18,10" fill="#a84e34" />
+    </g>
+    <g transform="translate(1120, 142)">
+      <polygon points="0,8 14,8 14,15 0,15" fill="#f8fafc" />
+      <polygon points="-2,8 7,1 16,8" fill="#a84e34" />
+    </g>
+
+    <!-- 棱角分明的低多边形赤松剪影 (Low-Poly Prismatic Pines on Crests) -->
+    <g id="lowpoly-crest-pines" opacity="0.85">
+      <g transform="translate(800, 172) scale(0.9)"><polygon points="-1,6 1,6 1,12 -1,12" fill="#291e17" /><polygon points="0,-16 -6,6 0,6" fill="#325232" /><polygon points="0,-16 0,6 6,6" fill="#1e341e" /></g>
+      <g transform="translate(840, 165) scale(1.1)"><polygon points="-1,6 1,6 1,12 -1,12" fill="#291e17" /><polygon points="0,-16 -6,6 0,6" fill="#325232" /><polygon points="0,-16 0,6 6,6" fill="#1e341e" /></g>
+      <g transform="translate(960, 160) scale(1.0)"><polygon points="-1,6 1,6 1,12 -1,12" fill="#291e17" /><polygon points="0,-16 -6,6 0,6" fill="#325232" /><polygon points="0,-16 0,6 6,6" fill="#1e341e" /></g>
+      <g transform="translate(1010, 155) scale(0.8)"><polygon points="-1,6 1,6 1,12 -1,12" fill="#291e17" /><polygon points="0,-16 -6,6 0,6" fill="#325232" /><polygon points="0,-16 0,6 6,6" fill="#1e341e" /></g>
+      <g transform="translate(-350, 178) scale(0.85)"><polygon points="-1,6 1,6 1,12 -1,12" fill="#291e17" /><polygon points="0,-16 -6,6 0,6" fill="#325232" /><polygon points="0,-16 0,6 6,6" fill="#1e341e" /></g>
+      <g transform="translate(-180, 185) scale(0.95)"><polygon points="-1,6 1,6 1,12 -1,12" fill="#291e17" /><polygon points="0,-16 -6,6 0,6" fill="#325232" /><polygon points="0,-16 0,6 6,6" fill="#1e341e" /></g>
+    </g>
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- 🌳 LAYER 3: FOOTHILL WOODLAND TREELINES (山脚与褶皱深色小树林带)    -->
+  <!-- ================================================================= -->
+  <g id="layer-3-foothill-woodlands" opacity="0.94">
+    <!-- 西侧远山脚与褶皱带林冠群落 (West Foothills & Valley Folds: x: -950 ~ -280) -->
+    <g id="west-foothill-trees">
+      <polygon points="-980,192 -680,182 -420,198 -240,210 -240,218 -420,205 -680,190 -980,198" fill="#122014" opacity="0.45" />
+      
+      <g transform="translate(-940, 184) scale(0.85)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /><ellipse cx="2" cy="-2" rx="6" ry="5" fill="#15291a" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" /><ellipse cx="-1" cy="-7.5" rx="4.5" ry="3.2" fill="#396340" opacity="0.8" /></g>
+      <g transform="translate(-910, 180) scale(1.1)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /><polygon points="0,-15 0,4 5,4" fill="#152819" /><polygon points="0,-18 -4,-4 0,-4" fill="#2a4c30" /><polygon points="0,-18 0,-4 4,-4" fill="#1b3320" /><line x1="0" y1="-18" x2="-4" y2="-4" stroke="#46734e" strokeWidth="0.6" opacity="0.6" /></g>
+      <g transform="translate(-880, 182) scale(0.95)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /><ellipse cx="2" cy="-2" rx="6" ry="5" fill="#15291a" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" /><ellipse cx="-1" cy="-7.5" rx="4.5" ry="3.2" fill="#396340" opacity="0.8" /></g>
+      <g transform="translate(-850, 178) scale(1.2)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /><polygon points="0,-15 0,4 5,4" fill="#152819" /><polygon points="0,-18 -4,-4 0,-4" fill="#2a4c30" /><polygon points="0,-18 0,-4 4,-4" fill="#1b3320" /><line x1="0" y1="-18" x2="-4" y2="-4" stroke="#46734e" strokeWidth="0.6" opacity="0.6" /></g>
+      <g transform="translate(-820, 180) scale(0.9)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /><ellipse cx="2" cy="-2" rx="6" ry="5" fill="#15291a" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" /><ellipse cx="-1" cy="-7.5" rx="4.5" ry="3.2" fill="#396340" opacity="0.8" /></g>
+      <g transform="translate(-760, 185) scale(1.0)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /><polygon points="0,-15 0,4 5,4" fill="#152819" /><polygon points="0,-18 -4,-4 0,-4" fill="#2a4c30" /><polygon points="0,-18 0,-4 4,-4" fill="#1b3320" /></g>
+      <g transform="translate(-720, 182) scale(1.15)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /><ellipse cx="2" cy="-2" rx="6" ry="5" fill="#15291a" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" /></g>
+      <g transform="translate(-680, 179) scale(1.25)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /><polygon points="0,-15 0,4 5,4" fill="#152819" /><polygon points="0,-18 -4,-4 0,-4" fill="#2a4c30" /><polygon points="0,-18 0,-4 4,-4" fill="#1b3320" /></g>
+      <g transform="translate(-640, 184) scale(0.9)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" /></g>
+      <g transform="translate(-580, 188) scale(1.05)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /><polygon points="0,-15 0,4 5,4" fill="#152819" /></g>
+      <g transform="translate(-540, 192) scale(1.2)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" /></g>
+      <g transform="translate(-490, 190) scale(1.0)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /></g>
+      <g transform="translate(-440, 195) scale(1.15)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" /></g>
+      <g transform="translate(-390, 198) scale(0.95)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /></g>
+      <g transform="translate(-340, 202) scale(1.1)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" /></g>
+      <g transform="translate(-280, 206) scale(1.0)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#213d26" /></g>
+    </g>
+
+    <!-- 中部山麓林冠带 (Tunnel East Foothills: x: 180 ~ 580) -->
+    <g id="mid-foothill-trees">
+      <polygon points="170,195 380,210 580,198 580,206 380,218 170,202" fill="#122014" opacity="0.4" />
+      <g transform="translate(190, 192) scale(0.95)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-14 -5,4 0,4" fill="#233f28" /><polygon points="0,-14 0,4 5,4" fill="#172b1c" /><polygon points="0,-17 -4,-3 0,-3" fill="#2e5234" /><polygon points="0,-17 0,-3 4,-3" fill="#1d3623" /></g>
+      <g transform="translate(225, 194) scale(1.1)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1f3924" /><ellipse cx="2" cy="-2" rx="6" ry="5" fill="#162b1b" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#2c4d32" /></g>
+      <g transform="translate(260, 198) scale(1.25)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-14 -5,4 0,4" fill="#233f28" /><polygon points="0,-17 -4,-3 0,-3" fill="#2e5234" /></g>
+      <g transform="translate(295, 202) scale(1.0)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1f3924" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#2c4d32" /></g>
+      <g transform="translate(335, 204) scale(1.15)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-14 -5,4 0,4" fill="#233f28" /></g>
+      <g transform="translate(375, 206) scale(0.9)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1f3924" /></g>
+      <g transform="translate(420, 202) scale(1.2)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-14 -5,4 0,4" fill="#233f28" /></g>
+      <g transform="translate(465, 198) scale(1.05)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1f3924" /></g>
+      <g transform="translate(510, 195) scale(1.15)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-14 -5,4 0,4" fill="#233f28" /></g>
+      <g transform="translate(555, 192) scale(0.95)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1f3924" /></g>
+    </g>
+
+    <!-- 东侧山脚林冠带 (East Mountain Base: x: 620 ~ 1380) -->
+    <g id="east-foothill-trees">
+      <polygon points="610,192 880,178 1150,185 1380,180 1380,188 1150,193 880,186 610,199" fill="#122014" opacity="0.45" />
+      <g transform="translate(630, 190) scale(1.05)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" /><ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#28472d" /></g>
+      <g transform="translate(670, 186) scale(1.2)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /><polygon points="0,-18 -4,-4 0,-4" fill="#284a2e" /></g>
+      <g transform="translate(710, 182) scale(0.95)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" /></g>
+      <g transform="translate(755, 178) scale(1.15)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /></g>
+      <g transform="translate(805, 174) scale(1.3)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /></g>
+      <g transform="translate(855, 172) scale(1.0)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" /></g>
+      <g transform="translate(905, 170) scale(1.2)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /></g>
+      <g transform="translate(955, 173) scale(1.1)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" /></g>
+      <g transform="translate(1005, 176) scale(1.25)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /></g>
+      <g transform="translate(1060, 180) scale(0.9)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" /></g>
+      <g transform="translate(1120, 182) scale(1.15)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /></g>
+      <g transform="translate(1180, 184) scale(1.05)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" /></g>
+      <g transform="translate(1245, 182) scale(1.2)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /></g>
+      <g transform="translate(1310, 179) scale(0.95)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" /></g>
+      <g transform="translate(1360, 177) scale(1.1)"><polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" /><polygon points="0,-15 -5,4 0,4" fill="#203a24" /></g>
+    </g>
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- 🌾 LAYER 4: STEPPED WHEAT TERRACES (阶梯式平整麦田台面)           -->
+  <!-- ================================================================= -->
+  <g id="layer-4-wheat-terraces">
+    <polygon
+      id="wheat-terrace-base-plane"
+      points="-3200,225 -1600,210 -800,235 -200,205 380,225 960,200 1550,225 2400,210 4200,230 4200,350 2600,320 1600,310 900,290 100,305 -700,315 -1800,310 -3200,325"
+      fill="url(#lowPolyWheatLitGrad)"
+    />
+    <polygon
+      id="wheat-terrace-pattern-overlay"
+      points="-3200,225 -1600,210 -800,235 -200,205 380,225 960,200 1550,225 2400,210 4200,230 4200,350 2600,320 1600,310 900,290 100,305 -700,315 -1800,310 -3200,325"
+      fill="url(#wheatPattern)"
+      opacity="0.14"
+    />
+
+    <!-- 麦田背光斜切面 (Faceted Terrace Drop Shades) -->
+    <polygon id="wheat-shade-west" points="-800,235 100,305 380,225 -200,205" fill="url(#lowPolyWheatShadeGrad)" opacity="0.6" />
+    <polygon id="wheat-shade-east" points="960,200 900,290 1600,310 1550,225" fill="url(#lowPolyWheatShadeGrad)" opacity="0.6" />
+
+    <!-- 麦田棱角分界线 -->
+    <line x1="-1600" y1="210" x2="-800" y2="235" stroke="#f6e08c" strokeWidth="1.2" opacity="0.75" />
+    <line x1="-200" y1="205" x2="380" y2="225" stroke="#f6e08c" strokeWidth="1.2" opacity="0.75" />
+    <line x1="960" y1="200" x2="1550" y2="225" stroke="#f6e08c" strokeWidth="1.2" opacity="0.75" />
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- 🌿 LAYER 5: MIDDLE & FOREGROUND HILLSIDE TERRACES (中近景草地台面) -->
+  <!-- ================================================================= -->
+  <g id="layer-5-rolling-hills-and-terraces">
+    <!-- 1. 全景统一底层大地草坪 (Master Axonometric Ground Base Plane) -->
+    <polygon
+      id="hills-master-ground-plane"
+      points="-3200,320 4200,310 4200,1200 -3200,1200"
+      fill="url(#isoGroundPastureGrad)"
+    />
+
+    <!-- 2. 中景低多边形阶梯草坡向阳台面 (Midground Faceted Grass Terraces) -->
+    <!-- 西侧中景草甸分面 (West Pastoral Facet) -->
+    <polygon
+      id="pasture-facet-west-sunlit"
+      points="-1800,310 -700,315 100,305 -150,460 -1050,480 -2200,450"
+      fill="url(#lowPolySunlitFacetGrad)"
+      opacity="0.9"
+    />
+    <polygon
+      id="pasture-facet-west-shade"
+      points="-1050,480 -150,460 220,530 -620,560"
+      fill="url(#lowPolyShadowFacetGrad)"
+      opacity="0.45"
+    />
+
+    <!-- 东侧开阔草坡分面 (East Pastoral Facet) -->
+    <polygon
+      id="pasture-facet-east-sunlit"
+      points="100,305 900,290 1600,310 2600,320 2200,470 1250,450 350,470"
+      fill="url(#lowPolySunlitFacetGrad)"
+      opacity="0.9"
+    />
+    <polygon
+      id="pasture-facet-east-shade"
+      points="350,470 1250,450 1680,540 580,560"
+      fill="url(#lowPolyShadowFacetGrad)"
+      opacity="0.45"
+    />
+
+    <!-- 3. 前景低多边形缓坡台面 (Foreground Low-Poly Meadow Terraces) -->
+    <polygon
+      id="foreground-facet-mid-plane"
+      points="-2200,450 -620,560 580,560 2200,470 2400,750 -2400,750"
+      fill="url(#lowPolyMidFacetGrad)"
+    />
+
+    <!-- 4. 草坡微起伏柔和痕线 (Gentle Swale Creases) -->
+    <path d="M-450,520 Q-100,640 220,730" fill="none" stroke="#718f34" strokeWidth="1.2" opacity="0.35" />
+    <path d="M860,510 Q1200,630 1550,725" fill="none" stroke="#718f34" strokeWidth="1.2" opacity="0.35" />
+
+    <!-- 5. 纯净田园雏菊与野花点缀 (Meadow Chamomile Dots) -->
+    <g id="pasture-chamomile-flora" opacity="0.88">
+      <g transform="translate(-520, 560)"><path d="M0,0 Q-2,-5 -4,-8" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="-3" cy="-9" r="1.8" fill="#ffffff" /><circle cx="-3" cy="-9" r="0.65" fill="#eab308" /></g>
+      <g transform="translate(-340, 620)"><path d="M0,0 Q2,-5 4,-7" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="3" cy="-8" r="1.6" fill="#fef08a" /><circle cx="3" cy="-8" r="0.65" fill="#ca8a04" /></g>
+      <g transform="translate(-160, 580)"><path d="M0,0 Q-2,-5 -4,-8" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="-3" cy="-9" r="1.8" fill="#ffffff" /><circle cx="-3" cy="-9" r="0.65" fill="#eab308" /></g>
+      <g transform="translate(120, 660)"><path d="M0,0 Q2,-5 4,-7" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="3" cy="-8" r="1.6" fill="#fef08a" /><circle cx="3" cy="-8" r="0.65" fill="#ca8a04" /></g>
+      <g transform="translate(380, 590)"><path d="M0,0 Q-2,-5 -4,-8" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="-3" cy="-9" r="1.8" fill="#ffffff" /><circle cx="-3" cy="-9" r="0.65" fill="#eab308" /></g>
+      <g transform="translate(680, 620)"><path d="M0,0 Q2,-5 4,-7" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="3" cy="-8" r="1.6" fill="#fef08a" /><circle cx="3" cy="-8" r="0.65" fill="#ca8a04" /></g>
+      <g transform="translate(880, 580)"><path d="M0,0 Q-2,-5 -4,-8" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="-3" cy="-9" r="1.8" fill="#ffffff" /><circle cx="-3" cy="-9" r="0.65" fill="#eab308" /></g>
+      <g transform="translate(1120, 640)"><path d="M0,0 Q2,-5 4,-7" stroke="#5d7b28" strokeWidth="1.0" fill="none" /><circle cx="3" cy="-8" r="1.6" fill="#fef08a" /><circle cx="3" cy="-8" r="0.65" fill="#ca8a04" /></g>
+    </g>
+  </g>
+</svg>

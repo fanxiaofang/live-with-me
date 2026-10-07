@@ -82,23 +82,6 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           fill="none"
         />
 
-        {/* 自然草叶点缀散水边缘，彻底模糊硬矢量边缘 (Tufts blending sod into gravel) */}
-        <g opacity="0.85">
-          {[-260, -200, -140, -80, 80, 140, 200, 260].map((gx) => {
-            const gy = 145 + Math.abs(gx) * -0.31 + 91; // approximate edge line
-            return (
-              <path
-                key={`edge-t-${gx}`}
-                d={`M${gx},${gy} Q${gx - 3},${gy - 6} ${gx - 5},${gy - 10} M${gx + 2},${gy} Q${gx + 4},${gy - 5} ${gx + 6},${gy - 8}`}
-                stroke="#49863c"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                fill="none"
-              />
-            );
-          })}
-        </g>
-
         {/* 散落的自然小卵石与碎石纹理 (Scattered River Gravel Pebbles) */}
         {[
           { cx: -240, cy: 168, rx: 3, ry: 1.5 },
@@ -321,19 +304,6 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           />
         </g>
 
-        {/* --- 迎客第一块青石板 (Doorstep Welcome Slate Flagstone) --- */}
-        <g id="doorstep-welcome-flagstone">
-          {/* 石板深层泥土阴影 */}
-          <ellipse cx="0" cy="254" rx="26" ry="10" fill="#152114" opacity="0.45" />
-          {/* 青石板厚度下沿 */}
-          <ellipse cx="0" cy="253.5" rx="24" ry="9" fill="#524a41" />
-          {/* 青石板顶面 */}
-          <ellipse cx="0" cy="251" rx="23.5" ry="8.5" fill="#786e63" stroke="#5a5248" strokeWidth="0.8" />
-          {/* 青石板受光湿润质感与微光斑 */}
-          <ellipse cx="-4" cy="249.5" rx="13" ry="4.2" fill="#93897e" opacity="0.65" />
-          <ellipse cx="5" cy="252" rx="7" ry="2.2" fill="#655d53" opacity="0.5" />
-        </g>
-
         {/* --- 门廊夜照小铜灯 (Porch Warm Brass Lantern) --- */}
         <g id="porch-brass-lantern" transform="translate(42, 206)">
           <ellipse cx="0" cy="3" rx="5" ry="2.5" fill="#1e1812" opacity="0.3" />
@@ -371,22 +341,6 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           <circle cx="-3" cy="2" r="3.3" fill="#a78bfa" />
           <circle cx="6" cy="3" r="3.2" fill="#6366f1" />
         </g>
-
-        {/* 贴合基底散水边的微型小草丛 (Natural Tuft Sprinkles) */}
-        {[
-          { x: -210, y: 172 }, { x: -150, y: 192 }, { x: -90, y: 212 },
-          { x: 90, y: 212 }, { x: 150, y: 192 }, { x: 210, y: 172 },
-        ].map((gb, i) => (
-          <g key={`gb-${i}`} transform={`translate(${gb.x}, ${gb.y})`}>
-            <path
-              d="M-3,0 Q-4,-7 -7,-11 M0,0 Q0,-9 0,-13 M3,0 Q4,-7 7,-10"
-              stroke="#437f37"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              fill="none"
-            />
-          </g>
-        ))}
       </g>
     </g>
   );

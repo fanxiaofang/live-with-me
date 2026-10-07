@@ -49,14 +49,19 @@ export const YorkshireWorld: React.FC<YorkshireWorldProps> = ({
     <g id="yorkshire-world" className={className}>
       <YorkshireDefs theme={theme} />
 
-      {/* 00 BACKGROUND MATTE */}
-      <BackgroundYorkshireMatte theme={theme} />
+      {/* 00 BACKGROUND MATTE (连动远山向上平移) */}
+      <g id="background-matte-depth" transform="translate(0, -115)">
+        <BackgroundYorkshireMatte theme={theme} />
+      </g>
 
-      {/* 01 TERRAIN SILHOUETTE */}
-      <TerrainSilhouette theme={theme} />
+      {/* 01 & 05 DISTANT SCENERY & RAILWAY (远景地貌与高架桥铁路轴测纵深层) */}
+      <g id="distant-mountain-wheat-railway-depth" transform="translate(0, -115)">
+        {/* 01 TERRAIN SILHOUETTE */}
+        <TerrainSilhouette theme={theme} />
 
-      {/* 05 INFRASTRUCTURE (A: Viaduct Railway) */}
-      <RailwayLandscape theme={theme} />
+        {/* 05 INFRASTRUCTURE (A: Viaduct Railway) */}
+        <RailwayLandscape theme={theme} />
+      </g>
 
       {/* 02 TERRAIN MASS */}
       <TerrainMass theme={theme} />
