@@ -11,7 +11,7 @@ import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { TimeOfDay, Person, RoomId } from '../types';
 import { ROOMS } from '../data/initialData';
 import { CharacterHead } from './CharacterAvatar';
-import { resolvePresenceSlots, SceneSlotConfig } from '../utils/sceneViewMapping';
+import { PresenceAllocation, SceneSlotConfig } from '../utils/sceneViewMapping';
 import { Bookshelf, BookshelfPreset, BookItemConfig, TierConfig } from './bookshelf';
 import { CastIronWoodStove, StoveColorVariant } from './CastIronWoodStove';
 import { RecordCabinet, RetroTurntable } from './cabinet';
@@ -39,6 +39,7 @@ interface ThreeWorldProps {
   onDragGizmoCancel?: () => void;
   timeOfDay: TimeOfDay;
   people: Person[];
+  presenceAllocation: PresenceAllocation;
   activeRoom: RoomId | 'overview';
   unreadMailCount: number;
   onSelectPerson: (person: Person) => void;
@@ -204,6 +205,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   onDragGizmoCancel,
   timeOfDay,
   people,
+  presenceAllocation,
   activeRoom,
   unreadMailCount,
   onSelectPerson,
@@ -294,7 +296,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const handleResetOverview = () => { requestRoom('overview'); restoreFocus(); };
 
   // Dynamic Scene-based View Mapping for Character Presence
-  const { slots: presenceSlots } = resolvePresenceSlots(people);
+  const { slots: presenceSlots } = presenceAllocation;
 
   // Group characters for polaroid photos and room context
   const selfPerson = people.find((p) => p.id === 'self');

@@ -4,8 +4,11 @@ import { LIFE_STATES, ROOMS } from '../data/initialData';
 import { Sparkles, Edit3, Image as ImageIcon, Armchair, ChevronDown, ChevronUp, Users } from 'lucide-react';
 import { CharacterHead } from './CharacterAvatar';
 
+import { PresenceAllocation, isRoomFull, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
+
 interface PresencePanelProps {
   people: Person[];
+  allocation: PresenceAllocation;
   onSelectPerson: (person: Person) => void;
   onEditMyStatus: () => void;
   onOpenSvgExport?: () => void;
@@ -14,6 +17,7 @@ interface PresencePanelProps {
 
 export const PresencePanel: React.FC<PresencePanelProps> = ({
   people,
+  allocation,
   onSelectPerson,
   onEditMyStatus,
   onOpenSvgExport,
@@ -101,6 +105,7 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
                 更换状态与装扮
               </span>
             </div>
+            {isRoomFull(allocation, me.id) && <p role="status" className="mt-1 text-[10px] text-[#d6a77b]">{ROOM_FULL_MESSAGE}</p>}
           </div>
         )}
 
@@ -143,6 +148,7 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
                     </div>
                     <div className="text-[10px] text-[#7d7367] mt-0.5">
                       {room?.name.split('&')[0]} · {friend.sinceTime.split('已安静')[1] || friend.sinceTime}
+                      {isRoomFull(allocation, friend.id) && <p role="status" className="mt-1 text-[#d6a77b]">{ROOM_FULL_MESSAGE}</p>}
                     </div>
                   </div>
                 </div>

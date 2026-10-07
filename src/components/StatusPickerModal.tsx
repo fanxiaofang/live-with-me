@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { LifeStateId, RoomId } from '../types';
+import { LifeStateId, RoomId, Person } from '../types';
 import { LIFE_STATES, ROOMS } from '../data/initialData';
 import { X, Check, MapPin, Sparkles, User, Palette, Download } from 'lucide-react';
 import { CharacterAvatar, CharacterHead } from './CharacterAvatar';
 import { SvgExportModal } from './SvgExportModal';
 
+import { previewPresence, isRoomFull, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
+
 interface StatusPickerModalProps {
   isOpen: boolean;
+  people: Person[];
+  personId: string;
   onClose: () => void;
   currentState: LifeStateId;
   currentRoom: RoomId;
@@ -97,6 +101,8 @@ const SHIRT_PRESETS = [
 
 export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
   isOpen,
+  people,
+  personId,
   onClose,
   currentState,
   currentRoom,
@@ -121,6 +127,8 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
   const [previewFacing, setPreviewFacing] = useState<'SE' | 'SW' | 'NW' | 'NE'>('SE');
   const [showSvgExportModal, setShowSvgExportModal] = useState(false);
 
+  const preview = previewPresence(people, personId, selectedRoom, selectedState);
+  const predictedSlot = preview.personToSlot[personId];
   if (!isOpen) return null;
 
   const handleStateSelect = (stateId: LifeStateId) => {
@@ -259,6 +267,7 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                 </div>
               </div>
 
+              <p role="status" data-testid="presence-preview" className="text-xs text-[#b5aa9d]">{isRoomFull(preview, personId) ? ROOM_FULL_MESSAGE : predictedSlot ? `落座预览：${predictedSlot.badgeLabel}` : '前廊：保留室外状态'}</p>
               {/* Optional quiet state note */}
               <div>
                 <label className="block text-xs font-medium text-[#b5aa9d] mb-1.5">

@@ -4,7 +4,7 @@ import { useLayoutEditor } from './features/layout-editor/useLayoutEditor';
  * 低打扰陪伴空间 · Presence without conversation
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { TimeOfDay, Person, RoomId, MailLetter, LifeStateId, LivingMemory } from './types';
 import { INITIAL_PEOPLE, INITIAL_LETTERS, INITIAL_MEMORIES, LIFE_STATES, ROOMS } from './data/initialData';
 import { ThreeWorld } from './components/ThreeWorld';
@@ -40,9 +40,12 @@ import {
   LayoutInspectorPanel,
 } from './components/layout-gizmo';
 
+import { resolvePresenceSlots } from './features/presence/presenceAllocation';
+
 export default function App() {
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('afternoon');
   const [people, setPeople] = useState<Person[]>(INITIAL_PEOPLE);
+  const presenceAllocation = useMemo(() => resolvePresenceSlots(people), [people]);
   const [letters, setLetters] = useState<MailLetter[]>(INITIAL_LETTERS);
   const [memories, setMemories] = useState<LivingMemory[]>(INITIAL_MEMORIES);
   const [activeRoom, setRoom] = useState<RoomId | 'overview'>('overview');
@@ -299,6 +302,7 @@ export default function App() {
 
       {/* 2. Floating Presence Panel (Left corner: Me + Friends state in house) */}
       <PresencePanel
+        allocation={presenceAllocation}
         people={people}
         onSelectPerson={(p) => setSelectedPerson(p)}
         onEditMyStatus={() => setIsStatusPickerOpen(true)}
@@ -310,6 +314,7 @@ export default function App() {
       <div className="absolute inset-0 z-0">
         <ThreeWorld
           timeOfDay={timeOfDay}
+          presenceAllocation={presenceAllocation}
           people={people}
           activeRoom={activeRoom}
           focusRevision={focusRevision}
@@ -424,6 +429,8 @@ export default function App() {
         return (
           <StatusPickerModal
             isOpen={isStatusPickerOpen}
+            people={people}
+            personId={selfPerson?.id || 'self'}
             onClose={() => setIsStatusPickerOpen(false)}
             currentState={selfPerson?.currentState || 'coding'}
             currentRoom={selfPerson?.currentRoom || 'my_room'}

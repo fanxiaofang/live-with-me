@@ -8,6 +8,7 @@ import type { EntityId } from '../../src/world/scene/sceneTypes';
 import type { RoomId } from '../../src/types';
 import type { EditableObjectId } from '../../src/components/layout-gizmo/layoutStore';
 import { useLayoutEditor } from '../../src/features/layout-editor/useLayoutEditor';
+import { resolvePresenceSlots } from '../../src/features/presence/presenceAllocation';
 import '../../src/index.css';
 
 const query = new URLSearchParams(location.search);
@@ -42,7 +43,7 @@ function Fixture() {
     {query.has('edit')&&<input aria-label="Fixture camera zoom" data-testid="fixture-zoom" type="number" step="0.01"
       style={{position:'absolute',zIndex:100,left:0,top:0,width:70}}
       onChange={e=>{editor.setIsLayoutInspectorOpen(false);setRequestedZoom(Number(e.target.value));}} />}
-    <ThreeWorld timeOfDay="afternoon" people={people} sceneLayout={sceneLayout}
+    <ThreeWorld timeOfDay="afternoon" people={people} presenceAllocation={resolvePresenceSlots(people)} sceneLayout={sceneLayout}
       activeRoom={activeRoom} roomLayout={editor.roomLayout} unreadMailCount={2} onSelectPerson={() => {}}
       onSelectMailbox={() => {}} onSelectRoom={setActiveRoom}
       isInspectorOpen={editor.isLayoutInspectorOpen} activeGizmoId={editor.activeGizmoId}
