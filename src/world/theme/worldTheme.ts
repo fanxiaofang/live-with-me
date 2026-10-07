@@ -1,0 +1,126 @@
+import type { TimeOfDay } from '../../types';
+export const COUNTRYSIDE_THEMES: Record<
+  TimeOfDay,
+  {
+    skyTop: string;
+    skyBottom: string;
+    hillGreenFar: string;
+    hillGreenMid: string;
+    hillGreenNear: string;
+    wheatFar: string;
+    wheatNear: string;
+    roadColor: string;
+    riverColor: string;
+    riverReflect: string;
+    riverRipples: string;
+    ambientTint: string;
+    cottageGlow: string;
+    tractorLightGlow: string;
+    roofColor: string;
+    isNight: boolean;
+    isRainy: boolean;
+  }
+> = {
+  afternoon: {
+    // Exact palette extracted from "All Creatures Great and Small" (万物生灵) intro reference:
+    // Sky: English summer cerulean into warm golden buttercream horizon glow
+    skyTop: '#4a7896',
+    skyBottom: '#faedd6',
+    hillGreenFar: '#73896b',
+    hillGreenMid: '#8ea344',
+    hillGreenNear: '#485f2a',
+    wheatFar: '#dab757',
+    wheatNear: '#bf9536',
+    roadColor: '#a89379',
+    riverColor: '#3c8585',
+    riverReflect: '#7cbdbb',
+    riverRipples: '#c2ebe9',
+    ambientTint: 'rgba(255, 246, 230, 0.05)',
+    cottageGlow: 'rgba(255, 235, 180, 0.45)',
+    tractorLightGlow: 'rgba(255, 235, 170, 0.25)',
+    roofColor: '#ad4c32',
+    isNight: false,
+    isRainy: false,
+  },
+  morning: {
+    // Yorkshire Dales crisp morning: misty silvery azure sky, soft morning gold horizon, dewy olive hills
+    skyTop: '#42708e',
+    skyBottom: '#f5ead4',
+    hillGreenFar: '#6d8367',
+    hillGreenMid: '#869b40',
+    hillGreenNear: '#445926',
+    wheatFar: '#d4b150',
+    wheatNear: '#b88f30',
+    roadColor: '#9e8972',
+    riverColor: '#387e7e',
+    riverReflect: '#74b4b2',
+    riverRipples: '#b8e4e2',
+    ambientTint: 'rgba(255, 248, 235, 0.06)',
+    cottageGlow: 'rgba(255, 230, 160, 0.35)',
+    tractorLightGlow: 'rgba(255, 242, 170, 0.18)',
+    roofColor: '#a4472c',
+    isNight: false,
+    isRainy: false,
+  },
+  dusk: {
+    // Yorkshire Dales golden hour: slate violet sky into dusty apricot, bronze-olive knolls
+    skyTop: '#393452',
+    skyBottom: '#e5906c',
+    hillGreenFar: '#5d5843',
+    hillGreenMid: '#474f30',
+    hillGreenNear: '#313a22',
+    wheatFar: '#b86d38',
+    wheatNear: '#8c4520',
+    roadColor: '#524647',
+    riverColor: '#63394a',
+    riverReflect: '#b65e52',
+    riverRipples: '#f2b7a0',
+    ambientTint: 'rgba(215, 95, 45, 0.14)',
+    cottageGlow: 'rgba(255, 175, 75, 0.85)',
+    tractorLightGlow: 'rgba(255, 185, 75, 0.7)',
+    roofColor: '#80301d',
+    isNight: false,
+    isRainy: false,
+  },
+  night: {
+    // Yorkshire moorland night: deep slate indigo, dark woodland shadows, warm lantern glow
+    skyTop: '#0b111a',
+    skyBottom: '#141f2e',
+    hillGreenFar: '#131d1a',
+    hillGreenMid: '#0e1814',
+    hillGreenNear: '#0a120f',
+    wheatFar: '#1c1c13',
+    wheatNear: '#14140d',
+    roadColor: '#181b20',
+    riverColor: '#0f1c30',
+    riverReflect: '#1b2e4b',
+    riverRipples: '#3a5982',
+    ambientTint: 'rgba(8, 12, 22, 0.35)',
+    cottageGlow: 'rgba(255, 205, 105, 0.95)',
+    tractorLightGlow: 'rgba(255, 215, 110, 0.9)',
+    roofColor: '#2e1b19',
+    isNight: true,
+    isRainy: false,
+  },
+  rainy: {
+    // Yorkshire Dales drizzle: stormy charcoal-slate sky, wet limestone and deep rainy moss
+    skyTop: '#323f4b',
+    skyBottom: '#5c6d7a',
+    hillGreenFar: '#465c50',
+    hillGreenMid: '#364a3b',
+    hillGreenNear: '#26372b',
+    wheatFar: '#7a7050',
+    wheatNear: '#63583c',
+    roadColor: '#42474e',
+    riverColor: '#254354',
+    riverReflect: '#48677a',
+    riverRipples: '#8bb1c4',
+    ambientTint: 'rgba(40, 58, 70, 0.2)',
+    cottageGlow: 'rgba(255, 210, 130, 0.65)',
+    tractorLightGlow: 'rgba(255, 215, 125, 0.5)',
+    roofColor: '#63392d',
+    isNight: false,
+    isRainy: true,
+  },
+};
+
