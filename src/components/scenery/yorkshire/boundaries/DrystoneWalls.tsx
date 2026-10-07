@@ -1,3 +1,4 @@
+import { svgAction } from '../../../../world/interactions/svgAction';
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
@@ -40,7 +41,7 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
       {/* ----------------------------------------------------------------------- */}
       <g id={walls.eastWall.id} opacity="0.9">
         {/* 🌟 标志性五杠斜撑原木牧场门 (5-Bar Field Gate) */}
-        <g
+        <g {...svgAction('east-5bar-pasture-gate')}
           id="east-5bar-pasture-gate"
           transform={`translate(${walls.eastWall.gateAnchor.x}, ${walls.eastWall.gateAnchor.y})`}
           className="cursor-pointer"
@@ -48,7 +49,7 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
             e.stopPropagation();
             onTriggerToast?.('🚪 约克郡传统原木牧场门 · 5-Bar Field Gate，通往东侧开阔羊群山坡');
           }}
-          onMouseEnter={() => setHoveredObject?.('🚪 英伦传统五木杠栅栏门 · 经典的农夫手工斜撑牧场大门')}
+          onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'pasture-gate' })}
           onMouseLeave={() => setHoveredObject?.(null)}
         >
           <rect x="0" y="-6" width="5" height="26" rx="1.2" fill="#442f1b" stroke="#25170a" strokeWidth="0.8" />

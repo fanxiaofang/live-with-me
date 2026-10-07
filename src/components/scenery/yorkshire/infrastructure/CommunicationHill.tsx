@@ -8,7 +8,7 @@ export function CommunicationHill({ activeRoom, onSelectRoom, onSelectPerson, pr
   alienPulseEffect, triggerAlienSignal, hasMovedRef, setHoveredObject, className }: CommunicationHillProps) {
   return <SceneEntity id="room-observatory" entityId="observatory" className={`group/observatory ${className ?? ''}`}
     onClick={() => { if (!hasMovedRef?.current) onSelectRoom?.('observatory'); }}
-    onMouseEnter={() => setHoveredObject?.('room-observatory')} onMouseLeave={() => setHoveredObject?.(null)}>
+    onMouseEnter={() => setHoveredObject?.({ kind: 'room', id: 'observatory' })} onMouseLeave={() => setHoveredObject?.(null)}>
     <ObservatoryHaven activeRoom={activeRoom === 'observatory' ? 'observatory' : undefined}
       presenceSlots={presenceSlots ?? {}} alienPulseEffect={alienPulseEffect}
       triggerAlienSignal={triggerAlienSignal ?? (() => {})} onSelectPerson={onSelectPerson ?? (() => {})}

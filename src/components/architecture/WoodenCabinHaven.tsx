@@ -1,24 +1,27 @@
+import { svgAction } from '../../world/interactions/svgAction';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import type { RoomId, Person } from '../../types';
+import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
 import React from 'react';
 import { CharacterHead } from '../CharacterAvatar';
 
 export interface WoodenCabinHavenProps {
-  activeRoom: string;
-  onSelectRoom: (roomId: string) => void;
-  presenceSlots: Record<string, any>;
-  onSelectPerson: (person: any) => void;
-  setHoveredObject: (id: string | null) => void;
-  hoveredObject?: string | null;
+  activeRoom: RoomId | 'overview';
+  onSelectRoom: (roomId: RoomId | 'overview') => void;
+  presenceSlots: PresenceAllocation['slots'];
+  onSelectPerson: (person: Person) => void;
+  setHoveredObject: (target: InteractionTarget | null) => void;
+  hoveredObject?: InteractionTarget | null;
   hasMovedRef: React.MutableRefObject<boolean> | React.RefObject<boolean>;
   theme: {
     cottageGlow: string;
     isNight?: boolean;
-    [key: string]: any;
   };
 }
 
 /**
  * 2.5D 左侧独立安睡小木屋 (Cozy Timber Sleeping Cabin · corn_lounge)
- * 
+ *
  * 核心定位强化 (根据用户明确指定)：
  * - 左侧的小木屋就是提供一个睡觉的地方，和右侧的睡眠舱（Capsule Pod）定位完全一致！
  * - 位于庄园西侧台地 (x=-240, y=390)，与右侧胶囊睡眠舱 (x=930) 形成主宅东西两翼的安睡天地呼应；
@@ -68,12 +71,12 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = ({
       </defs>
 
       {/* Main Wooden Cabin Interactive Group (位于主宅西翼安睡台地 x=160, y=340，与东翼太空舱完美对称呼应) */}
-      <g
+      <g {...svgAction('进入林间小木屋')}
         id="room-corn_lounge"
         onClick={() => {
           if (!hasMovedRef.current) onSelectRoom('corn_lounge');
         }}
-        onMouseEnter={() => setHoveredObject('room-corn_lounge')}
+        onMouseEnter={() => setHoveredObject({ kind: 'room', id: 'corn_lounge' })}
         onMouseLeave={() => setHoveredObject(null)}
         className="cursor-pointer group/cabin"
       >
@@ -420,7 +423,7 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = ({
 
             {/* 12. SLEEPER / CHARACTER IN BED (安睡人物) */}
             {cabinOccupant && slotCfg ? (
-              <g
+              <g {...svgAction('查看人物状态')}
                 id={`person-in-cabin-${cabinOccupant.id}`}
                 transform={`translate(${slotCfg.offset.dx}, ${slotCfg.offset.dy})`}
                 onClick={(e) => {
@@ -429,7 +432,7 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = ({
                 }}
                 onMouseEnter={(e) => {
                   e.stopPropagation();
-                  setHoveredObject(`person-${cabinOccupant.id}`);
+                  setHoveredObject({ kind: 'person', id: cabinOccupant.id });
                 }}
                 onMouseLeave={() => setHoveredObject(null)}
                 className="cursor-pointer group/char"

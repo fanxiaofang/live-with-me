@@ -1,3 +1,5 @@
+import { svgAction } from '../../world/interactions/svgAction';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React, { useMemo } from 'react';
 import {
@@ -439,7 +441,7 @@ export interface BookshelfProps {
   onBookClick?: (book: BookItemConfig, tierIndex: number, e: React.MouseEvent) => void;
   onDecorationClick?: (decoration: ShelfDecorationConfig, tierIndex: number, e: React.MouseEvent) => void;
   onShelfClick?: (e: React.MouseEvent) => void;
-  onHoverObject?: (name: string | null) => void;
+  onHoverObject?: (target: InteractionTarget | null) => void;
   className?: string;
   isLinReadingHere?: boolean; // 若为 true，自动将《沙之书》呈现借出阅读态
   // --- 2.5D 校准系统 Props ---
@@ -576,7 +578,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
     return (
       <g id={`shelf-tier-${tierIndex}-contents`}>
         {/* 1. 书籍插槽 (Book Slots) */}
-        <g
+        <g {...svgAction('场景互动')}
           id={`shelf-tier-${tierIndex}-books-group`}
           transform={`translate(${bookDeltaX}, ${bookDeltaY})`}
           className={isInspectorOpen && bookSlotId ? 'cursor-pointer' : ''}
@@ -589,7 +591,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
           onMouseEnter={(e) => {
             if (isInspectorOpen && bookSlotId) {
               e.stopPropagation();
-              onHoverObject?.(`bookshelf:${layout[bookSlotId]?.name ?? '藏书区'} (点击可调优坐标)`);
+              onHoverObject?.({ kind: 'furniture-part', id: bookSlotId });
             }
           }}
           onMouseLeave={() => {
@@ -611,9 +613,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
                   if (!isInspectorOpen) {
                     e.stopPropagation();
                     onHoverObject?.(
-                      `📖 《${book.title}》${book.author ? ` · ${book.author}` : ''}${
-                        book.isPulled ? ' (正在阅读中)' : ''
-                      }`
+                      { kind: 'book', id: book.id, tierIndex }
                     );
                   }
                 }}
@@ -657,7 +657,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
           const isSelected = selectedItemId === dec.id;
 
           return (
-            <g
+            <g {...svgAction('场景互动')}
               key={dec.id}
               transform={`translate(${pos.x}, ${pos.y + vOffset})`}
               className={isInspectorOpen && slotId ? 'cursor-pointer' : ''}
@@ -674,10 +674,10 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
                 e.stopPropagation();
                 if (isInspectorOpen && slotId) {
                   onHoverObject?.(
-                    `bookshelf:${layout[slotId]?.name ?? dec.label ?? '摆件槽位'} (点击可调优坐标)`
+                    { kind: 'furniture-part', id: slotId }
                   );
                 } else {
-                  onHoverObject?.(dec.label ? `✨ ${dec.label}` : '✨ 原木书架摆件');
+                  onHoverObject?.({ kind: 'entity', id: dec.id });
                 }
               }}
               onMouseLeave={() => onHoverObject?.(null)}
@@ -706,7 +706,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
   };
 
   return (
-    <g
+    <g {...svgAction('检视与管理书架')}
       id="isometric-bookshelf"
       className={`select-none cursor-pointer group/bookshelf ${className}`}
       onClick={(e) => {
@@ -719,9 +719,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
       }}
       onMouseEnter={() =>
         onHoverObject?.(
-          isInspectorOpen
-            ? 'bookshelf:手作做旧粗原木四层书架 (整体，点击可校准全架)'
-            : '📚 手作做旧粗原木四层书架 · 纯净架体与参数化藏书插槽 (点击检视/管理)'
+          { kind: 'furniture-part', id: 'bookshelf-group' }
         )
       }
       onMouseLeave={() => onHoverObject?.(null)}

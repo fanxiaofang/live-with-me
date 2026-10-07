@@ -1,3 +1,4 @@
+import { svgAction } from '../world/interactions/svgAction';
 import React from 'react';
 
 export type StoveColorVariant = 'terracotta' | 'walnut' | 'sage' | 'charcoal' | 'forest_green';
@@ -664,7 +665,7 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
       </g>
 
       {/* --- 3. SCALED STOVE BODY & HEARTH ARCHITECTURE (以地面为锚点平滑缩放，绘本风去机械化重塑) --- */}
-      <g
+      <g {...svgAction('切换炉火颜色')}
         id="stove-scalable-body-group"
         transform={stoveTransform}
         onClick={handleStoveClick}
@@ -1011,7 +1012,7 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
             // Center the 4 circles at x: -22.5, -7.5, +7.5, +22.5
             const cx = -22.5 + index * 15;
             return (
-              <g
+              <g {...svgAction('场景互动')}
                 key={variantKey}
                 className="cursor-pointer group/swatch"
                 onClick={(e) => handlePaletteClick(variantKey, e)}

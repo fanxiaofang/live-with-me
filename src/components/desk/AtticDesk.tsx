@@ -1,3 +1,5 @@
+import { svgAction } from '../../world/interactions/svgAction';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React from 'react';
 import { DeskFrame } from './DeskFrame';
@@ -11,7 +13,7 @@ export interface AtticDeskProps {
   onSelectGizmo?: (id: EditableObjectId | null) => void;
   onDragGizmoDelta?: (dx: number, dy: number) => void;
   onDragGizmoEnd?: () => void;
-  onHoverObject?: (label: string | null) => void;
+  onHoverObject?: (target: InteractionTarget | null) => void;
 }
 
 /**
@@ -46,7 +48,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
       {/* 1. 书桌主体独立 SVG 骨架 */}
       <DeskFrame
         onHover={(hovered) => {
-          onHoverObject?.(hovered ? 'attic:阁楼手工白橡木书桌 (点击可校准整体)' : null);
+          onHoverObject?.(hovered ? { kind: 'furniture-part', id: 'desk-group' } : null);
         }}
         onClick={(e) => {
           if (isInspectorOpen) {
@@ -58,7 +60,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
         {/* 2. 桌面摆件插槽层 (Slot Items on Desk) */}
 
         {/* 2.1 台灯插槽 (复古墨绿银行家台灯) */}
-        <g
+        <g {...svgAction('desk-slot-banker-lamp')}
           id="desk-slot-banker-lamp"
           transform={`translate(${lampPos.x}, ${lampPos.y})`}
           className="cursor-pointer"
@@ -70,7 +72,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.('attic:复古墨绿银行家台灯 (点击可调优桌面坐标)');
+            onHoverObject?.({ kind: 'furniture-part', id: 'desk-lamp' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();
@@ -81,7 +83,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
         </g>
 
         {/* 2.2 电脑插槽 (便携轻薄办公电脑) */}
-        <g
+        <g {...svgAction('desk-slot-laptop')}
           id="desk-slot-laptop"
           transform={`translate(${laptopPos.x}, ${laptopPos.y})`}
           className="cursor-pointer"
@@ -93,7 +95,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.('attic:便携轻薄办公电脑 (点击可调优桌面坐标)');
+            onHoverObject?.({ kind: 'furniture-part', id: 'desk-laptop' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();
@@ -104,7 +106,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
         </g>
 
         {/* 2.3 水杯插槽 (手作白瓷温热咖啡杯) */}
-        <g
+        <g {...svgAction('desk-slot-coffee-mug')}
           id="desk-slot-coffee-mug"
           transform={`translate(${cupPos.x}, ${cupPos.y})`}
           className="cursor-pointer"
@@ -116,7 +118,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.('attic:手作白瓷温热咖啡杯 (点击可调优桌面坐标)');
+            onHoverObject?.({ kind: 'furniture-part', id: 'desk-cup' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();

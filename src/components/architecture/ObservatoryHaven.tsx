@@ -1,3 +1,5 @@
+import { svgAction } from '../../world/interactions/svgAction';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import React from 'react';
 import { CharacterHead } from '../CharacterAvatar';
 import type { Person, RoomId } from '../../types';
@@ -9,7 +11,7 @@ export interface ObservatoryHavenProps {
   alienPulseEffect?: boolean;
   triggerAlienSignal: (event?: React.MouseEvent) => void;
   onSelectPerson: (person: Person) => void;
-  setHoveredObject: (id: string | null) => void;
+  setHoveredObject: (target: InteractionTarget | null) => void;
 }
 export function ObservatoryHaven({ activeRoom, presenceSlots, alienPulseEffect, triggerAlienSignal, onSelectPerson, setHoveredObject }: ObservatoryHavenProps) {
   return <>
@@ -160,7 +162,7 @@ export function ObservatoryHaven({ activeRoom, presenceSlots, alienPulseEffect, 
               </g>
 
               {/* 4. GRAND PARABOLIC SETI ALIEN RADIO DISH & LATTICE STEEL TOWER (大口径外星射电抛物面天线塔架) */}
-              <g
+              <g {...svgAction('捕获外星电波')}
                 id="alien-receiver-assembly"
                 transform="translate(16, 2)"
                 onClick={(e) => {
@@ -168,7 +170,7 @@ export function ObservatoryHaven({ activeRoom, presenceSlots, alienPulseEffect, 
                 }}
                 onMouseEnter={(e) => {
                   e.stopPropagation();
-                  setHoveredObject('alien-receiver');
+                  setHoveredObject({ kind: 'entity', id: 'alien-receiver' });
                 }}
                 onMouseLeave={() => setHoveredObject(null)}
                 className="group/dish cursor-pointer"
@@ -307,7 +309,7 @@ export function ObservatoryHaven({ activeRoom, presenceSlots, alienPulseEffect, 
                 if (!obsOccupant || !slotCfg) return null;
 
                 return (
-                  <g
+                  <g {...svgAction('查看人物状态')}
                     id={`person-in-observatory-${obsOccupant.id}`}
                     transform={`translate(${slotCfg.offset.dx}, ${slotCfg.offset.dy})`}
                     onClick={(e) => {
@@ -316,7 +318,7 @@ export function ObservatoryHaven({ activeRoom, presenceSlots, alienPulseEffect, 
                     }}
                     onMouseEnter={(e) => {
                       e.stopPropagation();
-                      setHoveredObject(`person-${obsOccupant.id}`);
+                      setHoveredObject({ kind: 'person', id: obsOccupant.id });
                     }}
                     onMouseLeave={() => setHoveredObject(null)}
                     className="cursor-pointer group/char"

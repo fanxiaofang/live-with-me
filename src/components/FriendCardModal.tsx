@@ -75,6 +75,7 @@ export const FriendCardModal: React.FC<FriendCardModalProps> = ({
             </div>
           </div>
           <button
+            aria-label="关闭人物状态"
             onClick={onClose}
             className="w-8 h-8 rounded-lg flex items-center justify-center text-[#9c9186] hover:text-[#f2ece2] hover:bg-[#38312b] transition-colors"
           >

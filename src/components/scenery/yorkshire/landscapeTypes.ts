@@ -1,3 +1,4 @@
+import type { InteractionTarget } from '../../../world/interactions/interactionTypes';
 import React from 'react';
 
 /**
@@ -29,7 +30,7 @@ export interface YorkshireSceneTheme {
 export interface YorkshireCommonProps {
   theme: YorkshireSceneTheme;
   onTriggerToast?: (msg: string) => void;
-  setHoveredObject?: (name: string | null) => void;
+  setHoveredObject?: (target: InteractionTarget | null) => void;
   className?: string;
 }
 

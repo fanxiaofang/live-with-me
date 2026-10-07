@@ -1,9 +1,11 @@
+import { svgAction } from '../../world/interactions/svgAction';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import React from 'react';
 import { PosterId, POSTER_CATALOG } from './posterTypes';
 
 interface WallPostersGalleryProps {
   onSelectPoster: (id: PosterId) => void;
-  onHoverPoster: (name: string | null) => void;
+  onHoverPoster: (target: InteractionTarget | null) => void;
 }
 
 export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
@@ -73,14 +75,14 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
         {/* 1. 海报 1: 《泳者之心》 (Young Woman and the Sea)                       */}
         {/* 位置：x = 37 (向左略舒展，呼吸感充裕，距离中间画作适度拉开)            */}
         {/* ----------------------------------------------------------------------- */}
-        <g
+        <g {...svgAction('赏析泳者之心海报')}
           id="poster-young-woman"
           transform="translate(37, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('young-woman');
           }}
-          onMouseEnter={() => onHoverPoster('海报:《泳者之心》· 手作木框艺术印画 (点击赏析)')}
+          onMouseEnter={() => onHoverPoster({ kind: 'poster', id: 'young-woman' })}
           onMouseLeave={() => onHoverPoster(null)}
           className="cursor-pointer group/p1"
         >
@@ -167,14 +169,14 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
         {/* 2. 海报 2: 《还有明天》 (C'è ancora domani)                             */}
         {/* 位置：x = 79 (位于居中绿植上方，与叶片自然错落)                          */}
         {/* ----------------------------------------------------------------------- */}
-        <g
+        <g {...svgAction('赏析还有明天海报')}
           id="poster-ancora-domani"
           transform="translate(79, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('ancora-domani');
           }}
-          onMouseEnter={() => onHoverPoster('海报:《还有明天》· 手作木框艺术印画 (点击赏析)')}
+          onMouseEnter={() => onHoverPoster({ kind: 'poster', id: 'ancora-domani' })}
           onMouseLeave={() => onHoverPoster(null)}
           className="cursor-pointer group/p2"
         >
@@ -377,14 +379,14 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
         {/* 3. 海报 3: 《红辣椒》 (Paprika)                                         */}
         {/* 位置：x = 121 (向右拉开间距，与书架和绿植错落得宜，毫不逼仄)             */}
         {/* ----------------------------------------------------------------------- */}
-        <g
+        <g {...svgAction('赏析红辣椒海报')}
           id="poster-paprika"
           transform="translate(121, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('paprika');
           }}
-          onMouseEnter={() => onHoverPoster('海报:《红辣椒》· 手作木框艺术印画 (点击赏析)')}
+          onMouseEnter={() => onHoverPoster({ kind: 'poster', id: 'paprika' })}
           onMouseLeave={() => onHoverPoster(null)}
           className="cursor-pointer group/p3"
         >

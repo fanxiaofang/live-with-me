@@ -1,3 +1,7 @@
+import type { InteractionTarget } from '../world/interactions/interactionTypes';
+import { svgAction } from '../world/interactions/svgAction';
+import { describeInteraction } from '../world/interactions/registry';
+import { createInteractionDispatcher } from '../world/interactions/dispatcher';
 import { useWorldCamera } from '../world/camera/useWorldCamera';
 import { LayoutGestureContext } from '../features/layout-editor/LayoutGestureContext';
 import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
@@ -12,7 +16,7 @@ import { TimeOfDay, Person, RoomId } from '../types';
 import { ROOMS } from '../data/initialData';
 import { CharacterHead } from './CharacterAvatar';
 import { PresenceAllocation, SceneSlotConfig } from '../utils/sceneViewMapping';
-import { Bookshelf, BookshelfPreset, BookItemConfig, TierConfig } from './bookshelf';
+import { Bookshelf, BookshelfPreset, BookItemConfig, TierConfig, PRESET_COZY_TIERS } from './bookshelf';
 import { CastIronWoodStove, StoveColorVariant } from './CastIronWoodStove';
 import { RecordCabinet, RetroTurntable } from './cabinet';
 import { AtticDesk, WindsorChair } from './desk';
@@ -208,13 +212,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   presenceAllocation,
   activeRoom,
   unreadMailCount,
-  onSelectPerson,
-  onSelectMailbox,
+  onSelectPerson: selectPerson,
+  onSelectMailbox: selectMailbox,
   onSelectRoom: requestRoom,
   onFireplaceClick,
   bookshelfPreset,
-  onBookshelfClick,
-  onBookClick,
+  onBookshelfClick: openBookshelf,
+  onBookClick: selectBook,
   customBookshelfTiers,
   roomLayout,
   cabinetLayout,
@@ -229,7 +233,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   onOpenChairInspector,
   onTriggerToast,
 }) => {
-  const onSelectRoom = (room: RoomId | 'overview') => { if (!isInspectorOpen) requestRoom(room); };
   const currentLayout = roomLayout || cabinetLayout || DEFAULT_ROOM_LAYOUT;
   const effectiveGizmoId = isInspectorOpen ? activeGizmoId : null;
   const containerRef = useRef<HTMLDivElement>(null);
@@ -239,7 +242,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
   const { camera, isDragging, svgRef, hasMovedRef, pointerHandlers, zoomBy, restoreFocus } = useWorldCamera(activeRoom, sceneLayout, focusRevision, isInspectorOpen);
 
-  const [hoveredObject, setHoveredObject] = useState<string | null>(null);
+  const [hoveredObject, setHoveredObject] = useState<InteractionTarget | null>(null);
   const [alienMsgIndex, setAlienMsgIndex] = useState(0);
   const [alienPulseEffect, setAlienPulseEffect] = useState(false);
   const [alienTransmissionText, setAlienTransmissionText] = useState<string | null>(null);
@@ -291,6 +294,18 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     setTimeout(() => setSofaThought(null), 3600);
   };
 
+  const interactionTiers = customBookshelfTiers ?? PRESET_COZY_TIERS;
+  const dispatchInteraction = createInteractionDispatcher({
+    focusRoom: requestRoom, selectPerson, openMailbox: selectMailbox, openBookshelf, selectBook,
+    selectPoster: id => { setSelectedPosterId(id); onSelectPoster?.(id); },
+    captureSignal: () => triggerAlienSignal(), selectFurniture: onSelectGizmo, fireplace: onFireplaceClick,
+  }, { people, tiers: interactionTiers, editing: isInspectorOpen, activeFurniture: effectiveGizmoId });
+  const onSelectRoom = (id: RoomId | 'overview') => dispatchInteraction({ kind: 'room', id });
+  const onSelectPerson = (person: Person) => dispatchInteraction({ kind: 'person', id: person.id });
+  const onSelectMailbox = () => dispatchInteraction({ kind: 'entity', id: 'mailbox' });
+  const onBookshelfClick = () => dispatchInteraction({ kind: 'furniture-part', id: 'bookshelf-group' });
+  const onBookClick = (book: BookItemConfig, tierIndex: number) => dispatchInteraction({ kind: 'book', id: book.id, tierIndex });
+
   const handleZoomIn = () => zoomBy(0.25);
   const handleZoomOut = () => zoomBy(-0.25);
   const handleResetOverview = () => { requestRoom('overview'); restoreFocus(); };
@@ -309,6 +324,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     <div
       ref={containerRef}
       {...pointerHandlers}
+      onKeyDownCapture={event => { if (event.key === 'Enter' || event.key === ' ') hasMovedRef.current = false; }}
       className="relative w-full h-full overflow-hidden select-none cursor-grab active:cursor-grabbing"
       style={{
         touchAction: 'none',
@@ -1197,7 +1213,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             id="tractor-in-field"
             transform="translate(110, 220)"
             className="cursor-pointer transition-opacity hover:opacity-95"
-            onMouseEnter={() => setHoveredObject('tractor')}
+            onMouseEnter={() => setHoveredObject({ kind: 'entity', id: 'tractor' })}
             onMouseLeave={() => setHoveredObject(null)}
           >
             {/* Weathered Timber Paddock Fence behind Tractor (木制农庄围栏) */}
@@ -1333,12 +1349,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('observatory');
               }}
-              onMouseEnter={() => setHoveredObject('room-observatory')}
+              {...svgAction('电波观测台')}
+              onMouseEnter={() => setHoveredObject({ kind: 'room', id: 'observatory' })}
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group/observatory"
             >
   <ObservatoryHaven activeRoom={activeRoom} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
-    triggerAlienSignal={triggerAlienSignal} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
+    triggerAlienSignal={() => dispatchInteraction({ kind: 'entity', id: 'alien-receiver' })} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
 </SceneEntity>
           </g>
 
@@ -1406,12 +1423,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             <CottageWallProfiles />
 
             {/* --- ROOM 1: MY ROOM (LEFT WING) - 我的阁楼书屋 (2.5D 重构) --- */}
-            <g
+            <g {...svgAction('我的田园阁楼书屋')}
               id="room-my_room"
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('my_room');
               }}
-              onMouseEnter={() => setHoveredObject('room-my_room')}
+              onMouseEnter={() => setHoveredObject({ kind: 'room', id: 'my_room' })}
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group"
             >
@@ -1499,7 +1516,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               />
 
               {/* 1.2 2.5D LIGHTWEIGHT CRAFT DESK (独立 SVG 结构与桌面插槽系统：支持整桌移动与摆件独立微调) */}
-              <g
+              <g {...svgAction('校准书桌整体')}
                 id="isometric-desk-container"
                 transform={`translate(${currentLayout['desk-group'].screen.x}, ${currentLayout['desk-group'].screen.y})`}
                 onClick={(e) => {
@@ -1533,7 +1550,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 1.3 2.5D POTTED MONSTERA DELICIOSA (书桌左侧生机龟背竹盆栽：带开背深裂叶、沃土粗陶盆与微风摇曳) */}
-              <g
+              <g {...svgAction('轻拂或校准龟背竹')}
                 id="isometric-monstera-container"
                 transform={`translate(${currentLayout['desk-monstera'].screen.x}, ${currentLayout['desk-monstera'].screen.y})`}
                 onClick={(e) => {
@@ -1547,9 +1564,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 <MonsteraPlant
                   onHover={(hovered) => {
                     if (isInspectorOpen) {
-                      setHoveredObject(hovered ? 'plant:书桌左侧生机龟背竹 (点击可校准位置)' : null);
+                      setHoveredObject(hovered ? { kind: 'furniture-part', id: 'desk-monstera' } : null);
                     } else {
-                      setHoveredObject(hovered ? 'plant:书桌生机龟背竹 (点击轻拂叶片与露水)' : null);
+                      setHoveredObject(hovered ? { kind: 'furniture-part', id: 'desk-monstera' } : null);
                     }
                   }}
                 />
@@ -1614,17 +1631,17 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             </g>
 
             {/* --- ROOM 2: LIVING NOOK (CENTER) - 暖炉黑胶与茶室 (2.5D 重构) --- */}
-            <g
+            <g {...svgAction('暖炉起居角')}
               id="room-living_nook"
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('living_nook');
               }}
-              onMouseEnter={() => setHoveredObject('room-living_nook')}
+              onMouseEnter={() => setHoveredObject({ kind: 'room', id: 'living_nook' })}
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group"
             >
               {/* 2.1 2.5D FREESTANDING CAST-IRON WOOD STOVE (经典铸铁柴火暖炉：支持2.5D轴测校准对齐与即时换色) */}
-              <g
+              <g {...svgAction('校准炉火位置')}
                 id="isometric-wood-stove"
                 transform={`translate(${currentLayout['wood-stove'].screen.x}, ${currentLayout['wood-stove'].screen.y})`}
                 onClick={(e) => {
@@ -1642,7 +1659,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                     try {
                       localStorage.setItem('storybook_stove_color', newColor);
                     } catch {}
-                    if (onFireplaceClick) onFireplaceClick();
+                    dispatchInteraction({ kind: 'furniture-part', id: 'wood-stove' });
                   }}
                   onClick={
                     isInspectorOpen
@@ -1670,7 +1687,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 2.15 2.5D RECONSTRUCTED SOLID WOOD TATAMI DAYBED (全新重构日式实木榻榻米休闲榻：与铸铁暖炉保持适宜的生活安全间距与透视呼吸感) */}
-              <g
+              <g {...svgAction('校准休闲榻')}
                 id="isometric-daybed"
                 transform={`translate(${(currentLayout['daybed'].screen.x) + 14}, ${(currentLayout['daybed'].screen.y) + 4})`}
                 onClick={(e) => {
@@ -1680,7 +1697,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                   }
                 }}
                 className="cursor-pointer group/daybed"
-                onMouseEnter={() => setHoveredObject('daybed')}
+                onMouseEnter={() => setHoveredObject({ kind: 'furniture-part', id: 'daybed' })}
                 onMouseLeave={() => setHoveredObject(null)}
               >
                 {/* 1. Floor Ambient Occlusion Shadow (地板上的温润漫反射投影，稳稳扎根) */}
@@ -1950,7 +1967,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 2.2 2.5D 轻盈日式咖啡黑胶边柜 (告别笨重沉闷实木，纤细斜腿，收纳咖啡豆、手作杯子、摩卡壶与黑胶唱片机) */}
-              <g
+              <g {...svgAction('校准咖啡黑胶柜')}
                 id="isometric-turntable-console"
                 transform={`translate(${currentLayout['cabinet-group'].screen.x}, ${currentLayout['cabinet-group'].screen.y})`}
                 onClick={(e) => {
@@ -2022,7 +2039,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 2.4 2.5D SOLID WOOD ELEVATED LOW TEA TABLE (日式原木圆矮茶几：重构真实三维离地高度、外八实木腿、桌底通透结构与标准圆柱厚度立面) */}
-              <g
+              <g {...svgAction('校准茶桌')}
                 id="isometric-tea-table"
                 transform={`translate(${currentLayout['tea-table'].screen.x}, ${currentLayout['tea-table'].screen.y})`}
                 onClick={(e) => {
@@ -2190,7 +2207,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 const isGizmoActive = effectiveGizmoId === gizmoKey;
 
                 return (
-                  <g
+                  <g {...svgAction('查看人物状态')}
                     key={slotKey}
                     id={`tea-slot-${slotKey}`}
                     transform={`translate(${posX}, ${posY})`}
@@ -2212,9 +2229,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                     onMouseEnter={(e) => {
                       e.stopPropagation();
                       if (person) {
-                        setHoveredObject(`person-${person.id}`);
+                        setHoveredObject({ kind: 'person', id: person.id });
                       } else {
-                        setHoveredObject(`slot:茶桌${slotCfg.slotName} (虚位以待)`);
+                        setHoveredObject({ kind: 'furniture-part', id: gizmoKey });
                       }
                     }}
                     onMouseLeave={() => setHoveredObject(null)}
@@ -2326,12 +2343,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             </g>
 
             {/* --- ROOM 3: LIN'S ROOM (RIGHT WING) - 林木的花园书房 (2.5D 重构) --- */}
-            <g
+            <g {...svgAction('进入林木的书房')}
               id="room-friend_room"
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('friend_room');
               }}
-              onMouseEnter={() => setHoveredObject('room-friend_room')}
+              onMouseEnter={() => setHoveredObject({ kind: 'room', id: 'friend_room' })}
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group"
             >
@@ -2345,7 +2362,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               />
 
               {/* 3.0 2.5D HARMONIOUS RIGHT WALL ART GALLERY (全新右墙艺术海报三联组：《泳者之心》+《还有明天》+《红辣椒》) */}
-              <g
+              <g {...svgAction('校准右墙海报组')}
                 id="isometric-wall-posters-container"
                 transform={`translate(${currentLayout['wall-posters'].screen.x}, ${currentLayout['wall-posters'].screen.y})`}
                 onClick={(e) => {
@@ -2360,8 +2377,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                     if (isInspectorOpen) {
                       onSelectGizmo?.('wall-posters');
                     } else {
-                      setSelectedPosterId(id);
-                      onSelectPoster?.(id);
+                      dispatchInteraction({ kind: 'poster', id });
                     }
                   }}
                   onHoverPoster={(text) => setHoveredObject(text)}
@@ -2381,7 +2397,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 3.1 2.5D RUSTIC HANDCRAFTED 5-TIER LOG BOOKSHELF (纯净架体 + 参数化插槽解耦资产，支持整体与槽位独立校准) */}
-              <g
+              <g {...svgAction('校准书架整体')}
                 id="isometric-bookshelf-container"
                 transform={`translate(${(currentLayout['bookshelf-group'].screen.x) - 193}, ${(currentLayout['bookshelf-group'].screen.y) - 124})`}
                 onClick={(e) => {
@@ -2418,7 +2434,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                       if (onBookshelfClick) onBookshelfClick();
                     }
                   }}
-                  onHoverObject={(text) => setHoveredObject(text ? `bookshelf:${text}` : null)}
+                  onHoverObject={(text) => setHoveredObject(text)}
                   layout={currentLayout}
                   activeGizmoId={effectiveGizmoId}
                   isInspectorOpen={isInspectorOpen}
@@ -2441,7 +2457,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 3.2 2.5D ARTISAN NORDIC POTTED FIDDLE-LEAF FIG (北欧哑光燕麦竖棱陶筒盆 + 天然胡桃木十字高脚架 + 生态感琴叶榕) */}
-              <g
+              <g {...svgAction('isometric-houseplant')}
                 id="isometric-houseplant"
                 transform={`translate(${currentLayout['fiddle-plant'].screen.x}, ${currentLayout['fiddle-plant'].screen.y})`}
                 onClick={(e) => {
@@ -2455,9 +2471,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 <FiddleLeafFig
                   onHover={(hovered) => {
                     if (isInspectorOpen) {
-                      setHoveredObject(hovered ? 'plant:客厅生机琴叶榕 (点击可校准位置)' : null);
+                      setHoveredObject(hovered ? { kind: 'furniture-part', id: 'fiddle-plant' } : null);
                     } else {
-                      setHoveredObject(hovered ? 'plant:客厅生机琴叶榕 (点击轻拂叶片与微光)' : null);
+                      setHoveredObject(hovered ? { kind: 'furniture-part', id: 'fiddle-plant' } : null);
                     }
                   }}
                 />
@@ -2476,7 +2492,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 3.3 2.5D ULTRA-COZY ISOMETRIC LAZY BEANBAG SOFA (紧凑小巧的软糯面包懒人沙发 · 比例恰当不显屋小) */}
-              <g
+              <g {...svgAction('捏一捏懒人沙发')}
                 id="isometric-lazy-sofa"
                 transform={`translate(${currentLayout['lazy-sofa'].screen.x}, ${currentLayout['lazy-sofa'].screen.y})`}
                 onClick={(e) => {
@@ -2486,7 +2502,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                     onSelectGizmo?.(effectiveGizmoId === 'lazy-sofa' ? null : 'lazy-sofa');
                   }
                 }}
-                onMouseEnter={() => setHoveredObject('lazy-sofa')}
+                onMouseEnter={() => setHoveredObject({ kind: 'furniture-part', id: 'lazy-sofa' })}
                 onMouseLeave={() => setHoveredObject(null)}
                 className="cursor-pointer group/sofa"
               >
@@ -2555,7 +2571,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                 if (!sofaOccupant || !slotCfg) return null;
 
                 return (
-                  <g
+                  <g {...svgAction('查看人物状态')}
                     id={`person-study-${sofaOccupant.id}`}
                     transform={`translate(${currentLayout['lazy-sofa'].screen.x}, ${(currentLayout['lazy-sofa'].screen.y) - 4})`}
                     onClick={(e) => {
@@ -2571,10 +2587,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
                     onMouseEnter={(e) => {
                       if (isInspectorOpen) {
                         e.stopPropagation();
-                        setHoveredObject(`study:软糯面包懒人沙发 (${sofaOccupant.name} 正在此阅读 · 点击校准)`);
+                        setHoveredObject({ kind: 'furniture-part', id: 'lazy-sofa' });
                       } else {
                         e.stopPropagation();
-                        setHoveredObject(`person-${sofaOccupant.id}`);
+                        setHoveredObject({ kind: 'person', id: sofaOccupant.id });
                       }
                     }}
                     onMouseLeave={() => setHoveredObject(null)}
@@ -2650,7 +2666,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             {/* --- FRONT VERANDA & PORCH (前廊、柴犬软窝与信箱) --- */}
             <g id="front-veranda-features">
               {/* Sleeping Shiba Inu in Woven Pet Bed (睡在编织软窝垫上的柴犬) */}
-              <g
+              <g {...svgAction('shiba-inu')}
                 id="shiba-inu"
                 transform={`translate(${currentLayout['shiba-inu'].screen.x}, ${currentLayout['shiba-inu'].screen.y})`}
                 onClick={(e) => {
@@ -2693,14 +2709,14 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               </g>
 
               {/* 🌟 WOODEN MAILBOX (前廊立柱美式信箱) */}
-              <g
+              <g {...svgAction('前廊木信箱')}
                 id="mailbox-group"
                 transform="translate(45, 182)"
                 onClick={(e) => {
                   e.stopPropagation();
                   onSelectMailbox();
                 }}
-                onMouseEnter={() => setHoveredObject('mailbox')}
+                onMouseEnter={() => setHoveredObject({ kind: 'entity', id: 'mailbox' })}
                 onMouseLeave={() => setHoveredObject(null)}
                 className="cursor-pointer group/mail"
               >
@@ -2860,34 +2876,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           <div className="px-3.5 py-1.5 rounded-full bg-[#1e1c1a]/85 backdrop-blur-md border border-[#ffffff]/10 text-xs text-[#e6ded0] shadow-lg flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#d68c68] animate-pulse" />
             <span>
-              {hoveredObject === 'tractor' && '🚜 麦浪拖拉机 · 梯田里的丰收耕耘与南瓜丰收'}
-              {hoveredObject === 'mailbox' && '📪 前廊木信箱 · 点击查看信件或留言'}
-              {hoveredObject === 'person-self' && '🌿 我 · 点击更新生活状态'}
-              {hoveredObject === 'daybed' && '🛋️ 日式实木蔺草榻榻米 · 暖炉旁小憩好去处'}
-              {hoveredObject?.startsWith('bookshelf:') && hoveredObject.replace('bookshelf:', '')}
-              {hoveredObject === 'bookshelf' && '📚 手作做旧粗原木五层书架 · 纯净架体与参数化藏书插槽（点击检视/管理）'}
-              {hoveredObject?.startsWith('cabinet:') && hoveredObject.replace('cabinet:', '')}
-              {hoveredObject === 'cabinet' && '🪵 中古实木四格唱机收纳柜 · 纯净SVG骨架与编织框/咖啡豆/无耳陶杯'}
-              {hoveredObject === 'person-lin' && '📖 林木 · 陷在懒人沙发读博尔赫斯（点击捏一捏/查看状态）'}
-              {hoveredObject === 'person-study' && '🛋️ 角色 · 窝在懒人沙发里翻书放空（点击捏一捏/互动）'}
-              {hoveredObject === 'lazy-sofa' && '🛋️ 超松软面包懒人沙发 · 陷进去看一本不需要读完的书（点击捏一捏/互动）'}
-              {hoveredObject === 'person-yu' && '🍵 小鱼 · 点击查看状态与留下便笺'}
-              {hoveredObject === 'room-my_room' && '我的田园阁楼书屋'}
-              {hoveredObject === 'room-living_nook' && '暖炉起居角与黑胶唱机'}
-              {hoveredObject === 'room-friend_room' && '🛋️ 林木的花园书房 · 惬意懒人沙发角（点击对焦参观）'}
-              {hoveredObject === 'room-capsule_pod' && '🚀 旧太空胶囊仓 · 卧室与午休小天地（点击对焦参观）'}
-              {hoveredObject === 'room-corn_lounge' && '🪵 林间小木屋 · 质朴原木与雪松清香的安睡木屋（点击对焦参观）'}
-              {hoveredObject === 'room-observatory' && '📡 山巅外星电波监听站 · 频率 1420.405 MHz 监听地外文明电波（点击对焦参观）'}
-              {hoveredObject === 'alien-receiver' && '📡 外星信号接收装置 · 频率 1420.405 MHz 监听深空（点击捕获电波）'}
-              {hoveredObject === 'sheep-pasture' && '🐑 阳光草丘牧场 · 悠闲吃草的小羊群与雏菊野花草甸'}
-              {hoveredObject === 'corner-pond' && '💧 约克郡清冽山溪 · 涉水跳石小径与水生鸢尾，点击荡漾水纹涟漪'}
-              {(hoveredObject.startsWith('🐑') || hoveredObject.startsWith('🦆') || hoveredObject.startsWith('🚪')) && hoveredObject}
-              {![
-                'tractor', 'mailbox', 'person-self', 'daybed', 'bookshelf', 'cabinet', 'person-lin',
-                'person-study', 'lazy-sofa', 'person-yu', 'room-my_room', 'room-living_nook',
-                'room-friend_room', 'room-capsule_pod', 'room-corn_lounge', 'room-observatory',
-                'alien-receiver', 'sheep-pasture', 'corner-pond'
-              ].includes(hoveredObject) && !hoveredObject.startsWith('bookshelf:') && !hoveredObject.startsWith('cabinet:') && !hoveredObject.startsWith('🐑') && !hoveredObject.startsWith('🦆') && !hoveredObject.startsWith('🚪') && hoveredObject}
+              {describeInteraction(hoveredObject, { people, tiers: interactionTiers, editing: isInspectorOpen })}
             </span>
           </div>
         </div>

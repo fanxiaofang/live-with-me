@@ -1,4 +1,5 @@
 import React from 'react';
+import { svgAction } from '../../world/interactions/svgAction';
 import { BookItemConfig } from './bookshelfTypes';
 
 // 实用颜色深浅混合工具
@@ -65,6 +66,7 @@ export const BookItem: React.FC<BookItemProps> = ({
       <g
         id={`book-slot-pulled-${id}`}
         className="cursor-pointer group/pulled-slot transition-all duration-300"
+        {...(onClick ? svgAction(`检视书籍：${config.title}`) : {})}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -111,6 +113,7 @@ export const BookItem: React.FC<BookItemProps> = ({
       <g
         id={`book-stack-${id}`}
         className="cursor-pointer transition-all duration-200"
+        {...(onClick ? svgAction(`检视书籍：${config.title}`) : {})}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -180,6 +183,7 @@ export const BookItem: React.FC<BookItemProps> = ({
       id={`book-item-${id}`}
       className="cursor-pointer group/book transition-all duration-200"
       transform={transformStr}
+      {...(onClick ? svgAction(`检视书籍：${config.title}`) : {})}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

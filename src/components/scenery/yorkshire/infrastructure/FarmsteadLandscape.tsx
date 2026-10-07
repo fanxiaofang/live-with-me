@@ -113,7 +113,7 @@ export const FarmsteadLandscape: React.FC<YorkshireCommonProps> = ({
         id="tractor-in-field"
         transform={`translate(${farm.tractor.x}, ${farm.tractor.y})`}
         className="cursor-pointer transition-opacity hover:opacity-95"
-        onMouseEnter={() => setHoveredObject?.('tractor')}
+        onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'tractor' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
         {/* Weathered Timber Paddock Fence */}

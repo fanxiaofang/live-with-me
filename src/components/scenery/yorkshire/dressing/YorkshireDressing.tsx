@@ -1,3 +1,4 @@
+import { svgAction } from '../../../../world/interactions/svgAction';
 import React, { useState } from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
@@ -99,12 +100,12 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       {/* 🌳 庄园百年守护树 (The Heritage Guardian Tree · 前景右侧草地上的核心视觉焦点) */}
       {/*    位置：右侧向阳开阔草甸 (x: 710, y: 520)，平衡构图，打破右侧单调，富有诗意故事性 */}
       {/* ========================================================================= */}
-      <g
+      <g {...svgAction('guardian-heritage-tree')}
         id="guardian-heritage-tree"
         transform="translate(710, 520) scale(1.08)"
         className="cursor-pointer group/tree"
         onClick={handleTreeClick}
-        onMouseEnter={() => setHoveredObject?.('🌳 庄园百年守护树 · 见证岁月流转的古橡树（点击轻拂树梢听风）')}
+        onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'guardian-tree' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
         {/* 1. 树下广袤斑驳树荫 (Dappled Tree Canopy Ground Shadow) */}
@@ -122,7 +123,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <path d="M16,42 Q32,46 48,47" stroke="#2a180e" strokeWidth="4.0" strokeLinecap="round" fill="none" />
           <path d="M12,44 Q22,50 34,52" stroke="#382214" strokeWidth="3.0" strokeLinecap="round" fill="none" />
           <path d="M-2,46 Q2,54 8,56" stroke="#24140a" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-          
+
           {/* 树根旁生机小雏菊与绿苔 (Moss & Daisies at tree base) */}
           <ellipse cx="-24" cy="45" rx="8" ry="3.5" fill="#2d4a23" opacity="0.85" />
           <ellipse cx="26" cy="46" rx="7" ry="3" fill="#2d4a23" opacity="0.8" />
@@ -163,7 +164,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <path d="M3,36 Q0,14 6,-8" stroke="#5a381f" strokeWidth="1.4" fill="none" opacity="0.75" />
           <line x1="-12" y1="28" x2="-10" y2="4" stroke="#24140a" strokeWidth="1.2" />
           <line x1="8" y1="24" x2="10" y2="2" stroke="#24140a" strokeWidth="1.2" />
-          
+
           {/* 树干天然树洞与树瘤 (Characterful Tree Knot Hollow) */}
           <ellipse cx="-2" cy="14" rx="3.5" ry="5.5" fill="#140b05" stroke="#482b15" strokeWidth="0.8" />
           <ellipse cx="-2" cy="14" rx="2.2" ry="3.8" fill="#0a0502" />
@@ -194,7 +195,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <ellipse cx="-8" cy="-104" rx="28" ry="19" fill="#5ea86e" />
           <ellipse cx="14" cy="-100" rx="26" ry="18" fill="#67b779" />
           <ellipse cx="2" cy="-114" rx="22" ry="15" fill="#78c98b" />
-          
+
           {/* 树冠向阳顶端亮金微反光 (Sun-drenched Leaf Shimmer) */}
           <ellipse cx="-4" cy="-118" rx="14" ry="8" fill="#93e0a5" opacity="0.7" />
           <circle cx="8" cy="-112" r="7" fill="#88d89a" opacity="0.65" />
@@ -264,12 +265,12 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       </g>
 
       {/* 🐑 Sheep 1: 西侧河畔开阔草场啃草羊 (x: -420, y: 460) */}
-      <g
+      <g {...svgAction('sheep-1')}
         id="sheep-1"
         transform="translate(-420, 460) scale(0.95)"
         className="cursor-pointer group/sheep"
         onClick={(e) => handleSheepClick(0, e)}
-        onMouseEnter={() => setHoveredObject?.('🐑 约克郡黑脸羊 · 在西侧开阔草场安静吃草（点击互动）')}
+        onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-0' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
         <ellipse cx="0" cy="14" rx="16" ry="5.5" fill="#182315" opacity="0.35" />
@@ -295,12 +296,12 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       </g>
 
       {/* 🐑 Sheep 2: 主屋台地前方中景草场安睡羊 (x: -50, y: 610) */}
-      <g
+      <g {...svgAction('sheep-2')}
         id="sheep-2"
         transform="translate(-50, 610) scale(1.0)"
         className="cursor-pointer group/sheep"
         onClick={(e) => handleSheepClick(1, e)}
-        onMouseEnter={() => setHoveredObject?.('🐑 约克郡黑脸羊 · 在向阳草坡上惬意打盹（点击互动）')}
+        onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-1' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
         <ellipse cx="0" cy="10" rx="20" ry="7" fill="#182315" opacity="0.38" />
@@ -326,12 +327,12 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
 
       {/* 🐑 Sheep 3 & 4: 东侧开阔大草场母子羊 (x: 360, y: 560) */}
       <g id="sheep-mother-and-lamb-group">
-        <g
+        <g {...svgAction('sheep-3')}
           id="sheep-3"
           transform="translate(360, 560) scale(1.0)"
           className="cursor-pointer group/sheep"
           onClick={(e) => handleSheepClick(2, e)}
-          onMouseEnter={() => setHoveredObject?.('🐑 约克郡母羊 · 在牧场大门旁照看着小羊（点击互动）')}
+          onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-2' })}
           onMouseLeave={() => setHoveredObject?.(null)}
         >
           <ellipse cx="0" cy="16" rx="18" ry="6" fill="#182315" opacity="0.35" />
@@ -358,12 +359,12 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         </g>
 
         {/* 欢脱小羊羔 */}
-        <g
+        <g {...svgAction('sheep-4')}
           id="sheep-4"
           transform="translate(410, 575) scale(0.68)"
           className="cursor-pointer group/sheep"
           onClick={(e) => handleSheepClick(3, e)}
-          onMouseEnter={() => setHoveredObject?.('🐑 雀跃小羊羔 · 活蹦乱跳的黑脸小羊羔（点击互动）')}
+          onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-3' })}
           onMouseLeave={() => setHoveredObject?.(null)}
         >
           <ellipse cx="0" cy="14" rx="12" ry="4.5" fill="#182315" opacity="0.32" />
@@ -389,12 +390,12 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       </g>
 
       {/* 🐑 Sheep 5: 右上山麓石墙边探头小羊 (x: 640, y: 420) */}
-      <g
+      <g {...svgAction('sheep-5')}
         id="sheep-5"
         transform="translate(640, 420) scale(0.75)"
         className="cursor-pointer group/sheep"
         onClick={(e) => handleSheepClick(4, e)}
-        onMouseEnter={() => setHoveredObject?.('🐑 山麓小羊 · 静立在石墙边迎风远眺（点击互动）')}
+        onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-4' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
         <ellipse cx="0" cy="14" rx="14" ry="5" fill="#182315" opacity="0.3" />

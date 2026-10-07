@@ -1,3 +1,5 @@
+import { svgAction } from '../../world/interactions/svgAction';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import React from 'react';
 import { CabinetFrame } from './CabinetFrame';
@@ -7,7 +9,7 @@ import { CoffeeBeansDisplay, CeramicCupsDisplay } from './CoffeeCorner';
 import { CabinetLayoutConfig, EditableObjectId, IsoGizmo } from '../layout-gizmo';
 
 export interface RecordCabinetProps {
-  onHoverObject?: (label: string | null) => void;
+  onHoverObject?: (target: InteractionTarget | null) => void;
   isPlaying?: boolean;
   layout?: CabinetLayoutConfig;
   activeGizmoId?: EditableObjectId | null;
@@ -51,7 +53,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
       {/* 1. 复古胡桃木/老柚木边柜主体骨架 */}
       <CabinetFrame
         onHover={(hovered) => {
-          onHoverObject?.(hovered ? 'cabinet:复古胡桃木咖啡唱片边柜' : null);
+          onHoverObject?.(hovered ? { kind: 'furniture-part', id: 'cabinet-group' } : null);
         }}
         onClick={() => {
           if (isInspectorOpen) {
@@ -61,7 +63,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
       >
         {/* 2. 下层开放格内嵌物品 */}
         {/* 2.1 左侧格：手冲咖啡熟豆包与玻璃储豆罐 */}
-        <g
+        <g {...svgAction('cabinet-coffee-beans')}
           id="cabinet-coffee-beans"
           transform={`translate(${beansPos.x}, ${beansPos.y}) scale(${beansScale})`}
           className="cursor-pointer"
@@ -71,7 +73,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.('cabinet:现烘单品咖啡豆与密封罐 (点击可调优坐标)');
+            onHoverObject?.({ kind: 'furniture-part', id: 'cabinet-beans' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();
@@ -82,7 +84,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
         </g>
 
         {/* 2.2 右侧格：几只手作小陶土咖啡杯 */}
-        <g
+        <g {...svgAction('cabinet-ceramic-cups')}
           id="cabinet-ceramic-cups"
           transform={`translate(${cupsPos.x}, ${cupsPos.y}) scale(${cupsScale})`}
           className="cursor-pointer"
@@ -92,7 +94,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.('cabinet:手作陶土咖啡杯 (点击可调优坐标)');
+            onHoverObject?.({ kind: 'furniture-part', id: 'cabinet-cups' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();
@@ -106,7 +108,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
       {/* 3. 顶面操作台陈列物品 (台面层，置于顶板之上) */}
       <g id="cabinet-countertop-items">
         {/* 3.1 顶面左侧：复古极简黑胶唱片机 */}
-        <g
+        <g {...svgAction('cabinet-record-player')}
           id="cabinet-record-player"
           transform={`translate(${turntablePos.x}, ${turntablePos.y}) scale(${turntableScale})`}
           className="cursor-pointer"
@@ -116,7 +118,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.('turntable:复古黑胶唱片机 (点击可调优坐标)');
+            onHoverObject?.({ kind: 'furniture-part', id: 'record-player' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();
@@ -127,7 +129,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
         </g>
 
         {/* 3.2 顶面右侧：经典意式摩卡咖啡壶 */}
-        <g
+        <g {...svgAction('cabinet-moka-pot')}
           id="cabinet-moka-pot"
           transform={`translate(${mokaPos.x}, ${mokaPos.y}) scale(${mokaScale})`}
           className="cursor-pointer"
@@ -137,7 +139,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
-            onHoverObject?.('cabinet:经典意式摩卡咖啡壶 (点击可调优坐标)');
+            onHoverObject?.({ kind: 'furniture-part', id: 'moka-pot' });
           }}
           onMouseLeave={(e) => {
             e.stopPropagation();

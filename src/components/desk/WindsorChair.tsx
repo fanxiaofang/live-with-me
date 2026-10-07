@@ -1,3 +1,5 @@
+import { svgAction } from '../../world/interactions/svgAction';
+import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import React from 'react';
 import { Person } from '../../types';
 import { CharacterHead } from '../CharacterAvatar';
@@ -26,7 +28,7 @@ export interface WindsorChairProps {
   /**
    * 鼠标悬浮回调
    */
-  onHover?: (label: string | null) => void;
+  onHover?: (target: InteractionTarget | null) => void;
   /**
    * 快捷切换组合态 / 空椅子状态的回调
    */
@@ -39,7 +41,7 @@ export interface WindsorChairProps {
 
 /**
  * 2.5D 手作白橡木温莎纺锤椅 (Rustic Handcrafted White Oak Windsor Chair)
- * 
+ *
  * 几何视角与轴测对齐 (NW 朝向与书桌严格垂直对齐)：
  * 1. 空间朝向：电脑桌长边沿 U 轴（斜率 -0.2852），进深沿 V 轴（斜率 +0.2852）。
  *    椅子正面朝向 NW（西北，朝向电脑桌与笔记本屏幕），进深法线与书桌完全垂直对齐。
@@ -71,19 +73,7 @@ export const WindsorChair: React.FC<WindsorChairProps> = ({
 
   const handleMouseEnter = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isInspectorOpen) {
-      onHover?.(
-        isSeated
-          ? `chair:手作白橡木温莎椅 (${occupant?.name || '我'} 正在此就座 · NW 朝向对齐)`
-          : 'chair:手作白橡木温莎椅 (空椅状态 · NW 朝向对齐书桌)'
-      );
-    } else {
-      onHover?.(
-        isSeated
-          ? `person-${occupant?.id || 'self'}`
-          : 'chair:阁楼白橡木温莎椅 (点击可就坐或检视)'
-      );
-    }
+    onHover?.(!isInspectorOpen && isSeated && occupant ? { kind: 'person', id: occupant.id } : { kind: 'furniture-part', id: 'attic-chair' });
   };
 
   const handleMouseLeave = () => {
@@ -91,7 +81,7 @@ export const WindsorChair: React.FC<WindsorChairProps> = ({
   };
 
   return (
-    <g
+    <g {...svgAction('windsor-chair-root')}
       id="windsor-chair-root"
       className="select-none cursor-pointer group/windsor-chair"
       onClick={onClick}
@@ -211,7 +201,7 @@ export const WindsorChair: React.FC<WindsorChairProps> = ({
 
       {/* --- 3. 优化尺寸与温润质感的白橡木马鞍雕刻座板与质朴棉麻座垫 --- */}
       <g id="chair-seat-plank">
-        {/* 
+        {/*
           【尺寸优化】：
           宽度缩减至 16.5px (告别过宽的 27px 长凳感，舒适贴合单人身材)
           后缘中心对准 x=0, y=5.0；前沿中心对准 x=-8.0, y=2.7。
@@ -402,7 +392,7 @@ export const WindsorChair: React.FC<WindsorChairProps> = ({
       )}
 
       {/* --- 5. 比例匀称、严格对中 (x=0) 的温莎梳背与弯木顶梁 (Windsor Backrest) --- */}
-      {/* 
+      {/*
         【对称性与居中修正】：
         此前立柱偏至 x=-2 ~ 10，导致右侧空出很多竖条、左侧缺失。
         现完全以 x=0 为对称中轴线，7 根立柱优雅排布在 x ∈ [-6.0, 6.0]，

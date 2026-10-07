@@ -124,6 +124,7 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
             </div>
           </div>
           <button
+            aria-label="关闭书架"
             onClick={onClose}
             className="p-1.5 rounded-lg text-[#b89f8c] hover:text-[#faf5ee] hover:bg-[#3d2a1f] transition-colors"
           >

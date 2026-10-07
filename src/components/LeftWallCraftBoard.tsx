@@ -1,3 +1,5 @@
+import { svgAction } from '../world/interactions/svgAction';
+import type { InteractionTarget } from '../world/interactions/interactionTypes';
 import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -5,7 +7,7 @@ import { X, Heart, Users, Sparkles } from 'lucide-react';
 import { RoomLayoutConfig, EditableObjectId, IsoGizmo } from './layout-gizmo';
 
 interface LeftWallCraftBoardProps {
-  onHover?: (label: string | null) => void;
+  onHover?: (target: InteractionTarget | null) => void;
   selfPerson?: { name?: string; shirtColor?: string; beanieColor?: string };
   linPerson?: { name?: string; shirtColor?: string; beanieColor?: string };
   yuPerson?: { name?: string; shirtColor?: string; beanieColor?: string };
@@ -19,7 +21,7 @@ interface LeftWallCraftBoardProps {
 
 /**
  * 2.5D 左侧墙面手作木工工具墙 & 三人萌感背影相框 & 陶艺风铃：
- * 
+ *
  * 视觉重构重点：
  * 1. 彻底移除拟真高光、拟物木纹渐变与玻璃反光等写实杂质；
  * 2. 采用柔和、圆润、呼吸感充足的极简扁平化 UI / 绘本风格；
@@ -92,7 +94,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
         {/* ========================================================================= */}
         {/* 1. 极简扁平绘本风手作工具洞洞板 (5 样圆润小工具，无生硬高光)                 */}
         {/* ========================================================================= */}
-        <g
+        <g {...svgAction('craft-tool-wall')}
           id="craft-tool-wall"
           transform={`translate(${toolWallX}, ${toolWallY})`}
           onClick={(e) => {
@@ -101,7 +103,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
               onSelectGizmo?.(effectiveGizmoId === 'craft-tool-wall' ? null : 'craft-tool-wall');
             }
           }}
-          onMouseEnter={() => onHover?.('手作工具墙 (小锤子 · 黄铜三角尺 · 螺丝刀 · 剪刀 · 电烙铁)')}
+          onMouseEnter={() => onHover?.({ kind: 'furniture-part', id: 'craft-tool-wall' })}
           onMouseLeave={() => onHover?.(null)}
           className="cursor-pointer group/toolwall"
         >
@@ -262,11 +264,11 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
         {/* ========================================================================= */}
         {/* 2. 陶艺三色风铃挂饰 (纯平柔和质感)                                         */}
         {/* ========================================================================= */}
-        <g
+        <g {...svgAction('craft-wind-chime')}
           id="craft-wind-chime"
           transform={`translate(${windChimeX}, ${windChimeY})`}
           onClick={handleChimeClick}
-          onMouseEnter={() => onHover?.('手作陶艺风铃 (点击轻摇微鸣)')}
+          onMouseEnter={() => onHover?.({ kind: 'furniture-part', id: 'craft-wind-chime' })}
           onMouseLeave={() => onHover?.(null)}
           className="cursor-pointer group/chime"
         >
@@ -342,11 +344,11 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
         {/* ========================================================================= */}
         {/* 3. 墙面三人合照相框模组 (柔和圆润、极简扁平化、无拟真杂质)                  */}
         {/* ========================================================================= */}
-        <g
+        <g {...svgAction('craft-trio-photo')}
           id="craft-trio-photo"
           transform={`translate(${photosX}, ${photosY})`}
           onClick={handlePhotoClick}
-          onMouseEnter={() => onHover?.('三人合照小相框 (点击开启相册大图)')}
+          onMouseEnter={() => onHover?.({ kind: 'furniture-part', id: 'left-wall-photos' })}
           onMouseLeave={() => onHover?.(null)}
           className="cursor-pointer group/photo"
         >
