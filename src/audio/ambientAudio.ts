@@ -52,6 +52,19 @@ class AmbientAudioEngine {
     }
   }
 
+  public dispose() {
+    if (this.fireInterval !== null) window.clearInterval(this.fireInterval);
+    this.fireInterval = null;
+    this.rainSource?.stop();
+    for (const oscillator of this.droneOscs) oscillator.stop();
+    this.droneOscs = [];
+    void this.ctx?.close();
+    this.ctx = null;
+    this.masterGain = this.rainGain = this.fireGain = this.vinylGain = this.droneGain = null;
+    this.rainSource = null;
+    this.isMuted = true;
+  }
+
   private setupRain() {
     if (!this.ctx || !this.masterGain) return;
 

@@ -1,3 +1,4 @@
+import { useTimerScope } from '../../shared/timers/useTimerScope';
 import React, { useState, useEffect } from 'react';
 import {
   RoomLayoutConfig,
@@ -59,7 +60,9 @@ export const LayoutInspectorPanel: React.FC<LayoutInspectorPanelProps> = ({
   onToggleChairSeated,
   onOpenChairInspector,
 }) => {
+  const timers = useTimerScope(isOpen);
   const [copied, setCopied] = useState(false);
+  useEffect(() => { if (!isOpen) setCopied(false); }, [isOpen]);
   const [isMinimized, setIsMinimized] = useState(false);
   const [activeCategory, setActiveCategory] = useState<RoomCategory | 'all'>('all');
 
@@ -76,7 +79,7 @@ export const LayoutInspectorPanel: React.FC<LayoutInspectorPanelProps> = ({
 export const roomLayoutConfig = ${JSON.stringify(formattedObj, null, 2)};`;
     navigator.clipboard.writeText(codeSnippet);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2200);
+    timers.schedule('feedback-0', () => setCopied(false), 2200);
   };
 
   const handleNudge = (id: EditableObjectId, dx: number, dy: number) => {

@@ -1,3 +1,7 @@
+import { useToast } from './features/feedback/useToast';
+import { usePresenceState } from './features/presence/usePresenceState';
+import { useMailbox } from './features/mailbox/useMailbox';
+import { useBookshelf } from './features/bookshelf/useBookshelf';
 import { useLayoutEditor } from './features/layout-editor/useLayoutEditor';
 /**
  * Live With Me
@@ -44,9 +48,6 @@ import { resolvePresenceSlots } from './features/presence/presenceAllocation';
 
 export default function App() {
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('afternoon');
-  const [people, setPeople] = useState<Person[]>(INITIAL_PEOPLE);
-  const presenceAllocation = useMemo(() => resolvePresenceSlots(people), [people]);
-  const [letters, setLetters] = useState<MailLetter[]>(INITIAL_LETTERS);
   const [memories, setMemories] = useState<LivingMemory[]>(INITIAL_MEMORIES);
   const [activeRoom, setRoom] = useState<RoomId | 'overview'>('overview');
   const [focusRevision, setFocusRevision] = useState(0);
@@ -59,112 +60,23 @@ export default function App() {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [isMemoriesOpen, setIsMemoriesOpen] = useState(false);
   const [showManifesto, setShowManifesto] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const { toastMessage, triggerToast } = useToast();
 
   // 电脑桌椅子状态管理 (空椅态 vs 小人组合态)
   const [isChairModalOpen, setIsChairModalOpen] = useState(false);
   const [isChairEmptyOverride, setIsChairEmptyOverride] = useState(false);
 
   const handleToggleChairSeated = (nextSeated?: boolean) => {
-    setIsChairEmptyOverride((prev) => {
-      const nextVal = nextSeated !== undefined ? !nextSeated : !prev;
-      triggerToast(
-        nextVal
-          ? '🪑 已切换为【空椅子态】：清晰查看白橡木温莎椅的坐垫、木纹与朝向桌案的靠背'
-          : '💻 已切换为【小人组合态】：小人就座敲代码，后背自然贴合温莎梳背'
-      );
-      return nextVal;
-    });
+    const nextVal = nextSeated !== undefined ? !nextSeated : !isChairEmptyOverride;
+    setIsChairEmptyOverride(nextVal);
+    triggerToast(nextVal ? '🪑 已切换为【空椅子态】：清晰查看白橡木温莎椅的坐垫、木纹与朝向桌案的靠背' : '💻 已切换为【小人组合态】：小人就座敲代码，后背自然贴合温莎梳背');
   };
 
   // Bookshelf state
   const [isBookshelfModalOpen, setIsBookshelfModalOpen] = useState(false);
-  const [bookshelfPreset, setBookshelfPreset] = useState<BookshelfPreset>('cozy');
-  const [customBookshelfTiers, setCustomBookshelfTiers] = useState<TierConfig[]>(PRESET_COZY_TIERS);
-  const [selectedBookshelfItem, setSelectedBookshelfItem] = useState<{
-    type: 'book' | 'dec';
-    item: BookItemConfig | ShelfDecorationConfig;
-  } | null>(null);
-
-  // Unread mail for self
-  const unreadCount = letters.filter((l) => l.toId === 'self' && !l.read).length;
-
-  const triggerToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3200);
-  };
-
-  // Change self status
-  // Change self status and appearance
-  const handleSaveMyStatus = (
-    stateId: LifeStateId,
-    roomId: RoomId,
-    note: string,
-    appearance?: {
-      skinColor?: string;
-      beanieColor?: string;
-      hairColor?: string;
-      hairStyle?: string;
-      shirtColor?: string;
-      hasPompom?: boolean;
-    }
-  ) => {
-    setPeople((prev) =>
-      prev.map((p) => {
-        if (p.id === 'self') {
-          return {
-            ...p,
-            currentState: stateId,
-            currentRoom: roomId,
-            stateNote: note || p.stateNote,
-            sinceTime: '刚刚更新状态',
-            ...(appearance || {}),
-          };
-        }
-        return p;
-      })
-    );
-    const stateObj = LIFE_STATES[stateId];
-    triggerToast(`状态与小人特征已更新：${stateObj?.emoji} ${stateObj?.label}`);
-  };
-
-  // Send letter or gift
-  const handleSendLetter = (newLetter: Omit<MailLetter, 'id' | 'date' | 'read'>) => {
-    const letterId = `m-${Date.now()}`;
-    const newMail: MailLetter = {
-      ...newLetter,
-      id: letterId,
-      date: '刚刚',
-      read: false,
-    };
-
-    setLetters((prev) => [newMail, ...prev]);
-
-    // Also record a gentle LivingMemory
-    const recipient = people.find((p) => p.id === newLetter.toId);
-    if (recipient) {
-      const newMem: LivingMemory = {
-        id: `mem-${Date.now()}`,
-        title: `给${recipient.name}门前留下的心意`,
-        desc: `在信箱里悄悄放入了便笺，附带着${newLetter.gift ? '一份小礼物' : '几句安静的话'}。没有催促，只有挂念。`,
-        timestamp: '刚才',
-        participants: ['我', recipient.name],
-        icon: newLetter.gift === 'coffee' ? '☕' : newLetter.gift === 'plant' ? '🪴' : '✉️',
-      };
-      setMemories((prev) => [newMem, ...prev]);
-    }
-
-    triggerToast(`便笺与心意已投递至 ${recipient?.name || '朋友'} 的信箱`);
-  };
-
-  // Mark letter as read
-  const handleMarkLetterRead = (letterId: string) => {
-    setLetters((prev) =>
-      prev.map((l) => (l.id === letterId ? { ...l, read: true } : l))
-    );
-  };
+  const { people, presenceAllocation, saveStatus: handleSaveMyStatus } = usePresenceState(triggerToast);
+  const { letters, unreadCount, sendLetter: handleSendLetter, markRead: handleMarkLetterRead } = useMailbox(people, memory => setMemories(previous => [memory, ...previous]), triggerToast);
+  const { bookshelfPreset, customBookshelfTiers, selectedBookshelfItem, setSelectedBookshelfItem, handleSelectBookshelfPreset, handleToggleBookPulled, handleAddCustomBook } = useBookshelf(triggerToast);
 
   // Send quick gift from friend card
   const handleSendQuickGift = (friendId: string, giftType: 'coffee' | 'plant') => {
@@ -186,100 +98,11 @@ export default function App() {
   };
 
   // Bookshelf handlers
-  const handleSelectBookshelfPreset = (preset: BookshelfPreset) => {
-    setBookshelfPreset(preset);
-    let baseTiers: TierConfig[];
-    switch (preset) {
-      case 'empty':
-        baseTiers = PRESET_EMPTY_TIERS;
-        break;
-      case 'packed':
-        baseTiers = PRESET_PACKED_TIERS;
-        break;
-      case 'botanical':
-        baseTiers = PRESET_BOTANICAL_TIERS;
-        break;
-      case 'reading_lin':
-        baseTiers = PRESET_READING_LIN_TIERS;
-        break;
-      case 'cozy':
-      default:
-        baseTiers = PRESET_COZY_TIERS;
-        break;
-    }
-    setCustomBookshelfTiers(baseTiers);
-    const presetNames: Record<BookshelfPreset, string> = {
-      cozy: '岁月沉淀 · 惬意日常',
-      reading_lin: '林木正在翻读 · 抽出空位',
-      empty: '新居搬入 · 纯净空架',
-      packed: '博览藏书 · 满满当当',
-      botanical: '绿意垂蔓 · 森林氧吧',
-    };
-    triggerToast(`📚 书架场景已切换：${presetNames[preset] || preset}`);
-  };
-
-  const handleToggleBookPulled = (bookId: string) => {
-    let bookTitle = '';
-    let willPull = false;
-
-    setCustomBookshelfTiers((prev) =>
-      prev.map((tier) => {
-        if (!tier.books) return tier;
-        return {
-          ...tier,
-          books: tier.books.map((b) => {
-            if (b.id === bookId) {
-              bookTitle = b.title;
-              willPull = !b.isPulled;
-              return { ...b, isPulled: willPull, isReading: willPull };
-            }
-            return b;
-          }),
-        };
-      })
-    );
-
-    triggerToast(
-      willPull
-        ? `📖 已从书架抽出《${bookTitle}》，在沙发上安静翻读`
-        : `📥 已将《${bookTitle}》放回原木书架插槽`
-    );
-  };
-
-  const handleAddCustomBook = (tierIndex: number, newBook: Partial<BookItemConfig>) => {
-    const bookItem: BookItemConfig = {
-      id: `custom-book-${Date.now()}`,
-      title: newBook.title || '无名手记',
-      author: newBook.author || '我',
-      color: newBook.color || '#b45309',
-      pageColor: '#f7f2ea',
-      thickness: newBook.thickness || 2.5,
-      height: newBook.height || 8.8,
-      depth: 4.0,
-      donor: newBook.donor || '我',
-      note: newBook.note || '随手插在原木架上的一本心头好。',
-      bookmarkRibbon: newBook.bookmarkRibbon,
-      offset: 196 + (Math.random() * 8 - 4),
-    };
-
-    setCustomBookshelfTiers((prev) =>
-      prev.map((tier) => {
-        if (tier.index === tierIndex) {
-          return {
-            ...tier,
-            books: [...(tier.books || []), bookItem],
-          };
-        }
-        return tier;
-      })
-    );
-
-    triggerToast(`✨ 已将《${bookItem.title}》安放到书架第 ${tierIndex} 层插槽`);
-  };
-
   const {roomLayout,activeGizmoId,setActiveGizmoId,isLayoutInspectorOpen,setIsLayoutInspectorOpen,
     updatePosition:handleUpdateLayoutPosition,dragDelta:handleDragGizmoDelta,
     beginDrag,commitDrag,cancelDrag,reset:handleResetLayoutDefaults} = useLayoutEditor(triggerToast);
+
+  useEffect(() => () => ambientAudio.dispose(), []);
 
   return (
     <main className="relative w-screen h-screen overflow-hidden bg-[#141210] font-sans">

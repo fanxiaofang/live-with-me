@@ -1,3 +1,4 @@
+import { useTimerScope } from '../../../../shared/timers/useTimerScope';
 import { svgAction } from '../../../../world/interactions/svgAction';
 import React, { useState } from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
@@ -18,6 +19,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
   setHoveredObject,
   className,
 }) => {
+  const timers = useTimerScope();
   const [activeSheepIndex, setActiveSheepIndex] = useState<number | null>(null);
   const [sheepSaying, setSheepSaying] = useState<string | null>(null);
 
@@ -48,7 +50,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
     setSheepSaying(quote);
     onTriggerToast?.(quote);
 
-    setTimeout(() => {
+    timers.schedule('feedback-0', () => {
       setActiveSheepIndex((prev) => (prev === index ? null : prev));
       setSheepSaying(null);
     }, 4500);
@@ -61,11 +63,11 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
     setGuardianTreeSaying(randomQuote);
     onTriggerToast?.(randomQuote);
 
-    setTimeout(() => {
+    timers.schedule('feedback-1', () => {
       setIsTreeRustling(false);
     }, 1200);
 
-    setTimeout(() => {
+    timers.schedule('feedback-2', () => {
       setGuardianTreeSaying(null);
     }, 5500);
   };
@@ -244,7 +246,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
 
         {/* 6. 点击树木时弹出的温情故事气泡 (Guardian Tree Speech/Story Bubble) */}
         {guardianTreeSaying && (
-          <g transform="translate(0, -145)" className="animate-bounce pointer-events-none">
+          <g transform="translate(0, -145)"><g  className="animate-bounce pointer-events-none">
             <rect
               x="-90"
               y="-14"
@@ -260,7 +262,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
             <text x="0" y="4" fill="#dcfce7" fontSize="8.2" fontWeight="bold" textAnchor="middle">
               {guardianTreeSaying}
             </text>
-          </g>
+          </g></g>
         )}
       </g>
 
@@ -288,10 +290,10 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <ellipse cx="2" cy="4" rx="2.5" ry="1.2" fill="#241d18" transform="rotate(30 2 4)" />
         </g>
         {activeSheepIndex === 0 && sheepSaying && (
-          <g transform="translate(0, -32)" className="animate-bounce pointer-events-none">
+          <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">
             <rect x="-65" y="-12" width="130" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
             <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
-          </g>
+          </g></g>
         )}
       </g>
 
@@ -318,10 +320,10 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <text x="-4" y="-11" fill="#fef3c7" fontSize="9.5" fontWeight="bold" className="animate-bounce">Z</text>
         </g>
         {activeSheepIndex === 1 && sheepSaying && (
-          <g transform="translate(0, -32)" className="animate-bounce pointer-events-none">
+          <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">
             <rect x="-70" y="-12" width="140" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
             <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
-          </g>
+          </g></g>
         )}
       </g>
 
@@ -351,10 +353,10 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
             <ellipse cx="-1" cy="-4" rx="3" ry="1.4" fill="#241d18" transform="rotate(-20 -1 -4)" />
           </g>
           {activeSheepIndex === 2 && sheepSaying && (
-            <g transform="translate(0, -34)" className="animate-bounce pointer-events-none">
+            <g transform="translate(0, -34)"><g  className="animate-bounce pointer-events-none">
               <rect x="-70" y="-12" width="140" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
               <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
-            </g>
+            </g></g>
           )}
         </g>
 
@@ -381,10 +383,10 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
             <ellipse cx="-1" cy="-3.5" rx="2.2" ry="1" fill="#221a15" />
           </g>
           {activeSheepIndex === 3 && sheepSaying && (
-            <g transform="translate(0, -32)" className="animate-bounce pointer-events-none">
+            <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">
               <rect x="-65" y="-12" width="130" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
               <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
-            </g>
+            </g></g>
           )}
         </g>
       </g>
@@ -411,10 +413,10 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <ellipse cx="-1" cy="-3.5" rx="2.5" ry="1.2" fill="#241d18" transform="rotate(-20 -1 -3.5)" />
         </g>
         {activeSheepIndex === 4 && sheepSaying && (
-          <g transform="translate(0, -32)" className="animate-bounce pointer-events-none">
+          <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">
             <rect x="-65" y="-12" width="130" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
             <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
-          </g>
+          </g></g>
         )}
       </g>
     </g>

@@ -1,3 +1,4 @@
+import { useTimerScope } from '../../shared/timers/useTimerScope';
 import React, { useState } from 'react';
 
 export interface MonsteraPlantProps {
@@ -15,6 +16,7 @@ export interface MonsteraPlantProps {
  * 5. 点击微摇曳与露水闪烁微动效
  */
 export const MonsteraPlant: React.FC<MonsteraPlantProps> = ({ onHover, onClick }) => {
+  const timers = useTimerScope();
   const [rustle, setRustle] = useState(false);
   const [dropEffect, setDropEffect] = useState(false);
 
@@ -22,8 +24,8 @@ export const MonsteraPlant: React.FC<MonsteraPlantProps> = ({ onHover, onClick }
     onClick?.(e);
     setRustle(true);
     setDropEffect(true);
-    setTimeout(() => setRustle(false), 900);
-    setTimeout(() => setDropEffect(false), 1400);
+    timers.schedule('feedback-0', () => setRustle(false), 900);
+    timers.schedule('feedback-1', () => setDropEffect(false), 1400);
   };
 
   return (

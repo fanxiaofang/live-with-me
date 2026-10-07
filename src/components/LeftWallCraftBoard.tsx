@@ -1,3 +1,4 @@
+import { useTimerScope } from '../shared/timers/useTimerScope';
 import { svgAction } from '../world/interactions/svgAction';
 import type { InteractionTarget } from '../world/interactions/interactionTypes';
 import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
@@ -43,6 +44,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
   onDragGizmoDelta,
   onDragGizmoEnd,
 }) => {
+  const timers = useTimerScope();
   const [chimeRinging, setChimeRinging] = useState(false);
   const [photoOpen, setPhotoOpen] = useState(false);
 
@@ -53,7 +55,7 @@ export const LeftWallCraftBoard: React.FC<LeftWallCraftBoardProps> = ({
       return;
     }
     setChimeRinging(true);
-    setTimeout(() => setChimeRinging(false), 1200);
+    timers.schedule('feedback-0', () => setChimeRinging(false), 1200);
   };
 
   const handlePhotoClick = (e: React.MouseEvent) => {

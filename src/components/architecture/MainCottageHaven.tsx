@@ -1339,13 +1339,13 @@ export function MainCottageHaven({ theme, hasMovedRef, onSelectRoom, setHoveredO
 
                     {/* Interactive Cozy Thought Bubble */}
                     {sofaThought && (
-                      <g transform="translate(0, -50)" className="pointer-events-none animate-bounce">
+                      <g transform="translate(0, -50)"><g  className="pointer-events-none animate-bounce">
                         <rect x="-70" y="-9" width="140" height="18" rx="9" fill="#292524" stroke="#e28547" strokeWidth="0.8" opacity="0.96" />
                         <polygon points="0,9 -3,13 3,9" fill="#292524" />
                         <text x="0" y="3" fill="#fed7aa" fontSize="7.5" fontWeight="medium" textAnchor="middle">
                           {sofaThought}
                         </text>
-                      </g>
+                      </g></g>
                     )}
                   </g>
                 );
@@ -1435,12 +1435,12 @@ export function MainCottageHaven({ theme, hasMovedRef, onSelectRoom, setHoveredO
                   </g>
 
                   {unreadMailCount > 0 && (
-                    <g transform="translate(0, -28)" className="animate-bounce">
+                    <g transform="translate(0, -28)"><g  className="animate-bounce">
                       <rect x="-34" y="-9" width="68" height="18" rx="9" fill="#c43b2f" filter="url(#softShadow)" />
                       <text x="0" y="3.5" fill="#fff" fontSize="9.5" fontWeight="bold" textAnchor="middle">
                         📪 新信件 ({unreadMailCount})
                       </text>
-                    </g>
+                    </g></g>
                   )}
                 </g>
               </g>

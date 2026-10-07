@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useTimerScope } from '../shared/timers/useTimerScope';
+import React, { useState, useEffect } from 'react';
 import { MailLetter, GiftType, Person } from '../types';
 import { GIFTS } from '../data/initialData';
 import { ambientAudio } from '../audio/ambientAudio';
@@ -23,6 +24,7 @@ export const MailboxModal: React.FC<MailboxModalProps> = ({
   onSendLetter,
   onMarkAsRead,
 }) => {
+  const timers = useTimerScope(isOpen);
   const [tab, setTab] = useState<'inbox' | 'compose'>('inbox');
   const [selectedRecipientId, setSelectedRecipientId] = useState<string>(
     people.find((p) => p.id !== currentUserId)?.id || 'lin'
@@ -30,6 +32,7 @@ export const MailboxModal: React.FC<MailboxModalProps> = ({
   const [selectedGift, setSelectedGift] = useState<GiftType>('coffee');
   const [content, setContent] = useState('');
   const [sentSuccess, setSentSuccess] = useState(false);
+  useEffect(() => { if (!isOpen) setSentSuccess(false); }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -62,7 +65,7 @@ export const MailboxModal: React.FC<MailboxModalProps> = ({
 
     ambientAudio.playGentleChime();
     setSentSuccess(true);
-    setTimeout(() => {
+    timers.schedule('feedback-0', () => {
       setSentSuccess(false);
       setContent('');
       setTab('inbox');

@@ -1,0 +1,16 @@
+
+              @keyframes driftFarClouds {
+                0% { transform: translateX(-160px); }
+                100% { transform: translateX(200px); }
+              }
+              @keyframes driftRidgeMist {
+                0% { transform: translateX(180px); }
+                100% { transform: translateX(-170px); }
+              }
+              .cloud-drift-far {
+                animation: driftFarClouds 130s ease-in-out infinite alternate;
+              }
+              .cloud-drift-mist {
+                animation: driftRidgeMist 90s ease-in-out infinite alternate;
+              }
+

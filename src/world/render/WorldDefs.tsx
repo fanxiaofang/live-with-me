@@ -1,3 +1,4 @@
+import './landscape.css';
 import React from 'react';
 import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import { YorkshireDefs } from '../../components/scenery/yorkshire';
@@ -56,22 +57,7 @@ export function WorldDefs({ theme }: WorldDefsProps) {
             </filter>
 
             {/* Retro Anime Parallax Cloud Drift Animations (长周期舒缓漂移，赋予微缩景观呼吸感) */}
-            <style>{`
-              @keyframes driftFarClouds {
-                0% { transform: translateX(-160px); }
-                100% { transform: translateX(200px); }
-              }
-              @keyframes driftRidgeMist {
-                0% { transform: translateX(180px); }
-                100% { transform: translateX(-170px); }
-              }
-              .cloud-drift-far {
-                animation: driftFarClouds 130s ease-in-out infinite alternate;
-              }
-              .cloud-drift-mist {
-                animation: driftRidgeMist 90s ease-in-out infinite alternate;
-              }
-            `}</style>
+
 
             {/* Roof terracotta tile pattern (饱满哑光老陶瓦层次) */}
             <linearGradient id="terracottaRoof" x1="0" y1="0" x2="0" y2="1">

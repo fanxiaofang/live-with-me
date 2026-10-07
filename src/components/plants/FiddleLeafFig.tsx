@@ -1,3 +1,4 @@
+import { useTimerScope } from '../../shared/timers/useTimerScope';
 import React, { useState } from 'react';
 
 export interface FiddleLeafFigProps {
@@ -18,6 +19,7 @@ export interface FiddleLeafFigProps {
  * 3. 灵动微交互：点击微风摇曳轻颤、露水微光闪烁与精致悬浮标签
  */
 export const FiddleLeafFig: React.FC<FiddleLeafFigProps> = ({ onHover, onClick }) => {
+  const timers = useTimerScope();
   const [rustle, setRustle] = useState(false);
   const [sparkleEffect, setSparkleEffect] = useState(false);
 
@@ -25,8 +27,8 @@ export const FiddleLeafFig: React.FC<FiddleLeafFigProps> = ({ onHover, onClick }
     onClick?.(e);
     setRustle(true);
     setSparkleEffect(true);
-    setTimeout(() => setRustle(false), 950);
-    setTimeout(() => setSparkleEffect(false), 1400);
+    timers.schedule('feedback-0', () => setRustle(false), 950);
+    timers.schedule('feedback-1', () => setSparkleEffect(false), 1400);
   };
 
   return (

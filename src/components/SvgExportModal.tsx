@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useTimerScope } from '../shared/timers/useTimerScope';
+import React, { useState, useEffect } from 'react';
 import { Download, Copy, Check, ExternalLink, X, Image as ImageIcon, Eye } from 'lucide-react';
 
 interface SvgExportModalProps {
@@ -7,7 +8,9 @@ interface SvgExportModalProps {
 }
 
 export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose }) => {
+  const timers = useTimerScope(isOpen);
   const [copiedView, setCopiedView] = useState<string | null>(null);
+  useEffect(() => { if (!isOpen) setCopiedView(null); }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -16,12 +19,14 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
       const response = await fetch(`/${filename}`);
       const text = await response.text();
       await navigator.clipboard.writeText(text);
+      if (!timers.isActive) return;
       setCopiedView(label);
-      setTimeout(() => setCopiedView(null), 2000);
+      timers.schedule('copy-feedback', () => setCopiedView(null), 2000);
     } catch {
+      if (!timers.isActive) return;
       // Fallback
       setCopiedView('复制失败');
-      setTimeout(() => setCopiedView(null), 2000);
+      timers.schedule('copy-feedback', () => setCopiedView(null), 2000);
     }
   };
 
