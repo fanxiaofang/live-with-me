@@ -22,8 +22,8 @@ drystoneWalls: {
   },
 railway: {
     anchor: { x: -160, y: 224 },
-    deck: { minX: -650, maxX: 56, y: 175, height: 7 },
-    piers: [-525, -455, -385, -315, -245, -175, -105, -35, 35],
+    deck: { minX: -760, maxX: 56, y: 175, height: 7 },
+    piers: [-685, -580, -475, -370, -265, -160, -55],
     tunnelPortal: { x: 58, y: 148 },
     locomotive: { x: -140, y: 163 },
   }

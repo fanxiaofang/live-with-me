@@ -2,25 +2,12 @@ import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
 
 /**
- * 🏔️ TerrainSilhouette (Distant Mountain Ridges, Silhouettes & Horizons)
- *
- * Layer: 01 TERRAIN SILHOUETTE
- * Complete Low-Poly Refactor:
- * - Geometric faceted origami mountain peaks replacing all wavy Bezier splines
- * - Crisp triangular & quadrilateral light/shadow facet pairs
- * - Planar low-poly golden wheat steps & fell fields
- * - Seamless integration with mountain tunnel portal entrance
+ * 🏔️ MountainSilhouette (Far Low-Poly Distant Mountain Ridges, Pines & Woodlands)
+ * Layer 01: FAR DISTANT BACKGROUND SILHOUETTE
  */
-export const TerrainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, className }) => {
+export const MountainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, className }) => {
   return (
-    <g id="yorkshire-terrain-silhouette" className={className}>
-      <defs>
-        <pattern id="wheatPattern" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
-          <line x1="0" y1="0" x2="0" y2="16" stroke="#fef08a" strokeWidth="1.2" opacity="0.65" />
-          <line x1="8" y1="0" x2="8" y2="16" stroke="#ca8a04" strokeWidth="0.8" opacity="0.4" />
-        </pattern>
-      </defs>
-
+    <g id="yorkshire-mountain-silhouette" className={className}>
       {/* ------------------------------------------------------------------- */}
       {/* 1. 远景低多边形主山脉基底与分面 (Clean Low-Poly Mountain Peak Facets)  */}
       {/* ------------------------------------------------------------------- */}
@@ -41,13 +28,10 @@ export const TerrainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, class
         <polygon points="-700,175 -420,135 -250,150 -520,195" fill="url(#lowPolyMountainLitGrad)" opacity="0.88" />
         <polygon points="-420,135 -150,175 -250,150" fill="url(#lowPolyMountainShadeGrad)" opacity="0.9" />
 
-        {/* Peak 3: 穿山隧道依托的东侧主山体 (x: 52 to 420) - 严格与隧道口(x=52..86)及桥台正交咬合 */}
-        {/* 隧道正上方迎光山体面 (从隧道门楼左柱顶x=52, y=160与桥梁标高y=182.5平顺升起至主峰x=200, y=118) */}
-        <polygon points="52,182.5 52,160 76,147 200,118 260,185" fill="url(#lowPolyMountainLitGrad)" />
-        {/* 山峰背光阴影面 (向东侧倾斜延伸) */}
-        <polygon points="200,118 360,145 420,165 260,185" fill="url(#lowPolyMountainShadeGrad)" />
-        {/* 隧道口右侧与上方立体基岩包裹面 (精准贴合隧道右侧壁x=86, y=150..182.5，消除遮挡与悬空) */}
-        <polygon points="76,147 86,150 86,182.5 260,185 200,118" fill="#4a5f3f" opacity="0.45" />
+        {/* Peak 3: 连贯自然的低多边形山丘 (Natural Faceted Low-Poly Mountain Peak) */}
+        <polygon points="-150,175 180,135 120,172 -30,185" fill="url(#lowPolyMountainLitGrad)" opacity="0.9" />
+        <polygon points="180,135 420,165 290,175 120,172" fill="url(#lowPolyMountainShadeGrad)" opacity="0.88" />
+        <polygon points="120,172 290,175 420,165 240,178" fill="url(#lowPolyMountainShadeGrad)" opacity="0.45" />
 
         {/* Peak 4: 中央向阳主峰 (x: 420 to 920) */}
         <polygon points="420,165 680,122 790,155 580,190" fill="url(#lowPolyMountainLitGrad)" />
@@ -61,14 +45,13 @@ export const TerrainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, class
         <polygon points="1450,165 1850,135 2050,165 1700,195" fill="url(#lowPolyMountainLitGrad)" />
         <polygon points="1850,135 2400,170 2050,165" fill="url(#lowPolyMountainShadeGrad)" />
 
-        {/* 远山棱角山脊微光线 (Low-Poly Crisp Ridge Highlight Edges) */}
-        <line x1="-850" y1="115" x2="-700" y2="175" stroke="#a4be96" strokeWidth="1.2" opacity="0.75" />
-        <line x1="-420" y1="135" x2="-250" y2="150" stroke="#a4be96" strokeWidth="1.2" opacity="0.75" />
-        {/* 隧道右后方主山脊棱角线 (从隧道门楼顶x=76,y=147向东北主峰x=200,y=118延伸) */}
-        <line x1="76" y1="147" x2="200" y2="118" stroke="#a4be96" strokeWidth="1.4" opacity="0.85" />
-        <line x1="200" y1="118" x2="360" y2="145" stroke="#364930" strokeWidth="1.2" opacity="0.6" />
-        <line x1="680" y1="122" x2="790" y2="155" stroke="#364930" strokeWidth="1.2" opacity="0.6" />
-        <line x1="1180" y1="128" x2="1310" y2="155" stroke="#364930" strokeWidth="1.2" opacity="0.6" />
+        {/* 远山自然山脊分水线 */}
+        <line x1="-850" y1="115" x2="-700" y2="175" stroke="#7a9668" strokeWidth="1.0" opacity="0.6" />
+        <line x1="-420" y1="135" x2="-250" y2="150" stroke="#7a9668" strokeWidth="1.0" opacity="0.6" />
+        <line x1="-30" y1="185" x2="180" y2="135" stroke="#7a9668" strokeWidth="1.0" opacity="0.55" />
+        <line x1="180" y1="135" x2="290" y2="175" stroke="#2d3f28" strokeWidth="1.0" opacity="0.45" />
+        <line x1="680" y1="122" x2="790" y2="155" stroke="#2d3f28" strokeWidth="1.0" opacity="0.5" />
+        <line x1="1180" y1="128" x2="1310" y2="155" stroke="#2d3f28" strokeWidth="1.0" opacity="0.5" />
       </g>
 
       {/* ------------------------------------------------------------------- */}
@@ -81,28 +64,29 @@ export const TerrainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, class
       />
 
       {/* ------------------------------------------------------------------- */}
-      {/* 3. 中远景低多边形金色麦田台面 (Low-Poly Stepped Wheat Facets)         */}
+      {/* 3. 远山与中景麦田自然交融山麓裙带 (Foothill Mountain-to-Wheat Apron Band) */}
       {/* ------------------------------------------------------------------- */}
-      <g id="lowpoly-wheat-terraces">
-        {/* 阶梯式平整麦田台面 (Flat planar low-poly facets, no wavy curves) */}
-        <polygon
-          points="-3200,225 -1600,210 -800,235 -200,205 380,225 960,200 1550,225 2400,210 4200,230 4200,350 2600,320 1600,310 900,290 100,305 -700,315 -1800,310 -3200,325"
-          fill="url(#lowPolyWheatLitGrad)"
+      <g id="foothill-mountain-wheat-apron">
+        <path
+          d="M -3200,160 C -2400,135 -1600,170 -800,145 C -250,132 200,152 650,132 C 1150,122 1650,152 2350,132 C 3150,122 3750,148 4200,138 L 4200,255 C 3450,268 2550,248 1750,258 C 950,238 150,252 -650,242 C -1450,258 -2350,242 -3200,252 Z"
+          fill="url(#mountainWheatApronGrad)"
+          opacity="0.95"
         />
-        <polygon
-          points="-3200,225 -1600,210 -800,235 -200,205 380,225 960,200 1550,225 2400,210 4200,230 4200,350 2600,320 1600,310 900,290 100,305 -700,315 -1800,310 -3200,325"
-          fill="url(#wheatPattern)"
-          opacity="0.14"
+        <path
+          d="M -900,180 C -650,195 -450,230 -350,245 C -550,250 -750,235 -950,210 Z"
+          fill="#5f784e"
+          opacity="0.45"
         />
-
-        {/* 麦田背光斜切面 (Faceted Terrace Drop Shades) */}
-        <polygon points="-800,235 100,305 380,225 -200,205" fill="url(#lowPolyWheatShadeGrad)" opacity="0.6" />
-        <polygon points="960,200 900,290 1600,310 1550,225" fill="url(#lowPolyWheatShadeGrad)" opacity="0.6" />
-
-        {/* 麦田棱角分界线 */}
-        <line x1="-1600" y1="210" x2="-800" y2="235" stroke="#f6e08c" strokeWidth="1.2" opacity="0.75" />
-        <line x1="-200" y1="205" x2="380" y2="225" stroke="#f6e08c" strokeWidth="1.2" opacity="0.75" />
-        <line x1="960" y1="200" x2="1550" y2="225" stroke="#f6e08c" strokeWidth="1.2" opacity="0.75" />
+        <path
+          d="M 220,175 C 350,195 480,225 560,240 C 420,245 300,230 200,200 Z"
+          fill="#5a734a"
+          opacity="0.4"
+        />
+        <path
+          d="M 850,170 C 1020,190 1180,220 1260,238 C 1120,245 980,230 840,195 Z"
+          fill="#5f774e"
+          opacity="0.42"
+        />
       </g>
 
       {/* ------------------------------------------------------------------- */}
@@ -130,148 +114,302 @@ export const TerrainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, class
           { x: -180, y: 185, scale: 0.95 },
         ].map((p, idx) => (
           <g key={`lpp-${idx}`} transform={`translate(${p.x}, ${p.y}) scale(${p.scale})`}>
-            {/* 树干 */}
             <polygon points="-1,6 1,6 1,12 -1,12" fill="#291e17" />
-            {/* 受光面三棱锥 */}
             <polygon points="0,-16 -6,6 0,6" fill="#325232" />
-            {/* 背光面三棱锥 */}
             <polygon points="0,-16 0,6 6,6" fill="#1e341e" />
           </g>
         ))}
       </g>
 
       {/* ------------------------------------------------------------------- */}
-      {/* 6. 背景山丘脚下与褶皱深色小树林群落 (Distant Foothill Woodland & Forest Strips) */}
-      {/*    在深绿远山与浅绿麦田/草地过渡带植入深色调小树林，大幅拉开纵深感与层次 */}
+      {/* 6. 生态斑块分布的山麓植被群落 (Natural Clustered Foothill Woodlands)     */}
       {/* ------------------------------------------------------------------- */}
-      <g id="lowpoly-foothill-woodlands" opacity="0.94">
-        {/* 西侧远山脚与褶皱带林冠群落 (West Foothills & Valley Folds: x: -950 ~ -300) */}
+      <g id="lowpoly-foothill-woodlands" opacity="0.95">
         <g id="west-foothill-trees">
-          {/* 树林底部深色土壤阴影带 */}
-          <polygon points="-980,192 -680,182 -420,198 -240,210 -240,218 -420,205 -680,190 -980,198" fill="#122014" opacity="0.45" />
-          
+          <ellipse cx="-860" cy="186" rx="90" ry="8" fill="#101c12" opacity="0.4" />
+          <ellipse cx="-640" cy="188" rx="80" ry="7" fill="#101c12" opacity="0.38" />
+          <ellipse cx="-420" cy="200" rx="70" ry="7" fill="#101c12" opacity="0.35" />
           {[
-            { x: -940, y: 184, s: 0.85, type: 'copse' },
-            { x: -910, y: 180, s: 1.1, type: 'pine' },
-            { x: -880, y: 182, s: 0.95, type: 'copse' },
-            { x: -850, y: 178, s: 1.2, type: 'pine' },
-            { x: -820, y: 180, s: 0.9, type: 'copse' },
-            { x: -760, y: 185, s: 1.0, type: 'pine' },
-            { x: -720, y: 182, s: 1.15, type: 'copse' },
-            { x: -680, y: 179, s: 1.25, type: 'pine' },
-            { x: -640, y: 184, s: 0.9, type: 'copse' },
-            { x: -580, y: 188, s: 1.05, type: 'pine' },
-            { x: -540, y: 192, s: 1.2, type: 'copse' },
-            { x: -490, y: 190, s: 1.0, type: 'pine' },
-            { x: -440, y: 195, s: 1.15, type: 'copse' },
-            { x: -390, y: 198, s: 0.95, type: 'pine' },
-            { x: -340, y: 202, s: 1.1, type: 'copse' },
-            { x: -280, y: 206, s: 1.0, type: 'pine' },
+            { x: -940, y: 178, s: 1.25, type: 'pine', lit: '#25442b', shd: '#152b1b' },
+            { x: -890, y: 175, s: 1.35, type: 'pine', lit: '#2a4c30', shd: '#193320' },
+            { x: -820, y: 177, s: 1.15, type: 'copse', lit: '#33583c', shd: '#1a3321' },
+            { x: -740, y: 180, s: 1.3, type: 'pine', lit: '#27472d', shd: '#172f1d' },
+            { x: -660, y: 181, s: 1.2, type: 'copse', lit: '#35603e', shd: '#1d3823' },
+            { x: -580, y: 184, s: 1.3, type: 'pine', lit: '#25432a', shd: '#152b1a' },
+            { x: -500, y: 188, s: 1.15, type: 'copse', lit: '#366240', shd: '#1d3724' },
+            { x: -420, y: 191, s: 1.25, type: 'pine', lit: '#28482f', shd: '#162e1e' },
+            { x: -915, y: 188, s: 0.95, type: 'shrub', lit: '#3d6342', shd: '#1c3620' },
+            { x: -860, y: 186, s: 1.1, type: 'copse', lit: '#35603e', shd: '#1c3622' },
+            { x: -780, y: 189, s: 0.9, type: 'shrub', lit: '#3e6a45', shd: '#203c24' },
+            { x: -700, y: 187, s: 1.05, type: 'copse', lit: '#305638', shd: '#1b3421' },
+            { x: -620, y: 192, s: 0.95, type: 'shrub', lit: '#3e6945', shd: '#223d26' },
+            { x: -540, y: 195, s: 1.1, type: 'copse', lit: '#335c3c', shd: '#1c3622' },
+            { x: -460, y: 198, s: 0.9, type: 'shrub', lit: '#396340', shd: '#1e3823' },
+            { x: -370, y: 202, s: 1.0, type: 'pine', lit: '#234027', shd: '#132818' },
+            { x: -300, y: 206, s: 0.85, type: 'shrub', lit: '#396340', shd: '#1e3823' },
           ].map((t, idx) => (
             <g key={`wft-${idx}`} transform={`translate(${t.x}, ${t.y}) scale(${t.s})`}>
-              {/* 树干 */}
-              <polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" />
+              <polygon points="-1,3 1,3 1,9 -1,9" fill="#1e150f" />
               {t.type === 'pine' ? (
-                /* 深色低多边形冷杉/赤松 */
                 <g>
-                  <polygon points="0,-15 -5,4 0,4" fill="#213d26" />
-                  <polygon points="0,-15 0,4 5,4" fill="#152819" />
-                  <polygon points="0,-18 -4,-4 0,-4" fill="#2a4c30" />
-                  <polygon points="0,-18 0,-4 4,-4" fill="#1b3320" />
-                  <line x1="0" y1="-18" x2="-4" y2="-4" stroke="#46734e" strokeWidth="0.6" opacity="0.6" />
+                  <polygon points="0,-16 -6,4 0,4" fill={t.lit} />
+                  <polygon points="0,-16 0,4 6,4" fill={t.shd} />
+                  <polygon points="0,-19 -4.5,-3 0,-3" fill="#325b3a" />
+                  <polygon points="0,-19 0,-3 4.5,-3" fill="#1e3a24" />
+                </g>
+              ) : t.type === 'copse' ? (
+                <g>
+                  <ellipse cx="-2.5" cy="-3" rx="7.5" ry="6" fill={t.lit} />
+                  <ellipse cx="2.5" cy="-2" rx="6.5" ry="5.5" fill={t.shd} />
+                  <ellipse cx="0" cy="-7" rx="6.8" ry="5.5" fill={t.lit} />
+                  <ellipse cx="-1" cy="-8.5" rx="5" ry="3.5" fill="#42704a" opacity="0.8" />
                 </g>
               ) : (
-                /* 深色圆冠林/阔叶灌木群 */
                 <g>
-                  <ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1e3722" />
-                  <ellipse cx="2" cy="-2" rx="6" ry="5" fill="#15291a" />
-                  <ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#294a2f" />
-                  <ellipse cx="-1" cy="-7.5" rx="4.5" ry="3.2" fill="#396340" opacity="0.8" />
+                  <ellipse cx="-3" cy="-1.5" rx="5.5" ry="4" fill={t.lit} />
+                  <ellipse cx="3" cy="-1" rx="5" ry="3.8" fill={t.shd} />
+                  <ellipse cx="0" cy="-3.5" rx="4.8" ry="3.5" fill="#46754d" opacity="0.85" />
                 </g>
               )}
             </g>
           ))}
         </g>
 
-        {/* 穿山隧道东侧山麓与麦田交界树林带 (Tunnel East Foothills: x: 180 ~ 580) */}
         <g id="mid-foothill-trees">
-          <polygon points="170,195 380,210 580,198 580,206 380,218 170,202" fill="#122014" opacity="0.4" />
+          <ellipse cx="290" cy="164" rx="42" ry="5" fill="#101c12" opacity="0.25" />
+          <ellipse cx="370" cy="166" rx="46" ry="5" fill="#101c12" opacity="0.25" />
           {[
-            { x: 190, y: 192, s: 0.95, type: 'pine' },
-            { x: 225, y: 194, s: 1.1, type: 'copse' },
-            { x: 260, y: 198, s: 1.25, type: 'pine' },
-            { x: 295, y: 202, s: 1.0, type: 'copse' },
-            { x: 335, y: 204, s: 1.15, type: 'pine' },
-            { x: 375, y: 206, s: 0.9, type: 'copse' },
-            { x: 420, y: 202, s: 1.2, type: 'pine' },
-            { x: 465, y: 198, s: 1.05, type: 'copse' },
-            { x: 510, y: 195, s: 1.15, type: 'pine' },
-            { x: 555, y: 192, s: 0.95, type: 'copse' },
+            { x: 125, y: 162, s: 0.75, type: 'shrub', lit: '#3d6743', shd: '#203924' },
+            { x: 160, y: 154, s: 0.8, type: 'shrub', lit: '#355e3b', shd: '#1c3620' },
+            { x: 245, y: 158, s: 1.15, type: 'pine', lit: '#25442b', shd: '#152b1b' },
+            { x: 275, y: 154, s: 1.25, type: 'copse', lit: '#35603e', shd: '#1d3823' },
+            { x: 305, y: 162, s: 1.3, type: 'pine', lit: '#28482f', shd: '#17301f' },
+            { x: 335, y: 156, s: 1.1, type: 'copse', lit: '#32583a', shd: '#1b3421' },
+            { x: 365, y: 164, s: 1.25, type: 'pine', lit: '#244128', shd: '#142918' },
+            { x: 395, y: 160, s: 1.05, type: 'shrub', lit: '#3d6743', shd: '#203924' },
+            { x: 425, y: 166, s: 1.2, type: 'copse', lit: '#345e3c', shd: '#1c3622' },
+            { x: 460, y: 168, s: 0.95, type: 'shrub', lit: '#396340', shd: '#1e3823' },
           ].map((t, idx) => (
             <g key={`mft-${idx}`} transform={`translate(${t.x}, ${t.y}) scale(${t.s})`}>
-              <polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" />
+              <polygon points="-1,3 1,3 1,9 -1,9" fill="#1e150f" />
               {t.type === 'pine' ? (
                 <g>
-                  <polygon points="0,-14 -5,4 0,4" fill="#233f28" />
-                  <polygon points="0,-14 0,4 5,4" fill="#172b1c" />
-                  <polygon points="0,-17 -4,-3 0,-3" fill="#2e5234" />
-                  <polygon points="0,-17 0,-3 4,-3" fill="#1d3623" />
-                  <line x1="0" y1="-17" x2="-4" y2="-3" stroke="#487851" strokeWidth="0.6" opacity="0.6" />
+                  <polygon points="0,-15 -5.5,4 0,4" fill={t.lit} />
+                  <polygon points="0,-15 0,4 5.5,4" fill={t.shd} />
+                  <polygon points="0,-18 -4,-3 0,-3" fill="#325b3a" />
+                  <polygon points="0,-18 0,-3 4,-3" fill="#1e3a24" />
+                </g>
+              ) : t.type === 'copse' ? (
+                <g>
+                  <ellipse cx="-2.5" cy="-3" rx="7.5" ry="6" fill={t.lit} />
+                  <ellipse cx="2.5" cy="-2" rx="6.5" ry="5.5" fill={t.shd} />
+                  <ellipse cx="0" cy="-7" rx="6.8" ry="5.5" fill={t.lit} />
+                  <ellipse cx="-1" cy="-8.5" rx="5" ry="3.5" fill="#44734d" opacity="0.8" />
                 </g>
               ) : (
                 <g>
-                  <ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1f3924" />
-                  <ellipse cx="2" cy="-2" rx="6" ry="5" fill="#162b1b" />
-                  <ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#2c4d32" />
-                  <ellipse cx="-1" cy="-7.5" rx="4.5" ry="3.2" fill="#3c6844" opacity="0.8" />
+                  <ellipse cx="-3" cy="-1.5" rx="5.5" ry="4" fill={t.lit} />
+                  <ellipse cx="3" cy="-1" rx="5" ry="3.8" fill={t.shd} />
+                  <ellipse cx="0" cy="-3.5" rx="4.8" ry="3.5" fill="#46754d" opacity="0.85" />
                 </g>
               )}
             </g>
           ))}
         </g>
 
-        {/* 东侧主峰脚下与观星山麓山林褶皱带 (East Mountain Base & Observatory Flank: x: 620 ~ 1380) */}
         <g id="east-foothill-trees">
-          <polygon points="610,192 880,178 1150,185 1380,180 1380,188 1150,193 880,186 610,199" fill="#122014" opacity="0.45" />
+          <ellipse cx="735" cy="158" rx="45" ry="5" fill="#101c12" opacity="0.25" />
+          <ellipse cx="945" cy="156" rx="40" ry="5" fill="#101c12" opacity="0.25" />
+          <ellipse cx="1145" cy="144" rx="45" ry="5" fill="#101c12" opacity="0.25" />
+          <ellipse cx="1340" cy="158" rx="35" ry="5" fill="#101c12" opacity="0.22" />
           {[
-            { x: 630, y: 190, s: 1.05, type: 'copse' },
-            { x: 670, y: 186, s: 1.2, type: 'pine' },
-            { x: 710, y: 182, s: 0.95, type: 'copse' },
-            { x: 755, y: 178, s: 1.15, type: 'pine' },
-            { x: 805, y: 174, s: 1.3, type: 'pine' },
-            { x: 855, y: 172, s: 1.0, type: 'copse' },
-            { x: 905, y: 170, s: 1.2, type: 'pine' },
-            { x: 955, y: 173, s: 1.1, type: 'copse' },
-            { x: 1005, y: 176, s: 1.25, type: 'pine' },
-            { x: 1060, y: 180, s: 0.9, type: 'copse' },
-            { x: 1120, y: 182, s: 1.15, type: 'pine' },
-            { x: 1180, y: 184, s: 1.05, type: 'copse' },
-            { x: 1245, y: 182, s: 1.2, type: 'pine' },
-            { x: 1310, y: 179, s: 0.95, type: 'copse' },
-            { x: 1360, y: 177, s: 1.1, type: 'pine' },
+            { x: 705, y: 154, s: 1.25, type: 'copse', lit: '#35603e', shd: '#1d3823' },
+            { x: 730, y: 150, s: 1.35, type: 'pine', lit: '#244128', shd: '#142918' },
+            { x: 765, y: 155, s: 1.15, type: 'copse', lit: '#315739', shd: '#1a3321' },
+            { x: 790, y: 158, s: 0.9, type: 'shrub', lit: '#3d6743', shd: '#203924' },
+            { x: 925, y: 154, s: 1.25, type: 'pine', lit: '#28482f', shd: '#17301f' },
+            { x: 955, y: 158, s: 1.15, type: 'copse', lit: '#2f5436', shd: '#19311f' },
+            { x: 985, y: 152, s: 1.2, type: 'pine', lit: '#25432a', shd: '#152b1a' },
+            { x: 1085, y: 142, s: 1.2, type: 'copse', lit: '#335b3a', shd: '#1b3420' },
+            { x: 1110, y: 138, s: 1.3, type: 'pine', lit: '#27462c', shd: '#162d1c' },
+            { x: 1150, y: 144, s: 1.15, type: 'copse', lit: '#305537', shd: '#1a3320' },
+            { x: 1175, y: 140, s: 1.25, type: 'pine', lit: '#234027', shd: '#132818' },
+            { x: 1320, y: 156, s: 1.15, type: 'pine', lit: '#25432a', shd: '#152b1a' },
+            { x: 1350, y: 160, s: 1.0, type: 'copse', lit: '#325838', shd: '#19311f' },
+            { x: 1375, y: 154, s: 1.1, type: 'pine', lit: '#234027', shd: '#132818' },
           ].map((t, idx) => (
             <g key={`eft-${idx}`} transform={`translate(${t.x}, ${t.y}) scale(${t.s})`}>
-              <polygon points="-1,3 1,3 1,8 -1,8" fill="#241a13" />
+              <polygon points="-1,3 1,3 1,9 -1,9" fill="#1e150f" />
               {t.type === 'pine' ? (
                 <g>
-                  <polygon points="0,-15 -5,4 0,4" fill="#203a24" />
-                  <polygon points="0,-15 0,4 5,4" fill="#142618" />
-                  <polygon points="0,-18 -4,-4 0,-4" fill="#284a2e" />
-                  <polygon points="0,-18 0,-4 4,-4" fill="#19301e" />
-                  <line x1="0" y1="-18" x2="-4" y2="-4" stroke="#44714b" strokeWidth="0.6" opacity="0.6" />
+                  <polygon points="0,-16 -5.5,4 0,4" fill={t.lit} />
+                  <polygon points="0,-16 0,4 5.5,4" fill={t.shd} />
+                  <polygon points="0,-19 -4,-3 0,-3" fill="#325b3a" />
+                  <polygon points="0,-19 0,-3 4,-3" fill="#1e3a24" />
+                </g>
+              ) : t.type === 'copse' ? (
+                <g>
+                  <ellipse cx="-2.5" cy="-3" rx="7.5" ry="6" fill={t.lit} />
+                  <ellipse cx="2.5" cy="-2" rx="6.5" ry="5.5" fill={t.shd} />
+                  <ellipse cx="0" cy="-7" rx="6.8" ry="5.5" fill={t.lit} />
+                  <ellipse cx="-1" cy="-8.5" rx="5" ry="3.5" fill="#44734d" opacity="0.8" />
                 </g>
               ) : (
                 <g>
-                  <ellipse cx="-2" cy="-3" rx="7" ry="5.5" fill="#1d3521" />
-                  <ellipse cx="2" cy="-2" rx="6" ry="5" fill="#142718" />
-                  <ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="#28472d" />
-                  <ellipse cx="-1" cy="-7.5" rx="4.5" ry="3.2" fill="#38603d" opacity="0.8" />
+                  <ellipse cx="-3" cy="-1.5" rx="5.5" ry="4" fill={t.lit} />
+                  <ellipse cx="3" cy="-1" rx="5" ry="3.8" fill={t.shd} />
+                  <ellipse cx="0" cy="-3.5" rx="4.8" ry="3.5" fill="#46754d" opacity="0.85" />
                 </g>
               )}
             </g>
           ))}
         </g>
       </g>
+    </g>
+  );
+};
+
+/**
+ * 🌾 RollingWheatSilhouette (Midground Rolling Pastoral Wheat Hillside)
+ * Layer 02: MIDGROUND ROLLING WHEAT FIELDS
+ */
+export const RollingWheatSilhouette: React.FC<YorkshireCommonProps> = ({ className }) => {
+  return (
+    <g id="yorkshire-wheat-silhouette" className={className}>
+      <defs>
+        <pattern id="wheatPattern" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
+          <line x1="0" y1="0" x2="0" y2="16" stroke="#fef08a" strokeWidth="1.2" opacity="0.65" />
+          <line x1="8" y1="0" x2="8" y2="16" stroke="#ca8a04" strokeWidth="0.8" opacity="0.4" />
+        </pattern>
+      </defs>
+
+      {/* ------------------------------------------------------------------- */}
+      {/* 宏阔起伏的自然山丘麦浪 (Organic Rolling Pastoral Wheat Hillside)         */}
+      {/* ------------------------------------------------------------------- */}
+      <g id="organic-rolling-wheat-fields">
+        {/* A. 广阔连绵的自然麦田丘陵基底 (Master Continuous Rolling Wheat Slope) */}
+        <path
+          d="M -3200,212 C -2400,195 -1600,225 -800,205 C -200,190 350,208 920,185 C 1500,170 2100,202 2800,188 C 3500,180 3900,202 4200,192 L 4200,385 C 3400,375 2400,390 1500,370 C 600,355 -300,380 -1200,365 C -2100,380 -2700,365 -3200,375 Z"
+          fill="url(#pastoralRollingWheatGrad)"
+        />
+
+        {/* B. 向阳山坡舒展麦垄层 (Sunlit Swale Crest) */}
+        <path
+          d="M -2400,222 C -1600,208 -800,232 50,215 C 750,198 1450,225 2200,208 C 2900,195 3600,220 4200,210 L 4150,258 C 3550,270 2800,248 2100,260 C 1350,275 650,245 -50,265 C -750,280 -1550,258 -2350,270 Z"
+          fill="url(#sunlitWheatCrestGrad)"
+          opacity="0.88"
+        />
+
+        {/* C. 缓坡背阳凹处温润燕麦阴影带 (Soft Rolling Swale Hollows) */}
+        <path
+          d="M -2350,270 C -1550,258 -750,280 -50,265 C 650,245 1350,275 2100,260 C 2800,248 3550,270 4150,258 L 4100,288 C 3500,302 2750,278 2050,292 C 1300,305 600,278 -100,298 C -800,312 -1600,288 -2300,300 Z"
+          fill="url(#rollingWheatHollowGrad)"
+        />
+
+        {/* D. 中央开阔向阳大田垄 (Vast Mid-Valley Sunlit Swale) */}
+        <path
+          d="M -1600,268 C -900,288 -150,265 650,280 C 1350,265 2150,285 2850,270 C 3500,258 3900,275 4200,265 L 4200,325 C 3850,335 3450,318 2800,332 C 2050,345 1300,325 550,340 C -250,355 -1000,332 -1650,345 Z"
+          fill="#f0d57a"
+          opacity="0.82"
+        />
+
+        {/* E. 下层缓坡地带过渡田垄 (Lower Gentle Pastoral Swale) */}
+        <path
+          d="M -2200,315 C -1400,335 -600,315 250,328 C 1050,315 1850,335 2650,320 C 3350,308 3850,325 4200,318 L 4200,380 C 3750,390 3250,375 2550,388 C 1750,402 950,380 150,395 C -650,410 -1450,388 -2250,400 Z"
+          fill="#dfbe5d"
+          opacity="0.75"
+        />
+
+        {/* F. 顺应山势等高线的自然田间草垄与绿色机耕痕迹 */}
+        <g id="contour-field-baulks" opacity="0.45">
+          <path
+            d="M -2400,222 C -1600,208 -800,232 50,215 C 750,198 1450,225 2200,208 C 2900,195 3600,220 4200,210"
+            fill="none"
+            stroke="#95a840"
+            strokeWidth="1.2"
+          />
+          <path
+            d="M -2350,270 C -1550,258 -750,280 -50,265 C 650,245 1350,275 2100,260 C 2800,248 3550,270 4150,258"
+            fill="none"
+            stroke="#819632"
+            strokeWidth="1.4"
+          />
+          <path
+            d="M -1600,268 C -900,288 -150,265 650,280 C 1350,265 2150,285 2850,270"
+            fill="none"
+            stroke="#9db246"
+            strokeWidth="1.0"
+          />
+          <path
+            d="M -2200,315 C -1400,335 -600,315 250,328 C 1050,315 1850,335 2650,320"
+            fill="none"
+            stroke="#7f932e"
+            strokeWidth="1.4"
+          />
+        </g>
+
+        {/* G. 细密亚光麦穗颗粒织理 */}
+        <path
+          d="M -3200,212 C -2400,195 -1600,225 -800,205 C -200,190 350,208 920,185 C 1500,170 2100,202 2800,188 C 3500,180 3900,202 4200,192 L 4200,385 C 3400,375 2400,390 1500,370 C 600,355 -300,380 -1200,365 C -2100,380 -2700,365 -3200,375 Z"
+          fill="url(#wheatPattern)"
+          opacity="0.08"
+        />
+
+        {/* 🌾 H. 舒缓麦浪随风漫射律动 */}
+        <g id="wheat-wind-waves" className="pointer-events-none" opacity="0.22">
+          <path
+            className="animate-wheat-wave"
+            d="M -100,265 C 250,248 600,258 1150,270 C 800,285 400,280 -60,295 Z"
+            fill="#fff9db"
+            style={{ animationDelay: '0s' }}
+          />
+          <path
+            className="animate-wheat-wave"
+            d="M -500,225 C -100,212 350,228 920,215 C 550,232 100,225 -420,238 Z"
+            fill="#fefce8"
+            style={{ animationDelay: '3.6s' }}
+          />
+        </g>
+
+        {/* 🌾 I. 天然起伏丘垄金黄麦穗微风轻摇簇 */}
+        <g id="terrace-wheat-tufts" opacity="0.85">
+          {[
+            { x: -320, y: 275, s: 0.9, d: '0.2s' },
+            { x: -160, y: 282, s: 1.1, d: '1.1s' },
+            { x: 120, y: 268, s: 1.0, d: '2.3s' },
+            { x: 380, y: 260, s: 1.2, d: '0.8s' },
+            { x: 620, y: 256, s: 0.95, d: '1.9s' },
+            { x: 890, y: 264, s: 1.15, d: '2.7s' },
+            { x: 1140, y: 272, s: 1.05, d: '0.5s' },
+            { x: 1460, y: 274, s: 0.9, d: '1.4s' },
+            { x: 1820, y: 266, s: 1.1, d: '2.1s' },
+          ].map((wt, i) => (
+            <g key={`wt-${i}`} transform={`translate(${wt.x}, ${wt.y}) scale(${wt.s})`}>
+              <g className="animate-wheat-tuft" style={{ animationDelay: wt.d }}>
+                <path d="M0,0 Q-1,-6 -2,-10 M0,0 Q1,-6 2,-11 M0,0 Q0,-7 0,-13" stroke="#8c6a28" strokeWidth="0.8" fill="none" />
+                <ellipse cx="-2" cy="-10" rx="1.3" ry="2.2" fill="#eab308" transform="rotate(-15 -2 -10)" />
+                <ellipse cx="2" cy="-11" rx="1.3" ry="2.2" fill="#eab308" transform="rotate(15 2 -11)" />
+                <ellipse cx="0" cy="-13" rx="1.4" ry="2.4" fill="#facc15" />
+                <line x1="-2" y1="-12" x2="-3.5" y2="-15" stroke="#a16207" strokeWidth="0.5" />
+                <line x1="2" y1="-13" x2="3.5" y2="-16" stroke="#a16207" strokeWidth="0.5" />
+                <line x1="0" y1="-15" x2="0" y2="-18" stroke="#a16207" strokeWidth="0.5" />
+              </g>
+            </g>
+          ))}
+        </g>
+      </g>
+    </g>
+  );
+};
+
+/**
+ * Composite TerrainSilhouette retaining full backward compatibility
+ */
+export const TerrainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, className }) => {
+  return (
+    <g id="yorkshire-terrain-silhouette" className={className}>
+      <MountainSilhouette theme={theme} />
+      <RollingWheatSilhouette theme={theme} />
     </g>
   );
 };

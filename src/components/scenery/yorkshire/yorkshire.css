@@ -69,6 +69,80 @@
   }
 }
 
+/* 金黄麦浪柔和自然漫射呼吸动效 (Gentle Soft Organic Wheat Sheen - 消除金属塑料反光) */
+@keyframes wheatWaveGleam {
+  0% {
+    opacity: 0.12;
+    transform: translateY(0px) scale(0.99);
+  }
+  50% {
+    opacity: 0.25;
+    transform: translateY(-1px) scale(1.01);
+  }
+  100% {
+    opacity: 0.12;
+    transform: translateY(0px) scale(0.99);
+  }
+}
+
+/* 麦穗在梯田边缘随微风起伏 (Subtle Wheat Tuft Drift) */
+@keyframes wheatTuftBreeze {
+  0%, 100% {
+    transform: rotate(0deg) skewX(0deg);
+  }
+  30% {
+    transform: rotate(2.5deg) skewX(1.8deg);
+  }
+  60% {
+    transform: rotate(-1.5deg) skewX(-0.8deg);
+  }
+  85% {
+    transform: rotate(3.2deg) skewX(2.0deg);
+  }
+}
+
+/* 拖拉机排气口袅袅慢烟自然消散动效 */
+@keyframes tractorSmokeDrift {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(0.6);
+  }
+  20% {
+    opacity: 0.75;
+  }
+  60% {
+    opacity: 0.45;
+    transform: translate(6px, -12px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(14px, -24px) scale(1.6);
+  }
+}
+
+/* 动效通用类 */
+.animate-wheat-wave {
+  animation: wheatWaveGleam 7.5s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+  will-change: opacity, transform;
+}
+
+.animate-wheat-tuft {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: wheatTuftBreeze 5.2s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  will-change: transform;
+}
+
+.animate-tractor-smoke-1 {
+  animation: tractorSmokeDrift 3.6s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+  will-change: opacity, transform;
+}
+
+.animate-tractor-smoke-2 {
+  animation: tractorSmokeDrift 3.6s cubic-bezier(0.2, 0.6, 0.35, 1) 1.8s infinite;
+  will-change: opacity, transform;
+}
+
 /* 动效通用类 */
 .animate-wind-grass {
   transform-box: fill-box;

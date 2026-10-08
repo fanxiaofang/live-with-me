@@ -67,21 +67,36 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ className }) => {
 
       {/* ========================================================================= */}
       {/* 1. 全景统一宽阔主大地基面 (Continuous Master Pasture Ground - 遵循 2.5D 轴测平面边界) */}
+      {/*    彻底消除麦田与草甸交界处的死硬横切线与高光条，实现 100% 自然羽化交融   */}
       {/* ========================================================================= */}
       <g id="master-axonometric-ground-plane">
-        {/* 严格衔接中远景麦田底边 (Y: 175~235) 的 2.5D 轴测草坪大地，草地范围大于主屋草台(Y: 215) */}
-        <polygon
-          points="-4000,210 -3200,210 -1800,195 -700,200 100,190 900,175 1600,195 2600,205 4200,235 6000,235 6000,2600 -4000,2600"
+        {/* A. 麦田与深绿草甸无缝羽化交融过渡裙带 (Seamless Wheat-to-Pasture Apron) */}
+        <path
+          d="M -4000,165 C -3000,150 -2000,168 -1100,150 C -300,135 350,130 1050,140 C 1750,150 2500,160 3300,175 C 4000,190 4800,180 6000,190 L 6000,248 C 4800,245 4000,255 3300,242 C 2500,222 1750,215 1050,202 C 350,190 -300,198 -1100,215 C -2000,236 -3000,218 -4000,232 Z"
+          fill="url(#wheatPastureBlendGrad)"
+          opacity="0.95"
+        />
+
+        {/* B. 具有自然起伏波浪弧度的主草坪大地基面 (Organic Rolling Master Meadow Ground) */}
+        <path
+          d="M -4000,212 C -3000,198 -2000,216 -1100,195 C -300,178 350,170 1050,182 C 1750,195 2500,202 3300,222 C 4000,236 4800,225 6000,235 L 6000,2600 L -4000,2600 Z"
           fill="url(#isoGroundPastureGrad)"
         />
 
-        {/* 麦田与草甸交界处 2.5D 轴测坡地柔和光影过渡线 */}
+        {/* C. 麦田与草甸自然交界处的舒缓地势等高田垄光影 (Soft Organic Swale Ridge & Berm) */}
         <path
-          d="M-3200,210 L-1800,195 L-700,200 L100,190 L900,175 L1600,195 L2600,205 L4200,235"
+          d="M -3200,210 C -2200,195 -1200,214 -200,185 C 450,172 1200,188 2200,204 C 3000,218 3800,228 4600,232"
           fill="none"
-          stroke="#9dc252"
-          strokeWidth="1.6"
-          opacity="0.4"
+          stroke="#b8bd68"
+          strokeWidth="0.8"
+          opacity="0.32"
+        />
+        <path
+          d="M -3200,212 C -2200,197 -1200,216 -200,187 C 450,174 1200,190 2200,206 C 3000,220 3800,230 4600,234"
+          fill="none"
+          stroke="#556b24"
+          strokeWidth="1.2"
+          opacity="0.25"
         />
 
         {/* 远方中景舒缓地势等高线 (Soft Natural Topographic Swale Lines) */}
@@ -92,6 +107,37 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ className }) => {
           strokeWidth="1.0"
           opacity="0.25"
         />
+
+        {/* D. 田界历史矮石墙与野草田埂碎化景致 (Historic Drystone Field Boundary Traces) */}
+        {/* 呈现英国约克郡经典的自然田亩分界 */}
+        <g id="pastoral-boundary-dressing" opacity="0.85">
+          {/* 东侧低矮干砌石墙段 (East Weathered Drystone Wall Run) */}
+          <g transform="translate(1380, 196)">
+            <polygon points="0,0 140,8 140,16 0,8" fill="#5c5448" />
+            <polygon points="0,-4 140,4 140,8 0,0" fill="#9e9384" />
+            {[15, 40, 65, 90, 115].map((ex, ei) => (
+              <line key={`esw-${ei}`} x1={ex} y1={ei * 1.5 - 2} x2={ex} y2={ei * 1.5 + 6} stroke="#3b352c" strokeWidth="0.7" opacity="0.6" />
+            ))}
+          </g>
+
+          {/* 田埂边缘野草与雏菊丛 (Boundary Wild Chamomile & Buttercups) */}
+          {[
+            { x: -620, y: 212 },
+            { x: -410, y: 198 },
+            { x: -180, y: 188 },
+            { x: 120, y: 182 },
+            { x: 680, y: 184 },
+            { x: 1040, y: 194 },
+            { x: 1340, y: 202 },
+            { x: 1560, y: 208 },
+          ].map((fl, fi) => (
+            <g key={`bd-fl-${fi}`} transform={`translate(${fl.x}, ${fl.y})`}>
+              <path d="M0,0 Q-2,-5 -3,-8 M0,0 Q2,-4 3,-7" stroke="#486221" strokeWidth="0.8" fill="none" />
+              <circle cx="-3" cy="-8" r="1.5" fill={fi % 2 === 0 ? '#fef08a' : '#ffffff'} />
+              <circle cx="3" cy="-7" r="1.3" fill={fi % 3 === 0 ? '#facc15' : '#ffffff'} />
+            </g>
+          ))}
+        </g>
       </g>
 
       {/* ========================================================================= */}

@@ -31,6 +31,13 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           <stop offset="100%" stopColor="#37312a" />
         </linearGradient>
 
+        {/* 迎客青石板材质渐变 */}
+        <linearGradient id="flagstoneSurfaceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#877d70" />
+          <stop offset="50%" stopColor="#71675a" />
+          <stop offset="100%" stopColor="#554d42" />
+        </linearGradient>
+
         {/* 柱础花岗岩正面渐变 */}
         <linearGradient id="granitePierGrad" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#766d62" />
@@ -55,29 +62,19 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
       {/* 1. 夯土垫层、碎石散水与接地柔和遮蔽阴影 (Ground AO & Gravel) */}
       {/* ======================================================== */}
       <g id="foundation-earth-gravel-berm">
-        {/* 碎石散水护坡垫层 (Crushed Stone Drainage Swale Footprint - 端正的 2.5D 等轴测菱形基石底座) */}
+        {/* 碎石散水护坡垫层 (Crushed Stone Drainage Swale Footprint - 柔和嵌入地表草甸) */}
         <polygon
           points="-292,145 0,62 292,145 0,236"
           fill="url(#gravelSwaleGrad)"
-          stroke="#38312a"
-          strokeWidth="0.8"
+          stroke="#423930"
+          strokeWidth="0.5"
         />
-        {/* 碎石基台前立面收边带 (Fascia of Gravel Trench) */}
-        <polygon
-          points="-292,145 0,236 0,241 -292,150"
-          fill="#2f2721"
-        />
-        <polygon
-          points="0,236 292,145 292,150 0,241"
-          fill="#241d18"
-        />
-
-        {/* 紧贴基石底边的等轴测接触阴影线 (仅附着在基础底边缝隙，绝不在草地前方外溢任何椭圆黑洞) */}
+        {/* 碎石前缘柔和过渡阴影 (摒弃生硬死黑切线，自然羽化融入草坪) */}
         <polyline
-          points="-292,150 0,241 292,150"
-          stroke="#1b2a1a"
-          strokeWidth="2.2"
-          opacity="0.4"
+          points="-292,145 0,236 292,145"
+          stroke="#1e2c18"
+          strokeWidth="1.4"
+          opacity="0.28"
           strokeLinecap="round"
           fill="none"
         />
@@ -105,6 +102,14 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
             opacity="0.75"
           />
         ))}
+
+        {/* 🌿 散落石缝中的自然微草丝 (Subtle Verge Grass Sprouting from Stones) */}
+        <g id="gravel-verge-grass" opacity="0.75">
+          <path d="M-210,180 Q-213,174 -216,170 M-208,180 Q-209,173 -209,168" stroke="#527829" strokeWidth="0.8" fill="none" />
+          <path d="M-80,222 Q-82,216 -85,212 M-78,222 Q-77,215 -76,211" stroke="#486d24" strokeWidth="0.8" fill="none" />
+          <path d="M120,208 Q122,202 125,198 M118,208 Q119,203 118,199" stroke="#527829" strokeWidth="0.8" fill="none" />
+          <path d="M210,180 Q213,174 216,171" stroke="#486d24" strokeWidth="0.8" fill="none" />
+        </g>
       </g>
 
       {/* ======================================================== */}
@@ -311,6 +316,29 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           <rect x="-2" y="-7" width="4" height="8" rx="1" fill="#fef08a" opacity="0.9" />
           <ellipse cx="0" cy="-3" rx="12" ry="6" fill="#f59e0b" opacity="0.3" className="animate-pulse" />
         </g>
+
+        {/* --- 迎客天然青石板踏脚石 (Rustic Welcome Flagstone - 自然咬合阶梯与草甸) --- */}
+        <g id="porch-welcome-flagstone" transform="translate(0, 240)">
+          {/* 石板深层入地阴影 */}
+          <ellipse cx="0" cy="2.5" rx="34" ry="9" fill="#131c11" opacity="0.4" />
+          {/* 青石板厚度立面 */}
+          <polygon
+            points="-28,0 -12,-2.5 12,-2.5 28,0 26,3.5 0,5.5 -26,3.5"
+            fill="#4a4238"
+            stroke="#342d25"
+            strokeWidth="0.6"
+          />
+          {/* 青石板顶面 */}
+          <polygon
+            points="-28,0 -12,-2.5 12,-2.5 28,0 0,3.2"
+            fill="url(#flagstoneSurfaceGrad)"
+            stroke="#5a5044"
+            strokeWidth="0.6"
+          />
+          {/* 石板表面温润磨损微光与刻线 */}
+          <line x1="-24" y1="0.2" x2="0" y2="3.0" stroke="#998d7e" strokeWidth="0.6" opacity="0.75" />
+          <line x1="0" y1="3.0" x2="24" y2="0.2" stroke="#6b6154" strokeWidth="0.5" opacity="0.6" />
+        </g>
       </g>
 
       {/* ======================================================== */}
@@ -329,6 +357,93 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           <circle cx="8" cy="1" r="2.5" fill="#ef4444" />
           <circle cx="13" cy="2" r="2.3" fill="#dc2626" />
           <circle cx="10" cy="-2" r="2.6" fill="#f87171" />
+        </g>
+
+        {/* 🌿 西翼连绵田园花境带 (Organic West Cottage Shrub Border & Flowerbed) */}
+        {/* 非机械式的柱脚绿球！只在西侧两栋木屋交接处形成一片自然连绵、层次丰富的田园灌木花境 */}
+        <g id="west-cottage-border-flowerbed" transform="translate(-215, 172)">
+          {/* 接地阴影 */}
+          <ellipse cx="0" cy="5" rx="36" ry="11" fill="#152112" opacity="0.38" />
+          
+          {/* 连绵复合灌丛叶冠 (平滑起伏，非单一球体) */}
+          <g id="border-shrub-foliage">
+            <ellipse cx="-22" cy="1" rx="16" ry="9" fill="#243714" />
+            <ellipse cx="4" cy="0" rx="18" ry="9.5" fill="#273a15" />
+            <ellipse cx="22" cy="2" rx="14" ry="8" fill="#293c16" />
+            
+            <ellipse cx="-16" cy="-4" rx="14" ry="8" fill="#364e1c" />
+            <ellipse cx="6" cy="-4" rx="15" ry="8.5" fill="#3c5720" />
+            
+            <ellipse cx="-8" cy="-8" rx="12" ry="7" fill="#4d6f28" />
+            <ellipse cx="12" cy="-7" rx="11" ry="6.5" fill="#587e2f" />
+            <ellipse cx="2" cy="-9" rx="8" ry="5.5" fill="#679137" />
+          </g>
+
+          {/* 花境中自然绽放的田园野花 (高低错落，随风轻摇) */}
+          <g id="border-wildflowers">
+            {/* 白雏菊簇 */}
+            <g className="animate-wind-flower" style={{ animationDelay: '0.2s', transformOrigin: '0px 0px' }}>
+              <path d="M-18,0 Q-21,-6 -23,-12" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+              <circle cx="-23" cy="-12" r="2.1" fill="#ffffff" />
+              <circle cx="-23" cy="-12" r="0.85" fill="#eab308" />
+            </g>
+            <g className="animate-wind-flower" style={{ animationDelay: '0.45s', transformOrigin: '0px 0px' }}>
+              <path d="M-6,0 Q-8,-7 -9,-14" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+              <circle cx="-9" cy="-14" r="2.0" fill="#ffffff" />
+              <circle cx="-9" cy="-14" r="0.8" fill="#eab308" />
+            </g>
+            {/* 金毛茛 */}
+            <g className="animate-wind-flower" style={{ animationDelay: '0.7s', transformOrigin: '0px 0px' }}>
+              <path d="M12,0 Q14,-6 15,-11" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+              <circle cx="15" cy="-11" r="1.9" fill="#facc15" />
+              <circle cx="15" cy="-11" r="0.8" fill="#ca8a04" />
+            </g>
+            <g className="animate-wind-flower" style={{ animationDelay: '0.9s', transformOrigin: '0px 0px' }}>
+              <path d="M25,0 Q27,-5 28,-9" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+              <circle cx="28" cy="-9" r="1.6" fill="#fef08a" />
+              <circle cx="28" cy="-9" r="0.7" fill="#ca8a04" />
+            </g>
+          </g>
+
+          {/* 飘逸羊齿草叶尖 */}
+          <g className="animate-wind-grass" style={{ animationDelay: '0.35s', transformOrigin: '0px 0px' }}>
+            <path d="M-28,2 Q-33,-3 -36,-7 M-25,2 Q-29,-4 -31,-9" stroke="#486a27" strokeWidth="0.95" fill="none" strokeLinecap="round" />
+            <path d="M18,3 Q22,-3 26,-7 M22,3 Q26,-2 30,-5" stroke="#4d7029" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+          </g>
+        </g>
+
+        {/* 🌿 前廊踏步石阶两侧微生雏菊草簇 (Stepping Stone Verge Accents) */}
+        <g id="step-verge-accents">
+          <g transform="translate(-36, 240)">
+            <g className="animate-wind-flower" style={{ animationDelay: '0.8s', transformOrigin: '0px 0px' }}>
+              <path d="M0,0 Q-2,-5 -4,-9" stroke="#486d26" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+              <circle cx="-4" cy="-9" r="1.8" fill="#ffffff" />
+              <circle cx="-4" cy="-9" r="0.75" fill="#eab308" />
+            </g>
+            <path d="M2,0 Q4,-4 5,-7 M-1,0 Q-3,-4 -3,-6" stroke="#52792b" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+          </g>
+          <g transform="translate(34, 240)">
+            <g className="animate-wind-flower" style={{ animationDelay: '1.05s', transformOrigin: '0px 0px' }}>
+              <path d="M0,0 Q2,-4 3,-8" stroke="#486d26" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+              <circle cx="3" cy="-8" r="1.6" fill="#facc15" />
+              <circle cx="3" cy="-8" r="0.7" fill="#ca8a04" />
+            </g>
+            <path d="M-2,0 Q-4,-3 -5,-6 M1,0 Q3,-3 4,-6" stroke="#52792b" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+          </g>
+        </g>
+
+        {/* 🌿 零星石缝随风草叶 (Sparse Stone-Verge Grass Tufts) */}
+        <g id="sparse-foundation-verge-grass">
+          <g transform="translate(-115, 204)">
+            <g className="animate-wind-grass" style={{ animationDelay: '0.6s', transformOrigin: '0px 0px' }}>
+              <path d="M-2,0 Q-4,-5 -5,-9 M1,0 Q2,-6 3,-10 M4,0 Q6,-4 7,-7" stroke="#4e722a" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+            </g>
+          </g>
+          <g transform="translate(115, 204)">
+            <g className="animate-wind-grass" style={{ animationDelay: '1.25s', transformOrigin: '0px 0px' }}>
+              <path d="M-3,0 Q-4,-5 -4,-8 M0,0 Q1,-6 2,-9 M3,0 Q5,-4 6,-7" stroke="#4e722a" strokeWidth="0.85" fill="none" strokeLinecap="round" />
+            </g>
+          </g>
         </g>
 
         {/* 右转角绣球花丛 (Right Hydrangea Bush) */}

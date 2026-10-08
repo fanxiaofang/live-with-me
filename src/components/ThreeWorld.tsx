@@ -9,8 +9,7 @@ import { svgAction } from '../world/interactions/svgAction';
 import { useWorldFeedback } from '../world/interactions/useWorldFeedback';
 import { AtmosphereOverlay } from '../world/overlays/AtmosphereOverlay';
 import { WorldOverlays } from '../world/overlays/WorldOverlays';
-import { BackgroundLandscape } from '../world/render/BackgroundLandscape';
-import { DistantPines } from '../world/render/DistantPines';
+import { BackgroundLandscape, HomesteadMeadow } from '../world/render/BackgroundLandscape';
 import { ForegroundLandscape } from '../world/render/ForegroundLandscape';
 import { SceneEntity } from '../world/render/SceneEntity';
 import { WorldDefs } from '../world/render/WorldDefs';
@@ -166,7 +165,21 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           <rect x="-4000" y="-3000" width="10000" height="7000" fill="url(#skyFillGrad)" />
 
           {/* ======================================================== */}
-          {/* CAMERA-DRIVEN WORLD STAGE (Panoramic 2.5D World Layer)    */}
+          {/* 1. PARALLAX MULTIPLANE BACKGROUND LAYERS                 */}
+          {/*    Layer 0: Infinite Sky & Horizon Clouds (0.08x)       */}
+          {/*    Layer 1: Far Mountain Ridges & Viaduct Railway (0.28x) */}
+          {/*    Layer 2: Midground Rolling Wheat & Tractor (0.65x)   */}
+          {/* ======================================================== */}
+          <BackgroundLandscape
+            camera={camera}
+            isDragging={isDragging}
+            theme={theme}
+            setHoveredObject={setHoveredObject}
+            onTriggerToast={onTriggerToast}
+          />
+
+          {/* ======================================================== */}
+          {/* 2. CAMERA-DRIVEN WORLD STAGE (Master Diorama 1.0x Base)  */}
           {/* ======================================================== */}
           <g
             id="panoramic-world-stage"
@@ -178,15 +191,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             }}
           >
 
-          {/* ======================================================== */}
-          {/* 1. BACKGROUND: RETRO ANIME ATMOSPHERIC CLOUDS & RIDGE MIST */}
-          {/* (微缩景观Diorama重构：连动远山向上平移，保持背景天空与云彩在远山脊上方舒展) */}
-          {/* ======================================================== */}
-          <BackgroundLandscape theme={theme} setHoveredObject={setHoveredObject} onTriggerToast={onTriggerToast} />
-<g id="hilltop-observatory-haven">
-            {/* Mountain Ridge Wild Pines on the crest */}
-            <DistantPines />
-
+          {/* Master Meadow Ground, Drystone Walls, Garden Flora, Pumpkin Patch */}
+          <HomesteadMeadow
+            theme={theme}
+            setHoveredObject={setHoveredObject}
+            onTriggerToast={onTriggerToast}
+          />
+          <g id="hilltop-observatory-haven">
             {/* Main Elevated SETI Alien Radio Station (Moved to Right Meadow Lawn at Green Box Location) */}
             <SceneEntity entityId="observatory" layout={sceneLayout}
               id="room-observatory"
