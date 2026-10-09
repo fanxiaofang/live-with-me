@@ -14,3 +14,25 @@
                 animation: driftRidgeMist 90s ease-in-out infinite alternate;
               }
 
+@media (prefers-reduced-motion: reduce) {
+  #parallax-sky-layer,
+  #parallax-mountains-layer,
+  #parallax-wheat-layer,
+  #panoramic-world-stage {
+    transition: none !important;
+  }
+  .cloud-drift-far,
+  .cloud-drift-mist,
+  .animate-wheat-wave,
+  .animate-wheat-tuft,
+  .animate-tractor-smoke-1,
+  .animate-tractor-smoke-2,
+  .animate-wind-grass,
+  .animate-wind-flower,
+  .animate-wind-clover,
+  .animate-sunbeam-breathe {
+    animation: none !important;
+    will-change: auto;
+  }
+}
+

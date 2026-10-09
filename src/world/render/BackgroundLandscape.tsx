@@ -4,6 +4,9 @@ import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/lan
 import { Camera, OVERVIEW_CAMERA } from '../camera/cameraMath';
 import { getParallaxTransformStyle, PARALLAX_PRESETS } from '../camera/parallaxMath';
 import type { HoverTarget } from '../interactions/interactionTypes';
+import { LANDSCAPE_SURFACES } from '../scene/landscapeGeometry';
+import type { SceneLayout } from '../scene/sceneTypes';
+import { useLandscapeCoverage } from './useLandscapeCoverage';
 
 export interface BackgroundLandscapeProps {
   theme: YorkshireSceneTheme;
@@ -15,6 +18,7 @@ export interface BackgroundLandscapeProps {
 
 export interface HomesteadMeadowProps {
   theme: YorkshireSceneTheme;
+  sceneLayout: SceneLayout;
   setHoveredObject: HoverTarget;
   onTriggerToast?: (message: string) => void;
 }
@@ -35,6 +39,232 @@ function BackgroundLandscapeAsset({
   const skyStyle = getParallaxTransformStyle(camera, PARALLAX_PRESETS.sky, isDragging);
   const mountainStyle = getParallaxTransformStyle(camera, PARALLAX_PRESETS.mountains, isDragging);
   const wheatStyle = getParallaxTransformStyle(camera, PARALLAX_PRESETS.wheat, isDragging);
+  const coverage = useLandscapeCoverage(camera, isDragging);
+
+  // Camera movement changes only the layer transforms and the terrain skirts.
+  const sky = React.useMemo(() => (
+    <g id="sky-and-clouds" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
+      {/* Layer 1: High-Altitude Atmospheric Stratiform & Cirrus Ribbon (极远处慢速舒展云带) */}
+      <g id="sky-clouds-far-layer" className="cloud-drift-far" filter="url(#cloudAtmosphereBlur)">
+        <path
+          d="M-2800,52 C-2200,40 -1600,65 -1000,45 C-400,30 200,58 800,42 C1400,28 2000,55 2600,38 C3200,25 3800,48 4200,38 L4200,72 C3800,82 3200,60 2600,75 C2000,90 1400,62 800,75 C200,92 -400,65 -1000,80 C-1600,95 -2200,70 -2800,82 Z"
+          fill="url(#wispyCirrusGrad)"
+          opacity="0.6"
+        />
+        <path
+          d="M-2600,80 C-2000,65 -1400,90 -800,70 C-200,55 400,82 1000,68 C1600,52 2200,80 2800,62 C3400,50 3900,70 4200,60 L4200,92 C3900,102 3400,82 2800,96 C2200,112 1600,85 1000,100 C400,115 -200,88 -800,102 C-1400,118 -2000,92 -2600,106 Z"
+          fill="url(#wispyCirrusGrad)"
+          opacity="0.45"
+        />
+
+        {/* Main Retro-Anime Elongated Horizon Cloud Bank */}
+        <path
+          d="M-3000,145 C-2400,115 -1800,98 -1200,128 C-700,102 -200,88 250,108 C550,82 850,75 1150,98 C1450,78 1850,68 2250,98 C2650,82 3150,108 3650,92 C4000,82 4200,102 4400,98 L4400,225 L-3000,225 Z"
+          fill="url(#cloudFarBandGrad)"
+          opacity="0.85"
+        />
+
+        {/* Soft Sunlit Glaze across cloud crests */}
+        <path
+          d="M-3000,138 C-2400,110 -1800,92 -1200,122 C-700,98 -200,82 250,102 C550,78 850,70 1150,92 C1450,72 1850,62 2250,92 C2650,78 3150,102 3650,88 C4000,78 4200,98 4400,92 L4400,128 C4200,132 4000,112 3650,122 C3150,138 2650,112 2250,128 C1850,98 1450,108 1150,128 C850,105 550,112 250,138 C-200,118 -700,132 -1200,158 C-1800,128 -2400,148 -3000,178 Z"
+          fill="url(#cloudCrestGlaze)"
+          opacity="0.75"
+        />
+      </g>
+
+      {/* Layer 2: Midground Mountain Ridge & Valley Mist (山脊薄雾流岚) */}
+      <g id="sky-clouds-ridge-mist" className="cloud-drift-mist" filter="url(#ridgeMistBlur)">
+        <path
+          d="M-3000,165 C-2300,145 -1700,175 -1100,150 C-600,132 -100,165 350,142 C750,122 1150,158 1550,138 C2050,118 2550,158 3050,138 C3550,122 4000,152 4400,142 L4400,240 C4000,250 3550,225 3050,240 C2550,255 2050,220 1550,235 C1150,250 750,220 350,235 C-100,255 -600,225 -1100,245 C-1700,265 -2300,235 -3000,255 Z"
+          fill="url(#ridgeValleyMistGrad)"
+          opacity="0.65"
+        />
+        <path
+          d="M-2800,178 C-2100,160 -1500,185 -900,165 C-400,145 100,175 550,152 C950,135 1350,168 1850,148 C2350,130 2850,165 3350,145 C3850,132 4200,160 4400,152 L4400,220 L-2800,220 Z"
+          fill="url(#ridgeValleyMistGrad)"
+          opacity="0.5"
+        />
+      </g>
+
+      {/* Atmosphere Horizon Mist Wash (远山地平线晨雾融边) */}
+      <rect x="-3000" y="80" width="7400" height="200" fill="url(#distantHazeGrad)" />
+    </g>
+  ), []);
+  const tractor = React.useMemo(() => (
+    <g
+      id="tractor-in-field"
+      transform="translate(75, 230)"
+      className="cursor-pointer transition-opacity hover:opacity-95"
+      onMouseEnter={() => setHoveredObject({ kind: 'entity', id: 'tractor' })}
+      onMouseLeave={() => setHoveredObject(null)}
+    >
+      {/* Weathered Timber Paddock Fence behind Tractor */}
+      <g id="farm-paddock-fence" opacity="0.9">
+        <line x1="-55" y1="18" x2="115" y2="18" stroke="#4a3725" strokeWidth="2.8" />
+        <line x1="-55" y1="26" x2="115" y2="26" stroke="#4a3725" strokeWidth="2.2" />
+        {[-45, -5, 35, 75, 110].map((fx) => (
+          <g key={`pf-${fx}`}>
+            <rect x={fx - 1.6} y="10" width="3.5" height="24" rx="0.8" fill="#3a281a" stroke="#22160d" strokeWidth="0.5" />
+            <polygon points={`${fx - 1.6},10 ${fx},7 ${fx + 1.9},10`} fill="#543c29" />
+          </g>
+        ))}
+      </g>
+
+      {/* Earthy Tractor Wheel Ruts & Gravel Track trailing into the field margin */}
+      <g opacity="0.55">
+        <path d="M22,46 C32,60 45,78 60,98" stroke="#423324" strokeWidth="3.6" strokeDasharray="6 4" fill="none" />
+        <path d="M23,47 C33,61 46,79 61,99" stroke="#63503d" strokeWidth="1.2" fill="none" opacity="0.6" />
+        <path d="M42,46 C52,60 65,78 80,98" stroke="#423324" strokeWidth="3.6" strokeDasharray="6 4" fill="none" />
+        <path d="M43,47 C53,61 66,79 81,99" stroke="#63503d" strokeWidth="1.2" fill="none" opacity="0.6" />
+        <circle cx="35" cy="62" r="1" fill="#786654" />
+        <circle cx="52" cy="74" r="1.2" fill="#786654" />
+        <circle cx="70" cy="88" r="0.9" fill="#786654" />
+        <path d="M28,68 Q27,63 25,60 M28,68 Q30,64 32,61" stroke="#527027" strokeWidth="0.8" fill="none" />
+        <path d="M48,82 Q47,77 45,74 M48,82 Q50,78 52,75" stroke="#527027" strokeWidth="0.8" fill="none" />
+      </g>
+
+      {/* Packed earth & fine gravel parking pad under tractor */}
+      <ellipse cx="46" cy="46" rx="58" ry="14" fill="#4d3e30" opacity="0.38" />
+
+      {/* Farmyard Wooden Water Barrel & Vintage Galvanized Milk Churn at Corner */}
+      <g transform="translate(100, 24)">
+        <rect x="0" y="2" width="11" height="15" rx="1.8" fill="#4a3622" stroke="#251a0f" strokeWidth="0.8" />
+        <line x1="0" y1="5.5" x2="11" y2="5.5" stroke="#1f2429" strokeWidth="1.1" />
+        <line x1="0" y1="13" x2="11" y2="13" stroke="#1f2429" strokeWidth="1.1" />
+        <ellipse cx="5.5" cy="2" rx="5" ry="2" fill="#634c32" stroke="#251a0f" strokeWidth="0.6" />
+        <rect x="13" y="6" width="7" height="11" rx="1.2" fill="#94a3b8" stroke="#475569" strokeWidth="0.7" />
+        <polygon points="14,6 19,6 18,3 15,3" fill="#cbd5e1" stroke="#475569" strokeWidth="0.6" />
+        <circle cx="16.5" cy="2" r="1" fill="#475569" />
+      </g>
+
+      {/* 🌾 Golden Cylindrical Hay Bales nestled along the wheat edge */}
+      <g transform="translate(-32, 22)">
+        <g>
+          <ellipse cx="0" cy="12" rx="14" ry="9" fill="#d9b434" />
+          <rect x="-14" y="0" width="28" height="12" fill="#eab308" />
+          <ellipse cx="0" cy="0" rx="14" ry="7" fill="#fde047" stroke="#ca8a04" strokeWidth="0.8" />
+          <line x1="-8" y1="0" x2="-8" y2="12" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
+          <line x1="8" y1="0" x2="8" y2="12" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
+          <circle cx="0" cy="0" r="4.5" fill="none" stroke="#ca8a04" strokeWidth="0.8" strokeDasharray="3,2" />
+          <path d="M-14,8 Q-18,10 -20,13 M-12,12 Q-15,15 -17,18" stroke="#fde047" strokeWidth="0.7" fill="none" />
+        </g>
+      </g>
+      <g transform="translate(-10, 26)">
+        <g>
+          <ellipse cx="0" cy="10" rx="13" ry="8" fill="#d9b434" />
+          <rect x="-13" y="0" width="26" height="10" fill="#eab308" />
+          <ellipse cx="0" cy="0" rx="13" ry="6.5" fill="#fde047" stroke="#ca8a04" strokeWidth="0.8" />
+          <line x1="-7" y1="0" x2="-7" y2="10" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
+          <line x1="7" y1="0" x2="7" y2="10" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
+          <circle cx="0" cy="0" r="3.5" fill="none" stroke="#ca8a04" strokeWidth="0.8" strokeDasharray="3,2" />
+        </g>
+      </g>
+      <g transform="translate(-20, 10)">
+        <g>
+          <ellipse cx="0" cy="9" rx="12" ry="7" fill="#d9b434" />
+          <rect x="-12" y="0" width="24" height="9" fill="#eab308" />
+          <ellipse cx="0" cy="0" rx="12" ry="6" fill="#fef08a" stroke="#ca8a04" strokeWidth="0.8" />
+          <line x1="-6" y1="0" x2="-6" y2="9" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
+          <line x1="6" y1="0" x2="6" y2="9" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
+          <circle cx="0" cy="0" r="3" fill="none" stroke="#ca8a04" strokeWidth="0.8" strokeDasharray="3,2" />
+          <path d="M12,4 Q16,6 18,9" stroke="#fef08a" strokeWidth="0.7" fill="none" />
+        </g>
+      </g>
+
+      {/* 🚜 Red Countryside Farm Tractor */}
+      <ellipse cx="22" cy="46" rx="16" ry="5" fill="#18191c" opacity="0.45" />
+      <ellipse cx="76" cy="46" rx="10" ry="3.5" fill="#18191c" opacity="0.45" />
+
+      <circle cx="22" cy="30" r="18.5" fill="#1c1d20" />
+      <circle cx="22" cy="30" r="16.5" fill="#292b30" />
+      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
+        <line
+          key={deg}
+          x1={22 + 15 * Math.cos((deg * Math.PI) / 180)}
+          y1={30 + 15 * Math.sin((deg * Math.PI) / 180)}
+          x2={22 + 19 * Math.cos((deg * Math.PI) / 180)}
+          y2={30 + 19 * Math.sin((deg * Math.PI) / 180)}
+          stroke="#121315"
+          strokeWidth="2.8"
+        />
+      ))}
+      <circle cx="22" cy="30" r="11" fill="#eab308" stroke="#a16207" strokeWidth="1.2" />
+      <circle cx="22" cy="30" r="9" fill="#ca8a04" />
+      <circle cx="22" cy="30" r="4.5" fill="#1e2024" stroke="#0f1012" strokeWidth="0.8" />
+      {[0, 60, 120, 180, 240, 300].map((deg) => (
+        <circle
+          key={`lug-${deg}`}
+          cx={22 + 2.8 * Math.cos((deg * Math.PI) / 180)}
+          y={30 + 2.8 * Math.sin((deg * Math.PI) / 180)}
+          r="0.8"
+          fill="#fde047"
+        />
+      ))}
+
+      <circle cx="76" cy="37" r="10.5" fill="#1c1d20" />
+      <circle cx="76" cy="37" r="9.2" fill="#2a2c30" />
+      <circle cx="76" cy="37" r="5.5" fill="#eab308" stroke="#a16207" strokeWidth="1" />
+      <circle cx="76" cy="37" r="2.4" fill="#1e2024" />
+      <circle cx="76" cy="37" r="1" fill="#fde047" />
+
+      <rect x="22" y="31" width="54" height="6.5" fill="#23262b" rx="1.2" />
+      <rect x="36" y="34" width="16" height="5" fill="#1a1c20" rx="1" />
+
+      <path d="M3,30 C3,12 41,12 41,30" stroke="#991b1b" strokeWidth="5.6" fill="none" strokeLinecap="round" />
+      <path d="M4,30 C4,13 40,13 40,30" stroke="#dc2626" strokeWidth="3.6" fill="none" strokeLinecap="round" />
+
+      <polygon points="16,18 48,14 82,22 82,37 30,37" fill="#b91c1c" />
+      <polygon points="16,18 48,14 82,22 82,25 48,17 16,21" fill="#ef4444" />
+      <line x1="18" y1="19.5" x2="80" y2="23.5" stroke="#fca5a5" strokeWidth="0.8" opacity="0.85" />
+
+      <g opacity="0.75">
+        <line x1="52" y1="21" x2="52" y2="28" stroke="#450a0a" strokeWidth="1.2" />
+        <line x1="56" y1="22" x2="56" y2="29" stroke="#450a0a" strokeWidth="1.2" />
+        <line x1="60" y1="23" x2="60" y2="30" stroke="#450a0a" strokeWidth="1.2" />
+        <rect x="65" y="25" width="8" height="3" rx="0.5" fill="#eab308" stroke="#78350f" strokeWidth="0.5" />
+      </g>
+
+      <rect x="80" y="23" width="3.5" height="13.5" fill="#33383f" rx="1" stroke="#1f2329" strokeWidth="0.6" />
+      <line x1="81.8" y1="25" x2="81.8" y2="35" stroke="#ffffff" strokeWidth="0.9" opacity="0.7" />
+
+      {/* Exhaust Stack */}
+      <line x1="64" y1="22" x2="64" y2="5" stroke="#1f2226" strokeWidth="3.2" strokeLinecap="round" />
+      <rect x="62.2" y="10" width="3.6" height="7" rx="1" fill="#374151" stroke="#111827" strokeWidth="0.6" />
+      <line x1="63" y1="4.5" x2="66.5" y2="3.5" stroke="#1f2226" strokeWidth="1.2" strokeLinecap="round" />
+
+      {/* Rising smoke particles */}
+      <g transform="translate(64, 4)">
+        <circle cx="0" cy="0" r="2.2" fill="#f8fafc" className="animate-tractor-smoke-1" />
+        <circle cx="0" cy="0" r="3.2" fill="#ffffff" className="animate-tractor-smoke-2" />
+      </g>
+
+      {/* Driver Cockpit & Steering Wheel */}
+      <rect x="17" y="9" width="13" height="9.5" rx="2.8" fill="#18191c" stroke="#0a0a0c" strokeWidth="0.8" />
+      <line x1="23" y1="18.5" x2="23" y2="23" stroke="#374151" strokeWidth="1.6" />
+      <line x1="39" y1="18" x2="33" y2="10" stroke="#1f242b" strokeWidth="2.4" strokeLinecap="round" />
+      <ellipse cx="32" cy="9.5" rx="4" ry="2.2" fill="none" stroke="#111827" strokeWidth="2.0" />
+      <line x1="36" y1="24" x2="33" y2="17" stroke="#6b7280" strokeWidth="1.2" strokeLinecap="round" />
+      <circle cx="33" cy="17" r="1.1" fill="#ef4444" />
+
+      {/* Headlight casting softly across wheat field */}
+      <circle cx="82" cy="27" r="3.6" fill="#fef08a" stroke="#a16207" strokeWidth="1.2" />
+      <circle cx="82" cy="27" r="2.2" fill="#fffbeb" />
+      <polygon points="85,27 138,18 145,43 85,33" fill={theme.tractorLightGlow} className="pointer-events-none" />
+
+      {/* Wooden Harvest Basket with pumpkins & hayfork */}
+      <g transform="translate(-1, 16)">
+        <rect x="0" y="0" width="15" height="12" rx="1.5" fill="#785331" stroke="#452c16" strokeWidth="1.0" />
+        <line x1="0" y1="4" x2="15" y2="4" stroke="#452c16" strokeWidth="0.8" />
+        <line x1="0" y1="8" x2="15" y2="8" stroke="#452c16" strokeWidth="0.8" />
+        <ellipse cx="3.5" cy="4" rx="3" ry="4" fill="#a89276" stroke="#715c44" strokeWidth="0.6" />
+        <ellipse cx="9" cy="2" rx="3.5" ry="3" fill="#ea580c" />
+        <ellipse cx="9" cy="1.5" rx="2" ry="2.6" fill="#f59e0b" />
+        <line x1="9" y1="0" x2="9" y2="-1.8" stroke="#365314" strokeWidth="1" strokeLinecap="round" />
+        <line x1="13" y1="10" x2="19" y2="-4" stroke="#9a714c" strokeWidth="1.1" strokeLinecap="round" />
+        <path d="M19,-4 L20,-8 M19,-4 L18,-8 M19,-4 L21,-7" stroke="#64748b" strokeWidth="0.8" />
+      </g>
+    </g>
+  ), [theme.tractorLightGlow, setHoveredObject]);
 
   return (
     <>
@@ -42,64 +272,21 @@ function BackgroundLandscapeAsset({
       {/* 🌌 PARALLAX LAYER 0: INFINITE SKY & HIGH-ALTITUDE STRATIFORM CLOUDS       */}
       {/* ========================================================================= */}
       <g id="parallax-sky-layer" style={skyStyle}>
-        <g id="sky-and-clouds" transform="translate(0, -115)">
-          {/* Layer 1: High-Altitude Atmospheric Stratiform & Cirrus Ribbon (极远处慢速舒展云带) */}
-          <g id="sky-clouds-far-layer" className="cloud-drift-far" filter="url(#cloudAtmosphereBlur)">
-            <path
-              d="M-2800,52 C-2200,40 -1600,65 -1000,45 C-400,30 200,58 800,42 C1400,28 2000,55 2600,38 C3200,25 3800,48 4200,38 L4200,72 C3800,82 3200,60 2600,75 C2000,90 1400,62 800,75 C200,92 -400,65 -1000,80 C-1600,95 -2200,70 -2800,82 Z"
-              fill="url(#wispyCirrusGrad)"
-              opacity="0.6"
-            />
-            <path
-              d="M-2600,80 C-2000,65 -1400,90 -800,70 C-200,55 400,82 1000,68 C1600,52 2200,80 2800,62 C3400,50 3900,70 4200,60 L4200,92 C3900,102 3400,82 2800,96 C2200,112 1600,85 1000,100 C400,115 -200,88 -800,102 C-1400,118 -2000,92 -2600,106 Z"
-              fill="url(#wispyCirrusGrad)"
-              opacity="0.45"
-            />
-
-            {/* Main Retro-Anime Elongated Horizon Cloud Bank */}
-            <path
-              d="M-3000,145 C-2400,115 -1800,98 -1200,128 C-700,102 -200,88 250,108 C550,82 850,75 1150,98 C1450,78 1850,68 2250,98 C2650,82 3150,108 3650,92 C4000,82 4200,102 4400,98 L4400,225 L-3000,225 Z"
-              fill="url(#cloudFarBandGrad)"
-              opacity="0.85"
-            />
-
-            {/* Soft Sunlit Glaze across cloud crests */}
-            <path
-              d="M-3000,138 C-2400,110 -1800,92 -1200,122 C-700,98 -200,82 250,102 C550,78 850,70 1150,92 C1450,72 1850,62 2250,92 C2650,78 3150,102 3650,88 C4000,78 4200,98 4400,92 L4400,128 C4200,132 4000,112 3650,122 C3150,138 2650,112 2250,128 C1850,98 1450,108 1150,128 C850,105 550,112 250,138 C-200,118 -700,132 -1200,158 C-1800,128 -2400,148 -3000,178 Z"
-              fill="url(#cloudCrestGlaze)"
-              opacity="0.75"
-            />
-          </g>
-
-          {/* Layer 2: Midground Mountain Ridge & Valley Mist (山脊薄雾流岚) */}
-          <g id="sky-clouds-ridge-mist" className="cloud-drift-mist" filter="url(#ridgeMistBlur)">
-            <path
-              d="M-3000,165 C-2300,145 -1700,175 -1100,150 C-600,132 -100,165 350,142 C750,122 1150,158 1550,138 C2050,118 2550,158 3050,138 C3550,122 4000,152 4400,142 L4400,240 C4000,250 3550,225 3050,240 C2550,255 2050,220 1550,235 C1150,250 750,220 350,235 C-100,255 -600,225 -1100,245 C-1700,265 -2300,235 -3000,255 Z"
-              fill="url(#ridgeValleyMistGrad)"
-              opacity="0.65"
-            />
-            <path
-              d="M-2800,178 C-2100,160 -1500,185 -900,165 C-400,145 100,175 550,152 C950,135 1350,168 1850,148 C2350,130 2850,165 3350,145 C3850,132 4200,160 4400,152 L4400,220 L-2800,220 Z"
-              fill="url(#ridgeValleyMistGrad)"
-              opacity="0.5"
-            />
-          </g>
-
-          {/* Atmosphere Horizon Mist Wash (远山地平线晨雾融边) */}
-          <rect x="-3000" y="80" width="7400" height="200" fill="url(#distantHazeGrad)" />
-        </g>
+        {sky}
       </g>
 
       {/* ========================================================================= */}
       {/* 🏔️ PARALLAX LAYER 1: FAR MOUNTAIN SILHOUETTE & VIADUCT RAILWAY            */}
       {/* ========================================================================= */}
       <g id="parallax-mountains-layer" style={mountainStyle}>
-        <g id="distant-mountain-railway-depth" transform="translate(0, -115)">
+        <g id="distant-mountain-railway-depth" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
           {/* 01 FAR MOUNTAINS (低多边形折纸远山峰峦、山麓树丛与林冠) */}
-          <MountainSilhouette theme={theme} />
+          <MountainSilhouette theme={theme} frontExtension={coverage.mountainFrontExtension} />
 
           {/* 05 INFRASTRUCTURE: RAILWAY (经典石拱高架桥、穿山隧道与复古机车) */}
-          <RailwayLandscape theme={theme} />
+          <g id="railway-valley-placement" transform="translate(0, -28)">
+            <RailwayLandscape theme={theme} />
+          </g>
         </g>
       </g>
 
@@ -107,185 +294,13 @@ function BackgroundLandscapeAsset({
       {/* 🌾 PARALLAX LAYER 2: MIDGROUND ROLLING WHEAT FIELDS & TRACTOR              */}
       {/* ========================================================================= */}
       <g id="parallax-wheat-layer" style={wheatStyle}>
-        <g id="distant-wheat-tractor-depth" transform="translate(0, -115)">
+        <g id="distant-wheat-tractor-depth" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
           {/* 02 ROLLING WHEAT FIELDS (自然山丘麦浪、等高草垄、风波纹漫射与轻摇麦穗) */}
-          <RollingWheatSilhouette theme={theme} />
+          <RollingWheatSilhouette theme={theme} frontExtension={coverage.wheatFrontExtension} />
 
           {/* 1.5 TRACTOR & HAY BALES PLANTED AT THE WHEAT FIELD MARGIN (麦田机耕地头) */}
-          {/* 移动并深植于麦垄等高线边缘，与麦田共享 0.65x 视差，彻底摆脱大木屋周边 */}
-          <g
-            id="tractor-in-field"
-            transform="translate(75, 275)"
-            className="cursor-pointer transition-opacity hover:opacity-95"
-            onMouseEnter={() => setHoveredObject({ kind: 'entity', id: 'tractor' })}
-            onMouseLeave={() => setHoveredObject(null)}
-          >
-            {/* Weathered Timber Paddock Fence behind Tractor */}
-            <g id="farm-paddock-fence" opacity="0.9">
-              <line x1="-55" y1="18" x2="115" y2="18" stroke="#4a3725" strokeWidth="2.8" />
-              <line x1="-55" y1="26" x2="115" y2="26" stroke="#4a3725" strokeWidth="2.2" />
-              {[-45, -5, 35, 75, 110].map((fx) => (
-                <g key={`pf-${fx}`}>
-                  <rect x={fx - 1.6} y="10" width="3.5" height="24" rx="0.8" fill="#3a281a" stroke="#22160d" strokeWidth="0.5" />
-                  <polygon points={`${fx - 1.6},10 ${fx},7 ${fx + 1.9},10`} fill="#543c29" />
-                </g>
-              ))}
-            </g>
-
-            {/* Earthy Tractor Wheel Ruts & Gravel Track trailing into the field margin */}
-            <g opacity="0.55">
-              <path d="M22,46 C32,60 45,78 60,98" stroke="#423324" strokeWidth="3.6" strokeDasharray="6 4" fill="none" />
-              <path d="M23,47 C33,61 46,79 61,99" stroke="#63503d" strokeWidth="1.2" fill="none" opacity="0.6" />
-              <path d="M42,46 C52,60 65,78 80,98" stroke="#423324" strokeWidth="3.6" strokeDasharray="6 4" fill="none" />
-              <path d="M43,47 C53,61 66,79 81,99" stroke="#63503d" strokeWidth="1.2" fill="none" opacity="0.6" />
-              <circle cx="35" cy="62" r="1" fill="#786654" />
-              <circle cx="52" cy="74" r="1.2" fill="#786654" />
-              <circle cx="70" cy="88" r="0.9" fill="#786654" />
-              <path d="M28,68 Q27,63 25,60 M28,68 Q30,64 32,61" stroke="#527027" strokeWidth="0.8" fill="none" />
-              <path d="M48,82 Q47,77 45,74 M48,82 Q50,78 52,75" stroke="#527027" strokeWidth="0.8" fill="none" />
-            </g>
-
-            {/* Packed earth & fine gravel parking pad under tractor */}
-            <ellipse cx="46" cy="46" rx="58" ry="14" fill="#4d3e30" opacity="0.38" />
-
-            {/* Farmyard Wooden Water Barrel & Vintage Galvanized Milk Churn at Corner */}
-            <g transform="translate(100, 24)">
-              <rect x="0" y="2" width="11" height="15" rx="1.8" fill="#4a3622" stroke="#251a0f" strokeWidth="0.8" />
-              <line x1="0" y1="5.5" x2="11" y2="5.5" stroke="#1f2429" strokeWidth="1.1" />
-              <line x1="0" y1="13" x2="11" y2="13" stroke="#1f2429" strokeWidth="1.1" />
-              <ellipse cx="5.5" cy="2" rx="5" ry="2" fill="#634c32" stroke="#251a0f" strokeWidth="0.6" />
-              <rect x="13" y="6" width="7" height="11" rx="1.2" fill="#94a3b8" stroke="#475569" strokeWidth="0.7" />
-              <polygon points="14,6 19,6 18,3 15,3" fill="#cbd5e1" stroke="#475569" strokeWidth="0.6" />
-              <circle cx="16.5" cy="2" r="1" fill="#475569" />
-            </g>
-
-            {/* 🌾 Golden Cylindrical Hay Bales nestled along the wheat edge */}
-            <g transform="translate(-32, 22)">
-              <g>
-                <ellipse cx="0" cy="12" rx="14" ry="9" fill="#d9b434" />
-                <rect x="-14" y="0" width="28" height="12" fill="#eab308" />
-                <ellipse cx="0" cy="0" rx="14" ry="7" fill="#fde047" stroke="#ca8a04" strokeWidth="0.8" />
-                <line x1="-8" y1="0" x2="-8" y2="12" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
-                <line x1="8" y1="0" x2="8" y2="12" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
-                <circle cx="0" cy="0" r="4.5" fill="none" stroke="#ca8a04" strokeWidth="0.8" strokeDasharray="3,2" />
-                <path d="M-14,8 Q-18,10 -20,13 M-12,12 Q-15,15 -17,18" stroke="#fde047" strokeWidth="0.7" fill="none" />
-              </g>
-            </g>
-            <g transform="translate(-10, 26)">
-              <g>
-                <ellipse cx="0" cy="10" rx="13" ry="8" fill="#d9b434" />
-                <rect x="-13" y="0" width="26" height="10" fill="#eab308" />
-                <ellipse cx="0" cy="0" rx="13" ry="6.5" fill="#fde047" stroke="#ca8a04" strokeWidth="0.8" />
-                <line x1="-7" y1="0" x2="-7" y2="10" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
-                <line x1="7" y1="0" x2="7" y2="10" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
-                <circle cx="0" cy="0" r="3.5" fill="none" stroke="#ca8a04" strokeWidth="0.8" strokeDasharray="3,2" />
-              </g>
-            </g>
-            <g transform="translate(-20, 10)">
-              <g>
-                <ellipse cx="0" cy="9" rx="12" ry="7" fill="#d9b434" />
-                <rect x="-12" y="0" width="24" height="9" fill="#eab308" />
-                <ellipse cx="0" cy="0" rx="12" ry="6" fill="#fef08a" stroke="#ca8a04" strokeWidth="0.8" />
-                <line x1="-6" y1="0" x2="-6" y2="9" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
-                <line x1="6" y1="0" x2="6" y2="9" stroke="#854d0e" strokeWidth="1.0" strokeDasharray="3,1" />
-                <circle cx="0" cy="0" r="3" fill="none" stroke="#ca8a04" strokeWidth="0.8" strokeDasharray="3,2" />
-                <path d="M12,4 Q16,6 18,9" stroke="#fef08a" strokeWidth="0.7" fill="none" />
-              </g>
-            </g>
-
-            {/* 🚜 Red Countryside Farm Tractor */}
-            <ellipse cx="22" cy="46" rx="16" ry="5" fill="#18191c" opacity="0.45" />
-            <ellipse cx="76" cy="46" rx="10" ry="3.5" fill="#18191c" opacity="0.45" />
-
-            <circle cx="22" cy="30" r="18.5" fill="#1c1d20" />
-            <circle cx="22" cy="30" r="16.5" fill="#292b30" />
-            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
-              <line
-                key={deg}
-                x1={22 + 15 * Math.cos((deg * Math.PI) / 180)}
-                y1={30 + 15 * Math.sin((deg * Math.PI) / 180)}
-                x2={22 + 19 * Math.cos((deg * Math.PI) / 180)}
-                y2={30 + 19 * Math.sin((deg * Math.PI) / 180)}
-                stroke="#121315"
-                strokeWidth="2.8"
-              />
-            ))}
-            <circle cx="22" cy="30" r="11" fill="#eab308" stroke="#a16207" strokeWidth="1.2" />
-            <circle cx="22" cy="30" r="9" fill="#ca8a04" />
-            <circle cx="22" cy="30" r="4.5" fill="#1e2024" stroke="#0f1012" strokeWidth="0.8" />
-            {[0, 60, 120, 180, 240, 300].map((deg) => (
-              <circle
-                key={`lug-${deg}`}
-                cx={22 + 2.8 * Math.cos((deg * Math.PI) / 180)}
-                y={30 + 2.8 * Math.sin((deg * Math.PI) / 180)}
-                r="0.8"
-                fill="#fde047"
-              />
-            ))}
-
-            <circle cx="76" cy="37" r="10.5" fill="#1c1d20" />
-            <circle cx="76" cy="37" r="9.2" fill="#2a2c30" />
-            <circle cx="76" cy="37" r="5.5" fill="#eab308" stroke="#a16207" strokeWidth="1" />
-            <circle cx="76" cy="37" r="2.4" fill="#1e2024" />
-            <circle cx="76" cy="37" r="1" fill="#fde047" />
-
-            <rect x="22" y="31" width="54" height="6.5" fill="#23262b" rx="1.2" />
-            <rect x="36" y="34" width="16" height="5" fill="#1a1c20" rx="1" />
-
-            <path d="M3,30 C3,12 41,12 41,30" stroke="#991b1b" strokeWidth="5.6" fill="none" strokeLinecap="round" />
-            <path d="M4,30 C4,13 40,13 40,30" stroke="#dc2626" strokeWidth="3.6" fill="none" strokeLinecap="round" />
-
-            <polygon points="16,18 48,14 82,22 82,37 30,37" fill="#b91c1c" />
-            <polygon points="16,18 48,14 82,22 82,25 48,17 16,21" fill="#ef4444" />
-            <line x1="18" y1="19.5" x2="80" y2="23.5" stroke="#fca5a5" strokeWidth="0.8" opacity="0.85" />
-
-            <g opacity="0.75">
-              <line x1="52" y1="21" x2="52" y2="28" stroke="#450a0a" strokeWidth="1.2" />
-              <line x1="56" y1="22" x2="56" y2="29" stroke="#450a0a" strokeWidth="1.2" />
-              <line x1="60" y1="23" x2="60" y2="30" stroke="#450a0a" strokeWidth="1.2" />
-              <rect x="65" y="25" width="8" height="3" rx="0.5" fill="#eab308" stroke="#78350f" strokeWidth="0.5" />
-            </g>
-
-            <rect x="80" y="23" width="3.5" height="13.5" fill="#33383f" rx="1" stroke="#1f2329" strokeWidth="0.6" />
-            <line x1="81.8" y1="25" x2="81.8" y2="35" stroke="#ffffff" strokeWidth="0.9" opacity="0.7" />
-
-            {/* Exhaust Stack */}
-            <line x1="64" y1="22" x2="64" y2="5" stroke="#1f2226" strokeWidth="3.2" strokeLinecap="round" />
-            <rect x="62.2" y="10" width="3.6" height="7" rx="1" fill="#374151" stroke="#111827" strokeWidth="0.6" />
-            <line x1="63" y1="4.5" x2="66.5" y2="3.5" stroke="#1f2226" strokeWidth="1.2" strokeLinecap="round" />
-
-            {/* Rising smoke particles */}
-            <g transform="translate(64, 4)">
-              <circle cx="0" cy="0" r="2.2" fill="#f8fafc" className="animate-tractor-smoke-1" />
-              <circle cx="0" cy="0" r="3.2" fill="#ffffff" className="animate-tractor-smoke-2" />
-            </g>
-
-            {/* Driver Cockpit & Steering Wheel */}
-            <rect x="17" y="9" width="13" height="9.5" rx="2.8" fill="#18191c" stroke="#0a0a0c" strokeWidth="0.8" />
-            <line x1="23" y1="18.5" x2="23" y2="23" stroke="#374151" strokeWidth="1.6" />
-            <line x1="39" y1="18" x2="33" y2="10" stroke="#1f242b" strokeWidth="2.4" strokeLinecap="round" />
-            <ellipse cx="32" cy="9.5" rx="4" ry="2.2" fill="none" stroke="#111827" strokeWidth="2.0" />
-            <line x1="36" y1="24" x2="33" y2="17" stroke="#6b7280" strokeWidth="1.2" strokeLinecap="round" />
-            <circle cx="33" cy="17" r="1.1" fill="#ef4444" />
-
-            {/* Headlight casting softly across wheat field */}
-            <circle cx="82" cy="27" r="3.6" fill="#fef08a" stroke="#a16207" strokeWidth="1.2" />
-            <circle cx="82" cy="27" r="2.2" fill="#fffbeb" />
-            <polygon points="85,27 138,18 145,43 85,33" fill={theme.tractorLightGlow} className="pointer-events-none" />
-
-            {/* Wooden Harvest Basket with pumpkins & hayfork */}
-            <g transform="translate(-1, 16)">
-              <rect x="0" y="0" width="15" height="12" rx="1.5" fill="#785331" stroke="#452c16" strokeWidth="1.0" />
-              <line x1="0" y1="4" x2="15" y2="4" stroke="#452c16" strokeWidth="0.8" />
-              <line x1="0" y1="8" x2="15" y2="8" stroke="#452c16" strokeWidth="0.8" />
-              <ellipse cx="3.5" cy="4" rx="3" ry="4" fill="#a89276" stroke="#715c44" strokeWidth="0.6" />
-              <ellipse cx="9" cy="2" rx="3.5" ry="3" fill="#ea580c" />
-              <ellipse cx="9" cy="1.5" rx="2" ry="2.6" fill="#f59e0b" />
-              <line x1="9" y1="0" x2="9" y2="-1.8" stroke="#365314" strokeWidth="1" strokeLinecap="round" />
-              <line x1="13" y1="10" x2="19" y2="-4" stroke="#9a714c" strokeWidth="1.1" strokeLinecap="round" />
-              <path d="M19,-4 L20,-8 M19,-4 L18,-8 M19,-4 L21,-7" stroke="#64748b" strokeWidth="0.8" />
-            </g>
-          </g>
+          {/* Wheels sit on the last visible wheat swale, above the meadow's occluding edge. */}
+          {tractor}
         </g>
       </g>
     </>
@@ -296,11 +311,11 @@ function BackgroundLandscapeAsset({
  * 🏡 HomesteadMeadow (Master Stage Meadow Ground Plane, Retained Garden & Walls)
  * Lives in the 1.0x master stage layer alongside the cottage cluster.
  */
-function HomesteadMeadowAsset({ theme, setHoveredObject, onTriggerToast }: HomesteadMeadowProps) {
+function HomesteadMeadowAsset({ theme, sceneLayout, setHoveredObject, onTriggerToast }: HomesteadMeadowProps) {
   return (
     <g id="homestead-meadow-base">
       {/* 02 TERRAIN MASS (平整低多边形各级台地、主庭院大台面与底板) */}
-      <TerrainMass theme={theme} />
+      <TerrainMass theme={theme} sceneLayout={sceneLayout} />
 
       {/* 03 LAND PARCELS (低多边形几何草甸分块与平整田亩) */}
       <PastureFields theme={theme} />

@@ -2,6 +2,10 @@ import { expect, test } from '@playwright/test';
 import { DEFAULT_ROOM_LAYOUT } from '../../src/components/layout-gizmo/layoutStore';
 import { stableScene } from './helpers';
 
+// Hundreds of native editing actions otherwise capture the entire large SVG
+// after every step. Keep screenshots and assertions, without that recording cost.
+test.use({ trace: 'off' });
+
 for (const editing of [false, true]) {
   for (const [id, selector] of [['coffee-beans', '#cabinet-coffee-beans'], ['ceramic-cups', '#cabinet-ceramic-cups']] as const) {
     test(`cabinet ${id} hover and click with editor=${editing} preserve the world`, async ({ page }) => {
@@ -28,6 +32,9 @@ for (const editing of [false, true]) {
 }
 
 test('layout editor opens, selects and nudges every v6 item without unmounting the world', async ({ page }) => {
+  // Aggregate budget for 35 native selections and nudges of the complete scene.
+  // Per-item layout, persistence and error assertions still run for every item.
+  test.setTimeout(120000);
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await stableScene(page);
@@ -80,7 +87,8 @@ test('layout editor works inside a cross-origin sandboxed preview iframe', async
 });
 
 test('every rendered furniture handle can drag and then keyboard-nudge without crashing', async ({ page }) => {
-  test.setTimeout(180000);
+  // Cover 136 native axis drags without applying a single-action time budget to the entire traversal.
+  test.setTimeout(360000);
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await stableScene(page);

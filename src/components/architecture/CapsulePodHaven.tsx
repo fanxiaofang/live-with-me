@@ -6,7 +6,6 @@ import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
 
 export interface CapsulePodHavenProps {
-  activeRoom: RoomId | 'overview';
   onSelectRoom: (roomId: RoomId | 'overview') => void;
   presenceSlots: PresenceAllocation['slots'];
   onSelectPerson: (person: Person) => void;
@@ -18,36 +17,8 @@ export interface CapsulePodHavenProps {
   };
 }
 
-/**
- * 2.5D 工匠级旧太空胶囊仓 (Vintage Capsule Pod) 与主屋连廊平台 (Connecting Deck Platform)
- *
- * 针对渲染与视觉层级 Bug 的彻底修复：
- * 1. 【气密门层级与嵌入式门框 (Recessed Embedded Airlock Hatch)】：
- *    - 严格内嵌于胶囊舱体边界内 (x=-56 ~ -32, y=-16 ~ 26)，彻底消除原先悬空错位、截断穿帮到舱外的 Bug；
- *    - 舱体采用精准 clipPath 与凹入式多层金属内框 (4px 真实舱壁厚度与内阴影)；
- *    - 去除生硬突兀的梯形光斑贴纸，改为精细的门楣防雨罩与柔和下照光源；
- *    - 保留全金属三辐旋转加压锁紧手轮 (Rotary Dogging Wheel)、重型锻造铰链、气密橡胶圈与视窗。
- *
- * 2. 【文字与丝印排版规范化 (Clean Non-Overlapping Stencils)】：
- *    - 彻底清除原先与大舷窗发生冲突切割的文字 (`ORBITAL · POD 03` 等)；
- *    - 移至右侧开阔半球舱壁 (x=50, y=-9) 设置独立的复古金属装配模组铭牌，字间距与避让区清晰规范；
- *    - 避免任何与高光带、太阳能板及天线底座的视觉冲突。
- *
- * 3. 【连廊平台延伸与舱门无缝对齐 (Seamless Platform Walkway)】：
- *    - 连廊平台向右延伸至 x=906，完全覆盖并支撑气密门底座 (x=874 ~ 898)；
- *    - 门槛金属过渡防滑板直接落于木甲板表面，形成自然顺畅的“主屋 -> 连廊平台 -> 胶囊卧舱”行动路线闭环；
- *    - 后侧护栏在门前区域 (x=870 以右) 开放入口通道，迎客棕榈地垫与鞋履精准置于落脚点。
- *
- * 4. 【柔和光晕与独立支脚接触阴影 (Cinematic Lighting & Ground Contact)】：
- *    - 柱灯光晕全面改用多段径向渐变 (radialGradient + mix-blend-mode: screen)，边缘完全衰减至 0，告别刺眼生硬的实心色圈；
- *    - 移除底部粗糙的大黑椭圆色块，为 4 个独立液压支脚分别构建双层接触阴影 (Sharp Contact Patch + Soft Ambient Dispersion)。
- *
- * 5. 【大舷窗深度感与卧舱透视强化 (Deep Inner Recess & Cozy Bedroom)】：
- *    - 强化舷窗金属框内侧的深邃阴影 (Inner Shadow)，营造 15cm 航天复合舱壁的真实深邃厚度；
- *    - 优化床铺绗缝羽绒被、饱满睡枕、木质吸音格栅与安睡角色的层次感。
- */
+/** Detached retro sleeping pod, preserving its original frontal silhouette. */
 export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
-  activeRoom,
   onSelectRoom,
   presenceSlots,
   onSelectPerson,
@@ -65,6 +36,8 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
         <clipPath id="podHullSilhouetteClip">
           <path d="M-70,3 C-70,-18 -52,-30 -33,-30 L33,-30 C52,-30 66,-18 66,3 C66,22 52,36 33,36 L-33,36 C-52,36 -70,22 -70,3 Z" />
         </clipPath>
+
+        <clipPath id="podBedroomAperture"><circle r="22.5" /></clipPath>
 
         {/* 2. 胶囊舱体 3D 柱面受光垂直渐变 (上壳象牙白) */}
         <linearGradient id="podShellUpperGrad" x1="0" y1="0" x2="0" y2="1">
@@ -183,28 +156,6 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
         {/* A. 舱身底部柔和草甸漫反射软阴影 (消解粗暴的大黑椭圆块) */}
         <ellipse cx="-6" cy="62" rx="60" ry="12" fill="#182419" opacity="0.18" filter="url(#softShadow)" />
 
-        {/* 选中高光光环 (Atmospheric Ambient Glow - no harsh dashed sticker bounding box) */}
-        {activeRoom === 'capsule_pod' && (
-          <g className="pointer-events-none">
-            <ellipse
-              cx="-4"
-              cy="12"
-              rx="88"
-              ry="56"
-              fill="rgba(214, 140, 104, 0.08)"
-              stroke="#d68c68"
-              strokeWidth="1.6"
-              className="animate-[pulse_3s_infinite]"
-            />
-            <ellipse
-              cx="-4"
-              cy="12"
-              rx="76"
-              ry="46"
-              fill="rgba(254, 215, 170, 0.06)"
-            />
-          </g>
-        )}
 
         {/* B. 四足重型液压升降支撑架 (每个支脚配备独立精确的 Contact Shadows) */}
         <g id="pod-landing-gear">
@@ -581,6 +532,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           {/* 4. 舱内温馨背景漫射暖金辉光 */}
           <circle cx="0" cy="0" r="22.5" fill={theme.cottageGlow} opacity="0.86" />
 
+          <g clipPath="url(#podBedroomAperture)">
           {/* 5. 卧舱内壁实木吸音格栅条纹 (Acoustic Fluted Oak Slats) */}
           <g id="interior-wood-slats" opacity="0.32">
             {[-18, -14, -10, -6, -2, 2, 6, 10, 14, 18].map((sx) => (
@@ -693,6 +645,8 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             />
           </g>
 
+          </g>
+
           {/* ======================================================== */}
           {/* 13. 胶囊卧舱安睡角色 (Sleeper in Capsule Pod · tatami_capsule) */}
           {/* ======================================================== */}
@@ -766,6 +720,15 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             opacity="0.25"
             className="pointer-events-none"
           />
+        </g>
+
+        <g id="pod-entry-steps">
+          <polygon points="-55,33 -32,33 -35,43 -58,43" fill="#738276" stroke="#34473a" strokeWidth="0.8" />
+          <path d="M-58,43 H-35 V47 H-58 Z" fill="#3e5043" />
+          <polygon points="-58,47 -35,47 -38,57 -61,57" fill="#718173" stroke="#34473a" strokeWidth="0.8" />
+          <path d="M-61,57 H-38 V61 H-61 Z" fill="#34483a" />
+          <path d="M-51,35 L-53,41 M-44,35 L-46,41 M-53,49 L-55,55 M-46,49 L-48,55" fill="none" stroke="#a3b29f" strokeWidth="0.6" />
+          <ellipse cx="-49.5" cy="62" rx="15" ry="4" fill="#18271b" opacity="0.25" />
         </g>
 
         {/* F. 安睡角色梦境浮标与呢喃文字 */}

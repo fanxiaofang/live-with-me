@@ -29,7 +29,7 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
 
   if (isCollapsed) {
     return (
-      <aside aria-label="同住人状态" className="fixed top-14 left-5 z-20 pointer-events-auto">
+      <aside aria-label="同住人状态" className="fixed top-24 sm:top-14 left-5 z-20 pointer-events-auto">
         <button
           onClick={() => setIsCollapsed(false)}
           className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1e1c19]/85 backdrop-blur-md border border-[#3b332b] shadow-xl text-xs text-[#cfc5b6] hover:text-white hover:border-[#524538] transition-all group"
@@ -45,7 +45,7 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
   }
 
   return (
-    <aside aria-label="同住人状态" className="fixed top-14 left-5 z-20 pointer-events-auto max-w-[280px]">
+    <aside aria-label="同住人状态" className="fixed top-24 sm:top-14 left-5 z-20 pointer-events-auto max-w-[280px]">
       <div className="p-3 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3b332b] shadow-xl space-y-2.5">
         {/* Header indicator */}
         <div className="flex items-center justify-between text-[11px] text-[#9c9183] px-1 pb-1 border-b border-[#302a24]">

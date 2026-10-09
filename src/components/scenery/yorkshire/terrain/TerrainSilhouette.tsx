@@ -1,13 +1,18 @@
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
+import { mountainApronPath, rollingWheatPath } from '../../../../world/scene/landscapeGeometry';
+
+interface TerrainSurfaceProps extends YorkshireCommonProps {
+  frontExtension?: number;
+}
 
 /**
  * 🏔️ MountainSilhouette (Far Low-Poly Distant Mountain Ridges, Pines & Woodlands)
  * Layer 01: FAR DISTANT BACKGROUND SILHOUETTE
  */
-export const MountainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, className }) => {
-  return (
-    <g id="yorkshire-mountain-silhouette" className={className}>
+export const MountainSilhouette: React.FC<TerrainSurfaceProps> = ({ theme, className, frontExtension = 0 }) => {
+  const ridges = React.useMemo(() => (
+    <>
       {/* ------------------------------------------------------------------- */}
       {/* 1. 远景低多边形主山脉基底与分面 (Clean Low-Poly Mountain Peak Facets)  */}
       {/* ------------------------------------------------------------------- */}
@@ -62,13 +67,17 @@ export const MountainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, clas
         fill={theme.skyBottom}
         opacity="0.30"
       />
+    </>
+  ), [theme]);
 
+  const apron = (
+    <>
       {/* ------------------------------------------------------------------- */}
       {/* 3. 远山与中景麦田自然交融山麓裙带 (Foothill Mountain-to-Wheat Apron Band) */}
       {/* ------------------------------------------------------------------- */}
       <g id="foothill-mountain-wheat-apron">
         <path
-          d="M -3200,160 C -2400,135 -1600,170 -800,145 C -250,132 200,152 650,132 C 1150,122 1650,152 2350,132 C 3150,122 3750,148 4200,138 L 4200,255 C 3450,268 2550,248 1750,258 C 950,238 150,252 -650,242 C -1450,258 -2350,242 -3200,252 Z"
+          d={mountainApronPath(frontExtension)}
           fill="url(#mountainWheatApronGrad)"
           opacity="0.95"
         />
@@ -88,7 +97,11 @@ export const MountainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, clas
           opacity="0.42"
         />
       </g>
+    </>
+  );
 
+  const landmarks = React.useMemo(() => (
+    <>
       {/* ------------------------------------------------------------------- */}
       {/* 4. 远方微型低多边形农舍剪影 (Distant Low-Poly Farmsteads)             */}
       {/* ------------------------------------------------------------------- */}
@@ -265,15 +278,17 @@ export const MountainSilhouette: React.FC<YorkshireCommonProps> = ({ theme, clas
           ))}
         </g>
       </g>
-    </g>
-  );
+    </>
+  ), []);
+  return <g id="yorkshire-mountain-silhouette" className={className}>{ridges}{apron}{landmarks}</g>;
 };
 
 /**
  * 🌾 RollingWheatSilhouette (Midground Rolling Pastoral Wheat Hillside)
  * Layer 02: MIDGROUND ROLLING WHEAT FIELDS
  */
-export const RollingWheatSilhouette: React.FC<YorkshireCommonProps> = ({ className }) => {
+export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouetteAsset({ className, frontExtension = 0 }: TerrainSurfaceProps) {
+  const surfacePath = rollingWheatPath(frontExtension);
   return (
     <g id="yorkshire-wheat-silhouette" className={className}>
       <defs>
@@ -289,7 +304,7 @@ export const RollingWheatSilhouette: React.FC<YorkshireCommonProps> = ({ classNa
       <g id="organic-rolling-wheat-fields">
         {/* A. 广阔连绵的自然麦田丘陵基底 (Master Continuous Rolling Wheat Slope) */}
         <path
-          d="M -3200,212 C -2400,195 -1600,225 -800,205 C -200,190 350,208 920,185 C 1500,170 2100,202 2800,188 C 3500,180 3900,202 4200,192 L 4200,385 C 3400,375 2400,390 1500,370 C 600,355 -300,380 -1200,365 C -2100,380 -2700,365 -3200,375 Z"
+          d={surfacePath}
           fill="url(#pastoralRollingWheatGrad)"
         />
 
@@ -350,7 +365,7 @@ export const RollingWheatSilhouette: React.FC<YorkshireCommonProps> = ({ classNa
 
         {/* G. 细密亚光麦穗颗粒织理 */}
         <path
-          d="M -3200,212 C -2400,195 -1600,225 -800,205 C -200,190 350,208 920,185 C 1500,170 2100,202 2800,188 C 3500,180 3900,202 4200,192 L 4200,385 C 3400,375 2400,390 1500,370 C 600,355 -300,380 -1200,365 C -2100,380 -2700,365 -3200,375 Z"
+          d={surfacePath}
           fill="url(#wheatPattern)"
           opacity="0.08"
         />
@@ -400,7 +415,7 @@ export const RollingWheatSilhouette: React.FC<YorkshireCommonProps> = ({ classNa
       </g>
     </g>
   );
-};
+});
 
 /**
  * Composite TerrainSilhouette retaining full backward compatibility

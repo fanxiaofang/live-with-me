@@ -1,44 +1,58 @@
 # Live With Me：当前设计与架构
 
-更新：2026-10-07（Asia/Shanghai）。本文对应 P0–P7 重构后的真实生产代码。原始设计文档保存在 [历史设计](docs/architecture/history/DESIGN_BEFORE_REFACTOR.md)，逐批证据见 [执行记录](docs/architecture/EXECUTION_STATUS.md)。
+更新：2026-10-09（Asia/Shanghai）。本文对应 P0–P7 重构、中远景视差连续性修复、房间导航优化及建筑布局与资产调整后的生产代码。原始设计文档保存在 [历史设计](docs/architecture/history/DESIGN_BEFORE_REFACTOR.md)，逐批证据见 [执行记录](docs/architecture/EXECUTION_STATUS.md)。
 
 ## 产品与技术栈
 
 Live With Me 是低打扰的陪伴空间。继续使用 React 19、TypeScript、Vite、SVG、CSS / Tailwind CSS 4；CSS 负责布局、浮层、响应式、主题和动画，TypeScript 负责场景数据及坐标转换，SVG 保留手绘资产。npm 及 package-lock.json 是安装入口；dev 端口仍为 3000，DISABLE_HMR 配置保留。
 
-本轮保留 RoomId、人物状态、SVG 导出、家具编辑、原构图与资产遮挡顺序。没有引入 ECS、全局状态库、后端或多人同步。房间状态、信件及家具布局仍由 App 的功能 hooks 所有。
+P0–P7 架构重构保留了 RoomId、人物状态、SVG 导出、家具编辑、原构图与资产遮挡顺序。后续中远景调整及连续性修复的范围见下文。系统未引入 ECS、全局状态库、后端或多人同步。房间状态、信件及家具布局仍由 App 的功能 hooks 所有。
 
 ## 生产调用链与渲染顺序
 
-唯一主入口为 main.tsx → App → ThreeWorld。ThreeWorld 组合 WorldDefs、BackgroundLandscape、远山 DistantPines、ObservatoryHaven、MainCottageHaven、CapsulePodHaven、WoodenCabinHaven、ForegroundLandscape 及浮层。旧 YorkshireWorld 和 CommunicationHill 已移除。
+唯一主入口为 main.tsx → App → ThreeWorld。ThreeWorld 先绘制 WorldDefs 和 BackgroundLandscape 的天空、远山铁路、麦田三层视差，再在 panoramic-world-stage 中组合 HomesteadMeadow、四处建筑及 ForegroundLandscape，最后绘制浮层。远山松林在 MountainSilhouette 内。旧 YorkshireWorld 和 CommunicationHill 已移除。
 
 四处建筑均由 world/render/SceneEntity 执行 placement，建筑资产只保留内部几何、床内偏移、墙面剪切及原绘制顺序。主屋内部地板、墙面、家具、人物、玻璃、屋顶顺序按原生产 JSX 保留，未按新的类别重排。远山松树位于场景层，不随电波站移动。defs 保持现有标识和引用。
 
 | 实体 | scene position | scale |
 | --- | --- | --- |
 | main_cottage | (540,210) | 1 |
-| capsule_pod | (894,320) | 1 |
-| wooden_cabin | (220,340) | 1 |
-| observatory | (1000,460) | 0.80 |
+| capsule_pod | (1000,350) | 1 |
+| wooden_cabin | (125,350) | 1 |
+| observatory | (1100,230) | 0.80 |
 
 定义入口：src/world/scene/sceneLayout.ts。主屋大段几何位于 components/architecture/MainCottageHaven.tsx；景观、主题、浮层分别位于 world/render、world/theme、world/overlays。
+
+## 建筑布局与资产调整
+
+第三阶段天气光效仍暂缓。小木屋与胶囊舱分别移到草台西、东侧，底座、台阶及接地阴影留在草台内；电波站移到靠近麦田的右后方草地，仍处于 1.0x 主舞台。TerrainMass 的四处地面阴影消费同一 sceneLayout 的 position / scale，不再使用与建筑脱离的绝对坐标。
+
+小木屋用统一的浅轴测基底绘制屋顶、外墙、地板、床与台阶，正面朝画面右下方（东南），左侧可见圆木侧墙；窗台花保留在正面窗户上。木床恢复圆头床柱、木质床头/床尾板、蓬松软枕和陶土红羊毛厚被，床头在东侧，床头柜和单盏阅读灯在旁。无火炉的烟囱、烟雾和柴棚移除，人物局部床位随床铺调整。胶囊舱恢复原始正视舱身、圆形黄铜舷窗及支腿，不再剪切舱体或叠加偏移后壳；床铺限于舷窗开口，入口踏步与水平门槛对齐。电波站锅面增加背壳、倾斜口沿及朝天空右上方的馈源支架，并修正台面栏杆与机柜面板的投影。
+
+小木屋床头柜旁不设内隔墙，后墙和地板延续到花窗后方。屋檐与主屋共用 terracottaRoof 陶瓦材质，瓦口下有暖木封檐梁和深色底面，踏步绘制完整的顶面、侧面与立面。五杠牧场门移到东侧麦田与草甸的田界，与矮石墙接续；门和石墙位置统一定义在 landscapeLayout.ts，主屋前廊前的草地保持开阔。
+
+主屋三组低矮植物位于地板绘制之后，遮挡少量柱脚而保留架空层、前廊台阶和入口。详见 [建筑调整记录](docs/architecture/BUILDING_LAYOUT_REFINEMENT.md)。
 
 ## 坐标、相机与手势
 
 sceneTypes 区分 LocalPoint、ScenePoint、ViewBoxPoint、ClientPoint 及对应位移。局部点显式携带 parent。SVG viewBox 保持 1200×800，preserveAspectRatio 为 xMidYMid slice。
 
-相机由 useWorldCamera 管理，公式为 q = origin + zoom × (p − origin) + translation，origin=(600,400)，zoom 范围 0.45–2.5。RoomFocus 用 targetEntity、localAnchor、zoom、compositionPoint；anchor 反推自原镜头，本轮未重新取景，允许 anchor 位于建筑外。overview 是独立 preset。房间 focus 不被旧边界截断；手动范围包含旧边界与派生 focus 的包围范围。手动操作进入漫游，重新选择同一房间也恢复 focus。
+相机由 useWorldCamera 管理，公式为 q = origin + zoom × (p − origin) + translation，origin=(600,400)，zoom 范围 0.45–2.5。RoomFocus 用 targetEntity、localAnchor、zoom、compositionPoint、contextSize；anchor 围绕实际活动区域或设施定义，contextSize 在实体局部空间定义周边环境范围，结合 slice 可见视口及实体 scale 下调窄屏缩放。overview 是独立 preset。选中房间与相机目标同次提交，手动相机继续独立保存；切换房间、同房间重新选择或 focus 下调整视口都会重新派生焦点。cameraBounds 按实际可见视口、缩放与建筑 placement 推导手动漫游范围；全景保留建筑构图与山田间距，包含响应式房间 focus 及周边平移空间。拖动、滚轮、按钮及双指缩放共享约束。
+
+背景阻尼仍由 parallaxMath 的 sky / mountains / wheat / stage 配置控制。landscapeGeometry 定义地形边缘及其保守包络，resolveLandscapeCoverage 把前层后缘投影到后层局部空间，延展山麓与麦田底部曲线，保留至少 8 个根 SVG 单位的覆盖。cameraMotion 统一四层 400ms 过渡，450ms 后收敛地形覆盖，连续操作会重新计时。选中房间仅由导航状态与镜头聚焦表达，场景内不绘制区域虚线、填色或选中光圈；室内地板保留透明点击区域。建筑资产与编辑手势上下文保持稳定。详见 [中远景修复记录](docs/architecture/LANDSCAPE_CONTINUITY_FIX.md) 和 [房间导航优化记录](docs/architecture/ROOM_NAVIGATION_OPTIMIZATION.md)。
 
 | 视角 | 初始 translation | zoom |
 | --- | --- | --- |
 | overview | (0,135) | 0.66 |
-| my_room | (220,150) | 1.55 |
-| living_nook | (20,130) | 1.55 |
-| friend_room | (-180,140) | 1.55 |
-| capsule_pod | (-280,60) | 1.6 |
-| corn_lounge | (210,-30) | 1.6 |
-| observatory | (-380,30) | 1.6 |
-| porch_mailbox | (40,-80) | 1.5 |
+| my_room | (246,144) | 1.20 |
+| living_nook | (70.8,100.3) | 1.18 |
+| friend_room | (-96,120) | 1.20 |
+| capsule_pod | (-580,60.9) | 1.45 |
+| corn_lounge | (652.4,44.8) | 1.40 |
+| observatory | (-775,269.7) | 1.55 |
+| porch_mailbox | (16.2,33.8) | 1.08 |
+
+表格对应默认 placement 与完整 1200×800 可见视口；窄屏、极宽屏或建筑 scale 变化时，房间 zoom 与 translation 会重新派生。已确认的 overview 参数保持固定。
 
 相机 pan 使用根 SVG 坐标差；Gizmo 把两次 client 指针位置通过保存坐标所属 parent 的 getScreenCTM 逆矩阵转换后求 delta，包含相机、嵌套 scale 与左墙剪切。轴向把手保留原 isoMath authoring 方向，不再乘固定 0.45。
 

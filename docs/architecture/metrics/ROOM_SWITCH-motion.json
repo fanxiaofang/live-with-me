@@ -1,0 +1,102 @@
+{
+  "environment": "Windows / Chromium 141 / React development Profiler / DPR 1 / 1200×800",
+  "measurements": [
+    {
+      "room": "my_room",
+      "clickToTargetMs": 99.30000001192093,
+      "clickToFirstFrameMs": 1494.300000011921,
+      "settledMs": 1762.800000011921,
+      "reactCommits": 2,
+      "reactTotalMs": 68.30000001192093,
+      "reactMaxMs": 68.30000001192093,
+      "maxFrameGapMs": 483.3000000000011,
+      "transition": "0.4s",
+      "camera": "transform: translate(220px, 150px) scale(1.55); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "living_nook",
+      "clickToTargetMs": 79.10000002384186,
+      "clickToFirstFrameMs": 963.3000000119209,
+      "settledMs": 1288.1000000238419,
+      "reactCommits": 1,
+      "reactTotalMs": 62.40000003576279,
+      "reactMaxMs": 62.40000003576279,
+      "maxFrameGapMs": 299.89999999999964,
+      "transition": "0.4s",
+      "camera": "transform: translate(20px, 130px) scale(1.55); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "friend_room",
+      "clickToTargetMs": 102.09999996423721,
+      "clickToFirstFrameMs": 883.3000000119209,
+      "settledMs": 1231.699999988079,
+      "reactCommits": 1,
+      "reactTotalMs": 83.99999994039536,
+      "reactMaxMs": 83.99999994039536,
+      "maxFrameGapMs": 299.90000000000146,
+      "transition": "0.4s",
+      "camera": "transform: translate(-180px, 140px) scale(1.55); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "capsule_pod",
+      "clickToTargetMs": 100.80000001192093,
+      "clickToFirstFrameMs": 1215.7000000476837,
+      "settledMs": 1401.7000000476837,
+      "reactCommits": 1,
+      "reactTotalMs": 82.700000166893,
+      "reactMaxMs": 82.700000166893,
+      "maxFrameGapMs": 299.90000000000146,
+      "transition": "0.4s",
+      "camera": "transform: translate(-280px, 60px) scale(1.6); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "corn_lounge",
+      "clickToTargetMs": 75.10000002384186,
+      "clickToFirstFrameMs": 885.6000000238419,
+      "settledMs": 1173,
+      "reactCommits": 1,
+      "reactTotalMs": 54.700000166893005,
+      "reactMaxMs": 54.700000166893005,
+      "maxFrameGapMs": 233.29999999999927,
+      "transition": "0.4s",
+      "camera": "transform: translate(210px, -30px) scale(1.6); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "observatory",
+      "clickToTargetMs": 44.5,
+      "clickToFirstFrameMs": 861,
+      "settledMs": 1291.699999988079,
+      "reactCommits": 1,
+      "reactTotalMs": 34.90000009536743,
+      "reactMaxMs": 34.90000009536743,
+      "maxFrameGapMs": 333.2000000000007,
+      "transition": "0.4s",
+      "camera": "transform: translate(-380px, 30px) scale(1.6); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "porch_mailbox",
+      "clickToTargetMs": 103.39999997615814,
+      "clickToFirstFrameMs": 878.5,
+      "settledMs": 1111.5999999642372,
+      "reactCommits": 1,
+      "reactTotalMs": 88.1000000834465,
+      "reactMaxMs": 88.1000000834465,
+      "maxFrameGapMs": 283.40000000000146,
+      "transition": "0.4s",
+      "camera": "transform: translate(40px, -80px) scale(1.5); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "overview",
+      "clickToTargetMs": 99.40000003576279,
+      "clickToFirstFrameMs": 993.3000000119209,
+      "settledMs": 1261.800000011921,
+      "reactCommits": 1,
+      "reactTotalMs": 81.80000019073486,
+      "reactMaxMs": 81.80000019073486,
+      "maxFrameGapMs": 283.3999999999978,
+      "transition": "0.4s",
+      "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    }
+  ],
+  "recording": "retain-on-failure"
+}

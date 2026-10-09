@@ -1,0 +1,102 @@
+{
+  "environment": "Windows / Chromium 141 / React development Profiler / DPR 1 / 1200×800",
+  "recording": "retain-on-failure",
+  "measurements": [
+    {
+      "room": "my_room",
+      "clickToTargetMs": 48.90000003576279,
+      "clickToFirstFrameMs": 979.9000000357628,
+      "settledMs": 1223.800000011921,
+      "reactCommits": 2,
+      "reactTotalMs": 27.999999940395355,
+      "reactMaxMs": 27.999999940395355,
+      "maxFrameGapMs": 316.6999999999998,
+      "transition": "0.4s",
+      "camera": "transform: translate(246px, 144px) scale(1.2); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    },
+    {
+      "room": "living_nook",
+      "clickToTargetMs": 51.80000001192093,
+      "clickToFirstFrameMs": 602.9000000357628,
+      "settledMs": 1042.5,
+      "reactCommits": 1,
+      "reactTotalMs": 41.299999833106995,
+      "reactMaxMs": 41.299999833106995,
+      "maxFrameGapMs": 216.60000000000036,
+      "transition": "0.4s",
+      "camera": "transform: translate(70.8px, 100.3px) scale(1.18); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    },
+    {
+      "room": "friend_room",
+      "clickToTargetMs": 28.19999998807907,
+      "clickToFirstFrameMs": 645.9000000357628,
+      "settledMs": 1107.4000000357628,
+      "reactCommits": 1,
+      "reactTotalMs": 21.899999976158142,
+      "reactMaxMs": 21.899999976158142,
+      "maxFrameGapMs": 216.70000000000073,
+      "transition": "0.4s",
+      "camera": "transform: translate(-96px, 120px) scale(1.2); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    },
+    {
+      "room": "capsule_pod",
+      "clickToTargetMs": 31.200000047683716,
+      "clickToFirstFrameMs": 639.5,
+      "settledMs": 751.9000000357628,
+      "reactCommits": 1,
+      "reactTotalMs": 24.09999990463257,
+      "reactMaxMs": 24.09999990463257,
+      "maxFrameGapMs": 200,
+      "transition": "0.4s",
+      "camera": "transform: translate(-426.3px, 104.4px) scale(1.45); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    },
+    {
+      "room": "corn_lounge",
+      "clickToTargetMs": 68,
+      "clickToFirstFrameMs": 1060,
+      "settledMs": 1233.4000000357628,
+      "reactCommits": 1,
+      "reactTotalMs": 55.09999990463257,
+      "reactMaxMs": 55.09999990463257,
+      "maxFrameGapMs": 266.59999999999854,
+      "transition": "0.4s",
+      "camera": "transform: translate(532px, 112px) scale(1.4); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    },
+    {
+      "room": "observatory",
+      "clickToTargetMs": 32.60000002384186,
+      "clickToFirstFrameMs": 965.5,
+      "settledMs": 1130.300000011921,
+      "reactCommits": 1,
+      "reactTotalMs": 23.50000011920929,
+      "reactMaxMs": 23.50000011920929,
+      "maxFrameGapMs": 266.6999999999971,
+      "transition": "0.4s",
+      "camera": "transform: translate(-620px, -86.8px) scale(1.55); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    },
+    {
+      "room": "porch_mailbox",
+      "clickToTargetMs": 39.89999997615814,
+      "clickToFirstFrameMs": 576.8999999761581,
+      "settledMs": 794,
+      "reactCommits": 1,
+      "reactTotalMs": 29.99999976158142,
+      "reactMaxMs": 29.99999976158142,
+      "maxFrameGapMs": 183.29999999999927,
+      "transition": "0.4s",
+      "camera": "transform: translate(16.2px, 33.8px) scale(1.08); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    },
+    {
+      "room": "overview",
+      "clickToTargetMs": 21,
+      "clickToFirstFrameMs": 488.7000000476837,
+      "settledMs": 656,
+      "reactCommits": 1,
+      "reactTotalMs": 17.09999990463257,
+      "reactMaxMs": 17.09999990463257,
+      "maxFrameGapMs": 200,
+      "transition": "0.4s",
+      "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform;"
+    }
+  ]
+}

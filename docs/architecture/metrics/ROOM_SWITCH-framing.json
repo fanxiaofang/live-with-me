@@ -1,0 +1,102 @@
+{
+  "environment": "Windows / Chromium 141 / React development Profiler / DPR 1 / 1200×800",
+  "measurements": [
+    {
+      "room": "my_room",
+      "clickToTargetMs": 59.30000001192093,
+      "clickToFirstFrameMs": 799.8000000119209,
+      "settledMs": 1171.199999988079,
+      "reactCommits": 2,
+      "reactTotalMs": 39.200000047683716,
+      "reactMaxMs": 39.10000002384186,
+      "maxFrameGapMs": 300,
+      "transition": "0.4s",
+      "camera": "transform: translate(246px, 144px) scale(1.2); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "living_nook",
+      "clickToTargetMs": 53.69999998807907,
+      "clickToFirstFrameMs": 545.1999999880791,
+      "settledMs": 978.5,
+      "reactCommits": 1,
+      "reactTotalMs": 39.90000009536743,
+      "reactMaxMs": 39.90000009536743,
+      "maxFrameGapMs": 183.39999999999964,
+      "transition": "0.4s",
+      "camera": "transform: translate(70.8px, 100.3px) scale(1.18); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "friend_room",
+      "clickToTargetMs": 56.5,
+      "clickToFirstFrameMs": 729.5,
+      "settledMs": 939.1999999880791,
+      "reactCommits": 1,
+      "reactTotalMs": 44.40000003576279,
+      "reactMaxMs": 44.40000003576279,
+      "maxFrameGapMs": 283.39999999999964,
+      "transition": "0.4s",
+      "camera": "transform: translate(-96px, 120px) scale(1.2); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "capsule_pod",
+      "clickToTargetMs": 56.89999997615814,
+      "clickToFirstFrameMs": 761.3000000119209,
+      "settledMs": 926.6000000238419,
+      "reactCommits": 1,
+      "reactTotalMs": 47,
+      "reactMaxMs": 47,
+      "maxFrameGapMs": 250,
+      "transition": "0.4s",
+      "camera": "transform: translate(-426.3px, 104.4px) scale(1.45); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "corn_lounge",
+      "clickToTargetMs": 63.89999997615814,
+      "clickToFirstFrameMs": 865.6999999880791,
+      "settledMs": 1069.3999999761581,
+      "reactCommits": 1,
+      "reactTotalMs": 52.69999986886978,
+      "reactMaxMs": 52.69999986886978,
+      "maxFrameGapMs": 183.29999999999927,
+      "transition": "0.4s",
+      "camera": "transform: translate(532px, 112px) scale(1.4); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "observatory",
+      "clickToTargetMs": 76.09999996423721,
+      "clickToFirstFrameMs": 803.5,
+      "settledMs": 963.5999999642372,
+      "reactCommits": 1,
+      "reactTotalMs": 59.09999990463257,
+      "reactMaxMs": 59.09999990463257,
+      "maxFrameGapMs": 216.70000000000073,
+      "transition": "0.4s",
+      "camera": "transform: translate(-620px, -86.8px) scale(1.55); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "porch_mailbox",
+      "clickToTargetMs": 73.20000004768372,
+      "clickToFirstFrameMs": 663.3000000119209,
+      "settledMs": 869.6000000238419,
+      "reactCommits": 1,
+      "reactTotalMs": 60.50000011920929,
+      "reactMaxMs": 60.50000011920929,
+      "maxFrameGapMs": 216.59999999999854,
+      "transition": "0.4s",
+      "camera": "transform: translate(16.2px, 33.8px) scale(1.08); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "overview",
+      "clickToTargetMs": 48.5,
+      "clickToFirstFrameMs": 576.5999999642372,
+      "settledMs": 907.8000000119209,
+      "reactCommits": 1,
+      "reactTotalMs": 38.999999940395355,
+      "reactMaxMs": 38.999999940395355,
+      "maxFrameGapMs": 183.39999999999782,
+      "transition": "0.4s",
+      "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    }
+  ],
+  "recording": "retain-on-failure"
+}

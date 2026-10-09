@@ -1,16 +1,19 @@
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { RoomId } from '../../types';
-import { clientToSvg } from '../coordinates/viewport';
+import { clientToSvg, FULL_VIEWBOX, visibleViewBox } from '../coordinates/viewport';
+import { sceneExplorationBounds } from '../scene/explorationBounds';
 import { resolveRoomCamera } from '../scene/roomTargets';
 import type { SceneLayout } from '../scene/sceneTypes';
 import { viewBoxPoint } from '../scene/sceneTypes';
-import { clampPan, clampZoom, focusCamera, viewBoxToScene, type Camera } from './cameraMath';
+import { clampZoom, focusCamera, viewBoxToScene, type Camera } from './cameraMath';
+import { clampPan } from './cameraBounds';
 
 export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRevision=0,editing=false) {
   const svgRef=useRef<SVGSVGElement>(null);
   const [camera,setCamera]=useState(()=>resolveRoomCamera(room,layout));
   const [isDragging,setIsDragging]=useState(false);
+  const [viewport,setViewport]=useState(FULL_VIEWBOX);
   const cameraRef=useRef(camera);
   const mode=useRef<'focus'|'pan'>('focus');
   const lastFocus=useRef({room,revision:focusRevision});
@@ -18,12 +21,33 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
   const pointers=useRef(new Map<number,{x:number;y:number}>());
   const gesture=useRef<{origin:Camera;originMode:'focus'|'pan';start:Camera;client:{x:number;y:number};point:{x:number;y:number};distance:number;midpoint:{x:number;y:number}} | null>(null);
   const apply=(value:Camera)=>{cameraRef.current=value;setCamera(value);};
-  const focus=()=>resolveRoomCamera(room,layout);
+  const focusedCamera=useMemo(()=>resolveRoomCamera(room,layout,viewport),[room,layout,viewport]);
+  const selectionChanged=lastFocus.current.room!==room||lastFocus.current.revision!==focusRevision;
+  // Put selection and its camera target in the same commit, rather than first
+  // painting the old camera and scheduling another render from an effect.
+  const renderedCamera=selectionChanged||mode.current==='focus'?focusedCamera:camera;
+  const focus=()=>focusedCamera;
+  const constrain=(value:Camera)=>clampPan(value,focus(),viewport,sceneExplorationBounds(layout));
+
   useEffect(()=>{
-    if(lastFocus.current.room!==room||lastFocus.current.revision!==focusRevision) mode.current='focus';
+    const svg=svgRef.current;
+    if(!svg) return;
+    const measure=()=>{
+      const {width,height}=svg.getBoundingClientRect();
+      const next=visibleViewBox(width,height);
+      setViewport(previous=>previous.minX===next.minX&&previous.minY===next.minY?previous:next);
+    };
+    measure();
+    const observer=new ResizeObserver(measure);
+    observer.observe(svg);
+    return ()=>observer.disconnect();
+  },[]);
+  useLayoutEffect(()=>{
+    if(selectionChanged) mode.current='focus';
     lastFocus.current={room,revision:focusRevision};
-    if(mode.current==='focus') apply(resolveRoomCamera(room,layout));
-  },[room,layout,focusRevision]);
+    if(mode.current==='focus') cameraRef.current=focusedCamera;
+    else apply(constrain(cameraRef.current));
+  },[room,layout,focusRevision,viewport]);
 
   useEffect(()=>{
     const svg=svgRef.current;
@@ -32,11 +56,11 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
       e.preventDefault();
       if(editing||pointers.current.size) return;
       mode.current='pan';
-      apply({...cameraRef.current,zoom:clampZoom(cameraRef.current.zoom-e.deltaY*0.0012)});
+      apply(constrain({...cameraRef.current,zoom:clampZoom(cameraRef.current.zoom-e.deltaY*0.0012)}));
     };
     svg.addEventListener('wheel',wheel,{passive:false});
     return ()=>svg.removeEventListener('wheel',wheel);
-  },[editing]);
+  },[editing,room,layout,viewport]);
 
   const rootPoint=(p:{x:number;y:number})=>svgRef.current ? clientToSvg(svgRef.current,p.x,p.y) : null;
   const rebase=()=>{
@@ -69,7 +93,7 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
       if(Math.hypot(client.x-g.client.x,client.y-g.client.y)<=4&&!hasMovedRef.current) return;
       const point=rootPoint(client);
       if(!point) return;
-      apply(clampPan({...g.start,x:g.start.x+point.x-g.point.x,y:g.start.y+point.y-g.point.y},focus()));
+      apply(constrain({...g.start,x:g.start.x+point.x-g.point.x,y:g.start.y+point.y-g.point.y}));
     }else{
       const distance=Math.hypot(points[1].x-points[0].x,points[1].y-points[0].y);
       const initialMidpoint=rootPoint(g.midpoint);
@@ -77,7 +101,7 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
       if(!g.distance||!initialMidpoint||!midpoint) return;
       const anchor=viewBoxToScene(viewBoxPoint(initialMidpoint.x,initialMidpoint.y),g.start);
       const zoom=clampZoom(g.start.zoom*distance/g.distance);
-      apply(clampPan(focusCamera(anchor,zoom,viewBoxPoint(midpoint.x,midpoint.y)),focus()));
+      apply(constrain(focusCamera(anchor,zoom,viewBoxPoint(midpoint.x,midpoint.y))));
     }
     if(!e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.setPointerCapture(e.pointerId);
     mode.current='pan';hasMovedRef.current=true;setIsDragging(true);
@@ -95,9 +119,9 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
   const onPointerCancel=(e:React.PointerEvent<HTMLDivElement>)=>{if(pointers.current.has(e.pointerId)) cancel();};
   // Ignore capture transferred from a child (including implicit touch capture).
   const onLostPointerCapture=(e:React.PointerEvent<HTMLDivElement>)=>{if(e.target===e.currentTarget&&pointers.current.has(e.pointerId)) cancel();};
-  const zoomBy=(delta:number)=>{mode.current='pan';apply({...cameraRef.current,zoom:clampZoom(cameraRef.current.zoom+delta)});};
+  const zoomBy=(delta:number)=>{mode.current='pan';apply(constrain({...cameraRef.current,zoom:clampZoom(cameraRef.current.zoom+delta)}));};
   const restoreFocus=()=>{mode.current='focus';apply(focus());};
   const onClickCapture=(e:React.MouseEvent)=>{if(hasMovedRef.current){e.preventDefault();e.stopPropagation();}};
-  return {camera,isDragging,svgRef,hasMovedRef,zoomBy,restoreFocus,
+  return {camera:renderedCamera,isDragging,svgRef,hasMovedRef,zoomBy,restoreFocus,
     pointerHandlers:{onPointerDown,onPointerMove,onPointerUp,onPointerCancel,onLostPointerCapture,onClickCapture}};
 }

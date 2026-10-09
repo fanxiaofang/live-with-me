@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { panBounds } from '../../src/world/camera/cameraMath';
 import { inverse, multiply, transformDelta, transformPoint } from '../../src/world/coordinates/affine2d';
 import { sliceViewport } from '../../src/world/coordinates/viewport';
 
@@ -18,7 +17,4 @@ test('slice, camera, building and nested parent matrices round-trip CSS points a
     assert.ok(Math.hypot(forward.dx-40,forward.dy+25)<1e-9);
   }
   assert.throws(()=>inverse({a:0,b:0,c:0,d:0,e:0,f:0}));
-});
-test('manual bounds include legacy limits and the derived focus outside them',()=>{
-  assert.deepEqual(panBounds({x:-700,y:330,zoom:1.6}),{minX:-700,maxX:420,minY:-120,maxY:330});
 });

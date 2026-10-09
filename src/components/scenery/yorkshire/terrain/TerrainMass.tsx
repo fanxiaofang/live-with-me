@@ -1,5 +1,15 @@
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
+import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
+import { DEFAULT_SCENE_LAYOUT } from '../../../../world/scene/sceneLayout';
+import type { EntityId, SceneLayout } from '../../../../world/scene/sceneTypes';
+
+const GROUND_SHADOWS: { entity: EntityId; x: number; y: number; rx: number; ry: number; opacity: number }[] = [
+  { entity: 'main_cottage', x: 0, y: 165, rx: 310, ry: 100, opacity: 1 },
+  { entity: 'wooden_cabin', x: 9, y: 57, rx: 92, ry: 24, opacity: 0.55 },
+  { entity: 'capsule_pod', x: 0, y: 57, rx: 76, ry: 22, opacity: 0.55 },
+  { entity: 'observatory', x: 0, y: 50, rx: 78, ry: 20, opacity: 0.45 },
+];
 
 /**
  * ⛰️ TerrainMass (Seamless Ground Architecture & Homestead Meadow Grounds)
@@ -12,7 +22,8 @@ import { YorkshireCommonProps } from '../landscapeTypes';
  * - Removed all harsh cutout outlines, dark border crescents, and artificial dashed seams
  * - Grounding AO placed strictly under building footings
  */
-export const TerrainMass: React.FC<YorkshireCommonProps> = ({ className }) => {
+export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneLayout }> = ({ className, sceneLayout = DEFAULT_SCENE_LAYOUT }) => {
+  const boundary = YORKSHIRE_LAYOUT.drystoneWalls.eastWall;
   // Approximate rounded isometric rectangle geometry embracing cottage cluster
   const terracePath =
     'M -70,398 C -70,305 450,215 540,215 C 630,215 1150,305 1150,398 C 1150,488 630,585 540,585 C 450,585 -70,488 -70,398 Z';
@@ -112,7 +123,7 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ className }) => {
         {/* 呈现英国约克郡经典的自然田亩分界 */}
         <g id="pastoral-boundary-dressing" opacity="0.85">
           {/* 东侧低矮干砌石墙段 (East Weathered Drystone Wall Run) */}
-          <g transform="translate(1380, 196)">
+          <g transform={`translate(${boundary.stoneWallAnchor.x}, ${boundary.stoneWallAnchor.y})`}>
             <polygon points="0,0 140,8 140,16 0,8" fill="#5c5448" />
             <polygon points="0,-4 140,4 140,8 0,0" fill="#9e9384" />
             {[15, 40, 65, 90, 115].map((ex, ei) => (
@@ -165,12 +176,14 @@ export const TerrainMass: React.FC<YorkshireCommonProps> = ({ className }) => {
         </g>
 
         {/* C. 建筑底部深层接地接触阴影 (Deep Architectural Grounding AO - 仅位于建筑下方，绝不溢出到外缘) */}
-        {/* 1) 主大木屋底部深层接地阴影 */}
-        <ellipse cx="540" cy="375" rx="310" ry="100" fill="url(#cottageGroundAOGrad)" />
-        {/* 2) 西翼安睡小木屋底部接地阴影 */}
-        <ellipse cx="210" cy="400" rx="115" ry="42" fill="url(#cottageGroundAOGrad)" opacity="0.75" />
-        {/* 3) 东翼胶囊仓廊架底部接地阴影 */}
-        <ellipse cx="880" cy="385" rx="135" ry="48" fill="url(#cottageGroundAOGrad)" opacity="0.75" />
+        {GROUND_SHADOWS.map(shadow => {
+          const { position, scale } = sceneLayout[shadow.entity];
+          return <g key={shadow.entity} data-ground-shadow={shadow.entity}
+            transform={`translate(${position.x}, ${position.y}) scale(${scale})`}>
+            <ellipse cx={shadow.x} cy={shadow.y} rx={shadow.rx} ry={shadow.ry}
+              fill="url(#cottageGroundAOGrad)" opacity={shadow.opacity} />
+          </g>;
+        })}
 
         {/* D. 自然微生草簇细节 (Natural Lawn Tufts · 根部锚定微风浪涌与由西向东相位波) */}
         <g id="lawn-natural-grass-tufts" opacity="0.88">

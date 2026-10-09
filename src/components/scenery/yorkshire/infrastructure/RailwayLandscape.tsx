@@ -448,7 +448,7 @@ const PIER_FOLIAGE_CONFIGS: PierFoliageConfig[] = [
   },
 ];
 
-export const RailwayLandscape: React.FC<YorkshireCommonProps> = ({ theme, className }) => {
+export const RailwayLandscape: React.FC<YorkshireCommonProps> = React.memo(({ theme, className }) => {
   const layout = YORKSHIRE_LAYOUT.railway;
   // 8 个石砌桥墩中心间距 105px，构成 7 跨完整舒展石拱
   const piers = React.useMemo(() => [
@@ -1163,4 +1163,4 @@ export const RailwayLandscape: React.FC<YorkshireCommonProps> = ({ theme, classN
       </g>
     </g>
   );
-};
+});

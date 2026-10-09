@@ -1,5 +1,8 @@
 import type React from 'react';
-import { Camera, OVERVIEW_CAMERA } from './cameraMath';
+import { Camera, OVERVIEW_CAMERA, sceneToViewBox, viewBoxToScene } from './cameraMath';
+import { LANDSCAPE_SURFACES } from '../scene/landscapeGeometry';
+import { scenePoint, viewBoxPoint } from '../scene/sceneTypes';
+import { cameraTransformStyle } from './cameraMotion';
 
 export interface ParallaxDamping {
   kTx: number;
@@ -36,10 +39,30 @@ export function getParallaxTransformStyle(
   baseCamera: Camera = OVERVIEW_CAMERA
 ): React.CSSProperties {
   const resolved = resolveParallaxCamera(camera, damping, baseCamera);
+  return cameraTransformStyle(resolved, isDragging);
+}
+
+export interface LandscapeCoverage {
+  mountainFrontExtension: number;
+  wheatFrontExtension: number;
+}
+
+/** Extend only hidden terrain skirts; landmarks keep their rigid layer projection. */
+export function resolveLandscapeCoverage(camera: Camera): LandscapeCoverage {
+  const mountains = resolveParallaxCamera(camera, PARALLAX_PRESETS.mountains);
+  const wheat = resolveParallaxCamera(camera, PARALLAX_PRESETS.wheat);
+  const { backgroundOffsetY, overlap } = LANDSCAPE_SURFACES;
+  const project = (y: number, layer: Camera, offset: number = backgroundOffsetY) =>
+    sceneToViewBox(scenePoint(0, y + offset), layer).y;
+  const local = (y: number, layer: Camera) =>
+    viewBoxToScene(viewBoxPoint(0, y), layer).y - backgroundOffsetY;
+
   return {
-    transform: `translate(${resolved.x}px, ${resolved.y}px) scale(${resolved.zoom})`,
-    transformOrigin: '600px 400px',
-    transition: isDragging ? 'none' : 'transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1)',
-    willChange: isDragging ? 'transform' : undefined,
+    mountainFrontExtension: Math.max(0,
+      local(project(LANDSCAPE_SURFACES.wheatBackMaxY, wheat) + overlap, mountains)
+      - LANDSCAPE_SURFACES.mountainApronFrontMinY),
+    wheatFrontExtension: Math.max(0,
+      local(project(LANDSCAPE_SURFACES.meadowBackMaxY, camera, 0) + overlap, wheat)
+      - LANDSCAPE_SURFACES.wheatFrontMinY),
   };
 }

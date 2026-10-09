@@ -11,7 +11,9 @@ drystoneWalls: {
     eastWall: {
       id: 'wall-east',
       segment1: { start: { x: 260, y: 490 }, end: { x: 440, y: 460 } },
-      gateAnchor: { x: 440, y: 452 },
+      // The eastern meadow entrance meets the existing low stone wall.
+      gateAnchor: { x: 1176, y: 178 },
+      stoneWallAnchor: { x: 1230, y: 196 },
       segment2: { start: { x: 498, y: 467 }, end: { x: 680, y: 435 } },
     },
     observatoryWall: {

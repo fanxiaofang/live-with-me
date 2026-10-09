@@ -6,7 +6,11 @@ test('an uncaught calibration render error displays a report and reload preserve
   await page.evaluate(() => {
     localStorage.setItem('live_with_me_room_layout_v6', JSON.stringify({ 'cabinet-group': { screen: { x: -71, y: 75 } } }));
     // Inject a real render failure in the numeric calibration display.
-    Number.prototype.toFixed = () => { throw new Error('CalibrationRenderError: diagnostic regression'); };
+    const original = Number.prototype.toFixed;
+    Number.prototype.toFixed = function (digits) {
+      if (digits === 1) throw new Error('CalibrationRenderError: diagnostic regression');
+      return original.call(this, digits);
+    };
   });
   await page.getByRole('button', { name: '全屋 2.5D 布局校准器', exact: true }).click();
   const failure = page.getByRole('alert', { name: '页面运行错误' });

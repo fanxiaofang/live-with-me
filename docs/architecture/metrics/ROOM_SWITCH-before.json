@@ -1,0 +1,102 @@
+{
+  "environment": "Windows / Chromium 141 / React development Profiler / DPR 1 / 1200×800",
+  "measurements": [
+    {
+      "room": "my_room",
+      "clickToTargetMs": 391.69999998807907,
+      "clickToFirstFrameMs": 1278.5,
+      "settledMs": 1758.699999988079,
+      "reactCommits": 2,
+      "reactTotalMs": 300.99999994039536,
+      "reactMaxMs": 276.19999980926514,
+      "maxFrameGapMs": 400.10000000000036,
+      "transition": "0.7s",
+      "camera": "transform: translate(220px, 150px) scale(1.55); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "living_nook",
+      "clickToTargetMs": 345.80000001192093,
+      "clickToFirstFrameMs": 876,
+      "settledMs": 1485.2000000476837,
+      "reactCommits": 2,
+      "reactTotalMs": 237.79999989271164,
+      "reactMaxMs": 206.80000001192093,
+      "maxFrameGapMs": 216.70000000000073,
+      "transition": "0.7s",
+      "camera": "transform: translate(20px, 130px) scale(1.55); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "friend_room",
+      "clickToTargetMs": 302.4000000357628,
+      "clickToFirstFrameMs": 749,
+      "settledMs": 1329.699999988079,
+      "reactCommits": 2,
+      "reactTotalMs": 228.00000017881393,
+      "reactMaxMs": 204.6000000834465,
+      "maxFrameGapMs": 200,
+      "transition": "0.7s",
+      "camera": "transform: translate(-180px, 140px) scale(1.55); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "capsule_pod",
+      "clickToTargetMs": 340.19999998807907,
+      "clickToFirstFrameMs": 1032.0999999642372,
+      "settledMs": 1605.800000011921,
+      "reactCommits": 2,
+      "reactTotalMs": 261.00000005960464,
+      "reactMaxMs": 234.69999998807907,
+      "maxFrameGapMs": 216.70000000000073,
+      "transition": "0.7s",
+      "camera": "transform: translate(-280px, 60px) scale(1.6); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "corn_lounge",
+      "clickToTargetMs": 365.5,
+      "clickToFirstFrameMs": 841,
+      "settledMs": 1425,
+      "reactCommits": 2,
+      "reactTotalMs": 296.29999977350235,
+      "reactMaxMs": 272.799999833107,
+      "maxFrameGapMs": 216.70000000000073,
+      "transition": "0.7s",
+      "camera": "transform: translate(210px, -30px) scale(1.6); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "observatory",
+      "clickToTargetMs": 260.69999998807907,
+      "clickToFirstFrameMs": 743.3000000119209,
+      "settledMs": 1417.8999999761581,
+      "reactCommits": 2,
+      "reactTotalMs": 197.60000002384186,
+      "reactMaxMs": 183.80000007152557,
+      "maxFrameGapMs": 216.59999999999854,
+      "transition": "0.7s",
+      "camera": "transform: translate(-380px, 30px) scale(1.6); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "porch_mailbox",
+      "clickToTargetMs": 274.30000001192093,
+      "clickToFirstFrameMs": 782.5,
+      "settledMs": 1547.800000011921,
+      "reactCommits": 2,
+      "reactTotalMs": 212.39999967813492,
+      "reactMaxMs": 196.69999969005585,
+      "maxFrameGapMs": 200,
+      "transition": "0.7s",
+      "camera": "transform: translate(40px, -80px) scale(1.5); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "room": "overview",
+      "clickToTargetMs": 270.80000001192093,
+      "clickToFirstFrameMs": 807.6999999880791,
+      "settledMs": 1355,
+      "reactCommits": 2,
+      "reactTotalMs": 211.700000166893,
+      "reactMaxMs": 194.20000010728836,
+      "maxFrameGapMs": 200,
+      "transition": "0.7s",
+      "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    }
+  ],
+  "recording": "retain-on-failure"
+}

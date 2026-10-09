@@ -30,7 +30,8 @@ for (const [id, label] of ROOM_VIEWS) {
     await page.getByRole('button', { name: label, exact: true }).click();
     await expect(page).toHaveScreenshot(`${id}.png`);
     const first = await page.screenshot({ animations: 'disabled' });
-    expect(await page.screenshot({ animations: 'disabled' })).toEqual(first);
+    expect((await page.screenshot({ animations: 'disabled' })).equals(first),
+      'Consecutive screenshots must have identical PNG bytes').toBe(true);
   });
 }
 

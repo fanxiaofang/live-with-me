@@ -3,6 +3,7 @@ import type { PresenceAllocation } from '../../features/presence/presenceAllocat
 import type { Person, RoomId } from '../../types';
 import type { HoverTarget, InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
+import { RoomHitArea } from '../../world/render/RoomSelection';
 import { CastIronWoodStove, StoveColorVariant } from '../CastIronWoodStove';
 import { CharacterHead } from '../CharacterAvatar';
 import { LeftWallCraftBoard } from '../LeftWallCraftBoard';
@@ -13,7 +14,7 @@ import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
 import { FiddleLeafFig, MonsteraPlant } from '../plants';
 import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 import { WallPostersGallery } from '../wall-posters';
-import { CottageFoundation } from './CottageFoundation';
+import { CottageFoundation, CottageGroundPlanting } from './CottageFoundation';
 import { CottageRoofFraming } from './CottageRoofFraming';
 import { CottageWallProfiles } from './CottageWallProfiles';
 import { TimberFlooring } from './TimberFlooring';
@@ -22,7 +23,6 @@ export interface MainCottageHavenProps {
   hasMovedRef: React.RefObject<boolean>;
   onSelectRoom: (id: RoomId | 'overview') => void;
   setHoveredObject: HoverTarget;
-  activeRoom: RoomId | 'overview';
   selfPerson?: Person;
   linPerson?: Person;
   yuPerson?: Person;
@@ -51,13 +51,14 @@ export interface MainCottageHavenProps {
   onSelectMailbox: () => void;
   unreadMailCount: number;
 }
-function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, activeRoom, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount }: MainCottageHavenProps) {
+function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount }: MainCottageHavenProps) {
   return <>
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation />
 
             {/* 2.5D Artisan Hardwood Timber Flooring (工匠级实木企口地板与收边地袱大梁) */}
             <TimberFlooring />
+            <CottageGroundPlanting />
 
             {/* Back Walls & Timber Frames (温润燕麦奶油暖灰泥墙，消除冷白暴晒灯箱感) */}
             <polygon points="-270,135 -270,-10 0,-90 0,58" fill="#d6c5ae" stroke="#5e412c" strokeWidth="2.2" />
@@ -121,14 +122,8 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group"
             >
-              {/* Room Highlight Aura */}
-              <polygon
-                points="-270,135 -100,85 -40,130 -210,180"
-                fill={activeRoom === 'my_room' ? 'rgba(214, 140, 104, 0.16)' : 'transparent'}
-                stroke={activeRoom === 'my_room' ? '#d68c68' : 'transparent'}
-                strokeWidth="2"
-                strokeDasharray={activeRoom === 'my_room' ? '6 4' : 'none'}
-              />
+              {/* Invisible room floor hit area */}
+              <RoomHitArea room="my_room" points="-270,135 -100,85 -40,130 -210,180" />
 
               {/* 1.1 2.5D ISOMETRIC WINDOW ON LEFT WALL (高度整体下移 +22px，完美契合书桌工作视线，消解贴梁紧迫感与下方大片冷清留白) */}
               <g id="isometric-bay-window">
@@ -1041,14 +1036,8 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group"
             >
-              {/* Room Highlight Aura */}
-              <polygon
-                points="40,130 100,85 270,135 210,180"
-                fill={activeRoom === 'friend_room' ? 'rgba(214, 140, 104, 0.16)' : 'transparent'}
-                stroke={activeRoom === 'friend_room' ? '#d68c68' : 'transparent'}
-                strokeWidth="2"
-                strokeDasharray={activeRoom === 'friend_room' ? '6 4' : 'none'}
-              />
+              {/* Invisible room floor hit area */}
+              <RoomHitArea room="friend_room" points="40,130 100,85 270,135 210,180" />
 
               {/* 3.0 2.5D HARMONIOUS RIGHT WALL ART GALLERY (全新右墙艺术海报三联组：《泳者之心》+《还有明天》+《红辣椒》) */}
               <g {...svgAction('校准右墙海报组')}

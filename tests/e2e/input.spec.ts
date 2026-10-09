@@ -55,8 +55,11 @@ test('manual pan uses root SVG deltas, suppresses navigation, cancels, and the s
   await page.getByRole('button',{name:'我的阁楼房间',exact:true}).click();
   const stage=page.locator('#panoramic-world-stage');
   const original=await stage.getAttribute('style');
+  const beforePan=await stage.evaluate(e=>{const m=new DOMMatrix(getComputedStyle(e).transform);return {x:m.e,y:m.f};});
   await page.mouse.move(800,180);await page.mouse.down();await page.mouse.move(840,210,{steps:4});await page.mouse.up();
-  await expect(stage).toHaveAttribute('style',/translate\(260px, 180px\)/);
+  const afterPan=await stage.evaluate(e=>{const m=new DOMMatrix(getComputedStyle(e).transform);return {x:m.e,y:m.f};});
+  expect(afterPan.x-beforePan.x).toBeCloseTo(40,4);
+  expect(afterPan.y-beforePan.y).toBeCloseTo(30,4);
   await page.getByRole('button',{name:'我的阁楼房间',exact:true}).click();
   expect(await stage.getAttribute('style')).toBe(original);
   await page.mouse.move(800,180);await page.mouse.down();await page.mouse.move(830,195,{steps:3});

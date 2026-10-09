@@ -37,11 +37,11 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
 
       {/* ----------------------------------------------------------------------- */}
       {/* 经典五杠原木牧场门 (5-Bar Field Gate)                                  */}
-      {/* 仅保留独立的原木牧场门，去除所有石墙，展现无界的开阔草场                   */}
+      {/* 牧场门位于东侧田界，与 TerrainMass 中已有的矮石墙接续                  */}
       {/* ----------------------------------------------------------------------- */}
       <g id={walls.eastWall.id} opacity="0.9">
         {/* 🌟 标志性五杠斜撑原木牧场门 (5-Bar Field Gate) */}
-        <g {...svgAction('east-5bar-pasture-gate')}
+        <g {...svgAction('查看东侧牧场门')}
           id="east-5bar-pasture-gate"
           transform={`translate(${walls.eastWall.gateAnchor.x}, ${walls.eastWall.gateAnchor.y})`}
           className="cursor-pointer"
@@ -52,6 +52,7 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
           onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'pasture-gate' })}
           onMouseLeave={() => setHoveredObject?.(null)}
         >
+          <ellipse cx="27" cy="22" rx="32" ry="4" fill="#28341a" opacity="0.2" />
           <rect x="0" y="-6" width="5" height="26" rx="1.2" fill="#442f1b" stroke="#25170a" strokeWidth="0.8" />
           <rect x="50" y="2" width="4.5" height="24" rx="1.2" fill="#442f1b" stroke="#25170a" strokeWidth="0.8" />
           {[0, 4.5, 9, 13.5, 18].map((ry, i) => (
@@ -67,6 +68,7 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
             />
           ))}
           <line x1="4" y1="16" x2="50" y2="7" stroke="#5a3d24" strokeWidth="2.0" strokeLinecap="round" />
+          <path d="M49,9 H56 M49,13 H53" stroke="#aaa18c" strokeWidth="1.2" fill="none" strokeLinecap="round" />
         </g>
       </g>
     </g>

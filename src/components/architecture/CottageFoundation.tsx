@@ -359,59 +359,6 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           <circle cx="10" cy="-2" r="2.6" fill="#f87171" />
         </g>
 
-        {/* 🌿 西翼连绵田园花境带 (Organic West Cottage Shrub Border & Flowerbed) */}
-        {/* 非机械式的柱脚绿球！只在西侧两栋木屋交接处形成一片自然连绵、层次丰富的田园灌木花境 */}
-        <g id="west-cottage-border-flowerbed" transform="translate(-215, 172)">
-          {/* 接地阴影 */}
-          <ellipse cx="0" cy="5" rx="36" ry="11" fill="#152112" opacity="0.38" />
-          
-          {/* 连绵复合灌丛叶冠 (平滑起伏，非单一球体) */}
-          <g id="border-shrub-foliage">
-            <ellipse cx="-22" cy="1" rx="16" ry="9" fill="#243714" />
-            <ellipse cx="4" cy="0" rx="18" ry="9.5" fill="#273a15" />
-            <ellipse cx="22" cy="2" rx="14" ry="8" fill="#293c16" />
-            
-            <ellipse cx="-16" cy="-4" rx="14" ry="8" fill="#364e1c" />
-            <ellipse cx="6" cy="-4" rx="15" ry="8.5" fill="#3c5720" />
-            
-            <ellipse cx="-8" cy="-8" rx="12" ry="7" fill="#4d6f28" />
-            <ellipse cx="12" cy="-7" rx="11" ry="6.5" fill="#587e2f" />
-            <ellipse cx="2" cy="-9" rx="8" ry="5.5" fill="#679137" />
-          </g>
-
-          {/* 花境中自然绽放的田园野花 (高低错落，随风轻摇) */}
-          <g id="border-wildflowers">
-            {/* 白雏菊簇 */}
-            <g className="animate-wind-flower" style={{ animationDelay: '0.2s', transformOrigin: '0px 0px' }}>
-              <path d="M-18,0 Q-21,-6 -23,-12" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
-              <circle cx="-23" cy="-12" r="2.1" fill="#ffffff" />
-              <circle cx="-23" cy="-12" r="0.85" fill="#eab308" />
-            </g>
-            <g className="animate-wind-flower" style={{ animationDelay: '0.45s', transformOrigin: '0px 0px' }}>
-              <path d="M-6,0 Q-8,-7 -9,-14" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
-              <circle cx="-9" cy="-14" r="2.0" fill="#ffffff" />
-              <circle cx="-9" cy="-14" r="0.8" fill="#eab308" />
-            </g>
-            {/* 金毛茛 */}
-            <g className="animate-wind-flower" style={{ animationDelay: '0.7s', transformOrigin: '0px 0px' }}>
-              <path d="M12,0 Q14,-6 15,-11" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
-              <circle cx="15" cy="-11" r="1.9" fill="#facc15" />
-              <circle cx="15" cy="-11" r="0.8" fill="#ca8a04" />
-            </g>
-            <g className="animate-wind-flower" style={{ animationDelay: '0.9s', transformOrigin: '0px 0px' }}>
-              <path d="M25,0 Q27,-5 28,-9" stroke="#426022" strokeWidth="0.85" fill="none" strokeLinecap="round" />
-              <circle cx="28" cy="-9" r="1.6" fill="#fef08a" />
-              <circle cx="28" cy="-9" r="0.7" fill="#ca8a04" />
-            </g>
-          </g>
-
-          {/* 飘逸羊齿草叶尖 */}
-          <g className="animate-wind-grass" style={{ animationDelay: '0.35s', transformOrigin: '0px 0px' }}>
-            <path d="M-28,2 Q-33,-3 -36,-7 M-25,2 Q-29,-4 -31,-9" stroke="#486a27" strokeWidth="0.95" fill="none" strokeLinecap="round" />
-            <path d="M18,3 Q22,-3 26,-7 M22,3 Q26,-2 30,-5" stroke="#4d7029" strokeWidth="0.85" fill="none" strokeLinecap="round" />
-          </g>
-        </g>
-
         {/* 🌿 前廊踏步石阶两侧微生雏菊草簇 (Stepping Stone Verge Accents) */}
         <g id="step-verge-accents">
           <g transform="translate(-36, 240)">
@@ -460,3 +407,35 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
     </g>
   );
 };
+
+/** Low, uneven groundcover in front of the footings. Render after the floor so
+ * the leaves can overlap a few pier bases while the raised sill stays visible. */
+export const CottageGroundPlanting = React.memo(function CottageGroundPlanting() {
+  return <g id="cottage-ground-planting" className="pointer-events-none">
+    <g transform="translate(-232, 178)">
+      <ellipse cy="4" rx="32" ry="7" fill="#21341a" opacity="0.24" />
+      <path d="M-30,3 Q-33,-3 -25,-6 Q-26,-12 -18,-12 Q-13,-21 -5,-16 Q3,-22 10,-13 Q20,-16 23,-8 Q33,-9 30,2 Q12,8 -8,7 Z" fill="#365735" />
+      <path d="M-23,-4 Q-24,-11 -16,-10 Q-10,-19 -3,-12 Q6,-18 12,-10 Q19,-11 20,-5 Q5,-1 -5,-4 Z" fill="#517b45" />
+      <path d="M-14,-5 Q-9,-12 -4,-8 Q1,-15 7,-10 Q8,-5 1,-4 Z" fill="#709150" />
+      <path d="M-27,4 Q-32,-3 -36,-7 M-24,5 Q-27,-3 -28,-11 M24,3 Q29,-2 31,-8" fill="none" stroke="#668643" strokeWidth="1" />
+      <path d="M-5,5 Q-10,0 -10,-5 M-9,2 L-16,-1 M-10,-1 L-17,-4 M-10,0 L-3,-3" fill="none" stroke="#829f5b" strokeWidth="0.8" />
+      <ellipse cx="30" cy="7" rx="4" ry="1.7" fill="#8a826b" />
+    </g>
+    <g transform="translate(-126, 207)">
+      <ellipse cy="2" rx="22" ry="5" fill="#263b1c" opacity="0.22" />
+      <path d="M-20,2 Q-23,-4 -16,-6 Q-13,-13 -6,-9 Q0,-16 6,-8 Q14,-10 18,-4 Q23,0 18,3 Z" fill="#486b37" />
+      <path d="M-14,-4 Q-11,-10 -6,-7 Q1,-12 7,-5 L13,-3 Q1,1 -14,-4 Z" fill="#678746" />
+      <path d="M-18,3 Q-23,-2 -23,-8 M17,3 Q20,-4 24,-6" fill="none" stroke="#789653" strokeWidth="0.8" />
+      <circle cx="5" cy="-6" r="1.4" fill="#e7dec0" /><circle cx="5" cy="-6" r="0.5" fill="#d3a33c" />
+      <ellipse cx="-22" cy="4" rx="3.2" ry="1.3" fill="#776f59" />
+    </g>
+    <g transform="translate(231, 179)">
+      <ellipse cy="3" rx="28" ry="6" fill="#263b1c" opacity="0.22" />
+      <path d="M-26,2 Q-30,-4 -21,-6 Q-19,-14 -12,-10 Q-7,-19 0,-13 Q7,-20 14,-10 Q23,-11 25,-3 Q29,3 18,5 L-15,6 Z" fill="#35583b" />
+      <path d="M-20,-3 Q-19,-10 -12,-8 Q-5,-16 0,-10 Q8,-15 13,-8 Q19,-8 20,-3 Q4,0 -20,-3 Z" fill="#52794b" />
+      <path d="M-9,-8 Q-4,-14 1,-9 Q7,-12 10,-6 L0,-4 Z" fill="#718e55" />
+      <path d="M-22,3 Q-29,-2 -30,-9 M19,4 Q24,-4 27,-7" fill="none" stroke="#749252" strokeWidth="1" />
+      <ellipse cx="-29" cy="5" rx="3.5" ry="1.5" fill="#928970" />
+    </g>
+  </g>;
+});

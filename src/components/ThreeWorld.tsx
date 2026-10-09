@@ -1,9 +1,10 @@
-import React, { lazy, Suspense, useRef, useState } from 'react';
+import React, { lazy, Suspense, useMemo, useRef, useState } from 'react';
 import { LayoutGestureContext } from '../features/layout-editor/LayoutGestureContext';
 import { PresenceAllocation } from '../features/presence/presenceAllocation';
 import { useEventCallback } from '../shared/hooks/useEventCallback';
 import { Person, RoomId, TimeOfDay } from '../types';
 import { useWorldCamera } from '../world/camera/useWorldCamera';
+import { cameraTransformStyle } from '../world/camera/cameraMotion';
 import { createInteractionDispatcher } from '../world/interactions/dispatcher';
 import { svgAction } from '../world/interactions/svgAction';
 import { useWorldFeedback } from '../world/interactions/useWorldFeedback';
@@ -79,7 +80,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   roomLayout,
   activeGizmoId,
   isInspectorOpen = false,
-  onSelectGizmo,
+  onSelectGizmo: onSelectGizmoProp,
   onDragGizmoDelta: onDragGizmoDeltaProp,
   onDragGizmoEnd: onDragGizmoEndProp,
   onSelectPoster,
@@ -88,6 +89,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   onOpenChairInspector: onOpenChairInspectorProp,
   onTriggerToast,
 }) => {
+  const selectGizmoEvent = useEventCallback((id: EditableObjectId | null) => onSelectGizmoProp?.(id));
+  const onSelectGizmo = onSelectGizmoProp ? selectGizmoEvent : undefined;
   const onDragGizmoDeltaEvent = useEventCallback((dx: number, dy: number) => onDragGizmoDeltaProp?.(dx, dy));
   const onDragGizmoDelta = onDragGizmoDeltaProp ? onDragGizmoDeltaEvent : undefined;
   const onDragGizmoEndEvent = useEventCallback(() => onDragGizmoEndProp?.());
@@ -104,6 +107,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const [selectedPosterId, setSelectedPosterId] = useState<PosterId | null>(null);
 
   const { camera, isDragging, svgRef, hasMovedRef, pointerHandlers, zoomBy, restoreFocus } = useWorldCamera(activeRoom, sceneLayout, focusRevision, isInspectorOpen);
+  const beginGesture = useEventCallback(() => { hasMovedRef.current = false; onDragGizmoBegin?.(); });
+  const cancelGesture = useEventCallback(() => onDragGizmoCancel?.());
+  const markGestureMoved = useEventCallback(() => { hasMovedRef.current = true; });
+  const gestureOwner = useMemo(() => ({ activeId: effectiveGizmoId ?? null,
+    begin: beginGesture, commit: onDragGizmoEndEvent, cancel: cancelGesture, markMoved: markGestureMoved,
+  }), [effectiveGizmoId, beginGesture, onDragGizmoEndEvent, cancelGesture, markGestureMoved]);
 
   const { hoveredObject, setHoveredObject, alienPulseEffect, alienTransmissionText, setAlienTransmissionText, sofaSquish, sofaThought, stoveColor, setStoveColor, triggerAlienSignal, triggerSofaSquish } = useWorldFeedback();
 
@@ -136,7 +145,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const isLinReading = presenceSlots.sofa_lounge?.occupant?.id === 'lin';
 
   return (
-    <LayoutGestureContext.Provider value={{ activeId: effectiveGizmoId ?? null, begin: () => { hasMovedRef.current = false; onDragGizmoBegin?.(); }, commit: () => onDragGizmoEnd?.(), cancel: () => onDragGizmoCancel?.(), markMoved: () => { hasMovedRef.current = true; } }}>
+    <LayoutGestureContext.Provider value={gestureOwner}>
     <div
       ref={containerRef}
       {...pointerHandlers}
@@ -183,22 +192,20 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/* ======================================================== */}
           <g
             id="panoramic-world-stage"
+            data-room={activeRoom}
             data-zoom={camera.zoom}
-            style={{
-              transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.zoom})`,
-              transformOrigin: '600px 400px',
-              transition: isDragging ? 'none' : 'transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1)',
-            }}
+            style={{ ...cameraTransformStyle(camera, isDragging), willChange: 'transform' }}
           >
 
           {/* Master Meadow Ground, Drystone Walls, Garden Flora, Pumpkin Patch */}
           <HomesteadMeadow
             theme={theme}
+            sceneLayout={sceneLayout}
             setHoveredObject={setHoveredObject}
             onTriggerToast={onTriggerToast}
           />
           <g id="hilltop-observatory-haven">
-            {/* Main Elevated SETI Alien Radio Station (Moved to Right Meadow Lawn at Green Box Location) */}
+            {/* Radio station on the rear-right meadow, still in the physical stage. */}
             <SceneEntity entityId="observatory" layout={sceneLayout}
               id="room-observatory"
               onClick={() => {
@@ -209,7 +216,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group/observatory"
             >
-  <ObservatoryHaven activeRoom={activeRoom} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
+  <ObservatoryHaven presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
     triggerAlienSignal={captureSignal} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
 </SceneEntity>
           </g>
@@ -219,16 +226,15 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/*    Surrounded by lawn, stone path & garden               */}
           {/* ======================================================== */}
           <SceneEntity entityId="main_cottage" layout={sceneLayout} id="living-cottage-haven">
-<MainCottageHaven theme={theme} hasMovedRef={hasMovedRef} onSelectRoom={onSelectRoom} setHoveredObject={setHoveredObject} activeRoom={activeRoom} selfPerson={selfPerson} linPerson={linPerson} yuPerson={yuPerson} currentLayout={currentLayout} effectiveGizmoId={effectiveGizmoId} isInspectorOpen={isInspectorOpen} onSelectGizmo={onSelectGizmo} onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd} presenceSlots={presenceSlots} isChairEmptyOverride={isChairEmptyOverride} onOpenChairInspector={onOpenChairInspector} onToggleChairSeated={onToggleChairSeated} stoveColor={stoveColor} setStoveColor={setStoveColor} dispatchInteraction={dispatchInteraction} onSelectPerson={onSelectPerson} bookshelfPreset={bookshelfPreset} customBookshelfTiers={customBookshelfTiers} isLinReading={isLinReading} onBookshelfClick={onBookshelfClick} onBookClick={onBookClick} triggerSofaSquish={triggerSofaSquish} sofaSquish={sofaSquish} sofaThought={sofaThought} onSelectMailbox={onSelectMailbox} unreadMailCount={unreadMailCount} />
+<MainCottageHaven theme={theme} hasMovedRef={hasMovedRef} onSelectRoom={onSelectRoom} setHoveredObject={setHoveredObject} selfPerson={selfPerson} linPerson={linPerson} yuPerson={yuPerson} currentLayout={currentLayout} effectiveGizmoId={effectiveGizmoId} isInspectorOpen={isInspectorOpen} onSelectGizmo={onSelectGizmo} onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd} presenceSlots={presenceSlots} isChairEmptyOverride={isChairEmptyOverride} onOpenChairInspector={onOpenChairInspector} onToggleChairSeated={onToggleChairSeated} stoveColor={stoveColor} setStoveColor={setStoveColor} dispatchInteraction={dispatchInteraction} onSelectPerson={onSelectPerson} bookshelfPreset={bookshelfPreset} customBookshelfTiers={customBookshelfTiers} isLinReading={isLinReading} onBookshelfClick={onBookshelfClick} onBookClick={onBookClick} triggerSofaSquish={triggerSofaSquish} sofaSquish={sofaSquish} sofaThought={sofaThought} onSelectMailbox={onSelectMailbox} unreadMailCount={unreadMailCount} />
 </SceneEntity>
 
           {/* ======================================================== */}
           {/* 2.5 VINTAGE CAPSULE CABIN (屋旁旧胶囊仓 · 卧室/休息室)    */}
-          {/*     向中央主木屋收拢靠拢，形成紧密温暖的生活聚落          */}
+          {/*     东侧独立休息区，与主屋之间留出草地间隔                */}
           {/* ======================================================== */}
           <SceneEntity entityId="capsule_pod" layout={sceneLayout} id="capsule-pod-cluster">
             <CapsulePodHaven
-              activeRoom={activeRoom}
               onSelectRoom={onSelectRoom}
               presenceSlots={presenceSlots}
               onSelectPerson={onSelectPerson}
@@ -240,11 +246,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
           {/* ======================================================== */}
           {/* 2.6 COZY TIMBER SLEEPING CABIN (左侧独立安睡小木屋 · 暖木卧房) */}
-          {/*     向中央主木屋收拢靠拢，形成紧密温暖的生活聚落          */}
+          {/*     西侧独立休息区，底座与台阶保留在草台内部              */}
           {/* ======================================================== */}
           <SceneEntity entityId="wooden_cabin" layout={sceneLayout} id="wooden-cabin-cluster">
             <WoodenCabinHaven
-              activeRoom={activeRoom}
               onSelectRoom={onSelectRoom}
               presenceSlots={presenceSlots}
               onSelectPerson={onSelectPerson}

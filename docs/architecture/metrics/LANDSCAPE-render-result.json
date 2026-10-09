@@ -1,0 +1,8 @@
+{
+  "environment": "Windows / Chromium 141 / React development Profiler / DPR 1 / 1200×800",
+  "scenario": "overview pan +120,+45 CSS pixels, 12 pointer steps",
+  "commits": 14,
+  "totalRenderMs": 196.7,
+  "meanRenderMs": 14.05,
+  "maxRenderMs": 17.4
+}

@@ -4,7 +4,8 @@ test('SVG room, mailbox, book, poster, stove, person and station entries activat
   await stableScene(page);
   const activate = async (selector: string, key = 'Enter') => { await page.locator(selector).focus(); await page.locator(selector).press(key); };
   await activate('#room-my_room');
-  await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('data-zoom', '1.55');
+  await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('data-room', 'my_room');
+  await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('data-zoom', '1.2');
   await activate('#room-friend_room', 'Space');
   const person = page.locator('#room-living_nook g[aria-label="查看人物状态"]').first();
   await person.focus(); await person.press('Enter');

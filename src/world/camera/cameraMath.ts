@@ -14,11 +14,3 @@ export function focusCamera(p: ScenePoint, zoom: number, composition = CAMERA_OR
   return { x: Number((composition.x - 600 - zoom * (p.x - 600)).toFixed(10)),
     y: Number((composition.y - 400 - zoom * (p.y - 400)).toFixed(10)), zoom };
 }
-
-export function panBounds(focus:Camera) {
-  return { minX:Math.min(-420,focus.x),maxX:Math.max(420,focus.x),minY:Math.min(-120,focus.y),maxY:Math.max(300,focus.y) };
-}
-export function clampPan(camera:Camera,focus:Camera):Camera {
-  const bounds=panBounds(focus);
-  return {...camera,x:Math.min(bounds.maxX,Math.max(bounds.minX,camera.x)),y:Math.min(bounds.maxY,Math.max(bounds.minY,camera.y))};
-}

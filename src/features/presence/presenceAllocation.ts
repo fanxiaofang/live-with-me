@@ -146,8 +146,8 @@ export const SCENE_SLOT_CONFIGS: Record<FurnitureSlotId, SceneSlotConfig> = {
     pose: 'bed_sleeping',
     accessory: 'none',
     badgeLabel: '小木屋 · 暖榻 (安睡)',
-    actionDesc: '在雪松原木幽香与温暖炉火微光中沉沉熟睡',
-    offset: { dx: 0, dy: 26 },
+    actionDesc: '在雪松原木幽香与床头暖灯微光中沉沉熟睡',
+    offset: { dx: -6.64, dy: 31.2 },
   },
   observatory_post: {
     slotId: 'observatory_post',

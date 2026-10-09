@@ -1,37 +1,22 @@
 import React from 'react';
 import type { ResolvedPresenceSlot } from '../../features/presence/presenceAllocation';
-import type { Person, RoomId } from '../../types';
+import type { Person } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
 
 export interface ObservatoryHavenProps {
-  activeRoom?: RoomId | 'overview';
   presenceSlots: Partial<Record<'observatory_post', ResolvedPresenceSlot>>;
   alienPulseEffect?: boolean;
   triggerAlienSignal: (event?: React.MouseEvent) => void;
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
 }
-function ObservatoryHavenAsset({ activeRoom, presenceSlots, alienPulseEffect, triggerAlienSignal, onSelectPerson, setHoveredObject }: ObservatoryHavenProps) {
+function ObservatoryHavenAsset({ presenceSlots, alienPulseEffect, triggerAlienSignal, onSelectPerson, setHoveredObject }: ObservatoryHavenProps) {
   return <>
               {/* Massive Cliff Outcrop Drop Shadow casting onto lower slopes */}
               <ellipse cx="0" cy="52" rx="78" ry="20" fill="#1b231d" opacity="0.35" filter="url(#softShadow)" />
 
-              {/* Active Room Focus Aura (Cosmic Emerald Glow) */}
-              {activeRoom === 'observatory' && (
-                <ellipse
-                  cx="0"
-                  cy="-12"
-                  rx="86"
-                  ry="74"
-                  fill="rgba(56, 239, 125, 0.12)"
-                  stroke="#38ef7d"
-                  strokeWidth="2.2"
-                  strokeDasharray="7 5"
-                  className="animate-[pulse_3s_infinite]"
-                />
-              )}
 
               {/* ========================================================================= */}
               {/* A. ENGINEERED STRUCTURAL STAGING PYLONS & GANTRY LEGS (人工钢构桁架基座)   */}
@@ -102,8 +87,8 @@ function ObservatoryHavenAsset({ activeRoom, presenceSlots, alienPulseEffect, tr
 
                   {/* Handrail Vertical Stanchions (立柱) */}
                   {[-68, -48, -28, -8, 8, 28, 48, 68].map((sx) => {
-                    const syTop = sx < 0 ? 14 + (sx / 68) * 12 - 7 : 2 + (sx / 70) * 12 - 5;
-                    const syBase = sx < 0 ? 19 + (sx / 68) * 12 : 7 + (sx / 70) * 12 + 5;
+                    const syBase = 7 + Math.abs(sx) * 12 / 70;
+                    const syTop = syBase - 10;
                     return (
                       <g key={`st-${sx}`}>
                         <line x1={sx} y1={syBase} x2={sx} y2={syTop} stroke="#252f28" strokeWidth="2.0" strokeLinecap="round" />
@@ -134,10 +119,11 @@ function ObservatoryHavenAsset({ activeRoom, presenceSlots, alienPulseEffect, tr
                 {/* Slanted Alpine Roof with Solar Panel Array */}
                 <polygon points="-10,4 16,-6 30,-2 4,8" fill="#1e293b" stroke="#0f172a" strokeWidth="1" />
                 {/* Solar Cells Grid */}
-                <line x1="-2" y1="1" x2="22" y2="-7" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
-                <line x1="2" y1="5" x2="26" y2="-3" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
-                <line x1="10" y1="-2" x2="14" y2="6" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
+                <line x1="-6.5" y1="5" x2="19.5" y2="-5" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
+                <line x1="-0.2" y1="6.8" x2="25.8" y2="-3.2" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
+                <line x1="3" y1="-1" x2="17" y2="3" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
 
+                <g transform="matrix(1 -0.307692 0 1 0 0)">
                 {/* Front Heavy Duty Equipment Door */}
                 <rect x="-4" y="11" width="10" height="16" rx="2" fill="#252d27" stroke="#181f1a" strokeWidth="0.9" />
                 <circle cx="4" cy="19" r="1.2" fill="#fcd34d" />
@@ -148,6 +134,7 @@ function ObservatoryHavenAsset({ activeRoom, presenceSlots, alienPulseEffect, tr
                 <circle cx="10" cy="7" r="0.8" fill="#fcd34d" />
                 <circle cx="13" cy="7" r="0.8" fill="#38ef7d" />
 
+                </g>
                 {/* Tall Communications Beacon Mast atop Cabin Roof */}
                 <line x1="16" y1="-6" x2="16" y2="-28" stroke="#334155" strokeWidth="1.6" />
                 <line x1="13" y1="-22" x2="19" y2="-22" stroke="#475569" strokeWidth="1" />
@@ -221,41 +208,36 @@ function ObservatoryHavenAsset({ activeRoom, presenceSlots, alienPulseEffect, tr
                   <rect x="7" y="-21" width="5" height="8" rx="1.5" fill="#1f2621" stroke="#141815" strokeWidth="0.8" />
                 </g>
 
-                {/* 🌟 GRAND PARABOLIC DISH (Angled skyward 34° toward Deep Space / Cosmos) */}
-                <g transform="translate(0, -22) rotate(-34 0 0)">
-                  {/* Outer Dish Structural Shell & Dark Rim */}
-                  <ellipse cx="0" cy="0" rx="30" ry="20" fill="#28332a" stroke="#18201a" strokeWidth="1.6" filter="url(#softShadow)" />
-
-                  {/* Dish Interior Parabolic Reflecting Surface (Weathered Sage / Mountain Titanium) */}
-                  <ellipse cx="0" cy="0" rx="28" ry="18" fill="#cddad0" stroke="#526356" strokeWidth="1.4" />
-
-                  {/* Concentric Microwave Radar Reflective Wire Mesh Rings */}
-                  <ellipse cx="0" cy="0" rx="21" ry="13.5" fill="none" stroke="#758879" strokeWidth="0.9" strokeDasharray="4 2.5" />
-                  <ellipse cx="0" cy="0" rx="14" ry="9" fill="none" stroke="#758879" strokeWidth="0.9" strokeDasharray="3 2" />
-                  <ellipse cx="0" cy="0" rx="7" ry="4.5" fill="none" stroke="#758879" strokeWidth="0.8" />
-
-                  {/* Parabolic Radial Rib Spokes (8 structural sectors) */}
-                  <line x1="-27" y1="0" x2="27" y2="0" stroke="#687b6d" strokeWidth="0.8" opacity="0.75" />
-                  <line x1="0" y1="-17" x2="0" y2="17" stroke="#687b6d" strokeWidth="0.8" opacity="0.75" />
-                  <line x1="-20" y1="-12" x2="20" y2="12" stroke="#687b6d" strokeWidth="0.7" opacity="0.6" />
-                  <line x1="-20" y1="12" x2="20" y2="-12" stroke="#687b6d" strokeWidth="0.7" opacity="0.6" />
-
-                  {/* Quad-pod Struts converging to Sub-Reflector Feed Horn Tip */}
-                  <line x1="-23" y1="0" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
-                  <line x1="23" y1="0" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
-                  <line x1="0" y1="16" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
-                  <line x1="0" y1="-16" x2="0" y2="-24" stroke="#324036" strokeWidth="1.5" />
-
-                  {/* Central Sub-reflector Horn & Alien Detection Sensor Feed */}
-                  <circle cx="0" cy="-24" r="4.0" fill="#152119" stroke="#34d399" strokeWidth="1.3" />
-                  <circle cx="0" cy="-24" r="2.5" fill="#34d399" />
-                  {/* High Gain Core Sensor Tip */}
-                  <circle cx="0" cy="-24" r="1.2" fill="#ffffff" />
+                {/* The reflector has a visible bowl back, an inclined aperture and
+                    a feed displaced along its skyward normal, toward the open meadow. */}
+                <path d="M-5,-15 L-5,-25 L3,-29" stroke="#26372c" strokeWidth="5" fill="none" />
+                <circle cx="-5" cy="-23" r="3.5" fill="#aa8d5c" stroke="#3b432c" strokeWidth="0.8" />
+                <g id="observatory-skyward-dish" transform="translate(0, -29)">
+                  <path d="M-28,8 Q-19,24 -3,23 Q17,21 28,-1 L22,-9 L-20,-8 Z"
+                    fill="#52665a" stroke="#263a2d" strokeWidth="1.2" />
+                  <path d="M-22,12 Q-10,23 4,19 M-5,17 Q11,20 23,4"
+                    fill="none" stroke="#799080" strokeWidth="1" opacity="0.8" />
+                  <ellipse rx="30" ry="18" transform="rotate(-16)" fill="#2a3c2f" stroke="#1d2c21" strokeWidth="1.4" />
+                  <ellipse rx="28" ry="16" transform="rotate(-16)" fill="#ccd9cd" stroke="#809581" strokeWidth="0.8" />
+                  <path d="M-25,3 Q-24,-11 -8,-14 Q6,-18 20,-10" stroke="#edf4e9" strokeWidth="1.7" fill="none" opacity="0.8" />
+                  <g transform="rotate(-16)" fill="none" stroke="#819486" strokeWidth="0.7">
+                    <ellipse rx="20" ry="11.4" />
+                    <ellipse rx="12" ry="6.85" />
+                    <ellipse rx="5" ry="2.85" />
+                    <path d="M-27,0 H27 M0,-15.5 V15.5 M-19,-11 L19,11 M-19,11 L19,-11" />
+                  </g>
+                  {/* Tripod feed supports sit in front of the mesh, not in its plane. */}
+                  <path d="M-25,7 L15,-29 M25,-7 L15,-29 M5,15 L15,-29"
+                    fill="none" stroke="#354d3d" strokeWidth="1.4" strokeLinecap="round" />
+                  <path d="M-24,6 L15,-29" fill="none" stroke="#a2b3a3" strokeWidth="0.5" />
+                  <path d="M11,-26 L15,-33 L19,-30 L16,-23 Z" fill="#344c3d" stroke="#203529" strokeWidth="0.9" />
+                  <ellipse cx="15" cy="-30" rx="2.5" ry="1.8" fill="#68c59a" stroke="#264d38" strokeWidth="0.7" />
+                  <circle cx="15" cy="-30" r="0.85" fill="#e0fff0" />
                 </g>
 
                 {/* 📡 COSMIC ALIEN WAVE RESONANCE & PULSES (Click-triggered or subtle) */}
                 {alienPulseEffect && (
-                  <g transform="translate(14, -54)">
+                  <g transform="translate(15, -59)">
                     <circle cx="0" cy="0" r="18" fill="none" stroke="#34d399" strokeWidth="1.8" className="animate-ping pointer-events-none" />
                     <circle cx="0" cy="0" r="36" fill="none" stroke="#38bdf8" strokeWidth="1.6" className="animate-ping pointer-events-none" />
                     <circle cx="0" cy="0" r="54" fill="none" stroke="#a78bfa" strokeWidth="1.2" className="animate-ping pointer-events-none" />

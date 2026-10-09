@@ -6,14 +6,17 @@ import { INITIAL_PEOPLE } from '../../src/data/initialData';
 import { useLayoutEditor } from '../../src/features/layout-editor/useLayoutEditor';
 import { resolvePresenceSlots } from '../../src/features/presence/presenceAllocation';
 import '../../src/index.css';
-import type { RoomId } from '../../src/types';
+import type { RoomId, TimeOfDay } from '../../src/types';
 import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
 import type { EntityId } from '../../src/world/scene/sceneTypes';
 
 const query = new URLSearchParams(location.search);
+const requestedTheme = query.get('theme');
+const timeOfDay: TimeOfDay = requestedTheme === 'morning' || requestedTheme === 'dusk'
+  || requestedTheme === 'night' || requestedTheme === 'rainy' ? requestedTheme : 'afternoon';
 const renderSamples: number[] = [];
 if (query.has('profile')) (window as unknown as { renderSamples: number[] }).renderSamples = renderSamples;
-const stationX = Number(query.get('stationX') ?? 1000);
+const stationX = Number(query.get('stationX') ?? DEFAULT_SCENE_LAYOUT.observatory.position.x);
 const sceneLayout = { ...DEFAULT_SCENE_LAYOUT, observatory: {
   ...DEFAULT_SCENE_LAYOUT.observatory, position: { ...DEFAULT_SCENE_LAYOUT.observatory.position, x: stationX },
 } };
@@ -45,7 +48,7 @@ function Fixture() {
       style={{position:'absolute',zIndex:100,left:0,top:0,width:70}}
       onChange={e=>{editor.setIsLayoutInspectorOpen(false);setRequestedZoom(Number(e.target.value));}} />}
     <Profiler id="world" onRender={(_, __, duration) => { if (query.has('profile')) renderSamples.push(duration); }}>
-    <ThreeWorld timeOfDay="afternoon" people={people} presenceAllocation={resolvePresenceSlots(people)} sceneLayout={sceneLayout}
+    <ThreeWorld timeOfDay={timeOfDay} people={people} presenceAllocation={resolvePresenceSlots(people)} sceneLayout={sceneLayout}
       activeRoom={activeRoom} roomLayout={editor.roomLayout} unreadMailCount={2} onSelectPerson={() => {}}
       onSelectMailbox={() => {}} onSelectRoom={setActiveRoom}
       isInspectorOpen={editor.isLayoutInspectorOpen} activeGizmoId={editor.activeGizmoId}

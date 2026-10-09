@@ -2,9 +2,9 @@ import { scenePoint, type EntityId, type LocalPoint, type SceneLayout } from './
 
 export const DEFAULT_SCENE_LAYOUT: SceneLayout = {
   main_cottage: { position: scenePoint(540, 210), scale: 1 },
-  capsule_pod: { position: scenePoint(894, 320), scale: 1 },
-  wooden_cabin: { position: scenePoint(220, 340), scale: 1 },
-  observatory: { position: scenePoint(1000, 460), scale: 0.8 },
+  capsule_pod: { position: scenePoint(1000, 350), scale: 1 },
+  wooden_cabin: { position: scenePoint(125, 350), scale: 1 },
+  observatory: { position: scenePoint(1100, 230), scale: 0.8 },
 };
 
 export function entityPointToScene<P extends EntityId>(point: LocalPoint<P>, layout = DEFAULT_SCENE_LAYOUT) {
