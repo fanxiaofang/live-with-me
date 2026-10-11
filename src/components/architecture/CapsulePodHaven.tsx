@@ -814,11 +814,24 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           <line x1="-45" y1="56" x2="-46.5" y2="59" stroke="#7e9383" strokeWidth="0.6" />
         </g>
 
-        {/* F. 安睡角色梦境浮标与呢喃文字 */}
+        {/* F. 安睡角色梦境浮标与宁静气泡 */}
         {presenceSlots.tatami_capsule?.occupant && (
           <g id="capsule-sleep-whispers" transform="translate(15, -42)" className="pointer-events-none">
-            <text x="18" y="2" fill="#f0d5a8" fontSize="9" fontWeight="bold" className="animate-bounce">z</text>
-            <text x="25" y="-8" fill="#e8ba46" fontSize="12" fontWeight="bold" className="animate-pulse">Z</text>
+            {/* Tranquil Slumber Bubbles (静谧睡眠气泡) */}
+            <g id="capsule-slumber-bubbles" transform="translate(20, 0)">
+              <g className="animate-sleep-bubble-1">
+                <circle cx="2" cy="0" r="1.8" fill="#fde68a" opacity="0.8" />
+                <circle cx="1.5" cy="-0.5" r="0.6" fill="#ffffff" opacity="0.9" />
+              </g>
+              <g className="animate-sleep-bubble-2">
+                <circle cx="7" cy="-7" r="2.6" fill="#fef08a" opacity="0.75" />
+                <circle cx="6.2" cy="-7.8" r="0.8" fill="#ffffff" opacity="0.9" />
+              </g>
+              <g className="animate-sleep-bubble-3">
+                <circle cx="13" cy="-15" r="3.4" fill="#fed7aa" opacity="0.65" />
+                <circle cx="12" cy="-16" r="1.0" fill="#ffffff" opacity="0.85" />
+              </g>
+            </g>
 
             <g transform="translate(-12, 10)">
               <rect x="-44" y="-8" width="88" height="17" rx="8.5" fill="#1c1917" opacity="0.94" stroke="#c47a4f" strokeWidth="0.6" />

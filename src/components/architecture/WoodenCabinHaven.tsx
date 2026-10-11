@@ -535,10 +535,22 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
           <path d="M-5,2 H29 L27,14 H-7 Z" fill="#e9d5b4" stroke="#70502e" strokeWidth="1" />
           <text x="11" y="10.5" fill="#55371d" fontSize="7" fontWeight="bold" textAnchor="middle">🪵 安睡木屋</text>
         </g>
-        {cabinOccupant && <g id="cabin-sleep-whispers" transform="translate(0, -55)" className="pointer-events-none">
-          <text fill="#b48342" fontSize="9" fontWeight="bold" opacity="0.85">z</text>
-          <text x="8" y="-8" fill="#c58e42" fontSize="11" fontWeight="bold" opacity="0.75">Z</text>
-        </g>}
+        {cabinOccupant && (
+          <g id="cabin-sleep-whispers" transform="translate(0, -55)" className="pointer-events-none">
+            <g className="animate-sleep-bubble-1">
+              <circle cx="2" cy="0" r="1.8" fill="#fde68a" opacity="0.8" />
+              <circle cx="1.5" cy="-0.5" r="0.6" fill="#ffffff" opacity="0.9" />
+            </g>
+            <g className="animate-sleep-bubble-2">
+              <circle cx="8" cy="-6" r="2.6" fill="#fef08a" opacity="0.75" />
+              <circle cx="7.2" cy="-6.8" r="0.8" fill="#ffffff" opacity="0.9" />
+            </g>
+            <g className="animate-sleep-bubble-3">
+              <circle cx="14" cy="-14" r="3.4" fill="#fed7aa" opacity="0.65" />
+              <circle cx="13" cy="-15" r="1.0" fill="#ffffff" opacity="0.85" />
+            </g>
+          </g>
+        )}
         <g transform="translate(0, 91)" className="opacity-0 group-hover/cabin:opacity-100 transition-opacity pointer-events-none">
           <rect x="-82" y="-8" width="164" height="17" rx="8" fill="#1c1917" opacity="0.94" />
           <text y="4" fill="#fed7aa" fontSize="9" textAnchor="middle">🪵 林间安睡木屋 · 独立暖榻卧室</text>

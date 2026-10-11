@@ -289,36 +289,26 @@ export const RetroTurntable: React.FC<RetroTurntableProps> = ({
         </g>
       </g>
 
-      {/* --- 8. 悠扬升起的温馨金色音乐音符 (Floating Music Notes) --- */}
+      {/* --- 8. 悠扬升起的静谧温润金色音乐光尘微粒 (Gentle Drifting Amber Notes/Stardust) --- */}
       {isPlaying && (
-        <g id="retro-floating-notes" className="pointer-events-none">
+        <g id="retro-floating-notes" className="pointer-events-none opacity-80">
           <text
-            x="3"
-            y="-14"
-            fill="#f59e0b"
-            fontSize="10"
+            x="4"
+            y="-16"
+            fill="#d97706"
+            fontSize="7"
             fontWeight="bold"
-            className="animate-bounce"
+            className="animate-[pulse_3.5s_infinite]"
           >
             ♪
           </text>
           <text
-            x="11"
-            y="-19"
-            fill="#d97706"
-            fontSize="8.5"
-            fontWeight="bold"
-            className="animate-pulse"
-          >
-            ♫
-          </text>
-          <text
-            x="-2"
-            y="-21"
+            x="-4"
+            y="-20"
             fill="#ea580c"
-            fontSize="7"
+            fontSize="5.5"
             fontWeight="bold"
-            className="animate-[pulse_1.5s_infinite]"
+            className="animate-[pulse_4.5s_infinite]"
           >
             ♩
           </text>

@@ -34,7 +34,9 @@ export type DecorationType =
   | 'stone-bookend'   // 天然原石书立
   | 'friend-letter'   // 好友手写留言信封
   | 'crystal-geode'   // 剔透微光矿石标本
-  | 'ceramic-mug';    // 手作粗陶咖啡马克杯
+  | 'ceramic-mug'     // 手作粗陶咖啡马克杯
+  | 'astrolabe-sphere'    // 复古黄铜浑天仪与悬浮魔力水晶球
+  | 'mushroom-terrarium'; // 星露发光幽菇生态玻璃微景瓶
 
 export interface ShelfDecorationConfig {
   id: string;

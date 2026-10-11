@@ -265,6 +265,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         )}
       </g>
 
+
       {/* 🐑 Sheep 1: 西侧河畔开阔草场啃草羊 (x: -420, y: 460) */}
       <g {...svgAction('sheep-1')}
         id="sheep-1"
@@ -315,8 +316,21 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <ellipse cx="-2" cy="0" rx="4.5" ry="3.5" fill="#1c1612" />
           <path d="M-1,-1 Q0,-0.2 1,-1" stroke="#fef08a" strokeWidth="0.8" fill="none" />
           <ellipse cx="2" cy="-4" rx="3" ry="1.2" fill="#221a15" transform="rotate(-10 2 -4)" />
-          <text x="-8" y="-6" fill="#fef3c7" fontSize="7.5" fontWeight="bold" className="animate-pulse">z</text>
-          <text x="-4" y="-11" fill="#fef3c7" fontSize="9.5" fontWeight="bold" className="animate-bounce">Z</text>
+          {/* Tranquil Slumber Bubbles (静谧睡眠气泡) */}
+          <g className="pointer-events-none" id="sheep-slumber-bubbles">
+            <g className="animate-sleep-bubble-1">
+              <circle cx="-6" cy="-6" r="1.8" fill="#fef08a" opacity="0.75" />
+              <circle cx="-6.4" cy="-6.5" r="0.55" fill="#ffffff" opacity="0.9" />
+            </g>
+            <g className="animate-sleep-bubble-2">
+              <circle cx="-3" cy="-12" r="2.6" fill="#fde68a" opacity="0.7" />
+              <circle cx="-3.6" cy="-12.6" r="0.8" fill="#ffffff" opacity="0.9" />
+            </g>
+            <g className="animate-sleep-bubble-3">
+              <circle cx="1" cy="-18" r="3.4" fill="#fef3c7" opacity="0.6" />
+              <circle cx="0.2" cy="-18.8" r="1.0" fill="#ffffff" opacity="0.85" />
+            </g>
+          </g>
         </g>
         {activeSheepIndex === 1 && sheepSaying && (
           <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">

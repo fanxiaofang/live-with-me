@@ -50,8 +50,9 @@ export interface MainCottageHavenProps {
   sofaThought: string | null;
   onSelectMailbox: () => void;
   unreadMailCount: number;
+  onTriggerToast?: (msg: string) => void;
 }
-function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount }: MainCottageHavenProps) {
+function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount, onTriggerToast }: MainCottageHavenProps) {
   return <>
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation />
@@ -102,11 +103,13 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               {/* Stepped Terracotta Cap & Pot (圆润陶土出烟风帽) */}
               <rect x="-10.5" y="-53" width="21" height="5" rx="2" fill="#8c3f25" stroke="#5c2615" strokeWidth="0.8" />
               <ellipse cx="0" cy="-53" rx="5.5" ry="2.2" fill="#522010" stroke="#3b160b" strokeWidth="0.7" />
-              {/* Soft Puffy Marshmallow Clouds drifting into sky (与下方烟道严格对齐的白云慢烟) */}
-              <circle cx="0" cy="-62" r="4.5" fill="#ffffff" opacity="0.75" className="animate-[bounce_3.2s_infinite]" />
-              <circle cx="2" cy="-74" r="7" fill="#ffffff" opacity="0.55" className="animate-[pulse_3.8s_infinite]" />
-              <circle cx="-1" cy="-90" r="9.5" fill="#ffffff" opacity="0.38" />
-              <circle cx="3" cy="-108" r="12.5" fill="#ffffff" opacity="0.2" />
+              {/* Soft Puffy Marshmallow Clouds drifting into sky (与下方烟道严格对齐的柔美半透明慢速升腾水彩白云烟雾) */}
+              <g id="chimney-smoke-drifts">
+                <circle cx="0" cy="-58" r="4.5" fill="#f8fafc" opacity="0.65" className="animate-[pulse_3.2s_infinite]" />
+                <circle cx="1.5" cy="-68" r="6.5" fill="#f8fafc" opacity="0.5" className="animate-[pulse_3.8s_infinite]" />
+                <circle cx="-1" cy="-80" r="8.5" fill="#ffffff" opacity="0.32" />
+                <circle cx="2" cy="-93" r="10.5" fill="#ffffff" opacity="0.18" />
+              </g>
             </g>
 
             {/* 2.5D Heavy Timber Corner King Posts & Siding Cutaway Wall Profiles */}
@@ -125,64 +128,147 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               {/* Invisible room floor hit area */}
               <RoomHitArea room="my_room" points="-270,135 -100,85 -40,130 -210,180" />
 
-              {/* 1.1 2.5D ISOMETRIC WINDOW ON LEFT WALL (高度整体下移 +22px，完美契合书桌工作视线，消解贴梁紧迫感与下方大片冷清留白) */}
+              {/* 1.1 2.5D ISOMETRIC WINDOW ON LEFT WALL (精致紧凑双拼木窗：收窄16%更具人文尺度，窗外地貌层次由近及远校正) */}
               <g id="isometric-bay-window">
-                {/* 墙体窗洞阴影与外实木窗框 (严格顺应左墙等轴测坡度 k = -77/270 ≈ -0.2852) */}
+                {/* 墙体窗洞阴影与外实木窗框 (严格顺应左墙等轴测坡度 k = -77/270 ≈ -0.2852，尺寸收敛至精致 72x52px) */}
                 <polygon
-                  points="-234,24.3 -146,-0.8 -146,61.2 -234,86.3"
+                  points="-225,29.3 -155,9.3 -155,61.3 -225,81.3"
                   fill="#452f1e"
                   stroke="#2c1d12"
                   strokeWidth="1.5"
                 />
 
-                {/* 窗洞内凹暗部与右侧厚度壁 (向内凹陷 3px 进深，展现轻盈内嵌墙体厚度) */}
+                {/* 窗洞内凹暗部与右侧厚度壁 (向内凹陷 3px 进深) */}
                 <polygon
-                  points="-231,26.0 -149,2.6 -149,59.6 -231,83.0"
+                  points="-222,31.0 -158,12.7 -158,59.7 -222,78.0"
                   fill="#23170e"
                 />
                 {/* 窗洞上内壁阴影面 */}
                 <polygon
-                  points="-231,26.0 -149,2.6 -149,5.6 -231,29.0"
+                  points="-222,31.0 -158,12.7 -158,15.7 -222,34.0"
                   fill="#180f08"
                 />
 
-                {/* Sunlit Glass Pane with Landscape (窗外远山与柔和天光：严格保持原版 theme.cottageGlow 温馨色调) */}
+                {/* Sunlit Glass Pane with Translucent Vista (通透半透明采光观景窗：天光渐变) */}
+                <defs>
+                  <linearGradient id="cottageWindowVistaGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#bfdbfe" stopOpacity="0.88" />
+                    <stop offset="30%" stopColor="#dbeafe" stopOpacity="0.82" />
+                    <stop offset="60%" stopColor="#fef08a" stopOpacity="0.75" />
+                    <stop offset="100%" stopColor="#a3e635" stopOpacity="0.72" />
+                  </linearGradient>
+                </defs>
                 <polygon
-                  points="-228,30.0 -151,8.0 -151,58.5 -228,80.5"
-                  fill={theme.cottageGlow}
+                  points="-219,34.5 -160,17.7 -160,58.5 -219,75.3"
+                  fill="url(#cottageWindowVistaGrad)"
                 />
-                {/* Distant Hills Silhouette viewed through window (原版田园远山微景) */}
+
+                {/* 正确的约克郡风光地貌纵深层次： */}
+                {/* 1. 远景：连绵起伏的黛青紫蓝群山微景 (Distant Yorkshire Dales) */}
                 <path
-                  d="M-228,64 Q-190,50 -151,54 L-151,58.5 L-228,80.5 Z"
-                  fill="#9bc48e"
+                  d="M-219,45 Q-190,32 -160,38 L-160,46 Q-190,40 -219,47 Z"
+                  fill="#7c92b8"
                   opacity="0.45"
                 />
+                {/* 2. 中景：层叠起伏的金黄麦浪丘陵与微缩石墙 (Rolling Wheat Fields) */}
+                <path
+                  d="M-219,47 Q-185,38 -160,44 L-160,52 Q-185,47 -219,53 Z"
+                  fill="#eab308"
+                  opacity="0.65"
+                />
+                {/* 约克郡干石墙微小暗色轮廓 (Drystone Wall silhouette) */}
+                <path
+                  d="M-219,52 Q-185,46 -160,51"
+                  stroke="#574635"
+                  strokeWidth="0.8"
+                  fill="none"
+                  opacity="0.5"
+                />
+                {/* 3. 近景（窗根下方）：温润丰美的生机草甸坡地与野花点缀 (Near Green Pasture Meadow) */}
+                <path
+                  d="M-219,53 Q-188,48 -160,52 L-160,58.5 L-219,75.3 Z"
+                  fill="#65a30d"
+                  opacity="0.75"
+                />
+                {/* 草地野花小碎点 */}
+                <circle cx="-195" cy="58" r="0.9" fill="#fef08a" opacity="0.8" />
+                <circle cx="-175" cy="54" r="0.8" fill="#ffffff" opacity="0.8" />
+                <circle cx="-205" cy="64" r="0.9" fill="#fef08a" opacity="0.8" />
+
+
+                {/* Soft diagonal sunbeams on glass (通透玻璃高光与斜射晨光) */}
+                <polygon points="-215,35 -202,31 -182,68 -195,72" fill="#ffffff" opacity="0.12" />
+                <polygon points="-192,27 -181,24 -165,56 -176,59" fill="#ffffff" opacity="0.08" />
 
                 {/* 2.5D Window Mullions (田字格实木窗棂：竖棂严格垂直向下，横棂严格沿左墙轴倾斜 k = -0.2852) */}
-                <line x1="-189.5" y1="19.0" x2="-189.5" y2="69.5" stroke="#4a3321" strokeWidth="2.2" />
-                <line x1="-228" y1="55.2" x2="-151" y2="33.2" stroke="#4a3321" strokeWidth="2.2" />
+                <line x1="-189.5" y1="26.0" x2="-189.5" y2="67.0" stroke="#4a3321" strokeWidth="2.0" />
+                <line x1="-219" y1="54.8" x2="-160" y2="38.0" stroke="#4a3321" strokeWidth="2.0" />
 
                 {/* Curtain Rod above Window (窗帘挂杆：严格沿左墙轴倾斜 k = -0.2852) */}
-                <line x1="-239" y1="22.5" x2="-141" y2="-5.4" stroke="#382415" strokeWidth="2.2" strokeLinecap="round" />
-                <circle cx="-239" cy="22.5" r="2.5" fill="#523924" />
-                <circle cx="-141" cy="-5.4" r="2.5" fill="#523924" />
+                <line x1="-229" y1="28.0" x2="-151" y2="5.8" stroke="#382415" strokeWidth="2.0" strokeLinecap="round" />
+                <circle cx="-229" cy="28.0" r="2.2" fill="#523924" />
+                <circle cx="-151" cy="5.8" r="2.2" fill="#523924" />
 
                 {/* Cozy Linen Curtain on Left side (微卷亚麻米白窗帘与红陶扎带) */}
                 <path
-                  d="M-237,23.5 Q-231,43 -235,65 Q-239,77 -234,86 L-228,88 Q-233,77 -230,65 Q-226,43 -232,25 Z"
+                  d="M-227,29 Q-222,46 -225,64 Q-228,74 -224,82 L-219,84 Q-223,74 -220,64 Q-217,46 -222,30 Z"
                   fill="#f5ede0"
                   stroke="#d5c8b5"
                   strokeWidth="0.8"
                 />
-                <ellipse cx="-232" cy="65" rx="3.5" ry="2" fill="#c47a4f" />
+                <ellipse cx="-222" cy="64" rx="3.2" ry="1.8" fill="#c47a4f" />
 
                 {/* Sunlight Cast onto Timber Floor (从调整后的窗户自然倾泻在桌面与地面的暖金光斑) */}
                 <polygon
-                  points="-231,85.0 -149,61.6 -108,94.0 -195,118.0"
+                  points="-222,78.0 -158,59.7 -122,86.0 -192,106.0"
                   fill={theme.cottageGlow}
                   opacity="0.16"
                   className="pointer-events-none"
                 />
+              </g>
+
+              {/* 1.12 墙面干花挂件：由暖炉移至左墙空白木板处 (x: -115, y: 32)，配原木挂钩，安全温馨 */}
+              <g
+                id="dried-herb-bouquet"
+                transform="translate(-115, 32)"
+                className="cursor-pointer group/herb select-none"
+              >
+                <title>倒挂风干香草束 · 散发着淡淡薰衣草与鼠尾草安神清香 🌿</title>
+                <rect x="-8" y="-2" width="16" height="24" fill="transparent" />
+                <ellipse cx="1.2" cy="1.6" rx="2.4" ry="1.4" fill="#1b120c" opacity="0.32" filter="url(#softShadow)" />
+                <circle cx="0" cy="0" r="1.8" fill="#6b3e1f" stroke="#3b200e" strokeWidth="0.4" />
+                <circle cx="-0.3" cy="-0.3" r="1.2" fill="#8f572b" />
+                <circle cx="-0.6" cy="-0.6" r="0.5" fill="#d99b64" />
+                <line x1="0" y1="0.5" x2="0" y2="3.2" stroke="#87603c" strokeWidth="0.8" strokeLinecap="round" />
+                <path d="M0,2.6 C-2.4,1.4 -3.6,3.4 -1.2,3.6 C-0.3,3.5 0,3.0 0,2.6 Z" fill="#cbb396" stroke="#785536" strokeWidth="0.35" />
+                <path d="M0,2.6 C2.4,1.4 3.6,3.4 1.2,3.6 C0.3,3.5 0,3.0 0,2.6 Z" fill="#cbb396" stroke="#785536" strokeWidth="0.35" />
+                <circle cx="0" cy="2.7" r="0.9" fill="#8d623d" stroke="#5c381c" strokeWidth="0.3" />
+                <path d="M-0.4,3.3 Q-2.0,5.8 -1.4,7.8" fill="none" stroke="#9a734c" strokeWidth="0.5" strokeLinecap="round" />
+                <path d="M0.4,3.3 Q1.6,6.0 1.0,8.2" fill="none" stroke="#9a734c" strokeWidth="0.5" strokeLinecap="round" />
+                <path d="M-0.4,3.5 Q-3.5,8 -4.8,14.5" fill="none" stroke="#5e754a" strokeWidth="0.65" strokeLinecap="round" />
+                <path d="M0.4,3.5 Q3.5,8 4.6,14.5" fill="none" stroke="#5e754a" strokeWidth="0.65" strokeLinecap="round" />
+                <path d="M0,3.5 Q-0.8,8.5 -0.6,15.5" fill="none" stroke="#556d43" strokeWidth="0.75" strokeLinecap="round" />
+                <ellipse cx="-2.6" cy="6.8" rx="1.5" ry="1.0" transform="rotate(-30 -2.6 6.8)" fill="#789269" stroke="#48613d" strokeWidth="0.25" />
+                <ellipse cx="2.6" cy="7.2" rx="1.5" ry="1.0" transform="rotate(30 2.6 7.2)" fill="#849e75" stroke="#48613d" strokeWidth="0.25" />
+                {/* 薰衣草花穗 */}
+                <g transform="translate(-4.8, 14)">
+                  {[-3.5, -2.5, -1.5, -0.5, 0.5].map((oy, idx) => (
+                    <circle key={`lav-l-${idx}`} cx="0" cy={oy} r="0.7" fill="#a78bfa" />
+                  ))}
+                  <circle cx="0" cy="1.2" r="0.6" fill="#7c3aed" />
+                </g>
+                <g transform="translate(4.5, 14)">
+                  {[-3.5, -2.5, -1.5, -0.5, 0.5].map((oy, idx) => (
+                    <circle key={`lav-r-${idx}`} cx="0" cy={oy} r="0.7" fill="#a78bfa" />
+                  ))}
+                  <circle cx="0" cy="1.2" r="0.6" fill="#7c3aed" />
+                </g>
+                {/* 雏菊花朵与麦穗 */}
+                <circle cx="-1" cy="12" r="1.4" fill="#fefce8" />
+                <circle cx="-1" cy="12" r="0.6" fill="#f59e0b" />
+                <circle cx="1.5" cy="13.5" r="1.3" fill="#fefce8" />
+                <circle cx="1.5" cy="13.5" r="0.5" fill="#f59e0b" />
+                <ellipse cx="-0.5" cy="16.5" rx="0.9" ry="1.5" fill="#fde047" stroke="#d97706" strokeWidth="0.2" />
               </g>
 
               {/* 1.15 2.5D LEFT WALL CRAFT BOARD (手作工具洞洞墙 + 陶木风铃挂饰 + 三人温馨拍立得合照) */}
@@ -384,87 +470,64 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 onMouseEnter={() => setHoveredObject({ kind: 'furniture-part', id: 'daybed' })}
                 onMouseLeave={() => setHoveredObject(null)}
               >
-                {/* 1. Floor Ambient Occlusion Shadow (地板上的温润漫反射投影，稳稳扎根) */}
+                {/* 1. Floor Ambient Occlusion & Plinth Shadows (微内收满跨度地袱大梁投影：稳如泰山、扎实沉稳) */}
                 <polygon
-                  points="21,79 48,70 105,86 77,96"
+                  points="22,76 48,68 103,84 77,93"
                   fill="#1b120a"
-                  opacity="0.28"
+                  opacity="0.25"
                   filter="url(#softShadow)"
                 />
+                {/* Plinth Base Footprint Contact Shadow (满跨度底座与地板严密咬合的接触深阴影) */}
                 <polygon
-                  points="24,78 48,71 101,86 76,93"
-                  fill="#120c06"
-                  opacity="0.35"
+                  points="25,79.4 76,93.7 99,87.4 48,73.1"
+                  fill="#0e0704"
+                  opacity="0.55"
                   filter="url(#softShadow)"
                 />
 
-                {/* Fireplace Breathing Space: Floor warmth & Straw Slippers (暖炉与榻榻米之间的安全通透空间及日式草编小拖鞋) */}
-                <g id="daybed-slippers" transform="translate(36, 78)">
-                  {/* Left Slipper */}
-                  <ellipse cx="-2.5" cy="0" rx="3.5" ry="1.8" fill="#1b120c" opacity="0.3" />
-                  <ellipse cx="-2.5" cy="-0.5" rx="3.2" ry="1.6" fill="#c2a77a" stroke="#8c704f" strokeWidth="0.4" />
-                  <path d="M-4.5,-0.6 C-4.5,-2.2 -0.8,-2.2 -0.8,-0.6" fill="#523824" stroke="#3b2618" strokeWidth="0.5" />
-                  {/* Right Slipper */}
-                  <ellipse cx="4.5" cy="1.8" rx="3.5" ry="1.8" fill="#1b120c" opacity="0.3" />
-                  <ellipse cx="4.5" cy="1.3" rx="3.2" ry="1.6" fill="#c2a77a" stroke="#8c704f" strokeWidth="0.4" />
-                  <path d="M2.5,1.2 C2.5,-0.4 6.2,-0.4 6.2,1.2" fill="#523824" stroke="#3b2618" strokeWidth="0.5" />
-                </g>
+                {/* 2. Full-Span Subtly Inset Timber Plinth Base (方案 1：日式微内收 2px 满跨度实木地袱大梁底座，力学绝对对称稳固) */}
+                <g id="daybed-recessed-plinth-box">
+                  {/* Plinth Left-Front Face (面向暖炉方向的侧立面：宽 22px，承托床头枕头区) */}
+                  <polygon
+                    points="48,67.6 26,73.9 26,79.4 48,73.1"
+                    fill="#3d2314"
+                    stroke="#25140b"
+                    strokeWidth="0.5"
+                    strokeLinejoin="round"
+                  />
+                  {/* Subtle Hearth Warmth Reflection */}
+                  <polygon
+                    points="48,67.6 26,73.9 26,79.4 48,73.1"
+                    fill="#f59e0b"
+                    opacity="0.10"
+                  />
 
-                {/* 2. 4 Solid Wood Corner Feet (4根实木转角立柱脚：与围架底角 100% 严丝合缝对齐，稳固支撑) */}
-                {/* Back-Left Foot (后左转角脚：顶面严格接合 frame BL 底角 48, 67) */}
-                <g id="daybed-foot-bl">
-                  <polygon points="45.5,67.7 48,67 48,72 45.5,72.7" fill="#2d1c10" />
-                  <polygon points="48,67 50.5,67.7 50.5,72.7 48,72" fill="#22150c" />
-                  <ellipse cx="48" cy="72.4" rx="2" ry="0.8" fill="#1b120a" opacity="0.4" filter="url(#softShadow)" />
-                </g>
-                {/* Back-Right Foot (靠墙右上角转角立柱脚：顶面严密咬合木架底角 102, 82.4，垂直下垂到地面 87.4，绝不外凸) */}
-                <g id="daybed-foot-br">
-                  {/* Right Facet (沿右侧围板底缘：从 98.8, 83.3 严丝合缝连至 102, 82.4，垂直向下延伸 5px) */}
+                  {/* Plinth Main Front Face (正前实木大立面：跨度达 50px 满跨度承重，仅左右各微内收 2px) */}
                   <polygon
-                    points="98.8,83.3 102,82.4 102,87.4 98.8,88.3"
-                    fill="#362012"
-                    stroke="#24150b"
-                    strokeWidth="0.35"
+                    points="26,73.9 76,88.2 76,93.7 26,79.4"
+                    fill="#4e2e19"
+                    stroke="#2c170c"
+                    strokeWidth="0.5"
+                    strokeLinejoin="round"
                   />
-                  {/* Rear Facet (沿后侧墙面底缘：从 99.0, 81.5 连至 102, 82.4，垂直向下延伸 5px) */}
+
+                  {/* Plinth Right Face (面向右墙的背光深木立面：宽 22px，承托床尾区) */}
                   <polygon
-                    points="99.0,81.5 102,82.4 102,87.4 99.0,86.5"
-                    fill="#22140a"
-                    stroke="#160c06"
-                    strokeWidth="0.35"
+                    points="76,88.2 98,81.9 98,87.4 76,93.7"
+                    fill="#2d180c"
+                    stroke="#1c0d06"
+                    strokeWidth="0.5"
+                    strokeLinejoin="round"
                   />
-                  {/* Shared Vertical Outer Corner Edge (严密对齐床架右上转角顶点 102, 82.4) */}
-                  <line x1="102" y1="82.4" x2="102" y2="87.4" stroke="#5c361c" strokeWidth="0.6" strokeLinecap="round" />
-                  {/* Protective Foot Pad (立柱底部微型静音防护脚垫：严格居中对齐立柱正下方，宽度与腿柱 100% 严丝合缝) */}
-                  <ellipse cx="100.4" cy="87.6" rx="1.6" ry="0.65" fill="#1b120a" stroke="#0e0804" strokeWidth="0.3" />
-                  {/* Foot Ground Contact Shadow (地面软接触阴影：同轴垂直居中) */}
-                  <ellipse cx="100.4" cy="88.0" rx="2.0" ry="0.75" fill="#140c06" opacity="0.45" filter="url(#softShadow)" />
-                </g>
-                {/* Front-Left Foot (正前左转角脚：与前立面 24, 73.8 与左立面严格共线同轴，下垂 5px 到地面 24, 78.8) */}
-                <g id="daybed-foot-fl">
-                  {/* Left Facet (沿左立面斜率 -0.2852) */}
-                  <polygon points="24,73.8 26.5,73.1 26.5,78.1 24,78.8" fill="#362012" />
-                  {/* Front Facet (沿前立面斜率 +0.2852) */}
-                  <polygon points="24,73.8 27.5,74.8 27.5,79.8 24,78.8" fill="#4d301c" />
-                  {/* Shared Vertical Corner Edge (与围架转角无缝一体) */}
-                  <line x1="24" y1="73.8" x2="24" y2="78.8" stroke="#754b2c" strokeWidth="0.8" strokeLinecap="round" />
-                  {/* Protective Foot Pad */}
-                  <ellipse cx="25.5" cy="78.8" rx="2.2" ry="0.8" fill="#1b120a" stroke="#0e0804" strokeWidth="0.3" />
-                  {/* Foot Ground Contact Shadow */}
-                  <ellipse cx="25.5" cy="79.3" rx="2.5" ry="1.0" fill="#1b120a" opacity="0.45" filter="url(#softShadow)" />
-                </g>
-                {/* Front-Right Foot (正前右转角脚：与前立面 78, 89.2 及右侧立面严格共线，下垂到地面 78, 94.2) */}
-                <g id="daybed-foot-fr">
-                  {/* Front Facet (沿前立面斜率 +0.2852) */}
-                  <polygon points="74.5,88.2 78,89.2 78,94.2 74.5,93.2" fill="#4a2e1a" />
-                  {/* Side Facet (沿右侧转角斜率 -0.2852) */}
-                  <polygon points="78,89.2 81.2,88.3 81.2,93.3 78,94.2" fill="#301c0f" />
-                  {/* Shared Vertical Corner Edge */}
-                  <line x1="78" y1="89.2" x2="78" y2="94.2" stroke="#704729" strokeWidth="0.8" strokeLinecap="round" />
-                  {/* Protective Foot Pad */}
-                  <ellipse cx="77.0" cy="94.0" rx="2.2" ry="0.8" fill="#1b120a" stroke="#0e0804" strokeWidth="0.3" />
-                  {/* Foot Ground Contact Shadow */}
-                  <ellipse cx="77.0" cy="94.4" rx="2.6" ry="1.0" fill="#1b120a" opacity="0.45" filter="url(#softShadow)" />
+
+                  {/* Plinth Reveal Shadow Line Under Bed Skirt (床架下沿精致的 1.5px 地袱倒角收口阴影线) */}
+                  <line x1="26" y1="73.9" x2="76" y2="88.2" stroke="#1c0f07" strokeWidth="1.2" opacity="0.8" />
+                  <line x1="76" y1="88.2" x2="98" y2="81.9" stroke="#150a04" strokeWidth="1.1" opacity="0.85" />
+                  <line x1="48" y1="67.6" x2="26" y2="73.9" stroke="#1c0f07" strokeWidth="1.0" opacity="0.75" />
+
+                  {/* Floor Contact Ground Crease Lines (底座接地扎实刻线) */}
+                  <line x1="26" y1="79.4" x2="76" y2="93.7" stroke="#0e0704" strokeWidth="1.0" opacity="0.75" />
+                  <line x1="76" y1="93.7" x2="98" y2="87.4" stroke="#0e0704" strokeWidth="1.0" opacity="0.75" />
                 </g>
 
                 {/* 3. Solid Wood Timber Platform Frame (厚重实木底台：厚度 6px，温润原木边框) */}
@@ -573,9 +636,9 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   <circle cx="0" cy="1.7" r="0.9" fill="#8c8069" />
                 </g>
 
-                {/* 6. Leisure Elements on Tatami: Open Book for Afternoon Reading (榻席上的随手翻开便携小说，充满生活恬适感) */}
-                <g id="tatami-book" transform="translate(53, 65)">
-                  <ellipse cx="0" cy="2" rx="4.5" ry="2.2" fill="#2b3b2c" opacity="0.25" />
+                {/* 6. Leisure Elements on Tatami: Open Book for Afternoon Reading (榻席右前角随手翻开便携小说，留出中央空位避免挤压) */}
+                <g id="tatami-book" transform="translate(62, 70)">
+                  <ellipse cx="0" cy="2" rx="4.8" ry="2.4" fill="#2b3b2c" opacity="0.25" />
                   {/* Book Cover */}
                   <polygon points="-4.5,0.5 0,1.8 4.5,0.5 4,2 0,3.2 -4,2" fill="#4a5d4e" />
                   {/* Open Paper Pages */}
@@ -637,6 +700,21 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   <line x1="68.5" y1="68.8" x2="84.5" y2="73.4" stroke="#e8856e" strokeWidth="0.6" opacity="0.5" strokeDasharray="3 2" />
                 </g>
 
+                {/* 8. Cozily Slipped-Off Straw Slippers on Timber Floor in Front of Daybed (挪出至床沿前地板整齐摆放的小草编拖鞋) */}
+                <g id="daybed-slippers-front" transform="translate(40, 91)">
+                  {/* Left Slipper */}
+                  <ellipse cx="-4.5" cy="0.8" rx="4.0" ry="2.0" fill="#1b120a" opacity="0.35" filter="url(#softShadow)" />
+                  <ellipse cx="-4.5" cy="0" rx="3.6" ry="1.8" fill="#c4aa7f" stroke="#8a6e4d" strokeWidth="0.4" />
+                  <ellipse cx="-4.5" cy="0" rx="2.8" ry="1.2" fill="#d9c298" opacity="0.6" />
+                  <path d="M-6.8,-0.2 C-6.8,-2.4 -2.2,-2.4 -2.2,-0.2" fill="#523824" stroke="#382416" strokeWidth="0.5" />
+
+                  {/* Right Slipper (并排稍错开半步，自然生活化) */}
+                  <ellipse cx="4.0" cy="2.8" rx="4.0" ry="2.0" fill="#1b120a" opacity="0.35" filter="url(#softShadow)" />
+                  <ellipse cx="4.0" cy="2.0" rx="3.6" ry="1.8" fill="#c4aa7f" stroke="#8a6e4d" strokeWidth="0.4" />
+                  <ellipse cx="4.0" cy="2.0" rx="2.8" ry="1.2" fill="#d9c298" opacity="0.6" />
+                  <path d="M1.7,1.8 C1.7,-0.4 6.3,-0.4 6.3,1.8" fill="#523824" stroke="#382416" strokeWidth="0.5" />
+                </g>
+
                 {/* 2.5D 榻榻米交互把手 */}
                 {effectiveGizmoId === 'daybed' && (
                   <IsoGizmo
@@ -685,41 +763,262 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               </g>
 
 
-              {/* 2.3 2.5D ISOMETRIC WOVEN TATAMI HEARTH RUG (完全契合等轴测轴线与地板木纹的日式编织大织毯：四边斜率绝对为 ±0.2852) */}
+              {/* 2.3 2.5D ISOMETRIC WOVEN TATAMI HEARTH RUG (扩建28%温润大织毯：完全契合等轴测±0.2852轴线，充实中央生活区) */}
               <g id="isometric-hearth-rug">
                 {/* Floor Contact Soft Ambient Shadow */}
                 <polygon
-                  points="-68,130 12,107.2 92,130 12,152.8"
+                  points="-87,130 12,101.5 111,130 12,158.5"
                   fill="#1f140b"
                   opacity="0.25"
                   filter="url(#softShadow)"
                 />
 
-                {/* Outer Dark Linen Border (深咖色外滚边：平行于左右墙轴线) */}
+                {/* Outer Dark Linen Border (深咖色外滚边：严格平行于左右墙轴线) */}
                 <polygon
-                  points="-64,130 12,108.3 88,130 12,151.7"
+                  points="-83,130 12,102.9 107,130 12,157.1"
                   fill="#785c41"
                   stroke="#543d28"
                   strokeWidth="1.2"
                 />
 
-                {/* Main Woven Straw / Linen Surface (浅亚麻麦秆编织面) */}
+                {/* Main Woven Straw / Linen Surface (暖亚麻麦秆编织面：扩大包裹茶几与坐垫生活区) */}
                 <polygon
-                  points="-60,130 12,109.5 84,130 12,150.5"
-                  fill="#ddd3be"
+                  points="-79,130 12,104.0 103,130 12,156.0"
+                  fill="#ded4bf"
                   stroke="#c5b9a0"
                   strokeWidth="0.8"
                 />
 
-                {/* Inner Double Inset Border (精致内双框虚线) */}
+                {/* Inner Double Inset Border (精致内双框虚线工艺) */}
                 <polygon
-                  points="-50,130 12,112.3 74,130 12,147.7"
+                  points="-68,130 12,107.1 92,130 12,152.9"
                   fill="none"
                   stroke="#8f7253"
                   strokeWidth="1"
                   strokeDasharray="4 2"
                   opacity="0.75"
                 />
+
+                {/* Inner Medallion Border (中央核心区精致菱形织纹内框) */}
+                <polygon
+                  points="-54,130 12,111.1 78,130 12,148.9"
+                  fill="none"
+                  stroke="#b09b82"
+                  strokeWidth="0.6"
+                  opacity="0.6"
+                />
+
+                {/* 2.35 Cozy Sleeping Orange Tabby Kitten (参考参考图重构：温暖治愈的炉边蜷睡小橘猫 · 橘白毛色 / 纯白山竹爪爪 / 虎斑条纹 / 惬意呼噜) */}
+                {(() => {
+                  const catScreenX = currentLayout['hearth-cat'] ? currentLayout['hearth-cat'].screen.x : -46.0;
+                  const catScreenY = currentLayout['hearth-cat'] ? currentLayout['hearth-cat'].screen.y : 134.0;
+                  return (
+                    <g
+                      {...svgAction('抚摸打盹的小橘猫')}
+                      id="hearth-rug-cat"
+                      transform={`translate(${catScreenX}, ${catScreenY})`}
+                      className="cursor-pointer group/cat select-none"
+                      onClick={(e) => {
+                        if (isInspectorOpen) {
+                          e.stopPropagation();
+                          onSelectGizmo?.(effectiveGizmoId === 'hearth-cat' ? null : 'hearth-cat');
+                          return;
+                        }
+                        e.stopPropagation();
+                        onTriggerToast?.('ฅ\'ω\'ฅ 呼噜噜… 炉火边好暖和呀！暖橘色的小猫蜷成了毛茸茸的一团，粉白肉垫微微动了动，在睡梦中轻轻咂了咂嘴：「喵呜… 暖烘烘… 呼噜噜」🐾🔥✨');
+                      }}
+                      onMouseEnter={() => setHoveredObject({ kind: 'entity', id: 'hearth-cat' })}
+                      onMouseLeave={() => setHoveredObject(null)}
+                    >
+                      <title>炉边打盹的暖橘小猫 · 暖烘烘地蜷成毛茸茸一团呼噜大睡中 🐾🔥</title>
+
+                      {/* 1. Floor Drop Ambient & Contact Shadows (地毯上温暖惬意的多层柔和接触投影) */}
+                      <ellipse cx="1" cy="7.2" rx="16.5" ry="7.2" fill="#2d1c10" opacity="0.32" filter="url(#softShadow)" />
+                      <ellipse cx="-0.5" cy="6.2" rx="12.5" ry="5.2" fill="#180e08" opacity="0.28" />
+                      <ellipse cx="-7.2" cy="5.2" rx="5.5" ry="3.2" fill="#180e08" opacity="0.25" />
+
+                      {/* 2. Curled Sleeping Body with Soothing Breathing Motion (随轻柔呼吸起伏的暖橘猫躯 · 甜甜打盹) */}
+                      <g className="animate-[pulse_3.8s_ease-in-out_infinite] origin-center">
+                        {/* Undercoat Warm Shadow Base (底层深琥珀暖调阴影垫底) */}
+                        <path
+                          d="M-8,1 C-10.5,-5.5 -4.5,-10.5 4,-9.5 C11,-8.5 14,-2 13.2,4.8 C12,8.8 3,9.5 -2.5,8.5 C-6.8,7.8 -9,5 -8,1 Z"
+                          fill="#b45309"
+                          opacity="0.38"
+                        />
+
+                        {/* Main Ginger Amber Coat Body (主身体：饱满圆润的暖焦糖橙色) */}
+                        <path
+                          d="M-7.5,0.5 C-10,-5.2 -4,-9.8 4,-9 C10.8,-8.2 13.5,-1.8 12.8,4.2 C11.6,8.2 2.8,8.8 -2.5,7.8 C-6.5,7.2 -8.5,4.5 -7.5,0.5 Z"
+                          fill="#d97706"
+                          stroke="#b45309"
+                          strokeWidth="0.4"
+                        />
+                        {/* Upper Warm Golden Fluff (背脊与肋侧温润暖金渐变绒毛层) */}
+                        <path
+                          d="M-7,0 C-9.5,-5.2 -3.8,-9.4 3.8,-8.6 C10.2,-7.8 12.8,-1.8 12.2,3.8 C11,7.6 2.5,8.2 -2.2,7.4 C-6.2,6.8 -8,4 -7,0 Z"
+                          fill="#f59e0b"
+                        />
+
+                        {/* Hearth Fire Rim Highlight (迎着铸铁壁炉跳跃火光的背脊柔金高光) */}
+                        <path
+                          d="M-5,-4 C-3.5,-8.8 2,-9.2 7,-7.8 C10.5,-6.8 12.2,-3.5 12,-0.5 C10.5,-3.8 6.5,-7.2 1.5,-7 C-1.8,-6.8 -3.8,-5.5 -5,-4 Z"
+                          fill="#fde047"
+                          opacity="0.65"
+                        />
+
+                        {/* 3. Iconic Tabby Mackerel Stripes across Curled Back (背部与侧肋标志性深栗红虎斑纹) */}
+                        {/* 斑纹1：颈肩侧暖栗色条纹 */}
+                        <path
+                          d="M-3,-8 C-1.8,-5.2 -2,-3 -3,-1.2 C-2,-1.2 -0.8,-3.2 -0.2,-5.8 C-0.8,-7.2 -1.8,-8 -3,-8 Z"
+                          fill="#9a3412"
+                        />
+                        {/* 斑纹2：脊背中段主弧形虎斑 */}
+                        <path
+                          d="M1,-9 C2.8,-5.8 2.2,-2.8 0.8,0 C2,0 3.8,-2.8 3.8,-6.5 C3.2,-8.2 2.2,-9 1,-9 Z"
+                          fill="#9a3412"
+                        />
+                        {/* 斑纹3：后腰弧形虎斑 */}
+                        <path
+                          d="M5.2,-8.2 C7.2,-5.2 7,-2 6,1.2 C7.2,1.2 8.6,-2 7.8,-5.8 C7,-7.2 6,-8.2 5.2,-8.2 Z"
+                          fill="#9a3412"
+                        />
+                        {/* 斑纹4：丰满圆臀后胯虎斑 */}
+                        <path
+                          d="M9.5,-6.2 C11.5,-3.2 12,0.8 10.8,3.8 C11.8,2.8 12.8,-0.8 11.8,-4.2 C11,-5.5 10.2,-6.2 9.5,-6.2 Z"
+                          fill="#9a3412"
+                        />
+                        {/* 斑纹5：后大腿蜷曲纹理 */}
+                        <path
+                          d="M8.2,1.8 C10.2,3.5 10.8,5.2 9.8,6.8 C10.8,5.5 10.8,3.8 9.5,2.2 Z"
+                          fill="#9a3412"
+                        />
+
+                        {/* 4. Fluffy Striped Tail with Soft White Tip (顺着身体优雅环绕的毛茸茸环纹小尾巴与白尾尖) */}
+                        <path
+                          d="M12.2,2.5 C15.5,5.2 14.2,8.8 9.5,9.5 C4.8,10.2 0.2,9.5 -3.5,8.2 C-4.8,7.8 -5,6.6 -3.8,6.2 C-0.6,7.4 4.2,8 8.8,7.6 C12.5,7.2 13.5,4.8 11.2,2 Z"
+                          fill="#f59e0b"
+                          stroke="#d97706"
+                          strokeWidth="0.35"
+                        />
+                        {/* 尾巴环纹1 */}
+                        <path d="M12.8,4.2 C13.5,5.2 13,6.2 11.8,6.8 C12.5,6 12.8,5 12.8,4.2 Z" fill="#9a3412" />
+                        {/* 尾巴环纹2 */}
+                        <path d="M9.5,7.2 C9,8.2 7.8,8.8 6.8,8.9 C7.8,8.6 8.6,8 9.5,7.2 Z" fill="#9a3412" />
+                        {/* 尾巴环纹3 */}
+                        <path d="M5.5,7.6 C4.8,8.4 3.8,8.9 2.8,9 C3.6,8.7 4.6,8.2 5.5,7.6 Z" fill="#9a3412" />
+                        {/* 尾巴环纹4 */}
+                        <path d="M1.5,7.8 C0.8,8.5 -0.2,8.8 -1.2,8.9 C-0.4,8.6 0.6,8.2 1.5,7.8 Z" fill="#9a3412" />
+                        {/* 纯白毛茸茸小尾尖 */}
+                        <path d="M-3.5,8.2 C-4.8,7.8 -5,6.6 -3.8,6.2 C-2.4,6.7 -1.2,7.2 -0.4,7.4 C-1.5,7.8 -2.4,8.1 -3.5,8.2 Z" fill="#fffdfa" />
+                      </g>
+
+                      {/* 5. Sweet Sleeping Chubby Head & Facial Details (甜美侧卧打盹的圆圆橘猫头、粉红耳窝与精致虎斑) */}
+                      <g id="orange-kitten-head">
+                        {/* Round Golden Head (圆润暖橙大脑袋) */}
+                        <ellipse cx="-7.2" cy="-2.2" rx="6.2" ry="5.6" fill="#f59e0b" stroke="#d97706" strokeWidth="0.35" />
+
+                        {/* Head Rim Light (额顶炉火暖光) */}
+                        <path d="M-11.5,-4.8 C-9.5,-7.5 -5.2,-7.5 -3.2,-4.5 C-4.2,-6.2 -7.8,-7 -10.2,-5 Z" fill="#fde047" opacity="0.6" />
+
+                        {/* Chubby Cheek Fur Tufts (软乎乎的圆脸颊绒毛轮廓) */}
+                        <path d="M-13.2,-1.2 C-14.5,-0.2 -14,1.5 -12.8,2.2 C-11.8,2.5 -11.2,1.8 -11.5,0.8 Z" fill="#f59e0b" />
+                        <path d="M-13.5,0.5 C-14.5,1.2 -14,2.4 -13,2.8 C-12,3 -11.8,2.2 -12.2,1.5 Z" fill="#fffdfa" />
+
+                        {/* Soft Creamy-White Muzzle & Bib (下巴与胸口奶白色的软萌白毛肚肚) */}
+                        <ellipse cx="-7.2" cy="0.6" rx="4.5" ry="3.0" fill="#fffdfa" stroke="#ece5db" strokeWidth="0.25" />
+                        <path d="M-10.2,1.2 C-10.2,3.8 -4.2,3.8 -4.2,1.2 C-5.5,2.2 -8.8,2.2 -10.2,1.2 Z" fill="#fffdfa" />
+
+                        {/* Pointed Triangular Ears with Soft Pink Flesh & Fluff (粉嫩耳窝与耳内白软毛) */}
+                        {/* 左耳 */}
+                        <polygon points="-12.8,-3.8 -11.5,-9.6 -7.8,-5.8" fill="#ea580c" stroke="#c2410c" strokeWidth="0.35" strokeLinejoin="round" />
+                        <polygon points="-12.0,-4.2 -11.0,-8.6 -8.4,-6.2" fill="#fbcfe8" />
+                        <path d="M-11.4,-5.2 Q-10.0,-7.0 -8.8,-5.8" stroke="#ffffff" strokeWidth="0.6" strokeLinecap="round" fill="none" />
+                        {/* 右耳 */}
+                        <polygon points="-7.0,-6.5 -3.6,-10.0 -2.0,-4.0" fill="#ea580c" stroke="#c2410c" strokeWidth="0.35" strokeLinejoin="round" />
+                        <polygon points="-6.4,-6.2 -3.8,-8.9 -2.6,-4.5" fill="#fbcfe8" />
+                        <path d="M-6.0,-5.8 Q-4.2,-7.2 -3.0,-5.5" stroke="#ffffff" strokeWidth="0.6" strokeLinecap="round" fill="none" />
+
+                        {/* Classic Tabby "M" Forehead Pattern (额头经典橘猫 M 型深色虎斑纹) */}
+                        <path d="M-9.6,-5.6 L-8.6,-3.2 L-7.2,-4.8 L-5.8,-3.2 L-4.8,-5.6" stroke="#9a3412" strokeWidth="0.65" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        <path d="M-7.2,-6.0 L-7.2,-4.9" stroke="#9a3412" strokeWidth="0.6" strokeLinecap="round" />
+                        <path d="M-10.5,-4.0 Q-9.5,-3.5 -9.0,-2.5" stroke="#9a3412" strokeWidth="0.5" strokeLinecap="round" fill="none" />
+                        <path d="M-3.8,-4.0 Q-4.8,-3.5 -5.3,-2.5" stroke="#9a3412" strokeWidth="0.5" strokeLinecap="round" fill="none" />
+
+                        {/* Peaceful Happy Curved Slit Sleeping Eyes (安睡惬意满足的弯弯笑眼缝 ^ ^) */}
+                        <path d="M-10.2,-1.8 Q-8.8,-0.7 -7.5,-1.8" stroke="#451a03" strokeWidth="0.75" strokeLinecap="round" fill="none" />
+                        <path d="M-6.8,-1.8 Q-5.4,-0.7 -4.0,-1.8" stroke="#451a03" strokeWidth="0.75" strokeLinecap="round" fill="none" />
+                        <path d="M-10.4,-1.6 L-11.0,-1.2" stroke="#451a03" strokeWidth="0.5" strokeLinecap="round" />
+                        <path d="M-3.8,-1.6 L-3.2,-1.2" stroke="#451a03" strokeWidth="0.5" strokeLinecap="round" />
+
+                        {/* Rosy Peach Cheeks Blush (两颊微醺粉嫩害羞腮红) */}
+                        <ellipse cx="-10.5" cy="0.1" rx="1.6" ry="1.0" fill="#fca5a5" opacity="0.5" />
+                        <ellipse cx="-3.8" cy="0.1" rx="1.6" ry="1.0" fill="#fca5a5" opacity="0.5" />
+
+                        {/* Tiny Coral Pink Nose & Gentle Muzzle Smile (小巧珊瑚粉三角鼻头与软萌三瓣嘴) */}
+                        <polygon points="-7.6,-0.3 -6.8,-0.3 -7.2,0.3" fill="#fb7185" />
+                        <path d="M-8.0,0.7 Q-7.2,1.2 -7.2,0.4 Q-7.2,1.2 -6.4,0.7" stroke="#78350f" strokeWidth="0.55" fill="none" strokeLinecap="round" />
+
+                        {/* Delicate Pure White Whiskers (纤细优雅纯白小胡须) */}
+                        <path d="M-10.5,0.1 Q-13.0,-0.1 -15.5,-0.7" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
+                        <path d="M-10.5,0.7 Q-13.2,0.9 -15.2,1.6" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
+                        <path d="M-10.3,1.3 Q-12.8,1.9 -14.5,2.9" stroke="#ffffff" strokeWidth="0.4" strokeLinecap="round" opacity="0.75" fill="none" />
+                        <path d="M-4.2,0.1 Q-1.8,-0.1 0.8,-0.7" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
+                        <path d="M-4.2,0.7 Q-1.5,0.9 0.5,1.6" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
+                        <path d="M-4.4,1.3 Q-1.9,1.9 -0.2,2.9" stroke="#ffffff" strokeWidth="0.4" strokeLinecap="round" opacity="0.75" fill="none" />
+                      </g>
+
+                      {/* 6. Adorable White "Mittens" Front Paws (揣在下巴前的软糯白手套肉肉爪爪 · 隐约可见粉嫩小肉垫) */}
+                      <g id="kitten-white-paws">
+                        {/* 左前爪 (白糯糯山竹肉爪) */}
+                        <ellipse cx="-4.5" cy="4.5" rx="2.8" ry="1.9" fill="#ffffff" stroke="#e5ded2" strokeWidth="0.35" />
+                        <ellipse cx="-4.5" cy="4.5" rx="2.4" ry="1.5" fill="#fffdfa" />
+                        {/* 粉嫩小趾肉垫 */}
+                        <circle cx="-5.5" cy="4.9" r="0.45" fill="#fbcfe8" opacity="0.85" />
+                        <circle cx="-4.5" cy="5.1" r="0.45" fill="#fbcfe8" opacity="0.85" />
+                        <circle cx="-3.5" cy="4.9" r="0.45" fill="#fbcfe8" opacity="0.85" />
+
+                        {/* 右前爪 (乖巧垫在下方) */}
+                        <ellipse cx="-8.2" cy="4.0" rx="2.6" ry="1.8" fill="#ffffff" stroke="#e5ded2" strokeWidth="0.35" />
+                        <ellipse cx="-8.2" cy="4.0" rx="2.2" ry="1.4" fill="#fffdfa" />
+                        <circle cx="-8.8" cy="4.4" r="0.4" fill="#fbcfe8" opacity="0.85" />
+                        <circle cx="-8.0" cy="4.6" r="0.4" fill="#fbcfe8" opacity="0.85" />
+                        <circle cx="-7.2" cy="4.4" r="0.4" fill="#fbcfe8" opacity="0.85" />
+                      </g>
+
+                      {/* 7. Cozy Dreamland Sparks & Sleeping zZz (梦乡中轻柔升腾的温暖气泡与打盹符号 💤✨) */}
+                      <g id="kitten-dream-stardust" className="pointer-events-none">
+                        {/* 柔光睡眠泡泡 1 */}
+                        <circle cx="-3.2" cy="-9.2" r="1.3" fill="#fed7aa" opacity="0.7" className="animate-[pulse_2.8s_infinite]" />
+                        <circle cx="-3.5" cy="-9.5" r="0.4" fill="#ffffff" opacity="0.9" />
+                        {/* 柔光睡眠泡泡 2 */}
+                        <circle cx="-1.0" cy="-12.5" r="1.8" fill="#fef08a" opacity="0.6" className="animate-[pulse_3.4s_infinite]" />
+                        <circle cx="-1.3" cy="-12.9" r="0.5" fill="#ffffff" opacity="0.9" />
+                        {/* 炉边暖金星芒 */}
+                        <polygon
+                          points="4.5,-9.5 4.8,-8.8 5.5,-8.6 4.8,-8.4 4.5,-7.7 4.2,-8.4 3.5,-8.6 4.2,-8.8"
+                          fill="#fef08a"
+                          opacity="0.85"
+                          className="animate-[pulse_2.2s_infinite]"
+                        />
+                        {/* 梦幻打盹小字母 */}
+                        <text x="-1.8" y="-14" fill="#f59e0b" fontSize="3.6" fontFamily="sans-serif" fontWeight="bold" opacity="0.75" className="select-none animate-[pulse_2.5s_infinite]">z</text>
+                        <text x="1.8" y="-17.5" fill="#ea580c" fontSize="4.6" fontFamily="sans-serif" fontWeight="bold" opacity="0.7" className="select-none animate-[pulse_3.2s_infinite]">Z</text>
+                      </g>
+
+                      {/* 8. 2.5D 交互把手 (支持在 Gizmo Inspector 中微调小猫位置) */}
+                      {effectiveGizmoId === 'hearth-cat' && (
+                        <IsoGizmo
+                          pos={{ x: 0, y: 6 }}
+                          displayCoords={{ x: catScreenX, y: catScreenY }}
+                          fixedW={0}
+                          label="炉边小暖猫"
+                          onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
+                          onDragEnd={() => onDragGizmoEnd?.()}
+                        />
+                      )}
+                    </g>
+                  );
+                })()}
               </g>
 
               {/* 2.4 2.5D SOLID WOOD ELEVATED LOW TEA TABLE (日式原木圆矮茶几：重构真实三维离地高度、外八实木腿、桌底通透结构与标准圆柱厚度立面) */}
@@ -814,46 +1113,44 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 <path d="M-17,-6 C-9,-9.5 9,-9.5 17,-6" stroke="#b07e4e" strokeWidth="0.6" fill="none" opacity="0.3" />
                 <path d="M-13,-4 C-6,-7 6,-7 13,-4" stroke="#b07e4e" strokeWidth="0.5" fill="none" opacity="0.25" />
 
-                {/* 6. Tea Service Set (立体木茶盘、手作青瓷急须茶壶、白瓷品茗杯与茶点) */}
+                {/* 6. Tea Service Set (精准轴测椭圆长短轴比、立体实木茶盘、青瓷急须壶、品茗杯与茶点) */}
                 <g id="tea-set">
-                  {/* Solid Walnut Tea Tray (实木小茶盘底托：赋予茶具有序沉稳的陈设感) */}
+                  {/* Tea Tray Contact Ambient Occlusion Shadow on Wooden Tabletop (茶盘与茶桌的微暗贴合阴影，彻底消除悬浮) */}
+                  <ellipse cx="-2" cy="-7.0" rx="14.8" ry="6.2" fill="#2e1a0b" opacity="0.35" filter="url(#softShadow)" />
+
+                  {/* Solid Walnut Tea Tray (实木小茶盘底托：严格锁定等轴椭圆比，消除俯视畸变) */}
                   <ellipse cx="-2" cy="-7.5" rx="14" ry="5.8" fill="#4d3018" stroke="#361f0e" strokeWidth="0.5" />
-                  <ellipse cx="-2" cy="-8" rx="13.2" ry="5.3" fill="#694324" />
+                  <ellipse cx="-2" cy="-8.0" rx="13.2" ry="5.4" fill="#694324" />
                   <path d="M-14,-7.8 A 14 5.8 0 0 0 10,-7.8" stroke="#8a5c36" strokeWidth="0.6" fill="none" opacity="0.55" />
 
-                  {/* Kyusu Teapot (立体青瓷侧把提梁急须茶壶) */}
-                  {/* Teapot Drop Shadow */}
-                  <ellipse cx="-6" cy="-8" rx="5" ry="2.2" fill="#2d1b0d" opacity="0.35" />
-                  {/* Teapot Body Cylinder */}
-                  <path d="M-10.8,-10.5 L-10.8,-8.5 A 4.8 2.2 0 0 0 -1.2,-8.5 L-1.2,-10.5 A 4.8 2.2 0 0 1 -10.8,-10.5 Z" fill="#324c31" />
-                  <ellipse cx="-6" cy="-10.5" rx="4.8" ry="2.1" fill="#466944" stroke="#5d8a5a" strokeWidth="0.5" />
-                  {/* Pot Lid & Amber Knob */}
-                  <ellipse cx="-6" cy="-11.2" rx="3" ry="1.3" fill="#558053" />
-                  <circle cx="-6" cy="-12" r="0.9" fill="#f59e0b" />
-                  {/* Curved Spout */}
+                  {/* Kyusu Teapot (立体青瓷侧把急须茶壶：精准轴测长短轴) */}
+                  <ellipse cx="-6" cy="-8.2" rx="4.8" ry="2.0" fill="#2d1b0d" opacity="0.35" />
+                  <path d="M-10.8,-10.5 L-10.8,-8.5 A 4.8 2.0 0 0 0 -1.2,-8.5 L-1.2,-10.5 A 4.8 2.0 0 1 -10.8,-10.5 Z" fill="#324c31" />
+                  <ellipse cx="-6" cy="-10.5" rx="4.8" ry="2.0" fill="#466944" stroke="#5d8a5a" strokeWidth="0.5" />
+                  <ellipse cx="-6" cy="-11.2" rx="3" ry="1.2" fill="#558053" />
+                  <circle cx="-6" cy="-12" r="0.85" fill="#f59e0b" />
                   <path d="M-10.8,-9.5 Q-13.5,-10.5 -13.5,-12" stroke="#466944" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-                  {/* Bamboo Overhead Handle */}
                   <path d="M-9.5,-10.5 C-9.5,-17 -2.5,-17 -2.5,-10.5" stroke="#b45309" strokeWidth="1.3" fill="none" />
-                  {/* Rising Tea Steam (袅袅茶香水汽) */}
-                  <path d="M-6,-14 C-7.5,-18 -4.5,-21 -6.5,-25" stroke="#ffffff" strokeWidth="1.1" strokeLinecap="round" fill="none" opacity="0.75" className="animate-[pulse_1.8s_infinite]" />
+                  {/* Rising Tea Steam from Kyusu Spout (自急须壶嘴口袅袅升起) */}
+                  <path d="M-13.5,-13.0 C-15.5,-16.5 -13.5,-19.5 -15.0,-23.5" stroke="#ffffff" strokeWidth="1.0" strokeLinecap="round" fill="none" opacity="0.75" className="animate-[pulse_1.8s_infinite]" />
 
-                  {/* Ceramic Teacups (两只具有高度立面的白瓷品茗杯与碧绿茶汤) */}
+                  {/* Ceramic Teacups (白瓷品茗杯：底面与杯口严格统一为 0.42 轴测扁平椭圆) */}
                   {/* Cup 1 (Host Cup) */}
-                  <ellipse cx="2.2" cy="-7.5" rx="2.5" ry="1.2" fill="#2d1b0d" opacity="0.3" />
-                  <path d="M0,-9.2 L0,-7.8 A 2.2 1 0 0 0 4.4,-7.8 L4.4,-9.2 A 2.2 1 0 0 1 0,-9.2 Z" fill="#dedad2" />
-                  <ellipse cx="2.2" cy="-9.2" rx="2.2" ry="1" fill="#fcfbf7" stroke="#e2ded4" strokeWidth="0.4" />
-                  <ellipse cx="2.2" cy="-9.4" rx="1.6" ry="0.7" fill="#4d7c0f" />
+                  <ellipse cx="2.2" cy="-7.6" rx="2.4" ry="1.0" fill="#2d1b0d" opacity="0.32" />
+                  <path d="M-0.2,-9.2 L-0.2,-7.8 A 2.4 1.0 0 0 0 4.6,-7.8 L4.6,-9.2 A 2.4 1.0 0 1 -0.2,-9.2 Z" fill="#dedad2" />
+                  <ellipse cx="2.2" cy="-9.2" rx="2.4" ry="1.0" fill="#fcfbf7" stroke="#e2ded4" strokeWidth="0.4" />
+                  <ellipse cx="2.2" cy="-9.4" rx="1.8" ry="0.75" fill="#4d7c0f" />
 
-                  {/* Cup 2 (Guest Cup, facing Yu) */}
-                  <ellipse cx="7" cy="-4.5" rx="2.5" ry="1.2" fill="#2d1b0d" opacity="0.3" />
-                  <path d="M4.8,-6.2 L4.8,-4.8 A 2.2 1 0 0 0 9.2,-4.8 L9.2,-6.2 A 2.2 1 0 0 1 4.8,-6.2 Z" fill="#dedad2" />
-                  <ellipse cx="7" cy="-6.2" rx="2.2" ry="1" fill="#fcfbf7" stroke="#e2ded4" strokeWidth="0.4" />
-                  <ellipse cx="7" cy="-6.4" rx="1.6" ry="0.7" fill="#4d7c0f" />
+                  {/* Cup 2 (Guest Cup) */}
+                  <ellipse cx="7.0" cy="-4.8" rx="2.4" ry="1.0" fill="#2d1b0d" opacity="0.32" />
+                  <path d="M4.6,-6.4 L4.6,-5.0 A 2.4 1.0 0 0 0 9.4,-5.0 L9.4,-6.4 A 2.4 1.0 0 1 4.6,-6.4 Z" fill="#dedad2" />
+                  <ellipse cx="7.0" cy="-6.4" rx="2.4" ry="1.0" fill="#fcfbf7" stroke="#e2ded4" strokeWidth="0.4" />
+                  <ellipse cx="7.0" cy="-6.6" rx="1.8" ry="0.75" fill="#4d7c0f" />
 
-                  {/* Wagashi Sweets Plate (和果子茶点小碟) */}
-                  <ellipse cx="-2" cy="-3" rx="3.6" ry="1.6" fill="#f5f0e8" stroke="#dbd3c5" strokeWidth="0.5" />
-                  <ellipse cx="-2.8" cy="-3.3" rx="1.2" ry="0.7" fill="#f472b6" />
-                  <ellipse cx="-1.1" cy="-3.1" rx="1.1" ry="0.7" fill="#84cc16" />
+                  {/* Wagashi Sweets Plate (和果子茶点小碟：轴测比校准) */}
+                  <ellipse cx="-2" cy="-3.0" rx="3.6" ry="1.5" fill="#f5f0e8" stroke="#dbd3c5" strokeWidth="0.5" />
+                  <ellipse cx="-2.8" cy="-3.3" rx="1.2" ry="0.6" fill="#f472b6" />
+                  <ellipse cx="-1.1" cy="-3.1" rx="1.1" ry="0.6" fill="#84cc16" />
                 </g>
 
                 {/* 2.5D 交互把手 (三维轴向拖拽) */}
@@ -1184,14 +1481,32 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 onMouseLeave={() => setHoveredObject(null)}
                 className="cursor-pointer group/sofa"
               >
-                {/* 1. Floor Shadow & Braided Linen Oval Rug (精致小巧的编织棉麻圆毯) */}
-                <ellipse cx="0" cy="12" rx="18" ry="8" fill="#1b120c" opacity="0.28" filter="url(#softShadow)" />
-                <ellipse cx="0" cy="11" rx="21" ry="10" fill="#f3ede3" stroke="#ded4c5" strokeWidth="0.8" />
-                <ellipse cx="0" cy="11" rx="18" ry="8.5" fill="none" stroke="#cfc1af" strokeWidth="0.6" strokeDasharray="2.5 2.5" />
-                {/* Wool fringe tassels */}
-                {[-16, -10, -4, 2, 8, 14].map((tx) => (
-                  <line key={tx} x1={tx} y1="19" x2={tx + 1.5} y2="21.5" stroke="#cfc1af" strokeWidth="0.8" strokeLinecap="round" />
-                ))}
+                {/* 1. Floor Shadow & Hand-Braided Jute & Wool Oval Rug (复古粗纺双色麻毛编织圆毯：厚重扎实，连续锁边与柔和编织毛边) */}
+                <ellipse cx="0" cy="12" rx="19" ry="8.5" fill="#1b120c" opacity="0.28" filter="url(#softShadow)" />
+                {/* 暖燕麦黄麻厚实底毯 */}
+                <ellipse cx="0" cy="11" rx="21" ry="9.8" fill="#d9cbba" stroke="#b5a18a" strokeWidth="0.9" />
+                {/* 外缘连续细腻手工锁边滚边 (Continuous Artisan Overlock Stitch Band，消除孤零牙签碎刺) */}
+                <ellipse cx="0" cy="11" rx="20.2" ry="9.2" fill="none" stroke="#9e8469" strokeWidth="0.8" strokeDasharray="2 1.5" opacity="0.85" />
+                {/* 焦糖粗纺同心螺旋经纬压缝线 */}
+                <ellipse cx="0" cy="11" rx="16.5" ry="7.6" fill="none" stroke="#876747" strokeWidth="0.75" strokeDasharray="3 2" opacity="0.75" />
+                <ellipse cx="0" cy="11" rx="12.5" ry="5.6" fill="none" stroke="#6e5033" strokeWidth="0.65" strokeDasharray="2.5 1.8" opacity="0.65" />
+                {/* 前缘平整细腻的微织羊毛贴边小裙带 (Dense Soft Woven Wool Hem Accent) */}
+                <path
+                  d="M -16,17.2 Q 0,21.8 16,17.2"
+                  stroke="#ab9680"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  fill="none"
+                  opacity="0.8"
+                />
+                <path
+                  d="M -14,18.0 Q 0,22.4 14,18.0"
+                  stroke="#7c634c"
+                  strokeWidth="0.5"
+                  strokeDasharray="1.5 1.5"
+                  fill="none"
+                  opacity="0.65"
+                />
 
                 {/* 2. Main Beanbag Body with Interactive Squish Spring (温润治愈焦糖南瓜色无骨懒人沙发) */}
                 <g className={sofaSquish ? 'transition-transform duration-300 scale-95 origin-bottom' : 'transition-transform duration-300 scale-100 origin-bottom'}>
@@ -1369,8 +1684,21 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   <circle cx="7" cy="0" r="5.5" fill="#b0783d" />
                   <polygon points="9,-4 11,-8 13,-3" fill="#8f5d2b" />
                   <ellipse cx="-7" cy="0" rx="3" ry="2.2" fill="#fff" />
-                  <text x="11" y="-6" fill="#fef3c7" fontSize="9" fontWeight="bold" className="animate-bounce">z</text>
-                  <text x="17" y="-12" fill="#fef3c7" fontSize="11" fontWeight="bold" className="animate-pulse">Z</text>
+                  {/* Tranquil Slumber Bubbles (柔美宁静睡眠气泡 · 告别文字一跳一跳) */}
+                  <g className="pointer-events-none" id="shiba-slumber-bubbles">
+                    <g className="animate-sleep-bubble-1">
+                      <circle cx="10" cy="-6" r="2.0" fill="#fef3c7" opacity="0.75" />
+                      <circle cx="9.4" cy="-6.6" r="0.6" fill="#ffffff" opacity="0.9" />
+                    </g>
+                    <g className="animate-sleep-bubble-2">
+                      <circle cx="15" cy="-12" r="2.8" fill="#fed7aa" opacity="0.7" />
+                      <circle cx="14.2" cy="-12.7" r="0.85" fill="#ffffff" opacity="0.9" />
+                    </g>
+                    <g className="animate-sleep-bubble-3">
+                      <circle cx="21" cy="-18" r="3.6" fill="#fde68a" opacity="0.6" />
+                      <circle cx="20.1" cy="-19.0" r="1.1" fill="#ffffff" opacity="0.85" />
+                    </g>
+                  </g>
                 </g>
 
                 {/* 2.5D 交互把手 */}
@@ -1435,7 +1763,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   <path d="M-13,-11 Q0,-19 13,-11 L13,-7 Q0,-15 -13,-7 Z" fill="#694f3b" />
                   <circle cx="-14" cy="-2" r="2.5" fill="#e6b35a" stroke="#876326" strokeWidth="0.5" />
 
-                  {/* 旋转可动投递提示小红旗 (Swinging Red Postal Flag) */}
+                  {/* 旋转可动投递提示小红旗 (Swinging Red Postal Flag: 有信时端正竖起) */}
                   <g
                     style={{
                       transform: unreadMailCount > 0 ? 'rotate(0deg)' : 'rotate(85deg)',
@@ -1443,20 +1771,29 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                       transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
                     }}
                   >
-                    <rect x="12" y="-15" width="3" height="17" rx="1" fill="#c43b2f" />
-                    <polygon points="12,-15 1,-9 12,-3" fill="#e04a3d" />
+                    <rect x="12" y="-16" width="3" height="18" rx="1" fill="#c43b2f" />
+                    <polygon points="12,-16 0,-9.5 12,-3" fill="#e04a3d" />
+                    <circle cx="13.5" cy="-1" r="1.2" fill="#f59e0b" />
                   </g>
 
-                  {/* 悬停微光晕 */}
-                  <ellipse cx="0" cy="8" rx="18" ry="9" fill="rgba(196, 66, 55, 0.2)" className="opacity-0 group-hover/mail:opacity-100 transition-opacity pointer-events-none" />
+                  {/* 门缝微露带火漆封印的微光羊皮纸信角 (Peeked Sealed Letter Corner) */}
+                  {unreadMailCount > 0 && (
+                    <g id="mailbox-peek-letter" transform="translate(-15, -4)">
+                      <polygon points="-3,-5 5,-2 4,3 -4,0" fill="#fefce8" stroke="#ca8a04" strokeWidth="0.4" />
+                      <circle cx="0.5" cy="-1" r="1.2" fill="#dc2626" />
+                    </g>
+                  )}
 
-                  {/* 新信件跳跃状态气泡 */}
+                  {/* 悬停微光晕 */}
+                  <ellipse cx="0" cy="8" rx="18" ry="9" fill="rgba(217, 119, 6, 0.2)" className="opacity-0 group-hover/mail:opacity-100 transition-opacity pointer-events-none" />
+
+                  {/* 前廊真实木信箱上的质朴自然木牌提示 (彻底消除室内刺眼红胶囊) */}
                   {unreadMailCount > 0 && (
                     <g transform="translate(0, -28)">
-                      <g className="animate-bounce">
-                        <rect x="-34" y="-9" width="68" height="18" rx="9" fill="#c43b2f" filter="url(#softShadow)" />
-                        <text x="0" y="3.5" fill="#fff" fontSize="9.5" fontWeight="bold" textAnchor="middle">
-                          📪 新信件 ({unreadMailCount})
+                      <g className="animate-[pulse_2.8s_infinite]">
+                        <rect x="-32" y="-8.5" width="64" height="17" rx="8.5" fill="#2d1c10" stroke="#d97706" strokeWidth="0.8" opacity="0.95" filter="url(#softShadow)" />
+                        <text x="0" y="3.5" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">
+                          📬 新信件 ({unreadMailCount})
                         </text>
                       </g>
                     </g>

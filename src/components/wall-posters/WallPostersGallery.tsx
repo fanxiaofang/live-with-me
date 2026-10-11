@@ -73,11 +73,11 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
 
         {/* ----------------------------------------------------------------------- */}
         {/* 1. 海报 1: 《泳者之心》 (Young Woman and the Sea)                       */}
-        {/* 位置：x = 37 (向左略舒展，呼吸感充裕，距离中间画作适度拉开)            */}
+        {/* 位置：x = 30 (向左舒展，与中央起居和绿植保持平衡)                      */}
         {/* ----------------------------------------------------------------------- */}
         <g {...svgAction('赏析泳者之心海报')}
           id="poster-young-woman"
-          transform="translate(37, 0)"
+          transform="translate(30, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('young-woman');
@@ -167,11 +167,11 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
 
         {/* ----------------------------------------------------------------------- */}
         {/* 2. 海报 2: 《还有明天》 (C'è ancora domani)                             */}
-        {/* 位置：x = 79 (位于居中绿植上方，与叶片自然错落)                          */}
+        {/* 位置：x = 68 (位于居中绿植上方，与叶片自然错落)                          */}
         {/* ----------------------------------------------------------------------- */}
         <g {...svgAction('赏析还有明天海报')}
           id="poster-ancora-domani"
-          transform="translate(79, 0)"
+          transform="translate(68, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('ancora-domani');
@@ -377,11 +377,11 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
 
         {/* ----------------------------------------------------------------------- */}
         {/* 3. 海报 3: 《红辣椒》 (Paprika)                                         */}
-        {/* 位置：x = 121 (向右拉开间距，与书架和绿植错落得宜，毫不逼仄)             */}
+        {/* 位置：x = 106 (向内收拢，远离切口墙缘与内移后的书架)                   */}
         {/* ----------------------------------------------------------------------- */}
         <g {...svgAction('赏析红辣椒海报')}
           id="poster-paprika"
-          transform="translate(121, 0)"
+          transform="translate(106, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('paprika');

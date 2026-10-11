@@ -39,6 +39,7 @@ export type EditableObjectId =
   | 'tea-cushion-south'
   | 'daybed'
   | 'wood-stove'
+  | 'hearth-cat'
   // 5. 林木的花园书房 (Study Group)
   | 'lazy-sofa'
   | 'fiddle-plant'
@@ -202,7 +203,7 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
     name: '原木四层书架 (整体)',
     category: 'bookshelf',
     categoryLabel: '原木书架',
-    screen: { x: 193.0, y: 124.0 },
+    screen: { x: 176.0, y: 119.0 },
     fixedW: 0.0,
   },
   'shelf-vase': {
@@ -325,6 +326,14 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
     category: 'living',
     categoryLabel: '暖炉茶室',
     screen: { x: 0.0, y: 0.0 },
+    fixedW: 0.0,
+  },
+  'hearth-cat': {
+    id: 'hearth-cat',
+    name: '炉边打盹小橘猫 (暖橘虎斑白爪咪)',
+    category: 'living',
+    categoryLabel: '暖炉茶室',
+    screen: { x: -46.0, y: 134.0 },
     fixedW: 0.0,
   },
 
