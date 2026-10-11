@@ -12,349 +12,1006 @@ export interface ObservatoryHavenProps {
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
 }
-function ObservatoryHavenAsset({ presenceSlots, alienPulseEffect, triggerAlienSignal, onSelectPerson, setHoveredObject }: ObservatoryHavenProps) {
-  return <>
-              {/* Massive Cliff Outcrop Drop Shadow casting onto lower slopes */}
-              <ellipse cx="0" cy="52" rx="78" ry="20" fill="#1b231d" opacity="0.35" filter="url(#softShadow)" />
 
+/**
+ * 📐 严格统一的 2.5D 轴测投影体系 (Consistent Axonometric Projection)
+ * 与整个 Live With Me 场景 (TimberFlooring, CottageFoundation, WoodenCabinHaven)
+ * 严格共享相同的地面视觉斜率与轴测空间向量：
+ *
+ * - u 轴：长边轴，向右下方延伸 (dx = +1, dy = +SLOPE)
+ * - v 轴：进深轴，向左下方延伸 (dx = -1, dy = +SLOPE)
+ * - z 轴：垂直高度轴，垂直向上 (dx = 0, dy = -1)
+ */
+const SLOPE = 0.283088; // 统一地面斜率常数 (约 15.8°)
+const GROUND_Y = 48; // 地面接触基准高度
+const DECK_Z = 66; // 观测平台离地高度 (高架架空)
+const DECK_THICKNESS = 5; // 承重钢梁边框厚度
 
-              {/* ========================================================================= */}
-              {/* A. ENGINEERED STRUCTURAL STAGING PYLONS & GANTRY LEGS (人工钢构桁架基座)   */}
-              {/* ========================================================================= */}
-              <g id="staging-deck-structural-pylons">
-                {/* Concrete / Ashlar Stone Anchorage Pier Footings (4个稳固的混凝土锚固基座) */}
-                <rect x="-66" y="44" width="16" height="12" rx="2" fill="#505a52" stroke="#2d352f" strokeWidth="1" />
-                <polygon points="-66,44 -50,44 -46,38 -62,38" fill="#6a776c" />
-                <rect x="50" y="44" width="16" height="12" rx="2" fill="#465048" stroke="#2d352f" strokeWidth="1" />
-                <polygon points="50,44 66,44 62,38 46,38" fill="#5a665c" />
-                <rect x="-24" y="48" width="14" height="10" rx="2" fill="#4a544c" stroke="#28302a" strokeWidth="1" />
-                <rect x="10" y="48" width="14" height="10" rx="2" fill="#404a42" stroke="#28302a" strokeWidth="1" />
+/**
+ * 3D 轴测点 (u, v, z) -> 2D 屏幕点 (x, y)
+ */
+const pt = (u: number, v: number, z = 0) => ({
+  x: Number((u - v).toFixed(2)),
+  y: Number((GROUND_Y + SLOPE * (u + v) - z).toFixed(2)),
+});
 
-                {/* Heavy Structural Steel Columns (高强度工字钢立柱) */}
-                <line x1="-58" y1="44" x2="-58" y2="24" stroke="#222b24" strokeWidth="5" strokeLinecap="round" />
-                <line x1="-58" y1="44" x2="-58" y2="24" stroke="#48594d" strokeWidth="2.5" strokeLinecap="round" />
+/**
+ * 将若干个 3D 点格式化为 SVG polygon points 字符串
+ */
+const face = (...vertices: [number, number, number][]) =>
+  vertices.map(([u, v, z]) => `${pt(u, v, z).x},${pt(u, v, z).y}`).join(' ');
 
-                <line x1="58" y1="44" x2="58" y2="24" stroke="#222b24" strokeWidth="5" strokeLinecap="round" />
-                <line x1="58" y1="44" x2="58" y2="24" stroke="#48594d" strokeWidth="2.5" strokeLinecap="round" />
+function ObservatoryHavenAsset({
+  presenceSlots,
+  alienPulseEffect,
+  triggerAlienSignal,
+  onSelectPerson,
+  setHoveredObject,
+}: ObservatoryHavenProps) {
+  // 柱网核心半跨距 (Pillar Grid Spacing)
+  const PU = 26;
+  const PV = 26;
 
-                <line x1="-17" y1="48" x2="-17" y2="25" stroke="#1f2721" strokeWidth="4.5" strokeLinecap="round" />
-                <line x1="17" y1="48" x2="17" y2="25" stroke="#1f2721" strokeWidth="4.5" strokeLinecap="round" />
+  // 甲板半长与半宽 (Deck Half Extents)
+  const DU = 35;
+  const DV = 35;
 
-                {/* Diagonal Steel Lattice Cross Bracing (桁架交叉斜撑与节点螺栓) */}
-                <line x1="-58" y1="40" x2="-17" y2="26" stroke="#334036" strokeWidth="2.2" />
-                <line x1="-17" y1="44" x2="-58" y2="26" stroke="#334036" strokeWidth="2.2" />
-                <line x1="58" y1="40" x2="17" y2="26" stroke="#334036" strokeWidth="2.2" />
-                <line x1="17" y1="44" x2="58" y2="26" stroke="#334036" strokeWidth="2.2" />
-                <line x1="-17" y1="44" x2="17" y2="26" stroke="#334036" strokeWidth="2.2" />
-                <line x1="17" y1="44" x2="-17" y2="26" stroke="#334036" strokeWidth="2.2" />
+  // 检修直梯在左侧边缘 (u = -DU) 的进深范围
+  const LADDER_V1 = 8;
+  const LADDER_V2 = 18;
 
-                {/* Access Ladder on the Left (金属检修爬梯) */}
-                <line x1="-66" y1="48" x2="-66" y2="22" stroke="#3d4c41" strokeWidth="1.8" />
-                <line x1="-61" y1="48" x2="-61" y2="22" stroke="#3d4c41" strokeWidth="1.8" />
-                {[26, 31, 36, 41, 46].map((ly) => (
-                  <line key={`ld-${ly}`} x1="-66" y1={ly} x2="-61" y2={ly} stroke="#738c7a" strokeWidth="1.2" />
-                ))}
-              </g>
+  return (
+    <>
+      {/* ========================================================================= */}
+      {/* 0. GROUND CONTACT & OCCLUSION SHADOWS (地面柔和阴影与接触遮蔽)            */}
+      {/* ========================================================================= */}
+      <g id="observatory-ground-shadows">
+        {/* 高架平台投射在草地上的整体柔和阴影 */}
+        <ellipse cx="0" cy="48" rx="74" ry="22" fill="#17221a" opacity="0.42" filter="url(#softShadow)" />
+        <ellipse cx="0" cy="48" rx="60" ry="16" fill="#121a14" opacity="0.25" />
 
-              {/* ========================================================================= */}
-              {/* B. CANTILEVERED OBSERVATION PLATFORM DECK (悬挑人工观测平台台面)           */}
-              {/* ========================================================================= */}
-              <g id="cantilevered-observation-deck">
-                {/* Deck Plinth Edge (深色防滑钢构收边大梁) */}
-                <polygon points="-75,20 0,6 75,20 0,34" fill="#2d3730" stroke="#1a221c" strokeWidth="1.2" />
-                <polygon points="-75,20 0,34 0,40 -75,26" fill="#1e2621" />
-                <polygon points="0,34 75,20 75,26 0,40" fill="#252f28" />
+        {/* 4 处支柱立足点的局部接触加深阴影 */}
+        <ellipse cx={pt(-PU, -PV, 0).x} cy={pt(-PU, -PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
+        <ellipse cx={pt(-PU, PV, 0).x} cy={pt(-PU, PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
+        <ellipse cx={pt(PU, -PV, 0).x} cy={pt(PU, -PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
+        <ellipse cx={pt(PU, PV, 0).x} cy={pt(PU, PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
+      </g>
 
-                {/* Yellow & Black Industrial Warning Strip on Platform Edge (安全警示斜纹) */}
-                <polygon points="-73,21 0,34 0,36 -73,23" fill="#eab308" opacity="0.8" />
-                <polygon points="0,34 73,21 73,23 0,36" fill="#ca8a04" opacity="0.8" />
-
-                {/* Platform Floor Surface (平整宽敞的网纹防滑钢板台面) */}
-                <polygon points="-72,19 0,7 72,19 0,31" fill="#4d5a50" />
-                <polygon points="-70,18.5 0,7.5 70,18.5 0,29.5" fill="#5a685e" />
-
-                {/* Isometric Floor Panel Seams (等轴测分块缝隙) */}
-                <line x1="-36" y1="13" x2="-10" y2="24" stroke="#38443b" strokeWidth="1.2" opacity="0.6" />
-                <line x1="10" y1="24" x2="36" y2="13" stroke="#38443b" strokeWidth="1.2" opacity="0.6" />
-                <line x1="0" y1="8" x2="0" y2="30" stroke="#38443b" strokeWidth="1.2" opacity="0.5" />
-
-                {/* Heavy Safety Handrail with Corner Caution Lanterns (工业防护栏杆与角位航标灯) */}
-                <g id="deck-perimeter-handrail">
-                  <line x1="-70" y1="14" x2="0" y2="2" stroke="#252f28" strokeWidth="2.2" />
-                  <line x1="0" y1="2" x2="70" y2="14" stroke="#252f28" strokeWidth="2.2" />
-                  <line x1="-70" y1="9" x2="0" y2="-3" stroke="#36433a" strokeWidth="1.6" />
-                  <line x1="0" y1="-3" x2="70" y2="9" stroke="#36433a" strokeWidth="1.6" />
-
-                  {/* Handrail Vertical Stanchions (立柱) */}
-                  {[-68, -48, -28, -8, 8, 28, 48, 68].map((sx) => {
-                    const syBase = 7 + Math.abs(sx) * 12 / 70;
-                    const syTop = syBase - 10;
-                    return (
-                      <g key={`st-${sx}`}>
-                        <line x1={sx} y1={syBase} x2={sx} y2={syTop} stroke="#252f28" strokeWidth="2.0" strokeLinecap="round" />
-                        <circle cx={sx} cy={syTop} r="1.3" fill="#ca8a04" />
-                      </g>
-                    );
-                  })}
-
-                  {/* Green & Red Perimeter Navigation Marker LEDs (平台角位安全指示信号灯) */}
-                  <circle cx="-70" cy="8" r="2.2" fill="#22c55e" className="animate-pulse" />
-                  <circle cx="70" cy="8" r="2.2" fill="#ef4444" className="animate-pulse" />
-                </g>
-              </g>
-
-              {/* 3. RADIO TELEMETRY CONTROL CABIN & POWER STATION (山巅射电监听工作站/操作机柜室) */}
-              <g id="radio-control-cabin" transform="translate(-40, 2)">
-                {/* Cabin Shadow on Deck */}
-                <polygon points="-6,22 28,14 32,24 0,32" fill="#202922" opacity="0.4" />
-
-                {/* Cabin Body Walls */}
-                <polygon points="-8,4 18,-4 18,22 -8,30" fill="#38453d" stroke="#252e28" strokeWidth="1.2" />
-                <polygon points="18,-4 28,-1 28,25 18,22" fill="#29332c" />
-
-                {/* Corrugated Texture / Panel Seams */}
-                <line x1="-8" y1="12" x2="18" y2="4" stroke="#47574d" strokeWidth="0.8" />
-                <line x1="-8" y1="20" x2="18" y2="12" stroke="#47574d" strokeWidth="0.8" />
-
-                {/* Slanted Alpine Roof with Solar Panel Array */}
-                <polygon points="-10,4 16,-6 30,-2 4,8" fill="#1e293b" stroke="#0f172a" strokeWidth="1" />
-                {/* Solar Cells Grid */}
-                <line x1="-6.5" y1="5" x2="19.5" y2="-5" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
-                <line x1="-0.2" y1="6.8" x2="25.8" y2="-3.2" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
-                <line x1="3" y1="-1" x2="17" y2="3" stroke="#38bdf8" strokeWidth="0.8" opacity="0.7" />
-
-                <g transform="matrix(1 -0.307692 0 1 0 0)">
-                {/* Front Heavy Duty Equipment Door */}
-                <rect x="-4" y="11" width="10" height="16" rx="2" fill="#252d27" stroke="#181f1a" strokeWidth="0.9" />
-                <circle cx="4" cy="19" r="1.2" fill="#fcd34d" />
-
-                {/* Illuminated Monitoring Observation Window (Glowing with phosphor meters) */}
-                <rect x="8" y="5" width="7" height="8" rx="1.5" fill="#064e3b" stroke="#10b981" strokeWidth="0.8" />
-                <line x1="9" y1="9" x2="14" y2="9" stroke="#38ef7d" strokeWidth="1" className="animate-pulse" />
-                <circle cx="10" cy="7" r="0.8" fill="#fcd34d" />
-                <circle cx="13" cy="7" r="0.8" fill="#38ef7d" />
-
-                </g>
-                {/* Tall Communications Beacon Mast atop Cabin Roof */}
-                <line x1="16" y1="-6" x2="16" y2="-28" stroke="#334155" strokeWidth="1.6" />
-                <line x1="13" y1="-22" x2="19" y2="-22" stroke="#475569" strokeWidth="1" />
-                <line x1="14" y1="-16" x2="18" y2="-16" stroke="#475569" strokeWidth="1" />
-                {/* Strobe Warning Light */}
-                <circle cx="16" cy="-28" r="2.2" fill="#ef4444" className="animate-ping" />
-                <circle cx="16" cy="-28" r="1.6" fill="#f87171" />
-
-                {/* Cable Conduit Bridge running to the Radio Dish */}
-                <path d="M26,20 Q36,18 42,22" stroke="#1e293b" strokeWidth="2.5" fill="none" />
-                <path d="M26,22 Q36,20 42,24" stroke="#047857" strokeWidth="1.6" fill="none" />
-              </g>
-
-              {/* 4. GRAND PARABOLIC SETI ALIEN RADIO DISH & LATTICE STEEL TOWER (大口径外星射电抛物面天线塔架) */}
-              <g {...svgAction('捕获外星电波')}
-                id="alien-receiver-assembly"
-                transform="translate(16, 2)"
-                onClick={(e) => {
-                  triggerAlienSignal(e);
-                }}
-                onMouseEnter={(e) => {
-                  e.stopPropagation();
-                  setHoveredObject({ kind: 'entity', id: 'alien-receiver' });
-                }}
-                onMouseLeave={() => setHoveredObject(null)}
-                className="group/dish cursor-pointer"
-              >
-                {/* Base Shadow on Terrace Deck */}
-                <ellipse cx="0" cy="22" rx="26" ry="10" fill="#1b231d" opacity="0.45" filter="url(#softShadow)" />
-
-                {/* Heavy Structural Steel Quad-Pylon Lattice Tower (高架钢桁架塔体) */}
-                <g id="dish-lattice-mast">
-                  {/* Concrete Anchorage Footings */}
-                  <rect x="-18" y="19" width="6" height="4" rx="1" fill="#3f4a42" stroke="#252d27" strokeWidth="0.8" />
-                  <rect x="12" y="19" width="6" height="4" rx="1" fill="#3f4a42" stroke="#252d27" strokeWidth="0.8" />
-                  <rect x="-8" y="14" width="5" height="3" rx="1" fill="#2d352f" />
-                  <rect x="3" y="14" width="5" height="3" rx="1" fill="#2d352f" />
-
-                  {/* Main Steel Truss Legs */}
-                  <line x1="-15" y1="20" x2="-6" y2="-12" stroke="#242c26" strokeWidth="3.2" strokeLinecap="round" />
-                  <line x1="15" y1="20" x2="6" y2="-12" stroke="#242c26" strokeWidth="3.2" strokeLinecap="round" />
-                  <line x1="-6" y1="15" x2="-3" y2="-10" stroke="#333d36" strokeWidth="2.2" />
-                  <line x1="5" y1="15" x2="3" y2="-10" stroke="#333d36" strokeWidth="2.2" />
-
-                  {/* Steel Diagonal Lattice Cross Bracings */}
-                  <line x1="-14" y1="16" x2="5" y2="6" stroke="#3f4d42" strokeWidth="1.6" />
-                  <line x1="14" y1="16" x2="-5" y2="6" stroke="#3f4d42" strokeWidth="1.6" />
-                  <line x1="-10" y1="7" x2="4" y2="-3" stroke="#3f4d42" strokeWidth="1.6" />
-                  <line x1="10" y1="7" x2="-4" y2="-3" stroke="#3f4d42" strokeWidth="1.6" />
-                  <line x1="-6" y1="-2" x2="3" y2="-10" stroke="#3f4d42" strokeWidth="1.4" />
-                  <line x1="6" y1="-2" x2="-3" y2="-10" stroke="#3f4d42" strokeWidth="1.4" />
-
-                  {/* Central Service Maintenance Ladder */}
-                  <line x1="0" y1="18" x2="0" y2="-10" stroke="#48594d" strokeWidth="1.4" />
-                  {[-8, -4, 0, 4, 8, 12, 16].map((ly) => (
-                    <line key={ly} x1="-2.5" y1={ly} x2="2.5" y2={ly} stroke="#48594d" strokeWidth="1" />
-                  ))}
-
-                  {/* Maintenance Circular Walkway Platform with Safety Rail */}
-                  <ellipse cx="0" cy="-12" rx="14" ry="4.5" fill="#3e4d42" stroke="#222b24" strokeWidth="1" />
-                  <ellipse cx="0" cy="-15" rx="13" ry="4" fill="none" stroke="#222b24" strokeWidth="0.9" />
-                  <line x1="-13" y1="-12" x2="-13" y2="-15" stroke="#222b24" strokeWidth="1" />
-                  <line x1="13" y1="-12" x2="13" y2="-15" stroke="#222b24" strokeWidth="1" />
-                  <line x1="0" y1="-7.5" x2="0" y2="-11" stroke="#222b24" strokeWidth="1" />
-
-                  {/* Dual-Axis Motorized Antenna Pedestal & Gimbal Turret */}
-                  <rect x="-6" y="-18" width="12" height="7" rx="2" fill="#2d3730" stroke="#161d18" strokeWidth="1" />
-                  <circle cx="0" cy="-15" r="3" fill="#b09361" />
-                  {/* Heavy Mechanical Counterweight Cylinders */}
-                  <rect x="-12" y="-21" width="5" height="8" rx="1.5" fill="#1f2621" stroke="#141815" strokeWidth="0.8" />
-                  <rect x="7" y="-21" width="5" height="8" rx="1.5" fill="#1f2621" stroke="#141815" strokeWidth="0.8" />
-                </g>
-
-                {/* The reflector has a visible bowl back, an inclined aperture and
-                    a feed displaced along its skyward normal, toward the open meadow. */}
-                <path d="M-5,-15 L-5,-25 L3,-29" stroke="#26372c" strokeWidth="5" fill="none" />
-                <circle cx="-5" cy="-23" r="3.5" fill="#aa8d5c" stroke="#3b432c" strokeWidth="0.8" />
-                <g id="observatory-skyward-dish" transform="translate(0, -29)">
-                  <path d="M-28,8 Q-19,24 -3,23 Q17,21 28,-1 L22,-9 L-20,-8 Z"
-                    fill="#52665a" stroke="#263a2d" strokeWidth="1.2" />
-                  <path d="M-22,12 Q-10,23 4,19 M-5,17 Q11,20 23,4"
-                    fill="none" stroke="#799080" strokeWidth="1" opacity="0.8" />
-                  <ellipse rx="30" ry="18" transform="rotate(-16)" fill="#2a3c2f" stroke="#1d2c21" strokeWidth="1.4" />
-                  <ellipse rx="28" ry="16" transform="rotate(-16)" fill="#ccd9cd" stroke="#809581" strokeWidth="0.8" />
-                  <path d="M-25,3 Q-24,-11 -8,-14 Q6,-18 20,-10" stroke="#edf4e9" strokeWidth="1.7" fill="none" opacity="0.8" />
-                  <g transform="rotate(-16)" fill="none" stroke="#819486" strokeWidth="0.7">
-                    <ellipse rx="20" ry="11.4" />
-                    <ellipse rx="12" ry="6.85" />
-                    <ellipse rx="5" ry="2.85" />
-                    <path d="M-27,0 H27 M0,-15.5 V15.5 M-19,-11 L19,11 M-19,11 L19,-11" />
-                  </g>
-                  {/* Tripod feed supports sit in front of the mesh, not in its plane. */}
-                  <path d="M-25,7 L15,-29 M25,-7 L15,-29 M5,15 L15,-29"
-                    fill="none" stroke="#354d3d" strokeWidth="1.4" strokeLinecap="round" />
-                  <path d="M-24,6 L15,-29" fill="none" stroke="#a2b3a3" strokeWidth="0.5" />
-                  <path d="M11,-26 L15,-33 L19,-30 L16,-23 Z" fill="#344c3d" stroke="#203529" strokeWidth="0.9" />
-                  <ellipse cx="15" cy="-30" rx="2.5" ry="1.8" fill="#68c59a" stroke="#264d38" strokeWidth="0.7" />
-                  <circle cx="15" cy="-30" r="0.85" fill="#e0fff0" />
-                </g>
-
-                {/* 📡 COSMIC ALIEN WAVE RESONANCE & PULSES (Click-triggered or subtle) */}
-                {alienPulseEffect && (
-                  <g transform="translate(15, -59)">
-                    <circle cx="0" cy="0" r="18" fill="none" stroke="#34d399" strokeWidth="1.8" className="animate-ping pointer-events-none" />
-                    <circle cx="0" cy="0" r="36" fill="none" stroke="#38bdf8" strokeWidth="1.6" className="animate-ping pointer-events-none" />
-                    <circle cx="0" cy="0" r="54" fill="none" stroke="#a78bfa" strokeWidth="1.2" className="animate-ping pointer-events-none" />
-                  </g>
+      {/* ========================================================================= */}
+      {/* 1. ASHLAR STONE FOOTINGS (4个工整规矩的石砌锚固基座)                     */}
+      {/*    彻底解决毛刺问题：使用 strokeLinejoin="round" 和平滑描边               */}
+      {/* ========================================================================= */}
+      <g id="observatory-stone-footings">
+        {[
+          { u: -PU, v: -PV, id: 'back' },
+          { u: -PU, v: PV, id: 'left' },
+          { u: PU, v: -PV, id: 'right' },
+          { u: PU, v: PV, id: 'front' },
+        ].map((f) => {
+          const hw = 5.2; // 基础半宽
+          const zh = 5.5; // 基础顶面高度
+          return (
+            <g key={`footing-${f.id}`} id={`footing-${f.id}`}>
+              {/* 基座接地软阴影 */}
+              <ellipse
+                cx={pt(f.u, f.v, 0).x}
+                cy={pt(f.u, f.v, 0).y}
+                rx="8"
+                ry="3.2"
+                fill="#121a14"
+                opacity="0.4"
+              />
+              {/* 顶面 */}
+              <polygon
+                points={face(
+                  [f.u - hw, f.v - hw, zh],
+                  [f.u + hw, f.v - hw, zh],
+                  [f.u + hw, f.v + hw, zh],
+                  [f.u - hw, f.v + hw, zh]
                 )}
-              </g>
+                fill="#59685d"
+                stroke="#2a342c"
+                strokeWidth="0.8"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              {/* 前左侧立面 */}
+              <polygon
+                points={face(
+                  [f.u - hw, f.v + hw, 0],
+                  [f.u + hw, f.v + hw, 0],
+                  [f.u + hw, f.v + hw, zh],
+                  [f.u - hw, f.v + hw, zh]
+                )}
+                fill="#445147"
+                stroke="#2a342c"
+                strokeWidth="0.8"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              {/* 前右侧立面 */}
+              <polygon
+                points={face(
+                  [f.u + hw, f.v + hw, 0],
+                  [f.u + hw, f.v - hw, 0],
+                  [f.u + hw, f.v - hw, zh],
+                  [f.u + hw, f.v + hw, zh]
+                )}
+                fill="#343f36"
+                stroke="#2a342c"
+                strokeWidth="0.8"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              {/* 钢柱底座锚固钢板垫片 */}
+              <polygon
+                points={face(
+                  [f.u - 2.6, f.v - 2.6, zh + 0.8],
+                  [f.u + 2.6, f.v - 2.6, zh + 0.8],
+                  [f.u + 2.6, f.v + 2.6, zh + 0.8],
+                  [f.u - 2.6, f.v + 2.6, zh + 0.8]
+                )}
+                fill="#222a24"
+                stroke="#181f1a"
+                strokeWidth="0.5"
+                strokeLinejoin="round"
+              />
+            </g>
+          );
+        })}
+      </g>
 
-              {/* 5. OUTDOOR FIELD TELEMETRY CONSOLE & CRT OSCILLOSCOPE (户外射电监听操作台与频谱示波器) */}
-              <g id="telemetry-field-desk" transform="translate(-16, 12)">
-                {/* Console Desk Body */}
-                <rect x="0" y="0" width="22" height="17" rx="2.5" fill="#222b24" stroke="#141a15" strokeWidth="1.2" />
+      {/* ========================================================================= */}
+      {/* 2. REFINED STEEL STAGING STRUCTURE (通透利落的高架钢构主柱与建筑斜撑)     */}
+      {/* ========================================================================= */}
+      <g id="observatory-staging-pylons">
+        {/* 后侧背光主钢柱 */}
+        <line
+          x1={pt(-PU, -PV, 5.5).x}
+          y1={pt(-PU, -PV, 5.5).y}
+          x2={pt(-PU, -PV, DECK_Z - DECK_THICKNESS).x}
+          y2={pt(-PU, -PV, DECK_Z - DECK_THICKNESS).y}
+          stroke="#263128"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
 
-                {/* Dual CRT Phosphor Display Screens */}
-                {/* CRT Screen 1: Pulsing Signal Oscilloscope Waveform */}
-                <rect x="2" y="2" width="10" height="7.5" rx="1.2" fill="#08140c" stroke="#10b981" strokeWidth="0.7" />
-                <path
-                  d="M3,5.5 Q5,3.2 6.5,5.5 T9,5.5 T11,5.5"
-                  fill="none"
-                  stroke="#38ef7d"
-                  strokeWidth="1.3"
-                  strokeLinecap="round"
-                  className="animate-pulse"
-                />
+        {/* 后侧向连系梁 (静谧背景横梁) */}
+        <line
+          x1={pt(-PU, -PV, 32).x}
+          y1={pt(-PU, -PV, 32).y}
+          x2={pt(PU, -PV, 32).x}
+          y2={pt(PU, -PV, 32).y}
+          stroke="#2b372e"
+          strokeWidth="2.2"
+        />
+        <line
+          x1={pt(-PU, -PV, 32).x}
+          y1={pt(-PU, -PV, 32).y}
+          x2={pt(-PU, PV, 32).x}
+          y2={pt(-PU, PV, 32).y}
+          stroke="#2b372e"
+          strokeWidth="2.2"
+        />
 
-                {/* CRT Screen 2: Frequency Spectrum Analyzer */}
-                <rect x="13" y="2" width="7" height="7.5" rx="1.2" fill="#08140c" stroke="#38bdf8" strokeWidth="0.7" />
-                <line x1="14.5" y1="8" x2="14.5" y2="4.5" stroke="#38bdf8" strokeWidth="1" />
-                <line x1="16.5" y1="8" x2="16.5" y2="3.2" stroke="#38ef7d" strokeWidth="1" className="animate-pulse" />
-                <line x1="18.5" y1="8" x2="18.5" y2="5.5" stroke="#38bdf8" strokeWidth="1" />
+        {/* 左侧主钢柱 */}
+        <line
+          x1={pt(-PU, PV, 5.5).x}
+          y1={pt(-PU, PV, 5.5).y}
+          x2={pt(-PU, PV, DECK_Z - DECK_THICKNESS).x}
+          y2={pt(-PU, PV, DECK_Z - DECK_THICKNESS).y}
+          stroke="#2d3930"
+          strokeWidth="4.5"
+          strokeLinecap="round"
+        />
 
-                {/* Instrument Dials, Knobs & LED Indicators */}
-                <circle cx="4" cy="12.5" r="1.3" fill="#fcd34d" />
-                <circle cx="8" cy="12.5" r="1.3" fill="#ef4444" />
-                <circle cx="12" cy="12.5" r="1.3" fill="#38ef7d" className="animate-ping" />
-                <circle cx="16" cy="12.5" r="1.3" fill="#38bdf8" />
-                <line x1="2" y1="15.5" x2="20" y2="15.5" stroke="#37453b" strokeWidth="0.8" />
+        {/* 右侧主钢柱 */}
+        <line
+          x1={pt(PU, -PV, 5.5).x}
+          y1={pt(PU, -PV, 5.5).y}
+          x2={pt(PU, -PV, DECK_Z - DECK_THICKNESS).x}
+          y2={pt(PU, -PV, DECK_Z - DECK_THICKNESS).y}
+          stroke="#29342c"
+          strokeWidth="4.5"
+          strokeLinecap="round"
+        />
 
-                {/* Frequency Badge Tag */}
-                <g transform="translate(11, 24)" className="pointer-events-none">
-                  <rect x="-26" y="-5.5" width="52" height="11" rx="5.5" fill="#121a14" stroke="#10b981" strokeWidth="0.8" opacity="0.95" />
-                  <text x="0" y="2.8" fill="#38ef7d" fontSize="6.8" fontWeight="bold" textAnchor="middle">
-                    1420.4 MHz · SETI
-                  </text>
+        {/* 前侧主钢柱 */}
+        <line
+          x1={pt(PU, PV, 5.5).x}
+          y1={pt(PU, PV, 5.5).y}
+          x2={pt(PU, PV, DECK_Z - DECK_THICKNESS).x}
+          y2={pt(PU, PV, DECK_Z - DECK_THICKNESS).y}
+          stroke="#38473c"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
+        {/* 前柱受光面微高光 */}
+        <line
+          x1={pt(PU, PV, 5.5).x + 0.6}
+          y1={pt(PU, PV, 5.5).y}
+          x2={pt(PU, PV, DECK_Z - DECK_THICKNESS).x + 0.6}
+          y2={pt(PU, PV, DECK_Z - DECK_THICKNESS).y}
+          stroke="#55695a"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+
+        {/* 前左跨间 (v = PV) 极简建筑横梁与斜撑 */}
+        <line
+          x1={pt(-PU, PV, 32).x}
+          y1={pt(-PU, PV, 32).y}
+          x2={pt(PU, PV, 32).x}
+          y2={pt(PU, PV, 32).y}
+          stroke="#323f34"
+          strokeWidth="2.8"
+        />
+        <line
+          x1={pt(-PU, PV, 10).x}
+          y1={pt(-PU, PV, 10).y}
+          x2={pt(PU, PV, 54).x}
+          y2={pt(PU, PV, 54).y}
+          stroke="#3b4b3f"
+          strokeWidth="2.2"
+        />
+
+        {/* 前右跨间 (u = PU) 极简建筑横梁与斜撑 */}
+        <line
+          x1={pt(PU, -PV, 32).x}
+          y1={pt(PU, -PV, 32).y}
+          x2={pt(PU, PV, 32).x}
+          y2={pt(PU, PV, 32).y}
+          stroke="#323f34"
+          strokeWidth="2.8"
+        />
+        <line
+          x1={pt(PU, -PV, 10).x}
+          y1={pt(PU, -PV, 10).y}
+          x2={pt(PU, PV, 54).x}
+          y2={pt(PU, PV, 54).y}
+          stroke="#3b4b3f"
+          strokeWidth="2.2"
+        />
+      </g>
+
+      {/* ========================================================================= */}
+      {/* 3. SLEEK ACCESS LADDER (左侧极简登台直梯)                                 */}
+      {/*    精确定位在左侧边框 u = -DU 处，与上方的护栏出入口严格对齐              */}
+      {/* ========================================================================= */}
+      <g id="observatory-access-ladder">
+        {/* 左梯轨与右梯轨 */}
+        <line
+          x1={pt(-DU, LADDER_V1, 0).x}
+          y1={pt(-DU, LADDER_V1, 0).y}
+          x2={pt(-DU, LADDER_V1, DECK_Z + 10).x}
+          y2={pt(-DU, LADDER_V1, DECK_Z + 10).y}
+          stroke="#38453b"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+        />
+        <line
+          x1={pt(-DU, LADDER_V2, 0).x}
+          y1={pt(-DU, LADDER_V2, 0).y}
+          x2={pt(-DU, LADDER_V2, DECK_Z + 10).x}
+          y2={pt(-DU, LADDER_V2, DECK_Z + 10).y}
+          stroke="#38453b"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+        />
+
+        {/* 工整分布的安全防滑踏棍 */}
+        {[4, 11, 18, 25, 32, 39, 46, 53, 60].map((rz) => (
+          <line
+            key={`ladder-step-${rz}`}
+            x1={pt(-DU, LADDER_V1, rz).x}
+            y1={pt(-DU, LADDER_V1, rz).y}
+            x2={pt(-DU, LADDER_V2, rz).x}
+            y2={pt(-DU, LADDER_V2, rz).y}
+            stroke="#637667"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+        ))}
+
+        {/* 顶部安全扶手向甲板内侧平滑弯折过渡，并自然连接甲板门柱 */}
+        <path
+          d={`M ${pt(-DU, LADDER_V1, DECK_Z + 10).x},${pt(-DU, LADDER_V1, DECK_Z + 10).y} Q ${pt(-DU + 3, LADDER_V1, DECK_Z + 11).x},${pt(-DU + 3, LADDER_V1, DECK_Z + 11).y} ${pt(-DU + 4, LADDER_V1, DECK_Z).x},${pt(-DU + 4, LADDER_V1, DECK_Z).y}`}
+          fill="none"
+          stroke="#4b5d50"
+          strokeWidth="1.8"
+        />
+        <path
+          d={`M ${pt(-DU, LADDER_V2, DECK_Z + 10).x},${pt(-DU, LADDER_V2, DECK_Z + 10).y} Q ${pt(-DU + 3, LADDER_V2, DECK_Z + 11).x},${pt(-DU + 3, LADDER_V2, DECK_Z + 11).y} ${pt(-DU + 4, LADDER_V2, DECK_Z).x},${pt(-DU + 4, LADDER_V2, DECK_Z).y}`}
+          fill="none"
+          stroke="#4b5d50"
+          strokeWidth="1.8"
+        />
+      </g>
+
+      {/* ========================================================================= */}
+      {/* 4. SOLID CANTILEVERED OBSERVATION DECK PLATFORM (观景平台基座与地板)      */}
+      {/* ========================================================================= */}
+      <g id="observatory-deck-platform">
+        {/* 平台下层承重边梁侧立面 (前左向) */}
+        <polygon
+          points={face(
+            [-DU, DV, DECK_Z - DECK_THICKNESS],
+            [DU, DV, DECK_Z - DECK_THICKNESS],
+            [DU, DV, DECK_Z],
+            [-DU, DV, DECK_Z]
+          )}
+          fill="#253027"
+          stroke="#19211b"
+          strokeWidth="0.8"
+        />
+
+        {/* 平台下层承重边梁侧立面 (前右向) */}
+        <polygon
+          points={face(
+            [DU, DV, DECK_Z - DECK_THICKNESS],
+            [DU, -DV, DECK_Z - DECK_THICKNESS],
+            [DU, -DV, DECK_Z],
+            [DU, DV, DECK_Z]
+          )}
+          fill="#1c241e"
+          stroke="#19211b"
+          strokeWidth="0.8"
+        />
+
+        {/* 平台甲板顶面 (大面积平整干净的观测地面) */}
+        <polygon
+          points={face(
+            [-DU, -DV, DECK_Z],
+            [DU, -DV, DECK_Z],
+            [DU, DV, DECK_Z],
+            [-DU, DV, DECK_Z]
+          )}
+          fill="#48564b"
+          stroke="#263128"
+          strokeWidth="1.2"
+        />
+
+        {/* 甲板内圈防滑走道嵌线 */}
+        <polygon
+          points={face(
+            [-DU + 3, -DV + 3, DECK_Z + 0.1],
+            [DU - 3, -DV + 3, DECK_Z + 0.1],
+            [DU - 3, DV - 3, DECK_Z + 0.1],
+            [-DU + 3, DV - 3, DECK_Z + 0.1]
+          )}
+          fill="#526155"
+          stroke="#38453b"
+          strokeWidth="0.8"
+        />
+
+        {/* 台面中央操作地垫 (为观测员提供专属站席标界，在控制台正前方留出充裕空间) */}
+        <polygon
+          points={face(
+            [-8, 14, DECK_Z + 0.2],
+            [14, 14, DECK_Z + 0.2],
+            [14, 25, DECK_Z + 0.2],
+            [-8, 25, DECK_Z + 0.2]
+          )}
+          fill="#28332a"
+          stroke="#1c241e"
+          strokeWidth="0.8"
+        />
+      </g>
+
+      {/* ========================================================================= */}
+      {/* 5. REAR PERIMETER GUARDRAILS (后排护栏：位于机房与天线后方)                */}
+      {/*    彻底解决层级倒置问题：后排护栏先画，前排护栏最后画                      */}
+      {/* ========================================================================= */}
+      <g id="observatory-rear-guardrail">
+        {/* 后右段栏杆顶线与腰杆 */}
+        <line
+          x1={pt(-DU + 1, -DV + 1, DECK_Z + 9).x}
+          y1={pt(-DU + 1, -DV + 1, DECK_Z + 9).y}
+          x2={pt(DU - 1, -DV + 1, DECK_Z + 9).x}
+          y2={pt(DU - 1, -DV + 1, DECK_Z + 9).y}
+          stroke="#2e3a31"
+          strokeWidth="1.8"
+        />
+        <line
+          x1={pt(-DU + 1, -DV + 1, DECK_Z + 4.5).x}
+          y1={pt(-DU + 1, -DV + 1, DECK_Z + 4.5).y}
+          x2={pt(DU - 1, -DV + 1, DECK_Z + 4.5).x}
+          y2={pt(DU - 1, -DV + 1, DECK_Z + 4.5).y}
+          stroke="#232d26"
+          strokeWidth="1.2"
+        />
+
+        {/* 后左段栏杆 (从后角连接至梯子开口起点 v = LADDER_V1) */}
+        <line
+          x1={pt(-DU + 1, -DV + 1, DECK_Z + 9).x}
+          y1={pt(-DU + 1, -DV + 1, DECK_Z + 9).y}
+          x2={pt(-DU + 1, LADDER_V1, DECK_Z + 9).x}
+          y2={pt(-DU + 1, LADDER_V1, DECK_Z + 9).y}
+          stroke="#2e3a31"
+          strokeWidth="1.8"
+        />
+        <line
+          x1={pt(-DU + 1, -DV + 1, DECK_Z + 4.5).x}
+          y1={pt(-DU + 1, -DV + 1, DECK_Z + 4.5).y}
+          x2={pt(-DU + 1, LADDER_V1, DECK_Z + 4.5).x}
+          y2={pt(-DU + 1, LADDER_V1, DECK_Z + 4.5).y}
+          stroke="#232d26"
+          strokeWidth="1.2"
+        />
+
+        {/* 后排立柱 */}
+        {[
+          { u: -DU + 1, v: -DV + 1 },
+          { u: 0, v: -DV + 1 },
+          { u: DU - 1, v: -DV + 1 },
+          { u: -DU + 1, v: -10 },
+          { u: -DU + 1, v: LADDER_V1 }, // 梯口后侧专用端头立柱
+        ].map((sp, idx) => (
+          <line
+            key={`rear-rail-post-${idx}`}
+            x1={pt(sp.u, sp.v, DECK_Z).x}
+            y1={pt(sp.u, sp.v, DECK_Z).y}
+            x2={pt(sp.u, sp.v, DECK_Z + 9).x}
+            y2={pt(sp.u, sp.v, DECK_Z + 9).y}
+            stroke="#2e3b32"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+        ))}
+      </g>
+
+      {/* ========================================================================= */}
+      {/* 6. MINIMALIST OBSERVATION CABIN (左后方紧凑小木质/钢构监听室)             */}
+      {/*    解决屋顶脱节：补齐左侧封墙、山花封板与精致封檐板，做到严丝合缝         */}
+      {/* ========================================================================= */}
+      <g id="observatory-control-cabin">
+        {/* 机房空间定义: u ∈ [-30, -10], v ∈ [6, 26] */}
+        {/* 左侧向墙面 (西北立面 u = -30) - 彻底封死左侧透空漏洞 */}
+        <polygon
+          points={face(
+            [-30, 26, DECK_Z],
+            [-30, 6, DECK_Z],
+            [-30, 6, DECK_Z + 24],
+            [-30, 26, DECK_Z + 20]
+          )}
+          fill="#313d35"
+          stroke="#202923"
+          strokeWidth="0.8"
+        />
+
+        {/* 正向立面 (西南立面 v = 26) */}
+        <polygon
+          points={face(
+            [-30, 26, DECK_Z],
+            [-10, 26, DECK_Z],
+            [-10, 26, DECK_Z + 20],
+            [-30, 26, DECK_Z + 20]
+          )}
+          fill="#3b4840"
+          stroke="#242e27"
+          strokeWidth="0.9"
+        />
+
+        {/* 右侧向立面与山墙三角形山花 (东南立面 u = -10) */}
+        <polygon
+          points={face(
+            [-10, 26, DECK_Z],
+            [-10, 6, DECK_Z],
+            [-10, 6, DECK_Z + 24],
+            [-10, 26, DECK_Z + 20]
+          )}
+          fill="#2b352e"
+          stroke="#1e2620"
+          strokeWidth="0.9"
+        />
+
+        {/* 屋顶倾斜底壳/封檐厚度侧面 (消除屋顶悬空感) */}
+        <polygon
+          points={face(
+            [-31.5, 27, DECK_Z + 19.5],
+            [-9, 27, DECK_Z + 19.5],
+            [-9, 27, DECK_Z + 20.8],
+            [-31.5, 27, DECK_Z + 20.8]
+          )}
+          fill="#141c24"
+        />
+        <polygon
+          points={face(
+            [-9, 27, DECK_Z + 19.5],
+            [-9, 5, DECK_Z + 23.5],
+            [-9, 5, DECK_Z + 24.8],
+            [-9, 27, DECK_Z + 20.8]
+          )}
+          fill="#0f172a"
+        />
+
+        {/* 太阳能倾斜屋顶顶面 (自然向前出挑，盖住墙顶) */}
+        <polygon
+          points={face(
+            [-31.5, 27, DECK_Z + 20.8],
+            [-9, 27, DECK_Z + 20.8],
+            [-9, 5, DECK_Z + 24.8],
+            [-31.5, 5, DECK_Z + 24.8]
+          )}
+          fill="#1e293b"
+          stroke="#0f172a"
+          strokeWidth="0.9"
+        />
+
+        {/* 太阳能板光伏极线划分 */}
+        <line
+          x1={pt(-25, 26, DECK_Z + 21.2).x}
+          y1={pt(-25, 26, DECK_Z + 21.2).y}
+          x2={pt(-25, 6, DECK_Z + 24.5).x}
+          y2={pt(-25, 6, DECK_Z + 24.5).y}
+          stroke="#38bdf8"
+          strokeWidth="0.75"
+          opacity="0.65"
+        />
+        <line
+          x1={pt(-16, 26, DECK_Z + 21.2).x}
+          y1={pt(-16, 26, DECK_Z + 21.2).y}
+          x2={pt(-16, 6, DECK_Z + 24.5).x}
+          y2={pt(-16, 6, DECK_Z + 24.5).y}
+          stroke="#38bdf8"
+          strokeWidth="0.75"
+          opacity="0.65"
+        />
+
+        {/* 设备舱门 */}
+        <polygon
+          points={face(
+            [-27, 26, DECK_Z + 0.5],
+            [-19, 26, DECK_Z + 0.5],
+            [-19, 26, DECK_Z + 15],
+            [-27, 26, DECK_Z + 15]
+          )}
+          fill="#28332c"
+          stroke="#1a221d"
+          strokeWidth="0.8"
+        />
+        <circle cx={pt(-20.5, 26, DECK_Z + 7.5).x} cy={pt(-20.5, 26, DECK_Z + 7.5).y} r="0.8" fill="#d97706" />
+
+        {/* 监听观察窗与跳动脉冲线 */}
+        <polygon
+          points={face(
+            [-16, 26, DECK_Z + 6],
+            [-12, 26, DECK_Z + 6],
+            [-12, 26, DECK_Z + 14],
+            [-16, 26, DECK_Z + 14]
+          )}
+          fill="#064e3b"
+          stroke="#10b981"
+          strokeWidth="0.8"
+        />
+        <line
+          x1={pt(-15.5, 26, DECK_Z + 10).x}
+          y1={pt(-15.5, 26, DECK_Z + 10).y}
+          x2={pt(-12.5, 26, DECK_Z + 10).x}
+          y2={pt(-12.5, 26, DECK_Z + 10).y}
+          stroke="#34d399"
+          strokeWidth="0.9"
+          className="animate-pulse"
+        />
+
+        {/* 屋顶信标天线杆 */}
+        <line
+          x1={pt(-11, 8, DECK_Z + 24.5).x}
+          y1={pt(-11, 8, DECK_Z + 24.5).y}
+          x2={pt(-11, 8, DECK_Z + 38).x}
+          y2={pt(-11, 8, DECK_Z + 38).y}
+          stroke="#334155"
+          strokeWidth="1.2"
+        />
+        <circle cx={pt(-11, 8, DECK_Z + 38).x} cy={pt(-11, 8, DECK_Z + 38).y} r="1.3" fill="#38bdf8" />
+      </g>
+
+      {/* ========================================================================= */}
+      {/* 7. GRAND PARABOLIC SETI DISH (大口径外星射电天线 · 核心精细化与透视修正)   */}
+      {/*    位置位于后右半区 (u = 16, v = -14)，在 SVG 渲染树中先于前排护栏绘制     */}
+      {/* ========================================================================= */}
+      <g
+        {...svgAction('捕获外星电波')}
+        id="alien-receiver-assembly"
+        onClick={(e) => {
+          triggerAlienSignal(e);
+        }}
+        onMouseEnter={(e) => {
+          e.stopPropagation();
+          setHoveredObject({ kind: 'entity', id: 'alien-receiver' });
+        }}
+        onMouseLeave={() => setHoveredObject(null)}
+        className="group/dish cursor-pointer"
+      >
+        {(() => {
+          const du = 16;
+          const dv = -14;
+          const dishCenter = pt(du, dv, DECK_Z + 27);
+          return (
+            <g id="dish-mechanics-and-reflector">
+              {/* 天线底座阴影 */}
+              <ellipse
+                cx={pt(du, dv, DECK_Z + 0.2).x}
+                cy={pt(du, dv, DECK_Z + 0.2).y}
+                rx="15"
+                ry="6"
+                fill="#1a231d"
+                opacity="0.45"
+              />
+
+              {/* 天线在甲板上的双层阶梯形旋转转台基座 */}
+              <ellipse
+                cx={pt(du, dv, DECK_Z + 1.2).x}
+                cy={pt(du, dv, DECK_Z + 1.2).y}
+                rx="14"
+                ry="5.5"
+                fill="#273229"
+                stroke="#172019"
+                strokeWidth="1"
+              />
+              <ellipse
+                cx={pt(du, dv, DECK_Z + 4).x}
+                cy={pt(du, dv, DECK_Z + 4).y}
+                rx="11.5"
+                ry="4.2"
+                fill="#39473d"
+                stroke="#202922"
+                strokeWidth="0.9"
+              />
+
+              {/* 现代仰角俯仰双支撑臂 (工整刚健的机械支架) */}
+              <polygon
+                points={`
+                  ${pt(du - 7, dv, DECK_Z + 4).x},${pt(du - 7, dv, DECK_Z + 4).y}
+                  ${pt(du - 4, dv, DECK_Z + 19).x},${pt(du - 4, dv, DECK_Z + 19).y}
+                  ${pt(du - 1, dv, DECK_Z + 19).x},${pt(du - 1, dv, DECK_Z + 19).y}
+                  ${pt(du - 3, dv, DECK_Z + 4).x},${pt(du - 3, dv, DECK_Z + 4).y}
+                `}
+                fill="#2a362d"
+                stroke="#18201a"
+                strokeWidth="0.8"
+              />
+              <polygon
+                points={`
+                  ${pt(du + 3, dv, DECK_Z + 4).x},${pt(du + 3, dv, DECK_Z + 4).y}
+                  ${pt(du + 1, dv, DECK_Z + 19).x},${pt(du + 1, dv, DECK_Z + 19).y}
+                  ${pt(du + 4, dv, DECK_Z + 19).x},${pt(du + 4, dv, DECK_Z + 19).y}
+                  ${pt(du + 7, dv, DECK_Z + 4).x},${pt(du + 7, dv, DECK_Z + 4).y}
+                `}
+                fill="#38463c"
+                stroke="#18201a"
+                strokeWidth="0.8"
+              />
+              {/* 俯仰机械转轴核心齿轮与法兰端盖 */}
+              <circle cx={pt(du, dv, DECK_Z + 19).x} cy={pt(du, dv, DECK_Z + 19).y} r="3.4" fill="#202821" stroke="#48594d" strokeWidth="1" />
+              <circle cx={pt(du, dv, DECK_Z + 19).x} cy={pt(du, dv, DECK_Z + 19).y} r="1.4" fill="#819785" />
+
+              {/* 大口径射电抛物面天线主反射体 (指向深空右上天顶) */}
+              <g transform={`translate(${dishCenter.x}, ${dishCenter.y})`}>
+                {/* 1. 抛物面深色外壳与金属轮廓厚度 */}
+                <ellipse rx="31.5" ry="19.5" transform="rotate(-18)" fill="#1e2c22" stroke="#121b15" strokeWidth="1.6" />
+
+                {/* 2. 金属双层反光卷边 (Metallic Rim Lip) */}
+                <ellipse rx="30" ry="18" transform="rotate(-18)" fill="#445749" stroke="#68806e" strokeWidth="0.8" />
+
+                {/* 3. 迎光面铝白/银绿涂层主反射盘面 */}
+                <ellipse rx="28.5" ry="16.8" transform="rotate(-18)" fill="#d6e3d7" stroke="#7e9682" strokeWidth="0.8" />
+
+                {/* 4. 内部自然凹陷向心阴影层次 (逼真的抛物面锅体深度) */}
+                <ellipse rx="24" ry="14" transform="rotate(-18)" fill="#b8ceba" opacity="0.88" />
+                <ellipse rx="17" ry="9.8" transform="rotate(-18)" fill="#9bb39d" opacity="0.8" />
+                <ellipse rx="10" ry="5.8" transform="rotate(-18)" fill="#7e9780" opacity="0.65" />
+
+                {/* 5. 6 条向心强化极向肋构件与同心测距环 (精细而克制的科学仪器质感) */}
+                <g transform="rotate(-18)" fill="none" stroke="#6b826f" strokeWidth="0.65" opacity="0.85">
+                  <ellipse rx="19" ry="11" />
+                  <ellipse rx="10" ry="5.8" />
+                  {/* 主经纬线 */}
+                  <line x1="-27" y1="0" x2="27" y2="0" />
+                  <line x1="0" y1="-15.5" x2="0" y2="15.5" />
+                  {/* 45度斜肋 */}
+                  <line x1="-19" y1="-10.5" x2="19" y2="10.5" strokeDasharray="1.5,1" />
+                  <line x1="-19" y1="10.5" x2="19" y2="-10.5" strokeDasharray="1.5,1" />
                 </g>
+
+                {/* 6. 前伸馈源三脚支撑杆 (Feed Horn Struts，带细致受光高光) */}
+                <path
+                  d="M -23,6 L 14,-29 M 23,-6 L 14,-29 M 4,14 L 14,-29"
+                  fill="none"
+                  stroke="#26382c"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+                <line x1="-22.5" y1="5.5" x2="14" y2="-29" stroke="#b0c5b3" strokeWidth="0.6" strokeLinecap="round" />
+
+                {/* 7. 焦点次反射器与高灵敏度量子接收器 (Feed Horn Subreflector) */}
+                <polygon points="9,-26 14,-33 19,-30 15,-23" fill="#293c2f" stroke="#16231a" strokeWidth="0.8" />
+                <ellipse cx="14" cy="-30" rx="2.8" ry="1.9" fill="#10b981" stroke="#059669" strokeWidth="0.8" />
+                <circle cx="14" cy="-30" r="1.1" fill="#e0fff0" className="animate-pulse" />
               </g>
 
-              {/* 6. SETI RESEARCHER / LISTENING SPECIALIST (由 Presence 场景槽位 observatory_post 动态分配与驱动：侧身监听外星电波) */}
-              {(() => {
-                const obsOccupant = presenceSlots.observatory_post?.occupant;
-                const slotCfg = presenceSlots.observatory_post?.config;
-                if (!obsOccupant || !slotCfg) return null;
+              {/* 📡 宇宙外星电波共振脉冲波 (点击天线时触发扩展波纹) */}
+              {alienPulseEffect && (
+                <g transform={`translate(${dishCenter.x + 14}, ${dishCenter.y - 30})`}>
+                  <circle cx="0" cy="0" r="18" fill="none" stroke="#34d399" strokeWidth="1.8" className="animate-ping pointer-events-none" />
+                  <circle cx="0" cy="0" r="36" fill="none" stroke="#38bdf8" strokeWidth="1.6" className="animate-ping pointer-events-none" />
+                  <circle cx="0" cy="0" r="54" fill="none" stroke="#a78bfa" strokeWidth="1.2" className="animate-ping pointer-events-none" />
+                </g>
+              )}
+            </g>
+          );
+        })()}
+      </g>
 
-                return (
-                  <g {...svgAction('查看人物状态')}
-                    id={`person-in-observatory-${obsOccupant.id}`}
-                    transform={`translate(${slotCfg.offset.dx}, ${slotCfg.offset.dy})`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSelectPerson(obsOccupant);
-                    }}
-                    onMouseEnter={(e) => {
-                      e.stopPropagation();
-                      setHoveredObject({ kind: 'person', id: obsOccupant.id });
-                    }}
-                    onMouseLeave={() => setHoveredObject(null)}
-                    className="cursor-pointer group/char"
-                  >
-                    {/* Floor Shadow */}
-                    <ellipse cx="0" cy="12" rx="7" ry="3" fill="#1a201b" opacity="0.45" />
-                    {/* Warm Winter Parka / Character Body */}
-                    <rect x="-6" y="-2" width="12" height="14" rx="4" fill={obsOccupant.shirtColor} filter="url(#softShadow)" />
-                    {/* Character Head: 侧身视角 (facing="side") */}
-                    <CharacterHead
-                      cx={0}
-                      cy={-7}
-                      r={5.5}
-                      skinColor={obsOccupant.skinColor || '#f5d6be'}
-                      hairColor={obsOccupant.hairColor || '#302319'}
-                      hairStyle={obsOccupant.hairStyle || 'curtain_crescent'}
-                      beanieColor={obsOccupant.beanieColor || '#1f3a2c'}
-                      hasPompom={obsOccupant.hasPompom ?? true}
-                      facing={slotCfg.facing}
-                    />
+      {/* ========================================================================= */}
+      {/* 8. TELEMETRY CONSOLE & FREQUENCY READOUT (中央射电监听台与纯净频段标识)  */}
+      {/*    位置向后挪动至 v ∈ [6, 14]，彻底补齐左侧立面，留出前方的观测活动空间     */}
+      {/* ========================================================================= */}
+      <g id="observatory-telemetry-console">
+        {/* 控制台位置: u ∈ [-5, 7], v ∈ [6, 14], z ∈ [DECK_Z, DECK_Z + 9] */}
+        {/* 1. 台体左侧封闭立面 (u = -5) - 彻底闭合原有的三角形空洞 */}
+        <polygon
+          points={face(
+            [-5, 14, DECK_Z],
+            [-5, 6, DECK_Z],
+            [-5, 6, DECK_Z + 11.5],
+            [-5, 14, DECK_Z + 9]
+          )}
+          fill="#253027"
+          stroke="#171f19"
+          strokeWidth="0.8"
+          strokeLinejoin="round"
+        />
 
-                    {/* Over-Ear Radio Communication Headset (监听耳机与麦克风) */}
-                    <path d="M-6,-7 Q0,-13 6,-7" stroke="#1e293b" strokeWidth="1.8" fill="none" />
-                    <rect x="-7" y="-9" width="2.5" height="4.5" rx="1.2" fill="#38ef7d" />
-                    <rect x="4.5" y="-9" width="2.5" height="4.5" rx="1.2" fill="#38ef7d" />
-                    <path d="M-5,-5 Q-2,-2 1,-4" stroke="#1e293b" strokeWidth="0.9" fill="none" />
+        {/* 2. 台体正面立面 (v = 14) */}
+        <polygon
+          points={face(
+            [-5, 14, DECK_Z],
+            [7, 14, DECK_Z],
+            [7, 14, DECK_Z + 9],
+            [-5, 14, DECK_Z + 9]
+          )}
+          fill="#2d3930"
+          stroke="#171f19"
+          strokeWidth="0.8"
+          strokeLinejoin="round"
+        />
 
-                    {/* Clipboard / Radio Log in Hand */}
-                    <polygon points="5,1 11,1 11,8 5,8" fill="#e2e8f0" stroke="#475569" strokeWidth="0.6" />
-                    <line x1="7" y1="3" x2="10" y2="3" stroke="#059669" strokeWidth="0.6" />
-                    <line x1="7" y1="5" x2="10" y2="5" stroke="#059669" strokeWidth="0.6" />
+        {/* 3. 台体右侧立面 (u = 7) */}
+        <polygon
+          points={face(
+            [7, 14, DECK_Z],
+            [7, 6, DECK_Z],
+            [7, 6, DECK_Z + 11.5],
+            [7, 14, DECK_Z + 9]
+          )}
+          fill="#1f2721"
+          stroke="#171f19"
+          strokeWidth="0.8"
+          strokeLinejoin="round"
+        />
 
-                    {/* Character Name & Activity Whispers */}
-                    <g transform="translate(0, -23)" className="pointer-events-none">
-                      <rect x="-46" y="-7" width="92" height="15" rx="7.5" fill="#121a14" stroke="#10b981" strokeWidth="0.8" opacity="0.94" />
-                      <text x="0" y="3.5" fill="#d1fae5" fontSize="8.5" fontWeight="bold" textAnchor="middle">
-                        📡 {obsOccupant.name} · {slotCfg.badgeLabel.split('(')[0].trim()}
-                      </text>
-                    </g>
-                  </g>
-                );
-              })()}
+        {/* 4. 倾斜操作面板顶面 (全封闭工整顶盖) */}
+        <polygon
+          points={face(
+            [-5, 14, DECK_Z + 9],
+            [7, 14, DECK_Z + 9],
+            [7, 6, DECK_Z + 11.5],
+            [-5, 6, DECK_Z + 11.5]
+          )}
+          fill="#37473b"
+          stroke="#1b231c"
+          strokeWidth="0.8"
+          strokeLinejoin="round"
+        />
 
-              {/* Hover Pill Label for Alien Radio Station */}
-              <g
-                transform="translate(0, 48)"
-                className="opacity-0 group-hover/observatory:opacity-100 transition-opacity pointer-events-none"
-              >
-                <rect x="-76" y="-8.5" width="152" height="17" rx="8.5" fill="#131c15" stroke="#10b981" strokeWidth="0.9" opacity="0.95" />
-                <text x="0" y="3.8" fill="#a7f3d0" fontSize="9" fontWeight="bold" textAnchor="middle">
-                  📡 山巅外星电波监听站 · 点击捕获信号
-                </text>
-              </g>
-            </>;
+        {/* 经典 CRT 示波器显示屏 (绿光波形实时呼吸) */}
+        <polygon
+          points={face(
+            [-3.5, 14, DECK_Z + 2.8],
+            [3.5, 14, DECK_Z + 2.8],
+            [3.5, 14, DECK_Z + 7.6],
+            [-3.5, 14, DECK_Z + 7.6]
+          )}
+          fill="#052112"
+          stroke="#10b981"
+          strokeWidth="0.7"
+          strokeLinejoin="round"
+        />
+        {/* 示波器正弦波形 */}
+        <path
+          d={`M ${pt(-2.8, 14, DECK_Z + 5.2).x},${pt(-2.8, 14, DECK_Z + 5.2).y} Q ${pt(-1.5, 14, DECK_Z + 6.8).x},${pt(-1.5, 14, DECK_Z + 6.8).y} ${pt(0, 14, DECK_Z + 5.2).x},${pt(0, 14, DECK_Z + 5.2).y} T ${pt(2.8, 14, DECK_Z + 5.2).x},${pt(2.8, 14, DECK_Z + 5.2).y}`}
+          fill="none"
+          stroke="#34d399"
+          strokeWidth="1.1"
+          strokeLinecap="round"
+          className="animate-pulse"
+        />
+
+        {/* 精密旋钮与信号指示接口 */}
+        <circle cx={pt(5.2, 14, DECK_Z + 6.8).x} cy={pt(5.2, 14, DECK_Z + 6.8).y} r="0.9" fill="#94a3b8" />
+        <circle cx={pt(5.2, 14, DECK_Z + 4.2).x} cy={pt(5.2, 14, DECK_Z + 4.2).y} r="0.8" fill="#10b981" />
+
+        {/* 优雅整洁的频段标牌 (完全内置固定在控制台斜面底座正前方) */}
+        <g transform={`translate(${pt(1, 14, DECK_Z - 1.5).x}, ${pt(1, 14, DECK_Z - 1.5).y})`} className="pointer-events-none">
+          <text
+            x="0"
+            y="0"
+            fill="#34d399"
+            fontSize="5.2"
+            fontWeight="600"
+            letterSpacing="0.4"
+            textAnchor="middle"
+            filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))"
+          >
+            1420.4 MHz · SETI
+          </text>
+        </g>
+      </g>
+
+      {/* ========================================================================= */}
+      {/* 9. SETI RESEARCHER / OBSERVATORY SPECIALIST (台面观测员动态席位)          */}
+      {/*    当人物入驻时：自然站立于操作台前的防滑地垫上，空间宽裕自然            */}
+      {/* ========================================================================= */}
+      {(() => {
+        const obsOccupant = presenceSlots.observatory_post?.occupant;
+        const slotCfg = presenceSlots.observatory_post?.config;
+        if (!obsOccupant || !slotCfg) return null;
+
+        return (
+          <g
+            {...svgAction('查看人物状态')}
+            id={`person-in-observatory-${obsOccupant.id}`}
+            transform={`translate(${slotCfg.offset.dx}, ${slotCfg.offset.dy})`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelectPerson(obsOccupant);
+            }}
+            onMouseEnter={(e) => {
+              e.stopPropagation();
+              setHoveredObject({ kind: 'person', id: obsOccupant.id });
+            }}
+            onMouseLeave={() => setHoveredObject(null)}
+            className="cursor-pointer group/char"
+          >
+            {/* 观测员脚下地垫柔和接触阴影 */}
+            <ellipse cx="0" cy="12" rx="7" ry="2.6" fill="#121813" opacity="0.45" />
+
+            {/* 温暖防风研究员冬装夹克 */}
+            <rect x="-6" y="-2" width="12" height="14" rx="4" fill={obsOccupant.shirtColor} filter="url(#softShadow)" />
+
+            {/* 人物头部 (侧身视角 facing="side"，专注望向右侧射电天线) */}
+            <CharacterHead
+              cx={0}
+              cy={-7}
+              r={5.5}
+              skinColor={obsOccupant.skinColor || '#f5d6be'}
+              hairColor={obsOccupant.hairColor || '#302319'}
+              hairStyle={obsOccupant.hairStyle || 'curtain_crescent'}
+              beanieColor={obsOccupant.beanieColor || '#1f3a2c'}
+              hasPompom={obsOccupant.hasPompom ?? true}
+              facing={slotCfg.facing}
+            />
+
+            {/* 无线电通信耳罩式耳机与拾音麦克风 */}
+            <path d="M-6,-7 Q0,-13 6,-7" stroke="#1e293b" strokeWidth="1.8" fill="none" />
+            <rect x="-7" y="-9" width="2.4" height="4.4" rx="1.2" fill="#34d399" />
+            <rect x="4.6" y="-9" width="2.4" height="4.4" rx="1.2" fill="#34d399" />
+            <path d="M-5,-5 Q-2,-2 1,-4" stroke="#1e293b" strokeWidth="0.9" fill="none" />
+
+            {/* 观测手板日志夹 */}
+            <polygon points="5,1 11,1 11,8 5,8" fill="#e2e8f0" stroke="#475569" strokeWidth="0.6" />
+            <line x1="7" y1="3" x2="10" y2="3" stroke="#059669" strokeWidth="0.6" />
+            <line x1="7" y1="5" x2="10" y2="5" stroke="#059669" strokeWidth="0.6" />
+
+            {/* 纯净人物浮动名牌 */}
+            <g transform="translate(0, -24)" className="pointer-events-none">
+              <rect x="-46" y="-7" width="92" height="15" rx="7.5" fill="#121a14" stroke="#10b981" strokeWidth="0.8" opacity="0.94" />
+              <text x="0" y="3.5" fill="#d1fae5" fontSize="8.5" fontWeight="bold" textAnchor="middle">
+                📡 {obsOccupant.name} · {slotCfg.badgeLabel.split('(')[0].trim()}
+              </text>
+            </g>
+          </g>
+        );
+      })()}
+
+      {/* ========================================================================= */}
+      {/* 10. FOREGROUND PERIMETER GUARDRAILS (前排护栏：位于观众最前端视平线)      */}
+      {/*     最核心的遮挡修复：前右段护栏真实、正确地走在天线锅与基座的前侧外围    */}
+      {/*     前左段护栏与梯口无缝闭合，彻底解决原先断开孤线的问题                  */}
+      {/* ========================================================================= */}
+      <g id="observatory-front-guardrail">
+        {/* 前左侧护栏段：从梯口前侧立柱 v = LADDER_V2 顺畅闭合至前拐角 (-DU+1, DV-1) */}
+        <line
+          x1={pt(-DU + 1, LADDER_V2, DECK_Z + 9).x}
+          y1={pt(-DU + 1, LADDER_V2, DECK_Z + 9).y}
+          x2={pt(-DU + 1, DV - 1, DECK_Z + 9).x}
+          y2={pt(-DU + 1, DV - 1, DECK_Z + 9).y}
+          stroke="#3a483e"
+          strokeWidth="2.0"
+        />
+        <line
+          x1={pt(-DU + 1, LADDER_V2, DECK_Z + 4.5).x}
+          y1={pt(-DU + 1, LADDER_V2, DECK_Z + 4.5).y}
+          x2={pt(-DU + 1, DV - 1, DECK_Z + 4.5).x}
+          y2={pt(-DU + 1, DV - 1, DECK_Z + 4.5).y}
+          stroke="#2a352d"
+          strokeWidth="1.2"
+        />
+
+        {/* 前左向整段前栏杆：从 (-DU+1, DV-1) 连续闭合至最前顶点 (DU-1, DV-1) */}
+        <line
+          x1={pt(-DU + 1, DV - 1, DECK_Z + 9).x}
+          y1={pt(-DU + 1, DV - 1, DECK_Z + 9).y}
+          x2={pt(DU - 1, DV - 1, DECK_Z + 9).x}
+          y2={pt(DU - 1, DV - 1, DECK_Z + 9).y}
+          stroke="#3a483e"
+          strokeWidth="2.0"
+        />
+        <line
+          x1={pt(-DU + 1, DV - 1, DECK_Z + 4.5).x}
+          y1={pt(-DU + 1, DV - 1, DECK_Z + 4.5).y}
+          x2={pt(DU - 1, DV - 1, DECK_Z + 4.5).x}
+          y2={pt(DU - 1, DV - 1, DECK_Z + 4.5).y}
+          stroke="#2a352d"
+          strokeWidth="1.2"
+        />
+
+        {/* 前右向整段前栏杆：走在天线锅与转盘的最外侧！透视遮挡完全真实正交 */}
+        <line
+          x1={pt(DU - 1, -DV + 1, DECK_Z + 9).x}
+          y1={pt(DU - 1, -DV + 1, DECK_Z + 9).y}
+          x2={pt(DU - 1, DV - 1, DECK_Z + 9).x}
+          y2={pt(DU - 1, DV - 1, DECK_Z + 9).y}
+          stroke="#3a483e"
+          strokeWidth="2.0"
+        />
+        <line
+          x1={pt(DU - 1, -DV + 1, DECK_Z + 4.5).x}
+          y1={pt(DU - 1, -DV + 1, DECK_Z + 4.5).y}
+          x2={pt(DU - 1, DV - 1, DECK_Z + 4.5).x}
+          y2={pt(DU - 1, DV - 1, DECK_Z + 4.5).y}
+          stroke="#2a352d"
+          strokeWidth="1.2"
+        />
+
+        {/* 前排各关键转折点立柱 (包含梯口端头柱、前左拐点柱、最前角柱、前右立柱) */}
+        {[
+          { u: -DU + 1, v: LADDER_V2 }, // 梯口前侧封闭端柱
+          { u: -DU + 1, v: DV - 1 },    // 左侧外转角立柱
+          { u: -10, v: DV - 1 },        // 前左跨中间立柱
+          { u: 10, v: DV - 1 },         // 前左跨中间立柱
+          { u: DU - 1, v: DV - 1 },     // 最前角立柱
+          { u: DU - 1, v: 0 },          // 前右侧中间立柱 (位于天线锅前方)
+          { u: DU - 1, v: -DV + 1 },    // 右侧外转角立柱
+        ].map((sp, idx) => (
+          <line
+            key={`front-rail-post-${idx}`}
+            x1={pt(sp.u, sp.v, DECK_Z).x}
+            y1={pt(sp.u, sp.v, DECK_Z).y}
+            x2={pt(sp.u, sp.v, DECK_Z + 9).x}
+            y2={pt(sp.u, sp.v, DECK_Z + 9).y}
+            stroke="#2e3b32"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        ))}
+      </g>
+
+      {/* ========================================================================= */}
+      {/* 11. HOVER TOOLTIP (观测台整体浮动说明)                                    */}
+      {/* ========================================================================= */}
+      <g
+        transform="translate(0, 56)"
+        className="opacity-0 group-hover/observatory:opacity-100 transition-opacity pointer-events-none"
+      >
+        <rect x="-76" y="-8.5" width="152" height="17" rx="8.5" fill="#131c15" stroke="#10b981" strokeWidth="0.9" opacity="0.95" />
+        <text x="0" y="3.8" fill="#a7f3d0" fontSize="9" fontWeight="bold" textAnchor="middle">
+          📡 山巅外星电波监听站 · 点击捕获信号
+        </text>
+      </g>
+    </>
+  );
 }
 
 export const ObservatoryHaven = React.memo(ObservatoryHavenAsset);

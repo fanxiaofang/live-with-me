@@ -23,7 +23,7 @@ export const ROOM_FOCUS: Record<RoomId, RoomFocus> = {
   my_room: focus('main_cottage', -145, 70, 1.2, 420, 380),
   living_nook: focus('main_cottage', 0, 105, 1.18, 460, 380),
   friend_room: focus('main_cottage', 140, 90, 1.2, 420, 380),
-  porch_mailbox: focus('main_cottage', 45, 205, 1.08, 440, 400, 450),
+  porch_mailbox: focus('main_cottage', 52, 218, 1.08, 440, 400, 450),
   capsule_pod: focus('capsule_pod', 0, 8, 1.45, 260, 250),
   corn_lounge: focus('wooden_cabin', 9, 18, 1.4, 280, 260),
   observatory: focus('observatory', 0, -5, 1.55, 280, 250),

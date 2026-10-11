@@ -145,9 +145,9 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
             stroke="#1c1007"
             strokeWidth="1.2"
           />
-          {/* 右主分枝 (向右上方遒劲舒展) */}
+          {/* 右主分枝 (向右上方遒劲舒展，深入主树干扎实连为一体) */}
           <path
-            d="M2,-12 Q18,-24 38,-35 L44,-28 Q24,-16 8,6 Z"
+            d="M-2,-15 Q18,-25 38,-35 L44,-28 Q22,-14 6,7 Q3,10 0,12 C-1,3 -1,-6 -2,-15 Z"
             fill="#382213"
             stroke="#1c1007"
             strokeWidth="0.9"

@@ -50,7 +50,7 @@ export default function App() {
   const handleToggleChairSeated = (nextSeated?: boolean) => {
     const nextVal = nextSeated !== undefined ? !nextSeated : !isChairEmptyOverride;
     setIsChairEmptyOverride(nextVal);
-    triggerToast(nextVal ? '🪑 已切换为【空椅子态】：清晰查看白橡木温莎椅的坐垫、木纹与朝向桌案的靠背' : '💻 已切换为【小人组合态】：小人就座敲代码，后背自然贴合温莎梳背');
+    triggerToast(nextVal ? '🪑 已切换为【空椅子态】：清晰查看修身实木工学椅的加厚云朵坐垫、护脊腰靠与自然木纹' : '💻 已切换为【小人组合态】：小人深陷云朵软包坐垫惬意敲代码，久坐释压');
   };
 
   // Bookshelf state

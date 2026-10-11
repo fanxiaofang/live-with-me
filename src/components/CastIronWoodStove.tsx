@@ -609,20 +609,167 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
         opacity="0.95"
       />
 
-      {/* Country Wall Decoration: Tiny Dried Herb Bouquet on Left Wall (紧贴左墙的田园小干花饰) */}
-      <g id="dried-herb-bouquet" transform="translate(-21, 14)">
-        <line x1="0" y1="0" x2="0" y2="3" stroke="#8c6a46" strokeWidth="0.6" />
-        <circle cx="0" cy="0" r="1.1" fill="#6d4f31" />
+      {/* Country Wall Decoration: Handcrafted Dried Herb & Flower Bouquet on Left Wall (倒挂风干薰衣草与尤加利干花香草束) */}
+      <g
+        id="dried-herb-bouquet"
+        transform="translate(-21, 14)"
+        className="cursor-pointer group/herb"
+      >
+        <title>倒挂风干香草束 · 散发着淡淡薰衣草与鼠尾草安神清香 🌿</title>
+
+        {/* 稳固透明交互热区 (防止悬停边界抖动) */}
+        <rect x="-8" y="-2" width="16" height="24" fill="transparent" />
+
+        {/* 墙面复古圆木钉与微阴影 */}
+        <ellipse cx="0.3" cy="0.4" rx="1.2" ry="0.8" fill="#1f1610" opacity="0.25" />
+        <circle cx="0" cy="0" r="1.2" fill="#78471f" stroke="#45270f" strokeWidth="0.35" />
+        <circle cx="-0.3" cy="-0.3" r="0.4" fill="#a87143" />
+
+        {/* 悬挂天然细麻绳环 */}
+        <line x1="0" y1="0" x2="0" y2="2.6" stroke="#9a734c" strokeWidth="0.65" strokeLinecap="round" />
+
+        {/* 倒挂麻绳蝴蝶结绑带 (Rustic Twine Ribbon Bow) */}
+        {/* 左蝴蝶结环 */}
         <path
-          d="M-2,3 Q-4,8 -5,12 M0,3 Q0,8 -1,13 M2,3 Q4,8 3,11"
-          stroke="#5d724f"
-          strokeWidth="0.7"
-          strokeLinecap="round"
-          fill="none"
+          d="M0,2.6 C-2.4,1.4 -3.6,3.4 -1.2,3.6 C-0.3,3.5 0,3.0 0,2.6 Z"
+          fill="#cbb396"
+          stroke="#785536"
+          strokeWidth="0.35"
         />
-        <circle cx="-5" cy="12" r="1" fill="#b084cc" />
-        <circle cx="-1" cy="13" r="1.1" fill="#eab308" />
-        <circle cx="3" cy="11" r="0.9" fill="#f87171" />
+        {/* 右蝴蝶结环 */}
+        <path
+          d="M0,2.6 C2.4,1.4 3.6,3.4 1.2,3.6 C0.3,3.5 0,3.0 0,2.6 Z"
+          fill="#cbb396"
+          stroke="#785536"
+          strokeWidth="0.35"
+        />
+        {/* 蝴蝶结中心绳结 */}
+        <circle cx="0" cy="2.7" r="0.9" fill="#8d623d" stroke="#5c381c" strokeWidth="0.3" />
+        {/* 下垂自然飘动的两根麻绳须须 */}
+        <path
+          d="M-0.4,3.3 Q-2.0,5.8 -1.4,7.8"
+          fill="none"
+          stroke="#9a734c"
+          strokeWidth="0.5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M0.4,3.3 Q1.6,6.0 1.0,8.2"
+          fill="none"
+          stroke="#9a734c"
+          strokeWidth="0.5"
+          strokeLinecap="round"
+        />
+
+        {/* 顶部紧紧捆扎的花茎束 (Bundled Stems at Top) */}
+        <path
+          d="M-0.8,3.2 L-1.4,0.8 M-0.2,3.2 L-0.3,0.5 M0.3,3.2 L0.5,0.6 M0.8,3.2 L1.2,0.9"
+          stroke="#556b43"
+          strokeWidth="0.5"
+          strokeLinecap="round"
+        />
+
+        {/* 下垂风干植物枝茎群 (Down-hanging Dried Stems) */}
+        <path
+          d="M-0.4,3.5 Q-3.5,8 -4.8,14.5"
+          fill="none"
+          stroke="#5e754a"
+          strokeWidth="0.65"
+          strokeLinecap="round"
+        />
+        <path
+          d="M0.4,3.5 Q3.5,8 4.6,14.5"
+          fill="none"
+          stroke="#5e754a"
+          strokeWidth="0.65"
+          strokeLinecap="round"
+        />
+        <path
+          d="M0,3.5 Q-0.8,8.5 -0.6,15.5"
+          fill="none"
+          stroke="#556d43"
+          strokeWidth="0.75"
+          strokeLinecap="round"
+        />
+        <path
+          d="M-0.2,3.5 Q-1.8,7.5 -2.6,12"
+          fill="none"
+          stroke="#4d613c"
+          strokeWidth="0.55"
+          strokeLinecap="round"
+        />
+        <path
+          d="M0.2,3.5 Q1.8,7.5 2.5,12"
+          fill="none"
+          stroke="#4d613c"
+          strokeWidth="0.55"
+          strokeLinecap="round"
+        />
+
+        {/* 尤加利/鼠尾草圆润风干叶片 (Dried Eucalyptus & Sage Leaves) */}
+        <ellipse cx="-2.6" cy="6.8" rx="1.5" ry="1.0" transform="rotate(-30, -2.6, 6.8)" fill="#789269" stroke="#48613d" strokeWidth="0.25" />
+        <ellipse cx="2.6" cy="7.2" rx="1.5" ry="1.0" transform="rotate(30, 2.6, 7.2)" fill="#849e75" stroke="#48613d" strokeWidth="0.25" />
+        <ellipse cx="-3.4" cy="9.8" rx="1.6" ry="1.1" transform="rotate(-20, -3.4, 9.8)" fill="#68855a" stroke="#415735" strokeWidth="0.25" />
+        <ellipse cx="3.2" cy="10.2" rx="1.6" ry="1.1" transform="rotate(25, 3.2, 10.2)" fill="#789669" stroke="#415735" strokeWidth="0.25" />
+        <ellipse cx="-1.2" cy="8.2" rx="1.3" ry="0.9" transform="rotate(15, -1.2, 8.2)" fill="#8aa87b" opacity="0.9" />
+
+        {/* 薰衣草风干花穗群 (French Dried Lavender Florets) */}
+        {/* 左侧薰衣草花穗 */}
+        <g transform="translate(-4.8, 14)">
+          {[-4.0, -3.0, -2.0, -1.0, 0, 0.8].map((offsetY, idx) => (
+            <g key={`lav-l-${idx}`}>
+              <ellipse cx="-0.5" cy={offsetY} rx="0.9" ry="0.6" transform={`rotate(${-15 + (idx % 2) * 10}, -0.5, ${offsetY})`} fill="#8b5cf6" />
+              <ellipse cx="0.5" cy={offsetY + 0.2} rx="0.8" ry="0.55" transform={`rotate(${15 - (idx % 2) * 10}, 0.5, ${offsetY + 0.2})`} fill="#a78bfa" />
+              <circle cx="0" cy={offsetY} r="0.45" fill="#c4b5fd" />
+            </g>
+          ))}
+          <circle cx="0" cy="1.4" r="0.5" fill="#7c3aed" />
+        </g>
+
+        {/* 右侧薰衣草花穗 */}
+        <g transform="translate(4.5, 14)">
+          {[-4.0, -3.0, -2.0, -1.0, 0, 0.8].map((offsetY, idx) => (
+            <g key={`lav-r-${idx}`}>
+              <ellipse cx="-0.5" cy={offsetY + 0.2} rx="0.8" ry="0.55" transform={`rotate(${-20 + (idx % 2) * 10}, -0.5, ${offsetY + 0.2})`} fill="#a78bfa" />
+              <ellipse cx="0.5" cy={offsetY} rx="0.9" ry="0.6" transform={`rotate(${20 - (idx % 2) * 10}, 0.5, ${offsetY})`} fill="#8b5cf6" />
+              <circle cx="0" cy={offsetY} r="0.45" fill="#c4b5fd" />
+            </g>
+          ))}
+          <circle cx="0" cy="1.4" r="0.5" fill="#7c3aed" />
+        </g>
+
+        {/* 中间干雏菊 / 满天星 / 金黄麦穗 (Cozy Golden Chamomile & Baby's Breath) */}
+        {/* 干雏菊花朵 1 */}
+        <g transform="translate(-1.2, 12)">
+          <circle cx="0" cy="0" r="1.6" fill="#fefce8" stroke="#fef08a" strokeWidth="0.2" />
+          <circle cx="0" cy="0" r="0.7" fill="#f59e0b" />
+          <circle cx="-0.9" cy="0" r="0.4" fill="#ffffff" />
+          <circle cx="0.9" cy="0" r="0.4" fill="#ffffff" />
+          <circle cx="0" cy="-0.9" r="0.4" fill="#ffffff" />
+          <circle cx="0" cy="0.9" r="0.4" fill="#ffffff" />
+        </g>
+
+        {/* 干雏菊花朵 2 */}
+        <g transform="translate(1.5, 13.5)">
+          <circle cx="0" cy="0" r="1.4" fill="#fefce8" stroke="#fef08a" strokeWidth="0.2" />
+          <circle cx="0" cy="0" r="0.6" fill="#f59e0b" />
+          <circle cx="-0.8" cy="0" r="0.35" fill="#ffffff" />
+          <circle cx="0.8" cy="0" r="0.35" fill="#ffffff" />
+          <circle cx="0" cy="-0.8" r="0.35" fill="#ffffff" />
+          <circle cx="0" cy="0.8" r="0.35" fill="#ffffff" />
+        </g>
+
+        {/* 下端悬垂的暖黄麦穗/兔尾草毛茸球 */}
+        <g transform="translate(-0.5, 16.5)">
+          <ellipse cx="0" cy="0" rx="1.0" ry="1.6" fill="#fde047" stroke="#d97706" strokeWidth="0.25" />
+          <ellipse cx="0" cy="-0.3" rx="0.6" ry="1.0" fill="#fef08a" />
+        </g>
+
+        {/* 点缀几颗小干花蕾与满天星细白点 */}
+        <circle cx="-2.2" cy="14.8" r="0.55" fill="#fed7aa" />
+        <circle cx="2.6" cy="15.8" r="0.6" fill="#fed7aa" />
+        <circle cx="0.8" cy="10.8" r="0.5" fill="#ffffff" opacity="0.9" />
+        <circle cx="-0.8" cy="9.8" r="0.5" fill="#ffffff" opacity="0.9" />
       </g>
 
       {/* --- 2. Ground Contact Shadows & Floor Glow (随炉体等比放大并自然贴合地面) --- */}

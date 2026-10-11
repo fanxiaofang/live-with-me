@@ -162,7 +162,7 @@ export const SCENE_SLOT_CONFIGS: Record<FurnitureSlotId, SceneSlotConfig> = {
     accessory: 'headset',
     badgeLabel: '观测台 · 操作台 (侧身)',
     actionDesc: '佩戴无线电耳机，手持日志记录深空信号',
-    offset: { dx: -2, dy: 14 },
+    offset: { dx: 4, dy: -14 },
   },
 };
 

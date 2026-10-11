@@ -62,13 +62,13 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
             </div>
             <div>
               <h2 id="chair-modal-title" className="text-base font-semibold text-[#f5ede3] flex items-center gap-2">
-                电脑桌椅子空间透视与就座状态检视
+                电脑桌工学软包椅透视与就座状态检视
                 <span className="text-xs px-2 py-0.5 rounded-full bg-[#342a20] text-[#cfb088] border border-[#4a3b2c]">
-                  NW 垂直对齐修正
+                  修身紧凑 · 久坐释压升级
                 </span>
               </h2>
               <p className="text-xs text-[#9a8d7d] mt-0.5">
-                高精度对比「空椅态」与「小人组合态」，椅子正面严格朝向 NW（西北），与书桌长边绝对垂直对齐
+                高精度对比「空椅态」与「小人组合态」，去除金属铜套回归纯实木收口，配备加厚云朵坐垫、护脊腰靠与流线型小扶手
               </p>
             </div>
           </div>
@@ -249,8 +249,8 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
                       1
                     </span>
                     <p className="leading-snug">
-                      <strong className="text-[#ece4d8]">紧凑比例与对齐：</strong>
-                      座面宽度缩减至匀称的 16.5px，告别原先 27px 类似长凳的空旷感；椅背顶梁与前后沿严格锁定 <code className="text-[#e2935d] font-mono">-0.2852</code> 斜率，与书桌长边绝对平行。
+                      <strong className="text-[#ece4d8]">修身紧凑比例：</strong>
+                      座面宽度收拢至匀称贴身的 15.5px，告别原先过宽笨拙感；椅背顶梁与前后沿严格锁定 <code className="text-[#e2935d] font-mono">-0.2852</code> 斜率，与书桌长边绝对平行。
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
@@ -258,8 +258,8 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
                       2
                     </span>
                     <p className="leading-snug">
-                      <strong className="text-[#ece4d8]">白橡木马鞍雕刻与质朴棉麻：</strong>
-                      座板呈现马鞍形凹凸雕刻面与自然年轮木纹，边缘带木蜡油受光金色倒角高光；嵌入式米白棉麻坐垫带十字十字微皱绗缝。
+                      <strong className="text-[#ece4d8]">纯实木自然车削脚端（无金属铜套）：</strong>
+                      彻底去除突兀的工业金属铜套，采用纯手工白橡木车削与天然木蜡油深色收口，完美融入约克郡乡村木屋氛围。
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
@@ -267,8 +267,8 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
                       3
                     </span>
                     <p className="leading-snug">
-                      <strong className="text-[#ece4d8]">对称居中梳背与车削外八腿：</strong>
-                      7 根纺锤立柱与蒸汽弯木顶梁以 <code className="text-[#e2935d] font-mono">x=0</code> 严格对称排布；四根实木腿外八扎地，黄铜脚套与 H 型横枨稳定受光。
+                      <strong className="text-[#ece4d8]">久坐舒适工学配置：</strong>
+                      配备加厚双层高回弹云朵棉麻坐垫、贴合人体的护脊亚麻腰靠、以及温润流线型实木小扶手，彻底解决硬木椅久坐腰酸背痛问题。
                     </p>
                   </div>
                 </div>
@@ -340,8 +340,8 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
                       1
                     </span>
                     <p className="leading-snug">
-                      <strong className="text-[#ece4d8]">类似蒲团的长袍自然垂坠：</strong>
-                      消除生硬菱形下摆，采用如同蒲团盘坐时宽大长袍/卫衣的自然垂坠下摆，下部带布料阴影层与微褶皱弧线，柔软陷于棉麻坐垫上。
+                      <strong className="text-[#ece4d8]">深陷云感坐垫与腰部释压：</strong>
+                      长袍下摆柔和铺展，小人自然微陷于加厚高回弹坐垫中，护脊腰靠温润托住下背腰椎，提供全天专注编程的充盈包裹感。
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
@@ -349,8 +349,8 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
                       2
                     </span>
                     <p className="leading-snug">
-                      <strong className="text-[#ece4d8]">饱满立体感圆手 (3D Chibi Hands)：</strong>
-                      双臂带宽松袖筒与圆润翻折袖口；圆手采用 3D 球状渐变光泽，带萌系小拇指与键盘接触微阴影，生动按压笔记本键盘。
+                      <strong className="text-[#ece4d8]">手肘轻搭小扶手、圆手敏捷敲字：</strong>
+                      双臂自然落肩，手肘依托实木流线型小扶手得到放松支撑，3D 饱满圆手轻盈搭在键盘按键上，敲代码轻快惬意。
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
@@ -358,8 +358,8 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
                       3
                     </span>
                     <p className="leading-snug">
-                      <strong className="text-[#ece4d8]">严格对中支撑后背：</strong>
-                      椅背以小人脊柱 <code className="text-[#60a5fa] font-mono">x=0</code> 为中心对称合围，蒸汽弯木顶梁温润支撑腰背，双肩与耳机严格顺应 <code className="text-[#60a5fa] font-mono">-0.2852</code> 轴测斜率。
+                      <strong className="text-[#ece4d8]">严格对中顺应轴测：</strong>
+                      椅背梳背与蒸汽弯木顶梁紧凑修身、以脊柱 <code className="text-[#60a5fa] font-mono">x=0</code> 严格对称合围，双肩与耳机顺应 <code className="text-[#60a5fa] font-mono">-0.2852</code> 轴测斜率，朝向书桌深处。
                     </p>
                   </div>
                 </div>

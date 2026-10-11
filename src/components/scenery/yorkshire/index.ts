@@ -13,6 +13,7 @@ export * from './parcels/PastureFields';
 
 // Layer 04: Boundaries
 export * from './boundaries/DrystoneWalls';
+export * from './boundaries/SheepPen';
 
 // Layer 05: Infrastructure
 export * from './infrastructure/RailwayLandscape';

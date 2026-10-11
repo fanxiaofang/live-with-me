@@ -100,58 +100,86 @@ export const CabinetFrame: React.FC<CabinetFrameProps> = ({
           <stop offset="50%" stopColor="#b3985f" />
           <stop offset="100%" stopColor="#7e6737" />
         </linearGradient>
+
+        {/* 柜腿触地柔和漫反射羽化滤镜 (告别生硬死黑与焦黑硬边) */}
+        <filter id="cabinetFootShadowFilter" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="0.75" />
+        </filter>
+        <filter id="cabinetSoftFloorFilter" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="1.6" />
+        </filter>
       </defs>
 
-      {/* --- 1. 地面漫反射接触阴影 (敦厚稳稳着地，低重心扎实感) --- */}
-      {/* 柜底整体柔和悬空阴影 */}
+      {/* --- 1. 地面漫反射接触阴影 (温润原木自然微影，轻盈清爽、不显沉闷死黑) --- */}
+      {/* 柜底整体柔和悬空慢漫射微影 */}
       <polygon
-        points="-28,-1.5 15,-13.8 34,-8.6 -9,4.0"
-        fill="#1e1006"
-        opacity="0.28"
+        points="-27,-2.0 14,-14.0 32,-9.0 -8,3.2"
+        fill="#3e2313"
+        opacity="0.10"
+        filter="url(#cabinetSoftFloorFilter)"
       />
-      {/* 后左腿接触阴影 */}
-      <ellipse cx="-23.2" cy="-2.4" rx="2.8" ry="1.2" fill="#180c04" opacity="0.45" />
+
+      {/* 后左腿接触阴影 (柔和暖棕羽化影 + 轻微核心触底影) */}
+      <g id="shadow-leg-back-left">
+        <ellipse cx="-23.2" cy="-2.4" rx="2.4" ry="1.0" fill="#3a2010" opacity="0.16" filter="url(#cabinetFootShadowFilter)" />
+        <ellipse cx="-23.2" cy="-2.4" rx="1.5" ry="0.6" fill="#2c160a" opacity="0.13" />
+      </g>
       {/* 后右腿接触阴影 */}
-      <ellipse cx="15.2" cy="-13.4" rx="2.6" ry="1.1" fill="#180c04" opacity="0.4" />
+      <g id="shadow-leg-back-right">
+        <ellipse cx="15.2" cy="-13.4" rx="2.2" ry="0.9" fill="#3a2010" opacity="0.15" filter="url(#cabinetFootShadowFilter)" />
+        <ellipse cx="15.2" cy="-13.4" rx="1.4" ry="0.55" fill="#2c160a" opacity="0.12" />
+      </g>
       {/* 前左腿接触阴影 */}
-      <ellipse cx="-6.0" cy="1.6" rx="3.2" ry="1.4" fill="#180c04" opacity="0.5" />
+      <g id="shadow-leg-front-left">
+        <ellipse cx="-6.0" cy="1.6" rx="2.6" ry="1.1" fill="#3a2010" opacity="0.20" filter="url(#cabinetFootShadowFilter)" />
+        <ellipse cx="-6.0" cy="1.6" rx="1.6" ry="0.65" fill="#2c160a" opacity="0.16" />
+      </g>
       {/* 前右腿接触阴影 */}
-      <ellipse cx="27.0" cy="-8.8" rx="3.0" ry="1.3" fill="#180c04" opacity="0.46" />
+      <g id="shadow-leg-front-right">
+        <ellipse cx="27.0" cy="-8.8" rx="2.5" ry="1.0" fill="#3a2010" opacity="0.18" filter="url(#cabinetFootShadowFilter)" />
+        <ellipse cx="27.0" cy="-8.8" rx="1.5" ry="0.6" fill="#2c160a" opacity="0.14" />
+      </g>
 
       {/* --- 2. 敦厚稳重实木矮脚 (短小、粗壮、沉稳着地，低重心厚重感) --- */}
       {/* 2.1 后左腿 */}
       <g id="leg-back-left">
-        <polygon points="-24.8,-6.8 -21.6,-6.8 -21.8,-2.6 -25.0,-2.6" fill="url(#walnutLegGrad)" stroke="#221107" strokeWidth="0.3" />
-        <ellipse cx="-23.4" cy="-2.6" rx="1.6" ry="0.6" fill="#1a0d05" stroke="#120803" strokeWidth="0.25" />
+        <polygon points="-24.8,-6.8 -21.6,-6.8 -21.8,-2.6 -25.0,-2.6" fill="url(#walnutLegGrad)" stroke="#381c0d" strokeWidth="0.25" />
+        <ellipse cx="-23.4" cy="-2.6" rx="1.6" ry="0.6" fill="#442514" stroke="#2d160a" strokeWidth="0.2" />
       </g>
 
       {/* 2.2 后右腿 */}
       <g id="leg-back-right">
-        <polygon points="13.6,-17.8 16.8,-17.8 17.0,-13.6 13.8,-13.6" fill="url(#walnutLegGrad)" stroke="#221107" strokeWidth="0.3" />
-        <ellipse cx="15.4" cy="-13.6" rx="1.5" ry="0.6" fill="#1a0d05" stroke="#120803" strokeWidth="0.25" />
+        <polygon points="13.6,-17.8 16.8,-17.8 17.0,-13.6 13.8,-13.6" fill="url(#walnutLegGrad)" stroke="#381c0d" strokeWidth="0.25" />
+        <ellipse cx="15.4" cy="-13.6" rx="1.5" ry="0.6" fill="#442514" stroke="#2d160a" strokeWidth="0.2" />
       </g>
 
       {/* 2.3 柜体底层沉稳实木托梁裙边 (加固柜底厚重感) */}
       <polygon
         points="-28.4,-7.0 15.6,-19.6 32.8,-14.7 -11.2,-2.1"
-        fill="#26140a"
-        stroke="#1a0c05"
-        strokeWidth="0.3"
+        fill="#321b0e"
+        stroke="#241208"
+        strokeWidth="0.25"
       />
 
       {/* 2.4 前左腿 (粗壮短脚，底托沉实) */}
       <g id="leg-front-left">
-        <polygon points="-8.2,-3.8 -4.6,-3.8 -4.4,1.4 -8.0,1.4" fill="url(#walnutLegGrad)" stroke="#221107" strokeWidth="0.35" />
-        <ellipse cx="-6.2" cy="1.4" rx="1.8" ry="0.75" fill="#1d0e06" stroke="#120803" strokeWidth="0.25" />
+        <polygon points="-8.2,-3.8 -4.6,-3.8 -4.4,1.4 -8.0,1.4" fill="url(#walnutLegGrad)" stroke="#381c0d" strokeWidth="0.25" />
+        {/* 底部实木横断面微倒角 (自然暖棕端木纹) */}
+        <ellipse cx="-6.2" cy="1.4" rx="1.8" ry="0.75" fill="#482916" stroke="#30180b" strokeWidth="0.2" />
+        {/* 地板暖光漫反射微泛光弧线 (消除底部黑斑死感) */}
+        <path d="M -7.7,1.4 Q -6.2,2.0 -4.7,1.4" stroke="#87532d" strokeWidth="0.35" fill="none" opacity="0.6" strokeLinecap="round" />
         {/* 腿柱立体受光棱线 */}
-        <line x1="-7.4" y1="-3.4" x2="-7.2" y2="1.1" stroke="#9e6d42" strokeWidth="0.45" opacity="0.65" strokeLinecap="round" />
+        <line x1="-7.4" y1="-3.4" x2="-7.2" y2="1.1" stroke="#a37246" strokeWidth="0.45" opacity="0.6" strokeLinecap="round" />
       </g>
 
       {/* 2.5 前右腿 (粗壮短脚，底托沉实) */}
       <g id="leg-front-right">
-        <polygon points="24.8,-13.6 28.4,-13.6 28.6,-8.8 25.0,-8.8" fill="url(#walnutLegGrad)" stroke="#221107" strokeWidth="0.35" />
-        <ellipse cx="26.8" cy="-8.8" rx="1.7" ry="0.75" fill="#1d0e06" stroke="#120803" strokeWidth="0.25" />
-        <line x1="25.6" y1="-13.2" x2="25.8" y2="-9.1" stroke="#9e6d42" strokeWidth="0.45" opacity="0.65" strokeLinecap="round" />
+        <polygon points="24.8,-13.6 28.4,-13.6 28.6,-8.8 25.0,-8.8" fill="url(#walnutLegGrad)" stroke="#381c0d" strokeWidth="0.25" />
+        {/* 底部实木横断面微倒角 (自然暖棕端木纹) */}
+        <ellipse cx="26.8" cy="-8.8" rx="1.7" ry="0.75" fill="#482916" stroke="#30180b" strokeWidth="0.2" />
+        {/* 地板暖光漫反射微泛光弧线 */}
+        <path d="M 25.3,-8.8 Q 26.8,-8.2 28.3,-8.8" stroke="#87532d" strokeWidth="0.35" fill="none" opacity="0.6" strokeLinecap="round" />
+        <line x1="25.6" y1="-13.2" x2="25.8" y2="-9.1" stroke="#a37246" strokeWidth="0.45" opacity="0.6" strokeLinecap="round" />
       </g>
 
       {/* --- 3. 柜体内部结构 (沉静温暖实木开放格内部) --- */}

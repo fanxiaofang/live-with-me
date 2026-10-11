@@ -5,6 +5,7 @@ import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
 import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import { CabinetFrame } from './CabinetFrame';
 import { CeramicCupsDisplay, CoffeeBeansDisplay } from './CoffeeCorner';
+import { HoneyJar } from './HoneyJar';
 import { MokaPot } from './MokaPot';
 import { RetroTurntable } from './RetroTurntable';
 
@@ -38,15 +39,17 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
   const cupsPos = layout['ceramic-cups'].screen;
   const turntablePos = layout['record-player'].screen;
   const mokaPos = layout['moka-pot'].screen;
+  const honeyPos = (layout['honey-jar'] ?? DEFAULT_ROOM_LAYOUT['honey-jar']).screen;
 
   const beansScale = layout['coffee-beans'].scale;
   const cupsScale = layout['ceramic-cups'].scale;
   const turntableScale = layout['record-player'].scale;
   const mokaScale = layout['moka-pot'].scale;
+  const honeyScale = (layout['honey-jar'] ?? DEFAULT_ROOM_LAYOUT['honey-jar']).scale ?? 0.85;
 
   const isCabinetChild =
     Boolean(isInspectorOpen && activeGizmoId &&
-    ['record-player', 'moka-pot', 'coffee-beans', 'ceramic-cups'].includes(activeGizmoId));
+    ['record-player', 'moka-pot', 'honey-jar', 'coffee-beans', 'ceramic-cups'].includes(activeGizmoId));
 
   return (
     <g id="record-cabinet-container" className="select-none">
@@ -107,28 +110,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
 
       {/* 3. 顶面操作台陈列物品 (台面层，置于顶板之上) */}
       <g id="cabinet-countertop-items">
-        {/* 3.1 顶面左侧：复古极简黑胶唱片机 */}
-        <g {...svgAction('cabinet-record-player')}
-          id="cabinet-record-player"
-          transform={`translate(${turntablePos.x}, ${turntablePos.y}) scale(${turntableScale})`}
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelectGizmo?.(activeGizmoId === 'record-player' ? null : 'record-player');
-          }}
-          onMouseEnter={(e) => {
-            e.stopPropagation();
-            onHoverObject?.({ kind: 'furniture-part', id: 'record-player' });
-          }}
-          onMouseLeave={(e) => {
-            e.stopPropagation();
-            onHoverObject?.(null);
-          }}
-        >
-          <RetroTurntable isPlaying={isPlaying} />
-        </g>
-
-        {/* 3.2 顶面右侧：经典意式摩卡咖啡壶 */}
+        {/* 3.1 顶面右后方：经典意式摩卡咖啡壶 */}
         <g {...svgAction('cabinet-moka-pot')}
           id="cabinet-moka-pot"
           transform={`translate(${mokaPos.x}, ${mokaPos.y}) scale(${mokaScale})`}
@@ -147,6 +129,48 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
           }}
         >
           <MokaPot hasSteam={true} />
+        </g>
+
+        {/* 3.2 顶面中间偏右：金黄野花蜂蜜罐 */}
+        <g {...svgAction('cabinet-honey-jar')}
+          id="cabinet-honey-jar"
+          transform={`translate(${honeyPos.x}, ${honeyPos.y}) scale(${honeyScale})`}
+          className="cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelectGizmo?.(activeGizmoId === 'honey-jar' ? null : 'honey-jar');
+          }}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            onHoverObject?.({ kind: 'furniture-part', id: 'honey-jar' });
+          }}
+          onMouseLeave={(e) => {
+            e.stopPropagation();
+            onHoverObject?.(null);
+          }}
+        >
+          <HoneyJar />
+        </g>
+
+        {/* 3.3 顶面左侧：复古极简黑胶唱片机 */}
+        <g {...svgAction('cabinet-record-player')}
+          id="cabinet-record-player"
+          transform={`translate(${turntablePos.x}, ${turntablePos.y}) scale(${turntableScale})`}
+          className="cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelectGizmo?.(activeGizmoId === 'record-player' ? null : 'record-player');
+          }}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            onHoverObject?.({ kind: 'furniture-part', id: 'record-player' });
+          }}
+          onMouseLeave={(e) => {
+            e.stopPropagation();
+            onHoverObject?.(null);
+          }}
+        >
+          <RetroTurntable isPlaying={isPlaying} />
         </g>
       </g>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DrystoneWalls, MountainSilhouette, PastureFields, RailwayLandscape, RollingWheatSilhouette, TerrainMass } from '../../components/scenery/yorkshire';
+import { DrystoneWalls, MountainSilhouette, PastureFields, RailwayLandscape, RollingWheatSilhouette, SheepPen, TerrainMass } from '../../components/scenery/yorkshire';
 import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import { Camera, OVERVIEW_CAMERA } from '../camera/cameraMath';
 import { getParallaxTransformStyle, PARALLAX_PRESETS } from '../camera/parallaxMath';
@@ -320,8 +320,13 @@ function HomesteadMeadowAsset({ theme, sceneLayout, setHoveredObject, onTriggerT
       {/* 03 LAND PARCELS (低多边形几何草甸分块与平整田亩) */}
       <PastureFields theme={theme} />
 
-      {/* 04 BOUNDARIES (低多边形石墙与标志性五杠原木门) */}
+      {/* 04 BOUNDARIES (低多边形石墙与标志性五杠原木门、温馨羊圈) */}
       <DrystoneWalls
+        theme={theme}
+        onTriggerToast={onTriggerToast}
+        setHoveredObject={setHoveredObject}
+      />
+      <SheepPen
         theme={theme}
         onTriggerToast={onTriggerToast}
         setHoveredObject={setHoveredObject}
@@ -506,23 +511,96 @@ function HomesteadMeadowAsset({ theme, sceneLayout, setHoveredObject, onTriggerT
         </g>
       </g>
 
-      {/* 7. WEST HOMESTEAD WOODPILE & FLOWER BEDS */}
+      {/* 7. WEST HOMESTEAD BEEHIVE & FLOWER BEDS */}
       <g id="west-cottage-grounds" transform="translate(-130, 330)">
-        <ellipse cx="8" cy="18" rx="14" ry="5" fill="#1b2518" opacity="0.3" />
-        <rect x="0" y="6" width="16" height="12" rx="1.5" fill="#523924" stroke="#2c1d12" strokeWidth="0.7" />
-        {[
-          { x: 3, y: 10, r: 2.4 }, { x: 8, y: 10, r: 2.4 }, { x: 13, y: 10, r: 2.4 },
-          { x: 5.5, y: 14.5, r: 2.4 }, { x: 10.5, y: 14.5, r: 2.4 },
-        ].map((lg, i) => (
-          <circle key={`wlog-${i}`} cx={lg.x} cy={lg.y} r={lg.r} fill="#d8cbba" stroke="#382618" strokeWidth="0.6" />
-        ))}
+        {/* ======================================================== */}
+        {/* A. 蜜源花丛 (Lavender & Wildflowers - 摇曳薰衣草与金色雏菊)  */}
+        {/* ======================================================== */}
+        <g id="beehive-lavender-flowers" transform="translate(-12, 10)">
+          {/* 地面小草影 */}
+          <ellipse cx="0" cy="8" rx="9" ry="3.5" fill="#182315" opacity="0.25" />
+          <g className="animate-wind-flower" style={{ animationDelay: '0.4s', transformOrigin: '0px 0px' }}>
+            {/* 薰衣草花茎 */}
+            <path d="M-5,7 Q-6,-1 -7,-8 M-1,7 Q-2,-2 -2,-12 M3,7 Q4,-2 4,-9 M7,7 Q9,-1 9,-7" stroke="#385434" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+            {/* 丰满紫色薰衣草花穗 */}
+            <circle cx="-7" cy="-8" r="1.5" fill="#a855f7" />
+            <circle cx="-6.5" cy="-6" r="1.2" fill="#c084fc" />
+            <circle cx="-2" cy="-12" r="1.7" fill="#9333ea" />
+            <circle cx="-2" cy="-9.5" r="1.4" fill="#a855f7" />
+            <circle cx="-2" cy="-7.2" r="1.2" fill="#c084fc" />
+            <circle cx="4" cy="-9" r="1.5" fill="#a855f7" />
+            <circle cx="4" cy="-6.8" r="1.2" fill="#9333ea" />
+            <circle cx="9" cy="-7" r="1.4" fill="#c084fc" />
+          </g>
+          {/* 金黄雏菊与白花点缀 */}
+          <circle cx="-2" cy="6" r="1.6" fill="#fef08a" />
+          <circle cx="-2" cy="6" r="0.65" fill="#ca8a04" />
+          <circle cx="4" cy="7" r="1.4" fill="#ffffff" />
+          <circle cx="4" cy="7" r="0.6" fill="#facc15" />
+        </g>
 
-        <g transform="translate(24, 14)">
-          <g className="animate-wind-flower" style={{ animationDelay: '0.6s', transformOrigin: '0px 0px' }}>
-            <path d="M-2,5 Q-4,-4 -6,-10 M0,5 Q0,-5 0,-12 M2,5 Q4,-4 5,-9" stroke="#385434" strokeWidth="1.2" fill="none" />
-            <circle cx="-6" cy="-10" r="1.6" fill="#a855f7" />
-            <circle cx="0" cy="-12" r="1.8" fill="#9333ea" />
-            <circle cx="5" cy="-9" r="1.5" fill="#c084fc" />
+        {/* ======================================================== */}
+        {/* B. 可爱木制小蜜蜂箱 (Cute Storybook Wooden Beehive & Bees) */}
+        {/* ======================================================== */}
+        <g id="storybook-wooden-beehive" transform="translate(24, 2)">
+          {/* 1. 地面接触阴影 */}
+          <ellipse cx="10" cy="19" rx="14" ry="5.5" fill="#182315" opacity="0.38" />
+
+          {/* 2. 蜂箱四脚立柱支架 (4-Leg Wooden Hive Stand - 离地防潮) */}
+          <rect x="2" y="13" width="2.2" height="6" rx="0.5" fill="#3b2413" stroke="#1d1108" strokeWidth="0.5" />
+          <rect x="15.8" y="13" width="2.2" height="6" rx="0.5" fill="#3b2413" stroke="#1d1108" strokeWidth="0.5" />
+          <rect x="6" y="10" width="2" height="5" rx="0.5" fill="#2d1b0d" />
+          <rect x="19" y="10" width="2" height="5" rx="0.5" fill="#2d1b0d" />
+
+          {/* 3. 起飞/降落斜木踏板 (Flight Landing Board) */}
+          <polygon points="1,13 19,13 21,16.5 0,16.5" fill="#8c582f" stroke="#362010" strokeWidth="0.6" />
+          <line x1="1" y1="13.8" x2="19" y2="13.8" stroke="#b27b4b" strokeWidth="0.6" />
+
+          {/* 4. 下层主蜂巢箱 (Brood Chamber Box - 2.5D 等轴测温暖实木箱) */}
+          <polygon points="1.5,4.5 18.5,4.5 18.5,13 1.5,13" fill="#e2b477" stroke="#4a2e16" strokeWidth="0.6" />
+          <polygon points="18.5,4.5 24,1.8 24,9.8 18.5,13" fill="#b0834c" stroke="#4a2e16" strokeWidth="0.6" />
+          <line x1="2" y1="8.5" x2="18" y2="8.5" stroke="#a4723c" strokeWidth="0.5" />
+          <line x1="18.5" y1="8.5" x2="24" y2="5.8" stroke="#875929" strokeWidth="0.5" />
+          <rect x="5.5" y="10.8" width="9" height="1.8" rx="0.6" fill="#1b1208" />
+
+          {/* 5. 上层继箱 (Honey Super Box - 储蜜层) */}
+          <polygon points="1,-2.5 19,-2.5 19,4.5 1,4.5" fill="#ebd0a6" stroke="#4a2e16" strokeWidth="0.6" />
+          <polygon points="19,-2.5 24.5,-5.2 24.5,1.8 19,4.5" fill="#b88c54" stroke="#4a2e16" strokeWidth="0.6" />
+          <rect x="7.5" y="0.5" width="5" height="1.6" rx="0.5" fill="#8c582f" opacity="0.85" />
+
+          {/* 6. 人字倾斜木屋顶与铜绿护顶 (Pitched Storybook Gable Roof) */}
+          <polygon points="1,-2.5 10,-8 19,-2.5" fill="#deb885" stroke="#3d2411" strokeWidth="0.6" />
+          <polygon points="-0.5,-2.2 10,-8 15.5,-10.8 5,-5" fill="#6ea35d" stroke="#2d4a25" strokeWidth="0.6" />
+          <polygon points="10,-8 20.5,-2.2 26,-5 15.5,-10.8" fill="#528343" stroke="#2d4a25" strokeWidth="0.6" />
+          <line x1="10" y1="-8" x2="15.5" y2="-10.8" stroke="#a3e635" strokeWidth="0.8" />
+          <polygon points="10,-6.5 11.8,-5.5 11.8,-3.5 10,-2.5 8.2,-3.5 8.2,-5.5" fill="#fbbf24" stroke="#854d0e" strokeWidth="0.4" />
+
+          {/* 7. 飞舞的可爱小蜜蜂 (Tiny Buzzing Bees) */}
+          {/* 蜜蜂 1：在蜂箱出入口前方飞舞 */}
+          <g transform="translate(15, 8)">
+            <ellipse cx="-1" cy="-1.4" rx="1.3" ry="0.8" fill="#e0f2fe" opacity="0.9" transform="rotate(-25 -1 -1.4)" />
+            <ellipse cx="1" cy="-1.4" rx="1.3" ry="0.8" fill="#ffffff" opacity="0.9" transform="rotate(25 1 -1.4)" />
+            <ellipse cx="0" cy="0" rx="2.0" ry="1.4" fill="#fbbf24" />
+            <line x1="-0.6" y1="-1.2" x2="-0.6" y2="1.2" stroke="#451a03" strokeWidth="0.6" />
+            <line x1="0.6" y1="-1.2" x2="0.6" y2="1.2" stroke="#451a03" strokeWidth="0.6" />
+            <circle cx="1.6" cy="-0.2" r="0.4" fill="#1c1917" />
+            <line x1="-2.0" y1="0" x2="-2.5" y2="0" stroke="#1c1917" strokeWidth="0.4" />
+          </g>
+
+          {/* 蜜蜂 2：在屋顶上方盘旋 */}
+          <g transform="translate(25, -6)">
+            <ellipse cx="-0.8" cy="-1.2" rx="1.1" ry="0.7" fill="#e0f2fe" opacity="0.85" transform="rotate(-20 -0.8 -1.2)" />
+            <ellipse cx="0.8" cy="-1.2" rx="1.1" ry="0.7" fill="#ffffff" opacity="0.85" transform="rotate(20 0.8 -1.2)" />
+            <ellipse cx="0" cy="0" rx="1.7" ry="1.2" fill="#facc15" />
+            <line x1="-0.4" y1="-1" x2="-0.4" y2="1" stroke="#451a03" strokeWidth="0.5" />
+            <line x1="0.5" y1="-1" x2="0.5" y2="1" stroke="#451a03" strokeWidth="0.5" />
+          </g>
+
+          {/* 蜜蜂 3：在花丛与蜂箱之间的开阔草地采蜜 (位于中间空档处) */}
+          <g transform="translate(-10, 6)">
+            <ellipse cx="0" cy="-1.1" rx="1.0" ry="0.6" fill="#e0f2fe" opacity="0.8" />
+            <ellipse cx="0" cy="0" rx="1.5" ry="1.1" fill="#fbbf24" />
+            <line x1="0" y1="-0.9" x2="0" y2="0.9" stroke="#451a03" strokeWidth="0.5" />
           </g>
         </g>
       </g>

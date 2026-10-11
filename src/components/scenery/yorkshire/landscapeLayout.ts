@@ -11,8 +11,8 @@ drystoneWalls: {
     eastWall: {
       id: 'wall-east',
       segment1: { start: { x: 260, y: 490 }, end: { x: 440, y: 460 } },
-      // The eastern meadow entrance meets the existing low stone wall.
-      gateAnchor: { x: 1176, y: 178 },
+      // 5-bar gate is integrated into the sheep pen at the outer meadow slope beyond the living terrace
+      gateAnchor: { x: 995, y: 595 },
       stoneWallAnchor: { x: 1230, y: 196 },
       segment2: { start: { x: 498, y: 467 }, end: { x: 680, y: 435 } },
     },
@@ -21,6 +21,10 @@ drystoneWalls: {
       path: 'M740,240 C800,260 880,270 980,270',
       ascentStepsAnchor: { x: 800, y: 225 },
     },
+  },
+  sheepPen: {
+    anchor: { x: 990, y: 585 },
+    gateAnchor: { x: 995, y: 595 },
   },
 railway: {
     anchor: { x: -160, y: 224 },

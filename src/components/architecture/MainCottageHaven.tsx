@@ -1386,10 +1386,10 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 )}
               </g>
 
-              {/* 🌟 WOODEN MAILBOX (前廊立柱美式信箱) */}
+              {/* 🌟 WOODEN MAILBOX (门口草地迎客美式木信箱) */}
               <g {...svgAction('前廊木信箱')}
                 id="mailbox-group"
-                transform="translate(45, 182)"
+                transform="translate(58, 246)"
                 onClick={(e) => {
                   e.stopPropagation();
                   onSelectMailbox();
@@ -1398,20 +1398,44 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 onMouseLeave={() => setHoveredObject(null)}
                 className="cursor-pointer group/mail"
               >
-                {/* Stone Pedestal on Deck */}
-                <ellipse cx="0" cy="26" rx="10" ry="4.5" fill="#3a322a" />
-                <ellipse cx="0" cy="25" rx="8" ry="3.5" fill="#54493e" />
+                {/* 1. 扎入草坪的深层漫反射阴影 (Ground Contact Shadow on Lawn) */}
+                <ellipse cx="0" cy="1" rx="14" ry="5.5" fill="#1b2e17" opacity="0.45" filter="url(#softShadow)" />
 
-                <ellipse cx="0" cy="24" rx="20" ry="10" fill="rgba(196, 66, 55, 0.2)" className="opacity-0 group-hover/mail:opacity-100 transition-opacity" />
-                <rect x="-4" y="0" width="8" height="26" rx="2" fill="#523924" filter="url(#softShadow)" />
+                {/* 2. 迎客草台天然凿刻石柱础基座 (Chiseled Granite Plinth Footing) */}
+                <polygon
+                  points="-7,-1.5 0,-3.5 7,-1.5 7,1.5 0,3.5 -7,1.5"
+                  fill="#524a40"
+                  stroke="#373129"
+                  strokeWidth="0.6"
+                />
+                <polygon
+                  points="-7,-1.5 0,-3.5 7,-1.5 0,0.5"
+                  fill="#786e63"
+                />
 
-                <g transform="translate(0, -8)">
-                  <rect x="-13" y="-11" width="26" height="18" rx="5" fill="#3d2c1d" />
+                {/* 3. 伴生在石础边的一簇天然嫩草丝与小雏菊 (Natural Meadow Verge Sprouting) */}
+                <path d="M-8,1 Q-11,-3 -13,-7 M-6,1 Q-8,-3 -9,-6" stroke="#486d26" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+                <path d="M6,1 Q9,-2 11,-5 M8,1 Q10,-1 11,-3" stroke="#486d26" strokeWidth="0.75" fill="none" strokeLinecap="round" />
+                <circle cx="-13" cy="-7" r="1.5" fill="#ffffff" />
+                <circle cx="-13" cy="-7" r="0.6" fill="#facc15" />
+
+                {/* 4. 稳固挺拔的防腐雪松原木立柱 (Weathered Cedar Timber Post) */}
+                <rect x="-3.5" y="-36" width="7" height="36" rx="1" fill="#523924" stroke="#332113" strokeWidth="0.6" filter="url(#softShadow)" />
+                <line x1="-1.8" y1="-35" x2="-1.8" y2="-1" stroke="#7d5939" strokeWidth="0.6" opacity="0.8" />
+                <line x1="1.8" y1="-35" x2="1.8" y2="-1" stroke="#362214" strokeWidth="0.5" opacity="0.6" />
+
+                {/* 木立柱顶端加固三角托臂 (Corbel Bracket Under Box) */}
+                <polygon points="-5,-34 5,-34 3,-30 -3,-30" fill="#422c1b" />
+                <path d="M0,-30 Q-2,-26 -5,-26 L-5,-24 Q0,-24 0,-28 Z" fill="#422c1b" />
+
+                {/* 5. 经典美式圆拱乡村木质信箱 (Curved Roof Mailbox Compartment) */}
+                <g transform="translate(0, -44)">
+                  <rect x="-13" y="-11" width="26" height="18" rx="5" fill="#3d2c1d" stroke="#261b11" strokeWidth="0.6" />
                   <ellipse cx="-13" cy="-2" rx="4" ry="9" fill="#2c1e13" />
                   <path d="M-13,-11 Q0,-19 13,-11 L13,-7 Q0,-15 -13,-7 Z" fill="#694f3b" />
-                  <circle cx="-14" cy="-2" r="2.5" fill="#e6b35a" />
+                  <circle cx="-14" cy="-2" r="2.5" fill="#e6b35a" stroke="#876326" strokeWidth="0.5" />
 
-                  {/* Red Flag */}
+                  {/* 旋转可动投递提示小红旗 (Swinging Red Postal Flag) */}
                   <g
                     style={{
                       transform: unreadMailCount > 0 ? 'rotate(0deg)' : 'rotate(85deg)',
@@ -1423,13 +1447,19 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                     <polygon points="12,-15 1,-9 12,-3" fill="#e04a3d" />
                   </g>
 
+                  {/* 悬停微光晕 */}
+                  <ellipse cx="0" cy="8" rx="18" ry="9" fill="rgba(196, 66, 55, 0.2)" className="opacity-0 group-hover/mail:opacity-100 transition-opacity pointer-events-none" />
+
+                  {/* 新信件跳跃状态气泡 */}
                   {unreadMailCount > 0 && (
-                    <g transform="translate(0, -28)"><g  className="animate-bounce">
-                      <rect x="-34" y="-9" width="68" height="18" rx="9" fill="#c43b2f" filter="url(#softShadow)" />
-                      <text x="0" y="3.5" fill="#fff" fontSize="9.5" fontWeight="bold" textAnchor="middle">
-                        📪 新信件 ({unreadMailCount})
-                      </text>
-                    </g></g>
+                    <g transform="translate(0, -28)">
+                      <g className="animate-bounce">
+                        <rect x="-34" y="-9" width="68" height="18" rx="9" fill="#c43b2f" filter="url(#softShadow)" />
+                        <text x="0" y="3.5" fill="#fff" fontSize="9.5" fontWeight="bold" textAnchor="middle">
+                          📪 新信件 ({unreadMailCount})
+                        </text>
+                      </g>
+                    </g>
                   )}
                 </g>
               </g>

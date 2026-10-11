@@ -8,7 +8,7 @@ export interface ParentContract { parent: FurnitureParent; selector: string }
 const parents = Object.fromEntries(Object.keys(DEFAULT_ROOM_LAYOUT).map(id => [id, {
   parent: 'main_cottage', selector: '#living-cottage-haven',
 }])) as Record<EditableObjectId, ParentContract>;
-for (const id of ['record-player','moka-pot','coffee-beans','ceramic-cups'] as const) {
+for (const id of ['record-player','moka-pot','coffee-beans','ceramic-cups','honey-jar'] as const) {
   parents[id] = { parent:'cabinet-group', selector:'#isometric-turntable-console' };
 }
 for (const id of ['desk-laptop','desk-lamp','desk-cup'] as const) {

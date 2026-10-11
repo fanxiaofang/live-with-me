@@ -7,6 +7,7 @@ export type EditableObjectId =
   | 'cabinet-group'
   | 'record-player'
   | 'moka-pot'
+  | 'honey-jar'
   | 'coffee-beans'
   | 'ceramic-cups'
   // 2. 阁楼手工书桌、左墙挂物及台面摆件 (Attic Desk & Wall Group)
@@ -82,6 +83,15 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
     category: 'cabinet',
     categoryLabel: '咖啡黑胶区',
     screen: { x: 13.7, y: -32.1 },
+    fixedW: 28.2,
+    scale: 0.85,
+  },
+  'honey-jar': {
+    id: 'honey-jar',
+    name: '金黄手作野花蜂蜜罐',
+    category: 'cabinet',
+    categoryLabel: '咖啡黑胶区',
+    screen: { x: 5.5, y: -26.5 },
     fixedW: 28.2,
     scale: 0.85,
   },

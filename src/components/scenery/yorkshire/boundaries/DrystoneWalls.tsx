@@ -1,18 +1,18 @@
 import React from 'react';
-import { svgAction } from '../../../../world/interactions/svgAction';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 import { YorkshireCommonProps } from '../landscapeTypes';
+import { SheepPen } from './SheepPen';
 
 /**
- * 🧱 DrystoneWalls (Yorkshire Authentic Low Field Boundaries & 5-Bar Gate)
+ * 🧱 DrystoneWalls (Yorkshire Authentic Low Field Boundaries & Sheep Pen Gate)
  *
  * Layer: 04 BOUNDARIES
  *
- * Cleaned per user request:
- * - Removed chaotic, jagged west fence lines and polygon cages
- * - Retains the iconic English countryside 5-bar wooden pasture gate and neat low stone boundary
+ * - Renders the authentic low boundary stone wall along the northeastern hillside
+ * - Integrates the SheepPen component containing the authentic 5-Bar Field Gate
  */
 export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
+  theme,
   onTriggerToast,
   setHoveredObject,
   className,
@@ -36,41 +36,45 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
       </defs>
 
       {/* ----------------------------------------------------------------------- */}
-      {/* 经典五杠原木牧场门 (5-Bar Field Gate)                                  */}
-      {/* 牧场门位于东侧田界，与 TerrainMass 中已有的矮石墙接续                  */}
+      {/* 东北侧自然山脊低矮干砌田界石墙 (North-East Hillside Drystone Boundary Wall)  */}
+      {/* 连贯延展至远山，形成纯净开阔的英伦田园分界线                              */}
       {/* ----------------------------------------------------------------------- */}
       <g id={walls.eastWall.id} opacity="0.9">
-        {/* 🌟 标志性五杠斜撑原木牧场门 (5-Bar Field Gate) */}
-        <g {...svgAction('查看东侧牧场门')}
-          id="east-5bar-pasture-gate"
-          transform={`translate(${walls.eastWall.gateAnchor.x}, ${walls.eastWall.gateAnchor.y})`}
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onTriggerToast?.('🚪 约克郡传统原木牧场门 · 5-Bar Field Gate，通往东侧开阔羊群山坡');
-          }}
-          onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'pasture-gate' })}
-          onMouseLeave={() => setHoveredObject?.(null)}
-        >
-          <ellipse cx="27" cy="22" rx="32" ry="4" fill="#28341a" opacity="0.2" />
-          <rect x="0" y="-6" width="5" height="26" rx="1.2" fill="#442f1b" stroke="#25170a" strokeWidth="0.8" />
-          <rect x="50" y="2" width="4.5" height="24" rx="1.2" fill="#442f1b" stroke="#25170a" strokeWidth="0.8" />
-          {[0, 4.5, 9, 13.5, 18].map((ry, i) => (
+        <g id="northeast-boundary-wall" transform="translate(1140, 172)">
+          {/* 低矮石墙主体 */}
+          <polygon
+            points="0,6 90,14 190,20 190,28 90,22 0,14"
+            fill="url(#ysFieldWallFaceGrad)"
+          />
+          {/* 石墙顶端风化压顶石 */}
+          <polygon
+            points="0,2 90,10 190,16 190,20 90,14 0,6"
+            fill="url(#ysFieldWallCapGrad)"
+          />
+          {/* 石块砌缝细节 */}
+          {[20, 48, 76, 110, 140, 168].map((sx, idx) => (
             <line
-              key={`gate-rail-${i}`}
-              x1="3"
-              y1={ry}
-              x2="51"
-              y2={ry + 6.5}
-              stroke="#735234"
-              strokeWidth={i === 0 ? '2.4' : '1.7'}
-              strokeLinecap="round"
+              key={`ne-sw-${idx}`}
+              x1={sx}
+              y1={idx * 2 + 5}
+              x2={sx}
+              y2={idx * 2 + 13}
+              stroke="#2e271e"
+              strokeWidth="0.8"
+              opacity="0.65"
             />
           ))}
-          <line x1="4" y1="16" x2="50" y2="7" stroke="#5a3d24" strokeWidth="2.0" strokeLinecap="round" />
-          <path d="M49,9 H56 M49,13 H53" stroke="#aaa18c" strokeWidth="1.2" fill="none" strokeLinecap="round" />
         </g>
       </g>
+
+      {/* ----------------------------------------------------------------------- */}
+      {/* 🐑 约克郡经典原木五杠门干砌石墙小羊圈 (Integrated Sheep Pen with 5-Bar Gate)  */}
+      {/* ----------------------------------------------------------------------- */}
+      <SheepPen
+        theme={theme}
+        onTriggerToast={onTriggerToast}
+        setHoveredObject={setHoveredObject}
+      />
     </g>
   );
 };
