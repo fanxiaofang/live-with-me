@@ -1,22 +1,21 @@
 import React from 'react';
 
-/**
- * 2.5D 复古极简黑胶唱片机 (Retro Hi-Fi Turntable)
- * 严格按照用户最新参考图重塑：
- * 1. 紧凑比例机身 (告别原先过长的异形底座，黄金方正比例)
- * 2. 鼠尾草灰绿 / 薄荷灰卡其高级哑光机壳 (Sage Mint-Khaki Chassis)
- * 3. 正面右侧标志性立体珊瑚暖橙方块开关 (Terracotta Orange Square Button)
- * 4. 顶面左前方复古原木色圆柱旋钮与右侧细密黑钮 (Wood Knob & Controls)
- * 5. 完全移除亚克力防尘罩 (干净通透纯净敞开)
- * 6. 纯正等轴测平面的黑胶唱片顺时针流畅旋转动效 (Continuous Smooth Spinning Vinyl)
- * 7. 木质细杆直臂唱臂与珊瑚橙唱头 (Wood Tonearm & Orange Cartridge)
- */
-
 export interface RetroTurntableProps {
   isPlaying?: boolean;
   className?: string;
 }
 
+/**
+ * 2.5D 高清清晰复古黑胶唱片机 (High-Definition Retro Turntable)
+ * 彻底解决“唱片机没遵循等轴测方向、斜着转”与“发糊”问题：
+ * 1. 严格数学等轴测旋转体系：
+ *    - 最外层统一定位并压扁：transform="scale(1, 0.44)"
+ *    - 纯正正圆内部执行平滑自转：rotate(0)->rotate(360)
+ *    - 椭圆长轴永远 100% 保持严格水平，绝对不斜晃、不抛甩、不摆动，完美贴合木柜桌面！
+ * 2. 空间固定光学反射：高光弧固定在房间光源方向，不随胶面翻滚，符合真实物理光学。
+ * 3. 造型概括分明：象牙白机身，珊瑚橙方块按键，黄铜旋钮，高对比度黑胶盘。
+ * 4. 几何边缘平滑抗毛刺：多边形统一使用 strokeLinejoin="round"。
+ */
 export const RetroTurntable: React.FC<RetroTurntableProps> = ({
   isPlaying = true,
   className = '',
@@ -24,279 +23,235 @@ export const RetroTurntable: React.FC<RetroTurntableProps> = ({
   return (
     <g id="retro-turntable-unit" className={`select-none ${className}`}>
       <defs>
-        {/* 方案A：中古复古奶油暖白/燕麦白机壳 (Vintage Cream Oat White Chassis) */}
-        {/* 机身顶面受光面渐变 (温润细腻的哑光奶油白，轻盈典雅) */}
-        <linearGradient id="plinthTopCreamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#fdfcf7" />
-          <stop offset="45%" stopColor="#f4efe6" />
-          <stop offset="100%" stopColor="#e8e0d2" />
+        {/* 复古象牙白机身顶面 */}
+        <linearGradient id="turntableDeckTop" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#faf7f0" />
+          <stop offset="60%" stopColor="#f0e9dc" />
+          <stop offset="100%" stopColor="#e5dcce" />
         </linearGradient>
 
-        {/* 机身前立面渐变 (奶油暖白受侧光面，带淡淡温和灰调) */}
-        <linearGradient id="plinthFrontCreamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#e5ddd0" />
-          <stop offset="60%" stopColor="#d5ccbe" />
-          <stop offset="100%" stopColor="#bfb5a5" />
+        {/* 机身正面立面 */}
+        <linearGradient id="turntableDeckFront" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#ded3c3" />
+          <stop offset="100%" stopColor="#c5b6a3" />
         </linearGradient>
 
-        {/* 机身左侧背光面 (复古奶油暖燕麦深阴影) */}
-        <linearGradient id="plinthSideCreamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#b0a594" />
-          <stop offset="100%" stopColor="#c5baa9" />
+        {/* 机身左侧背光面 */}
+        <linearGradient id="turntableDeckSide" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#988977" />
+          <stop offset="100%" stopColor="#b3a593" />
         </linearGradient>
 
-        {/* 复古黄铜/浅金圆柱旋钮渐变 (在奶油白机壳上极为精致复古) */}
+        {/* 鲜活珊瑚橙方块按键 */}
+        <linearGradient id="orangeButtonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#fb923c" />
+          <stop offset="60%" stopColor="#ea580c" />
+          <stop offset="100%" stopColor="#c2410c" />
+        </linearGradient>
+
+        {/* 精工黄铜旋钮 */}
         <linearGradient id="brassKnobGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#fde047" />
-          <stop offset="40%" stopColor="#eab308" />
+          <stop offset="0%" stopColor="#fef08a" />
+          <stop offset="50%" stopColor="#eab308" />
           <stop offset="100%" stopColor="#a16207" />
         </linearGradient>
 
-        {/* 黑胶旋转中心复古红唱片芯渐变 */}
-        <radialGradient id="recordCenterLabelGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f07553" />
-          <stop offset="65%" stopColor="#dd5534" />
-          <stop offset="100%" stopColor="#b43b1e" />
+        {/* 黑胶中心经典复古红唱片标芯 */}
+        <radialGradient id="vinylCenterLabel" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f87171" />
+          <stop offset="60%" stopColor="#dc2626" />
+          <stop offset="100%" stopColor="#991b1b" />
         </radialGradient>
       </defs>
 
-      {/* --- 1. 底座与木柜台面的接触软阴影 --- */}
+      {/* --- 1. 底座与木台面接触阴影 (清晰扎实，无滤镜) --- */}
       <polygon
-        points="-24,-2.5 4,-10.5 18,-6.5 -10,1.5"
-        fill="#1a140f"
-        opacity="0.28"
+        points="-23,-3.0 4,-10.8 18,-6.8 -9,1.0"
+        fill="#1e140d"
+        opacity="0.32"
       />
 
-      {/* --- 2. 底座下方两个圆润减震黑胶脚垫 (Rubber Isolation Feet) --- */}
-      {/* 左前避震脚垫 */}
-      <ellipse cx="-7.0" cy="5.8" rx="2.4" ry="1.4" fill="#18120e" stroke="#0e0a07" strokeWidth="0.3" />
-      {/* 右前避震脚垫 */}
-      <ellipse cx="13.2" cy="-0.2" rx="2.4" ry="1.4" fill="#18120e" stroke="#0e0a07" strokeWidth="0.3" />
+      {/* --- 2. 两个圆润避震脚垫 --- */}
+      <ellipse cx="-7.0" cy="5.2" rx="2.2" ry="1.0" fill="#221811" />
+      <ellipse cx="13.2" cy="-0.6" rx="2.2" ry="1.0" fill="#221811" />
 
-      {/* --- 3. 紧凑比例机身主体 (中古极简奶油燕麦白外壳 Vintage Cream Chassis) --- */}
-      {/* 3.1 左侧暗面 (沿侧面进深矢量 (-13, -3.7)) */}
+      {/* --- 3. 2.5D 机身主体 (大色块分明，挺拔有力) --- */}
+      {/* 3.1 左侧暗面 */}
       <polygon
         points="-23,-3.7 -10,0 -10,6.0 -23,2.3"
-        fill="url(#plinthSideCreamGrad)"
-        stroke="#8a7e6f"
-        strokeWidth="0.35"
+        fill="url(#turntableDeckSide)"
+        stroke="#7c6e5e"
+        strokeWidth="0.6"
+        strokeLinejoin="round"
       />
 
-      {/* 3.2 前受光立面 (沿正面宽度矢量 (26, -7.4)，高 6.0px) */}
+      {/* 3.2 前立面 */}
       <polygon
         points="-10,0 16,-7.4 16,-1.4 -10,6.0"
-        fill="url(#plinthFrontCreamGrad)"
-        stroke="#a39686"
-        strokeWidth="0.35"
+        fill="url(#turntableDeckFront)"
+        stroke="#9c8c78"
+        strokeWidth="0.6"
+        strokeLinejoin="round"
       />
-      {/* 前立面底边收口暗线 */}
-      <line x1="-10" y1="6.0" x2="16" y2="-1.4" stroke="#786c5e" strokeWidth="0.45" />
+      <line x1="-10" y1="6.0" x2="16" y2="-1.4" stroke="#6b5b4a" strokeWidth="0.6" strokeLinecap="butt" />
 
-      {/* 3.3 机身平整顶面 (温润奶油白面板 Top Deck) */}
+      {/* 3.3 顶面板 */}
       <polygon
         points="-23,-3.7 3,-11.1 16,-7.4 -10,0"
-        fill="url(#plinthTopCreamGrad)"
-        stroke="#c4baa9"
-        strokeWidth="0.4"
+        fill="url(#turntableDeckTop)"
+        stroke="#b8ab9a"
+        strokeWidth="0.6"
+        strokeLinejoin="round"
       />
-      {/* 顶面前沿倒角微高光棱线 (清爽亮洁的柔白倒角，与深色胡桃木台面形成鲜明高级的反差) */}
+
+      {/* 3.4 顶面前沿微倒角柔光 (象牙白微光，butt 切齐防毛刺) */}
       <line
         x1="-10"
         y1="0"
         x2="16"
         y2="-7.4"
-        stroke="#ffffff"
-        strokeWidth="0.55"
-        strokeLinecap="round"
-        opacity="0.9"
+        stroke="#fffdfa"
+        strokeWidth="0.65"
+        strokeLinecap="butt"
+        opacity="0.8"
       />
       <line
         x1="-23"
         y1="-3.7"
         x2="-10"
         y2="0"
-        stroke="#fbf8f2"
-        strokeWidth="0.5"
-        strokeLinecap="round"
-        opacity="0.8"
+        stroke="#fffdfa"
+        strokeWidth="0.55"
+        strokeLinecap="butt"
+        opacity="0.6"
       />
 
+      {/* --- 4. 正面右侧标志性珊瑚橙方块按键 --- */}
+      <g id="turntable-power-switch" transform="translate(6.5, -4.5)">
+        <polygon points="-0.4,-0.2 3.4,-1.3 3.4,2.0 -0.4,3.1" fill="#443528" strokeLinejoin="round" />
+        <polygon points="0,0 3.0,-0.9 3.0,1.9 0,2.8" fill="url(#orangeButtonGrad)" stroke="#9a3412" strokeWidth="0.4" strokeLinejoin="round" />
+        <line x1="0.1" y1="0.1" x2="2.9" y2="-0.8" stroke="#fde047" strokeWidth="0.4" strokeLinecap="butt" opacity="0.8" />
+      </g>
 
-      {/* --- 5. 顶面控制元件 (Controls on Deck) --- */}
-      {/* 5.1 左前方复古黄铜圆柱旋钮 (Vintage Brass Knob) */}
-      <g id="deck-wood-knob" transform="translate(-7.0, -1.0)">
-        {/* 旋钮在面板上的小阴影 */}
-        <ellipse cx="0.4" cy="0.4" rx="1.6" ry="0.8" fill="#1f1209" opacity="0.5" />
-        {/* 圆柱侧面 */}
+      {/* --- 5. 顶面控制旋钮与按键 --- */}
+      {/* 5.1 左前方精致黄铜旋钮 */}
+      <g id="turntable-volume-knob" transform="translate(-7.0, -1.0)">
+        <ellipse cx="0.2" cy="0.3" rx="1.6" ry="0.8" fill="#241a12" opacity="0.4" />
         <path
-          d="M -1.4,0.1 L -1.4,-1.8 C -1.4,-2.4 1.4,-2.4 1.4,-1.8 L 1.4,0.1 C 1.4,0.7 -1.4,0.7 -1.4,0.1 Z"
+          d="M -1.4,0.2 L -1.4,-1.8 C -1.4,-2.4 1.4,-2.4 1.4,-1.8 L 1.4,0.2 C 1.4,0.8 -1.4,0.8 -1.4,0.2 Z"
           fill="url(#brassKnobGrad)"
-          stroke="#854d0e"
-          strokeWidth="0.2"
+          stroke="#78350f"
+          strokeWidth="0.4"
+          strokeLinejoin="round"
         />
-        {/* 顶平圆面 */}
-        <ellipse cx="0" cy="-1.8" rx="1.4" ry="0.65" fill="#fef08a" stroke="#ca8a04" strokeWidth="0.2" />
-        {/* 刻度槽微线 */}
-        <line x1="-0.6" y1="-1.8" x2="0.6" y2="-1.8" stroke="#713f12" strokeWidth="0.3" />
+        <ellipse cx="0" cy="-1.8" rx="1.3" ry="0.65" fill="#fef08a" stroke="#b45309" strokeWidth="0.35" />
       </g>
 
-      {/* 5.2 右前方速度/微调控制键组 (Speed & Pitch Black Buttons) */}
-      <g id="deck-black-controls" transform="translate(8.5, -6.8)">
-        {/* 小圆形黑钮 1 */}
-        <ellipse cx="-0.8" cy="0.2" rx="0.8" ry="0.45" fill="#1c1917" stroke="#0c0a09" strokeWidth="0.15" />
-        <ellipse cx="-0.8" cy="-0.2" rx="0.7" ry="0.4" fill="#44403c" />
-
-        {/* 细长微调滑块槽 */}
-        <polygon points="1.0,-0.6 2.8,-1.1 2.8,-0.7 1.0,-0.2" fill="#1c1917" />
-
-        {/* 小圆形黑钮 2 */}
-        <ellipse cx="4.2" cy="-1.2" rx="0.75" ry="0.4" fill="#1c1917" stroke="#0c0a09" strokeWidth="0.15" />
-        <ellipse cx="4.2" cy="-1.5" rx="0.65" ry="0.35" fill="#44403c" />
-
-        {/* 小圆形黑钮 3 */}
-        <ellipse cx="6.4" cy="-1.8" rx="0.75" ry="0.4" fill="#1c1917" stroke="#0c0a09" strokeWidth="0.15" />
-        <ellipse cx="6.4" cy="-2.1" rx="0.65" ry="0.35" fill="#44403c" />
+      {/* 5.2 右前方速度控制黑钮 */}
+      <g id="turntable-speed-toggles" transform="translate(8.5, -6.8)">
+        <ellipse cx="-0.8" cy="0" rx="0.9" ry="0.5" fill="#18181b" stroke="#09090b" strokeWidth="0.3" />
+        <ellipse cx="3.8" cy="-1.3" rx="0.9" ry="0.5" fill="#18181b" stroke="#09090b" strokeWidth="0.3" />
       </g>
 
-      {/* --- 6. 铝合金转盘与黑胶唱片 (Turntable Platter & Vinyl Record) --- */}
-      {/* 6.1 转盘金属厚度基座 (Die-Cast Aluminum Platter Base) */}
-      <g id="turntable-platter-base" transform="translate(-4.5, -5.2)">
-        {/* 转盘在机壳上的阴影 */}
-        <ellipse cx="0" cy="0.6" rx="9.4" ry="4.2" fill="#1a110a" opacity="0.45" />
-        {/* 转盘金属侧壁 */}
-        <ellipse cx="0" cy="0.2" rx="9.0" ry="4.0" fill="#22272a" />
-        {/* 转盘上沿金属反光 */}
-        <ellipse cx="0" cy="-0.2" rx="8.8" ry="3.9" fill="#32383c" stroke="#485055" strokeWidth="0.35" />
-      </g>
+      {/* --- 6. 铝合金转盘与严格水平等轴测黑胶唱片 (Isometric Horizontal Platter & Vinyl) --- */}
+      <g id="turntable-platter-and-vinyl" transform="translate(-4.5, -5.2)">
+        {/* 6.1 转盘金属底盘 (严格水平等轴测椭圆，长轴绝对水平，贴合柜面) */}
+        <ellipse cx="0" cy="0.6" rx="9.6" ry="4.2" fill="#181512" opacity="0.45" />
+        <ellipse cx="0" cy="0.2" rx="9.4" ry="4.1" fill="#2b3036" stroke="#1f2327" strokeWidth="0.5" />
+        <ellipse cx="0" cy="-0.2" rx="9.0" ry="3.96" fill="#3f474f" stroke="#5a6570" strokeWidth="0.5" />
 
-      {/* 6.2 旋转中的黑胶唱片 (Spinning Vinyl Record, 严格等轴测水平压扁旋转) */}
-      <g transform="translate(-4.5, -5.5) scale(1, 0.44)">
-        <g>
-          {isPlaying && (
-            <animateTransform
-              attributeName="transform"
-              type="rotate"
-              from="0 0 0"
-              to="360 0 0"
-              dur="2.8s"
-              repeatCount="indefinite"
-            />
-          )}
+        {/* 6.2 唱片主体与光影 (外层施加等轴测压扁 scale(1, 0.44)，保证所有内部元素投影后长轴永远水平) */}
+        <g id="isometric-vinyl-plane" transform="translate(0, -0.3) scale(1, 0.44)">
+          {/* A. 纯黑曜石唱片基盘 */}
+          <circle cx="0" cy="0" r="8.6" fill="#101214" stroke="#252b31" strokeWidth="0.6" />
 
-          {/* 纯正深曜石黑胶片基 (Deep Matte Vinyl Disc) */}
-          <circle cx="0" cy="0" r="8.6" fill="#181b1d" />
-
-          {/* 精密细密同心音轨声槽 (Concentric Sound Micro-Grooves) */}
-          <circle cx="0" cy="0" r="7.8" fill="none" stroke="#25292c" strokeWidth="0.4" />
-          <circle cx="0" cy="0" r="6.8" fill="none" stroke="#25292c" strokeWidth="0.35" />
-          <circle cx="0" cy="0" r="5.8" fill="none" stroke="#25292c" strokeWidth="0.35" />
-          <circle cx="0" cy="0" r="4.8" fill="none" stroke="#25292c" strokeWidth="0.35" />
-
-          {/* 旋转光泽质感反光 (Specular Sheen Rays) */}
-          <path d="M-8.6,0 L8.6,0" stroke="#363c40" strokeWidth="0.6" opacity="0.35" />
-          <path d="M0,-8.6 L0,8.6" stroke="#363c40" strokeWidth="0.6" opacity="0.35" />
-          <path d="M-6.0,-6.0 L6.0,6.0" stroke="#444b50" strokeWidth="0.4" opacity="0.25" />
-
-          {/* 标志性鲜亮复古珊瑚橙红中心唱片芯 (Coral Terracotta Center Label 如参考图) */}
-          <circle cx="0" cy="0" r="3.4" fill="url(#recordCenterLabelGrad)" />
-          {/* 唱片芯同心装饰圈 */}
-          <circle cx="0" cy="0" r="3.0" fill="none" stroke="#f28066" strokeWidth="0.3" opacity="0.75" />
-          <circle cx="0" cy="0" r="1.8" fill="none" stroke="#ab3419" strokeWidth="0.25" />
-          <circle cx="0" cy="0" r="1.0" fill="#f8957c" />
-
-          {/* 中心主轴孔与高光镀铬插柱 (Center Spindle) */}
-          <circle cx="0" cy="0" r="0.5" fill="#f1f5f9" stroke="#64748b" strokeWidth="0.2" />
-        </g>
-      </g>
-
-      {/* 突出于唱片表面的高耸镀铬立柱尖 (Spindle Pin, 直立于旋转中心) */}
-      <g id="turntable-spindle-pin" transform="translate(-4.5, -5.5)">
-        <line x1="0" y1="0" x2="0" y2="-2.0" stroke="#cbd5e1" strokeWidth="0.6" strokeLinecap="round" />
-        <circle cx="0" cy="-2.0" r="0.35" fill="#ffffff" />
-      </g>
-
-      {/* --- 7. 精工唱臂总成 (Tonearm Assembly 如参考图：原木直细臂 + 黑色万向底座 + 珊瑚橙唱头) --- */}
-      <g id="retro-tonearm">
-        {/* 7.1 后方黑色万向转轴底座 (Black Gimbal Base) */}
-        <g transform="translate(10.2, -9.0)">
-          {/* 底座基座阴影 */}
-          <ellipse cx="0" cy="0.4" rx="2.2" ry="1.1" fill="#1b231f" opacity="0.4" />
-          {/* 圆台基座 */}
+          {/* B. 固定空间光照反射弧 (高光来自房间光源，永远固定在等轴测水平视角，绝不随自转倾斜) */}
           <path
-            d="M -1.8,0.2 L -1.4,-2.2 L 1.4,-2.2 L 1.8,0.2 Z"
-            fill="#232a26"
-            stroke="#121614"
-            strokeWidth="0.25"
+            d="M -7.2,-2.2 C -4.0,-5.8 4.0,-5.8 7.2,-2.2 C 4.5,-4.0 -4.5,-4.0 -7.2,-2.2 Z"
+            fill="#374151"
+            opacity="0.45"
           />
-          <ellipse cx="0" cy="-2.2" rx="1.4" ry="0.7" fill="#323b36" stroke="#1c221e" strokeWidth="0.2" />
-
-          {/* 向上延伸的唱臂枢轴立柱 (Pivot Housing) */}
-          <rect x="-1.1" y="-4.6" width="2.2" height="2.5" rx="0.4" fill="#232a26" stroke="#121614" strokeWidth="0.25" />
-          <line x1="-0.8" y1="-4.2" x2="-0.8" y2="-2.4" stroke="#49554e" strokeWidth="0.3" />
-
-          {/* 后端黑色配重重锤 (Rear Counterweight Block) */}
-          <polygon
-            points="0.8,-4.2 2.8,-4.8 2.8,-2.8 0.8,-2.2"
-            fill="#181e1a"
-            stroke="#0d110e"
-            strokeWidth="0.2"
+          <path
+            d="M -7.2,2.2 C -4.0,5.8 4.0,5.8 7.2,2.2 C 4.5,4.0 -4.5,4.0 -7.2,2.2 Z"
+            fill="#374151"
+            opacity="0.45"
           />
+
+          {/* C. 纯正三维等轴测平稳自转层 (在正圆坐标系内自转，经外层 scale(1,0.44) 映射，椭圆长轴永远 100% 水平！) */}
+          <g id="vinyl-rotating-label">
+            {isPlaying && (
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 0 0"
+                to="360 0 0"
+                dur="3.0s"
+                repeatCount="indefinite"
+              />
+            )}
+            {/* 标志性复古珊瑚红唱片芯 */}
+            <circle cx="0" cy="0" r="3.3" fill="url(#vinylCenterLabel)" stroke="#7f1d1d" strokeWidth="0.4" />
+            <circle cx="0" cy="0" r="2.6" fill="none" stroke="#fed7aa" strokeWidth="0.35" opacity="0.8" />
+            <circle cx="0" cy="0" r="1.3" fill="#fed7aa" />
+            {/* 灵动的自转指示点 (直观感受平滑旋转，绝无倾斜晃动) */}
+            <circle cx="0" cy="-2.0" r="0.35" fill="#fef08a" />
+            <line x1="-1.7" y1="0" x2="-2.4" y2="0" stroke="#fef08a" strokeWidth="0.35" />
+          </g>
+
+          {/* 中心主轴孔 */}
+          <circle cx="0" cy="0" r="0.5" fill="#ffffff" />
         </g>
 
-        {/* 7.2 直挺的原木色唱臂杆 (Warm Wood Straight Tonearm Wand) */}
-        <g id="tonearm-wand">
-          {/* 木质唱臂从基座 (10.2, -12.4) 笔直延伸向黑胶唱头处 (0.6, -7.4) */}
-          <line
-            x1="10.0"
-            y1="-12.4"
-            x2="0.6"
-            y2="-7.4"
-            stroke="#b8936f"
-            strokeWidth="0.85"
-            strokeLinecap="round"
-          />
-          {/* 木质细微高光 */}
-          <line
-            x1="9.8"
-            y1="-12.6"
-            x2="0.8"
-            y2="-7.6"
-            stroke="#dfc5aa"
-            strokeWidth="0.3"
-            strokeLinecap="round"
-            opacity="0.8"
-          />
-        </g>
-
-        {/* 7.3 唱头与珊瑚橙唱针盒 (Black Headshell with Vibrant Coral Orange Cartridge) */}
-        <g id="cartridge-headshell" transform="translate(0.6, -7.4)">
-          {/* 黑色倾斜唱头壳 */}
-          <polygon
-            points="-0.4,-0.8 2.6,0.2 2.0,1.2 -1.0,0.2"
-            fill="#1c2420"
-            stroke="#0e1310"
-            strokeWidth="0.2"
-          />
-          {/* 珊瑚橙唱针盒 (Orange Cartridge Body 如参考图) */}
-          <polygon
-            points="-0.8,0.2 1.4,0.9 1.4,2.2 -0.8,1.5"
-            fill="#e25c38"
-            stroke="#9c2d11"
-            strokeWidth="0.2"
-          />
-          {/* 唱针微小钻石接触点 (Diamond Stylus Contact Point) */}
-          <circle cx="-0.2" cy="1.6" r="0.35" fill="#fef08a" />
-        </g>
+        {/* 镀铬中心主轴顶针 (固定垂直于水平桌面) */}
+        <line x1="0" y1="-0.5" x2="0" y2="-2.8" stroke="#f1f5f9" strokeWidth="0.8" strokeLinecap="round" />
+        <circle cx="0" cy="-2.8" r="0.4" fill="#ffffff" />
       </g>
 
-      {/* --- 8. 悠扬升起的静谧温润金色音乐光尘微粒 (Gentle Drifting Amber Notes/Stardust) --- */}
+      {/* --- 7. 精工唱臂总成 (Tonearm) --- */}
+      {/* 7.1 后方黑色万向转轴基座 */}
+      <g id="tonearm-pivot" transform="translate(10.2, -9.0)">
+        <ellipse cx="0" cy="0.3" rx="2.2" ry="1.1" fill="#1c1917" opacity="0.4" />
+        <ellipse cx="0" cy="-1.8" rx="1.6" ry="0.8" fill="#292524" stroke="#0c0a09" strokeWidth="0.4" />
+        <rect x="-1.0" y="-4.2" width="2.0" height="2.4" rx="0.4" fill="#292524" stroke="#0c0a09" strokeWidth="0.4" />
+        <polygon points="0.8,-3.8 2.8,-4.4 2.8,-2.4 0.8,-1.8" fill="#18181b" stroke="#000000" strokeWidth="0.4" strokeLinejoin="round" />
+      </g>
+
+      {/* 7.2 唱臂杆 */}
+      <line
+        x1="10.0"
+        y1="-12.2"
+        x2="0.6"
+        y2="-7.4"
+        stroke="#92400e"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+      />
+      <line
+        x1="9.8"
+        y1="-12.4"
+        x2="0.8"
+        y2="-7.6"
+        stroke="#fde047"
+        strokeWidth="0.4"
+        strokeLinecap="round"
+        opacity="0.85"
+      />
+
+      {/* 7.3 唱头与珊瑚橙唱针盒 */}
+      <g id="tonearm-cartridge" transform="translate(0.6, -7.4)">
+        <polygon points="-0.4,-0.8 2.6,0.2 2.1,1.2 -1.0,0.2" fill="#18181b" stroke="#000000" strokeWidth="0.4" strokeLinejoin="round" />
+        <polygon points="-0.8,0.2 1.4,0.9 1.4,2.2 -0.8,1.5" fill="#f97316" stroke="#9a3412" strokeWidth="0.4" strokeLinejoin="round" />
+        <circle cx="-0.2" cy="1.6" r="0.35" fill="#ffffff" />
+      </g>
+
+      {/* --- 8. 悠扬升起的金橙色音乐音符 --- */}
       {isPlaying && (
-        <g id="retro-floating-notes" className="pointer-events-none opacity-80">
+        <g id="retro-floating-notes" className="pointer-events-none select-none opacity-80">
           <text
             x="4"
             y="-16"
             fill="#d97706"
-            fontSize="7"
+            fontSize="8"
             fontWeight="bold"
             className="animate-[pulse_3.5s_infinite]"
           >
@@ -306,7 +261,7 @@ export const RetroTurntable: React.FC<RetroTurntableProps> = ({
             x="-4"
             y="-20"
             fill="#ea580c"
-            fontSize="5.5"
+            fontSize="6.5"
             fontWeight="bold"
             className="animate-[pulse_4.5s_infinite]"
           >

@@ -16,7 +16,8 @@ export const ENTITY_REGISTRY: Readonly<Record<string, string>> = {
   'sheep-2': '🐑 约克郡母羊 · 在牧场大门旁照看着小羊（点击互动）',
   'sheep-3': '🐑 雀跃小羊羔 · 活蹦乱跳的黑脸小羊羔（点击互动）',
   'sheep-4': '🐑 山麓小羊 · 静立在石墙边迎风远眺（点击互动）',
-  'hearth-cat': '🐾 炉火边打盹的小橘猫 · 暖烘烘地打着小呼噜（点击轻抚）',
+  'hearth-cat': '🐾 炉火旁猫窝里的猫咪老师 · 暖烘烘地打着呼噜做着七辻屋豆沙包的美梦（点击轻抚）',
+  'shiba-inu': '🐕 前廊软窝里的中华田园犬大黄 · 忠诚温顺地守在门前晒太阳（点击互动）',
 };
 export const POSTER_DESCRIPTIONS = {
   'young-woman': '海报:《泳者之心》· 手作木框艺术印画 (点击赏析)',

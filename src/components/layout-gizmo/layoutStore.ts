@@ -76,7 +76,7 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
     categoryLabel: '咖啡黑胶区',
     screen: { x: -6.7, y: -24.6 },
     fixedW: 28.2,
-    scale: 0.68,
+    scale: 0.78,
   },
   'moka-pot': {
     id: 'moka-pot',
@@ -330,7 +330,7 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
   },
   'hearth-cat': {
     id: 'hearth-cat',
-    name: '炉边打盹小橘猫 (暖橘虎斑白爪咪)',
+    name: '炉边猫咪老师 (日式软垫猫窝)',
     category: 'living',
     categoryLabel: '暖炉茶室',
     screen: { x: -46.0, y: 134.0 },
@@ -366,7 +366,7 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
   // --- 4. 前廊门厅 ---
   'shiba-inu': {
     id: 'shiba-inu',
-    name: '编织软窝柴犬',
+    name: '编织软窝中华田园犬',
     category: 'porch',
     categoryLabel: '前廊门厅',
     screen: { x: -70.0, y: 172.0 },

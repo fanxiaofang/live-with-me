@@ -166,6 +166,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           ref={svgRef}
           viewBox="0 0 1200 800"
           preserveAspectRatio="xMidYMid slice"
+          shapeRendering="geometricPrecision"
+          textRendering="geometricPrecision"
           className="absolute inset-0 w-full h-full pointer-events-auto"
         >
           <WorldDefs theme={theme} />
@@ -194,7 +196,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             id="panoramic-world-stage"
             data-room={activeRoom}
             data-zoom={camera.zoom}
-            style={{ ...cameraTransformStyle(camera, isDragging), willChange: 'transform' }}
+            style={cameraTransformStyle(camera, isDragging)}
           >
 
           {/* Master Meadow Ground, Drystone Walls, Garden Flora, Pumpkin Patch */}

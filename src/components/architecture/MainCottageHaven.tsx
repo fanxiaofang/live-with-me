@@ -6,6 +6,8 @@ import { svgAction } from '../../world/interactions/svgAction';
 import { RoomHitArea } from '../../world/render/RoomSelection';
 import { CastIronWoodStove, StoveColorVariant } from '../CastIronWoodStove';
 import { CharacterHead } from '../CharacterAvatar';
+import { NyankoSenseiCat } from '../NyankoSenseiCat';
+import { ShibaInuPuppy } from '../ShibaInuPuppy';
 import { LeftWallCraftBoard } from '../LeftWallCraftBoard';
 import { BookItemConfig, Bookshelf, BookshelfPreset, TierConfig } from '../bookshelf';
 import { RecordCabinet } from '../cabinet';
@@ -808,215 +810,22 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   opacity="0.6"
                 />
 
-                {/* 2.35 Cozy Sleeping Orange Tabby Kitten (参考参考图重构：温暖治愈的炉边蜷睡小橘猫 · 橘白毛色 / 纯白山竹爪爪 / 虎斑条纹 / 惬意呼噜) */}
+                {/* 2.35 Cozy Sleeping Nyanko-Sensei Cat in Bed (夏目友人帐 · 猫咪老师与日式软垫猫窝：无红纹纯净白脸、前额双色斑块、红项圈小金铃铛、软糯猫窝) */}
                 {(() => {
                   const catScreenX = currentLayout['hearth-cat'] ? currentLayout['hearth-cat'].screen.x : -46.0;
                   const catScreenY = currentLayout['hearth-cat'] ? currentLayout['hearth-cat'].screen.y : 134.0;
                   return (
-                    <g
-                      {...svgAction('抚摸打盹的小橘猫')}
-                      id="hearth-rug-cat"
-                      transform={`translate(${catScreenX}, ${catScreenY})`}
-                      className="cursor-pointer group/cat select-none"
-                      onClick={(e) => {
-                        if (isInspectorOpen) {
-                          e.stopPropagation();
-                          onSelectGizmo?.(effectiveGizmoId === 'hearth-cat' ? null : 'hearth-cat');
-                          return;
-                        }
-                        e.stopPropagation();
-                        onTriggerToast?.('ฅ\'ω\'ฅ 呼噜噜… 炉火边好暖和呀！暖橘色的小猫蜷成了毛茸茸的一团，粉白肉垫微微动了动，在睡梦中轻轻咂了咂嘴：「喵呜… 暖烘烘… 呼噜噜」🐾🔥✨');
-                      }}
-                      onMouseEnter={() => setHoveredObject({ kind: 'entity', id: 'hearth-cat' })}
-                      onMouseLeave={() => setHoveredObject(null)}
-                    >
-                      <title>炉边打盹的暖橘小猫 · 暖烘烘地蜷成毛茸茸一团呼噜大睡中 🐾🔥</title>
-
-                      {/* 1. Floor Drop Ambient & Contact Shadows (地毯上温暖惬意的多层柔和接触投影) */}
-                      <ellipse cx="1" cy="7.2" rx="16.5" ry="7.2" fill="#2d1c10" opacity="0.32" filter="url(#softShadow)" />
-                      <ellipse cx="-0.5" cy="6.2" rx="12.5" ry="5.2" fill="#180e08" opacity="0.28" />
-                      <ellipse cx="-7.2" cy="5.2" rx="5.5" ry="3.2" fill="#180e08" opacity="0.25" />
-
-                      {/* 2. Curled Sleeping Body with Soothing Breathing Motion (随轻柔呼吸起伏的暖橘猫躯 · 甜甜打盹) */}
-                      <g className="animate-[pulse_3.8s_ease-in-out_infinite] origin-center">
-                        {/* Undercoat Warm Shadow Base (底层深琥珀暖调阴影垫底) */}
-                        <path
-                          d="M-8,1 C-10.5,-5.5 -4.5,-10.5 4,-9.5 C11,-8.5 14,-2 13.2,4.8 C12,8.8 3,9.5 -2.5,8.5 C-6.8,7.8 -9,5 -8,1 Z"
-                          fill="#b45309"
-                          opacity="0.38"
-                        />
-
-                        {/* Main Ginger Amber Coat Body (主身体：饱满圆润的暖焦糖橙色) */}
-                        <path
-                          d="M-7.5,0.5 C-10,-5.2 -4,-9.8 4,-9 C10.8,-8.2 13.5,-1.8 12.8,4.2 C11.6,8.2 2.8,8.8 -2.5,7.8 C-6.5,7.2 -8.5,4.5 -7.5,0.5 Z"
-                          fill="#d97706"
-                          stroke="#b45309"
-                          strokeWidth="0.4"
-                        />
-                        {/* Upper Warm Golden Fluff (背脊与肋侧温润暖金渐变绒毛层) */}
-                        <path
-                          d="M-7,0 C-9.5,-5.2 -3.8,-9.4 3.8,-8.6 C10.2,-7.8 12.8,-1.8 12.2,3.8 C11,7.6 2.5,8.2 -2.2,7.4 C-6.2,6.8 -8,4 -7,0 Z"
-                          fill="#f59e0b"
-                        />
-
-                        {/* Hearth Fire Rim Highlight (迎着铸铁壁炉跳跃火光的背脊柔金高光) */}
-                        <path
-                          d="M-5,-4 C-3.5,-8.8 2,-9.2 7,-7.8 C10.5,-6.8 12.2,-3.5 12,-0.5 C10.5,-3.8 6.5,-7.2 1.5,-7 C-1.8,-6.8 -3.8,-5.5 -5,-4 Z"
-                          fill="#fde047"
-                          opacity="0.65"
-                        />
-
-                        {/* 3. Iconic Tabby Mackerel Stripes across Curled Back (背部与侧肋标志性深栗红虎斑纹) */}
-                        {/* 斑纹1：颈肩侧暖栗色条纹 */}
-                        <path
-                          d="M-3,-8 C-1.8,-5.2 -2,-3 -3,-1.2 C-2,-1.2 -0.8,-3.2 -0.2,-5.8 C-0.8,-7.2 -1.8,-8 -3,-8 Z"
-                          fill="#9a3412"
-                        />
-                        {/* 斑纹2：脊背中段主弧形虎斑 */}
-                        <path
-                          d="M1,-9 C2.8,-5.8 2.2,-2.8 0.8,0 C2,0 3.8,-2.8 3.8,-6.5 C3.2,-8.2 2.2,-9 1,-9 Z"
-                          fill="#9a3412"
-                        />
-                        {/* 斑纹3：后腰弧形虎斑 */}
-                        <path
-                          d="M5.2,-8.2 C7.2,-5.2 7,-2 6,1.2 C7.2,1.2 8.6,-2 7.8,-5.8 C7,-7.2 6,-8.2 5.2,-8.2 Z"
-                          fill="#9a3412"
-                        />
-                        {/* 斑纹4：丰满圆臀后胯虎斑 */}
-                        <path
-                          d="M9.5,-6.2 C11.5,-3.2 12,0.8 10.8,3.8 C11.8,2.8 12.8,-0.8 11.8,-4.2 C11,-5.5 10.2,-6.2 9.5,-6.2 Z"
-                          fill="#9a3412"
-                        />
-                        {/* 斑纹5：后大腿蜷曲纹理 */}
-                        <path
-                          d="M8.2,1.8 C10.2,3.5 10.8,5.2 9.8,6.8 C10.8,5.5 10.8,3.8 9.5,2.2 Z"
-                          fill="#9a3412"
-                        />
-
-                        {/* 4. Fluffy Striped Tail with Soft White Tip (顺着身体优雅环绕的毛茸茸环纹小尾巴与白尾尖) */}
-                        <path
-                          d="M12.2,2.5 C15.5,5.2 14.2,8.8 9.5,9.5 C4.8,10.2 0.2,9.5 -3.5,8.2 C-4.8,7.8 -5,6.6 -3.8,6.2 C-0.6,7.4 4.2,8 8.8,7.6 C12.5,7.2 13.5,4.8 11.2,2 Z"
-                          fill="#f59e0b"
-                          stroke="#d97706"
-                          strokeWidth="0.35"
-                        />
-                        {/* 尾巴环纹1 */}
-                        <path d="M12.8,4.2 C13.5,5.2 13,6.2 11.8,6.8 C12.5,6 12.8,5 12.8,4.2 Z" fill="#9a3412" />
-                        {/* 尾巴环纹2 */}
-                        <path d="M9.5,7.2 C9,8.2 7.8,8.8 6.8,8.9 C7.8,8.6 8.6,8 9.5,7.2 Z" fill="#9a3412" />
-                        {/* 尾巴环纹3 */}
-                        <path d="M5.5,7.6 C4.8,8.4 3.8,8.9 2.8,9 C3.6,8.7 4.6,8.2 5.5,7.6 Z" fill="#9a3412" />
-                        {/* 尾巴环纹4 */}
-                        <path d="M1.5,7.8 C0.8,8.5 -0.2,8.8 -1.2,8.9 C-0.4,8.6 0.6,8.2 1.5,7.8 Z" fill="#9a3412" />
-                        {/* 纯白毛茸茸小尾尖 */}
-                        <path d="M-3.5,8.2 C-4.8,7.8 -5,6.6 -3.8,6.2 C-2.4,6.7 -1.2,7.2 -0.4,7.4 C-1.5,7.8 -2.4,8.1 -3.5,8.2 Z" fill="#fffdfa" />
-                      </g>
-
-                      {/* 5. Sweet Sleeping Chubby Head & Facial Details (甜美侧卧打盹的圆圆橘猫头、粉红耳窝与精致虎斑) */}
-                      <g id="orange-kitten-head">
-                        {/* Round Golden Head (圆润暖橙大脑袋) */}
-                        <ellipse cx="-7.2" cy="-2.2" rx="6.2" ry="5.6" fill="#f59e0b" stroke="#d97706" strokeWidth="0.35" />
-
-                        {/* Head Rim Light (额顶炉火暖光) */}
-                        <path d="M-11.5,-4.8 C-9.5,-7.5 -5.2,-7.5 -3.2,-4.5 C-4.2,-6.2 -7.8,-7 -10.2,-5 Z" fill="#fde047" opacity="0.6" />
-
-                        {/* Chubby Cheek Fur Tufts (软乎乎的圆脸颊绒毛轮廓) */}
-                        <path d="M-13.2,-1.2 C-14.5,-0.2 -14,1.5 -12.8,2.2 C-11.8,2.5 -11.2,1.8 -11.5,0.8 Z" fill="#f59e0b" />
-                        <path d="M-13.5,0.5 C-14.5,1.2 -14,2.4 -13,2.8 C-12,3 -11.8,2.2 -12.2,1.5 Z" fill="#fffdfa" />
-
-                        {/* Soft Creamy-White Muzzle & Bib (下巴与胸口奶白色的软萌白毛肚肚) */}
-                        <ellipse cx="-7.2" cy="0.6" rx="4.5" ry="3.0" fill="#fffdfa" stroke="#ece5db" strokeWidth="0.25" />
-                        <path d="M-10.2,1.2 C-10.2,3.8 -4.2,3.8 -4.2,1.2 C-5.5,2.2 -8.8,2.2 -10.2,1.2 Z" fill="#fffdfa" />
-
-                        {/* Pointed Triangular Ears with Soft Pink Flesh & Fluff (粉嫩耳窝与耳内白软毛) */}
-                        {/* 左耳 */}
-                        <polygon points="-12.8,-3.8 -11.5,-9.6 -7.8,-5.8" fill="#ea580c" stroke="#c2410c" strokeWidth="0.35" strokeLinejoin="round" />
-                        <polygon points="-12.0,-4.2 -11.0,-8.6 -8.4,-6.2" fill="#fbcfe8" />
-                        <path d="M-11.4,-5.2 Q-10.0,-7.0 -8.8,-5.8" stroke="#ffffff" strokeWidth="0.6" strokeLinecap="round" fill="none" />
-                        {/* 右耳 */}
-                        <polygon points="-7.0,-6.5 -3.6,-10.0 -2.0,-4.0" fill="#ea580c" stroke="#c2410c" strokeWidth="0.35" strokeLinejoin="round" />
-                        <polygon points="-6.4,-6.2 -3.8,-8.9 -2.6,-4.5" fill="#fbcfe8" />
-                        <path d="M-6.0,-5.8 Q-4.2,-7.2 -3.0,-5.5" stroke="#ffffff" strokeWidth="0.6" strokeLinecap="round" fill="none" />
-
-                        {/* Classic Tabby "M" Forehead Pattern (额头经典橘猫 M 型深色虎斑纹) */}
-                        <path d="M-9.6,-5.6 L-8.6,-3.2 L-7.2,-4.8 L-5.8,-3.2 L-4.8,-5.6" stroke="#9a3412" strokeWidth="0.65" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                        <path d="M-7.2,-6.0 L-7.2,-4.9" stroke="#9a3412" strokeWidth="0.6" strokeLinecap="round" />
-                        <path d="M-10.5,-4.0 Q-9.5,-3.5 -9.0,-2.5" stroke="#9a3412" strokeWidth="0.5" strokeLinecap="round" fill="none" />
-                        <path d="M-3.8,-4.0 Q-4.8,-3.5 -5.3,-2.5" stroke="#9a3412" strokeWidth="0.5" strokeLinecap="round" fill="none" />
-
-                        {/* Peaceful Happy Curved Slit Sleeping Eyes (安睡惬意满足的弯弯笑眼缝 ^ ^) */}
-                        <path d="M-10.2,-1.8 Q-8.8,-0.7 -7.5,-1.8" stroke="#451a03" strokeWidth="0.75" strokeLinecap="round" fill="none" />
-                        <path d="M-6.8,-1.8 Q-5.4,-0.7 -4.0,-1.8" stroke="#451a03" strokeWidth="0.75" strokeLinecap="round" fill="none" />
-                        <path d="M-10.4,-1.6 L-11.0,-1.2" stroke="#451a03" strokeWidth="0.5" strokeLinecap="round" />
-                        <path d="M-3.8,-1.6 L-3.2,-1.2" stroke="#451a03" strokeWidth="0.5" strokeLinecap="round" />
-
-                        {/* Rosy Peach Cheeks Blush (两颊微醺粉嫩害羞腮红) */}
-                        <ellipse cx="-10.5" cy="0.1" rx="1.6" ry="1.0" fill="#fca5a5" opacity="0.5" />
-                        <ellipse cx="-3.8" cy="0.1" rx="1.6" ry="1.0" fill="#fca5a5" opacity="0.5" />
-
-                        {/* Tiny Coral Pink Nose & Gentle Muzzle Smile (小巧珊瑚粉三角鼻头与软萌三瓣嘴) */}
-                        <polygon points="-7.6,-0.3 -6.8,-0.3 -7.2,0.3" fill="#fb7185" />
-                        <path d="M-8.0,0.7 Q-7.2,1.2 -7.2,0.4 Q-7.2,1.2 -6.4,0.7" stroke="#78350f" strokeWidth="0.55" fill="none" strokeLinecap="round" />
-
-                        {/* Delicate Pure White Whiskers (纤细优雅纯白小胡须) */}
-                        <path d="M-10.5,0.1 Q-13.0,-0.1 -15.5,-0.7" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
-                        <path d="M-10.5,0.7 Q-13.2,0.9 -15.2,1.6" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
-                        <path d="M-10.3,1.3 Q-12.8,1.9 -14.5,2.9" stroke="#ffffff" strokeWidth="0.4" strokeLinecap="round" opacity="0.75" fill="none" />
-                        <path d="M-4.2,0.1 Q-1.8,-0.1 0.8,-0.7" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
-                        <path d="M-4.2,0.7 Q-1.5,0.9 0.5,1.6" stroke="#ffffff" strokeWidth="0.45" strokeLinecap="round" opacity="0.85" fill="none" />
-                        <path d="M-4.4,1.3 Q-1.9,1.9 -0.2,2.9" stroke="#ffffff" strokeWidth="0.4" strokeLinecap="round" opacity="0.75" fill="none" />
-                      </g>
-
-                      {/* 6. Adorable White "Mittens" Front Paws (揣在下巴前的软糯白手套肉肉爪爪 · 隐约可见粉嫩小肉垫) */}
-                      <g id="kitten-white-paws">
-                        {/* 左前爪 (白糯糯山竹肉爪) */}
-                        <ellipse cx="-4.5" cy="4.5" rx="2.8" ry="1.9" fill="#ffffff" stroke="#e5ded2" strokeWidth="0.35" />
-                        <ellipse cx="-4.5" cy="4.5" rx="2.4" ry="1.5" fill="#fffdfa" />
-                        {/* 粉嫩小趾肉垫 */}
-                        <circle cx="-5.5" cy="4.9" r="0.45" fill="#fbcfe8" opacity="0.85" />
-                        <circle cx="-4.5" cy="5.1" r="0.45" fill="#fbcfe8" opacity="0.85" />
-                        <circle cx="-3.5" cy="4.9" r="0.45" fill="#fbcfe8" opacity="0.85" />
-
-                        {/* 右前爪 (乖巧垫在下方) */}
-                        <ellipse cx="-8.2" cy="4.0" rx="2.6" ry="1.8" fill="#ffffff" stroke="#e5ded2" strokeWidth="0.35" />
-                        <ellipse cx="-8.2" cy="4.0" rx="2.2" ry="1.4" fill="#fffdfa" />
-                        <circle cx="-8.8" cy="4.4" r="0.4" fill="#fbcfe8" opacity="0.85" />
-                        <circle cx="-8.0" cy="4.6" r="0.4" fill="#fbcfe8" opacity="0.85" />
-                        <circle cx="-7.2" cy="4.4" r="0.4" fill="#fbcfe8" opacity="0.85" />
-                      </g>
-
-                      {/* 7. Cozy Dreamland Sparks & Sleeping zZz (梦乡中轻柔升腾的温暖气泡与打盹符号 💤✨) */}
-                      <g id="kitten-dream-stardust" className="pointer-events-none">
-                        {/* 柔光睡眠泡泡 1 */}
-                        <circle cx="-3.2" cy="-9.2" r="1.3" fill="#fed7aa" opacity="0.7" className="animate-[pulse_2.8s_infinite]" />
-                        <circle cx="-3.5" cy="-9.5" r="0.4" fill="#ffffff" opacity="0.9" />
-                        {/* 柔光睡眠泡泡 2 */}
-                        <circle cx="-1.0" cy="-12.5" r="1.8" fill="#fef08a" opacity="0.6" className="animate-[pulse_3.4s_infinite]" />
-                        <circle cx="-1.3" cy="-12.9" r="0.5" fill="#ffffff" opacity="0.9" />
-                        {/* 炉边暖金星芒 */}
-                        <polygon
-                          points="4.5,-9.5 4.8,-8.8 5.5,-8.6 4.8,-8.4 4.5,-7.7 4.2,-8.4 3.5,-8.6 4.2,-8.8"
-                          fill="#fef08a"
-                          opacity="0.85"
-                          className="animate-[pulse_2.2s_infinite]"
-                        />
-                        {/* 梦幻打盹小字母 */}
-                        <text x="-1.8" y="-14" fill="#f59e0b" fontSize="3.6" fontFamily="sans-serif" fontWeight="bold" opacity="0.75" className="select-none animate-[pulse_2.5s_infinite]">z</text>
-                        <text x="1.8" y="-17.5" fill="#ea580c" fontSize="4.6" fontFamily="sans-serif" fontWeight="bold" opacity="0.7" className="select-none animate-[pulse_3.2s_infinite]">Z</text>
-                      </g>
-
-                      {/* 8. 2.5D 交互把手 (支持在 Gizmo Inspector 中微调小猫位置) */}
-                      {effectiveGizmoId === 'hearth-cat' && (
-                        <IsoGizmo
-                          pos={{ x: 0, y: 6 }}
-                          displayCoords={{ x: catScreenX, y: catScreenY }}
-                          fixedW={0}
-                          label="炉边小暖猫"
-                          onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
-                          onDragEnd={() => onDragGizmoEnd?.()}
-                        />
-                      )}
-                    </g>
+                    <NyankoSenseiCat
+                      x={catScreenX}
+                      y={catScreenY}
+                      isInspectorOpen={isInspectorOpen}
+                      effectiveGizmoId={effectiveGizmoId}
+                      onSelectGizmo={onSelectGizmo}
+                      onDragGizmoDelta={onDragGizmoDelta}
+                      onDragGizmoEnd={onDragGizmoEnd}
+                      onTriggerToast={onTriggerToast}
+                      setHoveredObject={setHoveredObject}
+                    />
                   );
                 })()}
               </g>
@@ -1656,63 +1465,20 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               })()}
             </g>
 
-            {/* --- FRONT VERANDA & PORCH (前廊、柴犬软窝与信箱) --- */}
+            {/* --- FRONT VERANDA & PORCH (前廊、中华田园小黄狗软窝与信箱) --- */}
             <g id="front-veranda-features">
-              {/* Sleeping Shiba Inu in Woven Pet Bed (睡在编织软窝垫上的柴犬) */}
-              <g {...svgAction('shiba-inu')}
-                id="shiba-inu"
-                transform={`translate(${currentLayout['shiba-inu'].screen.x}, ${currentLayout['shiba-inu'].screen.y})`}
-                onClick={(e) => {
-                  if (isInspectorOpen) {
-                    e.stopPropagation();
-                    onSelectGizmo?.(effectiveGizmoId === 'shiba-inu' ? null : 'shiba-inu');
-                  }
-                }}
-                className="cursor-pointer group/shiba"
-              >
-                {/* Bed Floor Shadow */}
-                <ellipse cx="0" cy="12" rx="18" ry="8" fill="#1b120c" opacity="0.32" filter="url(#softShadow)" />
-
-                {/* 2.5D Woven Pet Cushion Bed (麻色等轴测宠物软垫) */}
-                <path d="M-16,6 C-16,12 16,12 16,6 L16,9 C16,15 -16,15 -16,9 Z" fill="#543d28" />
-                <ellipse cx="0" cy="6" rx="16" ry="7.5" fill="#8f7253" stroke="#a68868" strokeWidth="0.8" />
-                <ellipse cx="0" cy="5" rx="13" ry="5.8" fill="#cfbfa8" />
-
-                {/* Curled Sleeping Shiba Inu Body */}
-                <g transform="translate(0, 2)">
-                  <ellipse cx="-1" cy="2" rx="10" ry="6.5" fill="#c48a4d" />
-                  <circle cx="7" cy="0" r="5.5" fill="#b0783d" />
-                  <polygon points="9,-4 11,-8 13,-3" fill="#8f5d2b" />
-                  <ellipse cx="-7" cy="0" rx="3" ry="2.2" fill="#fff" />
-                  {/* Tranquil Slumber Bubbles (柔美宁静睡眠气泡 · 告别文字一跳一跳) */}
-                  <g className="pointer-events-none" id="shiba-slumber-bubbles">
-                    <g className="animate-sleep-bubble-1">
-                      <circle cx="10" cy="-6" r="2.0" fill="#fef3c7" opacity="0.75" />
-                      <circle cx="9.4" cy="-6.6" r="0.6" fill="#ffffff" opacity="0.9" />
-                    </g>
-                    <g className="animate-sleep-bubble-2">
-                      <circle cx="15" cy="-12" r="2.8" fill="#fed7aa" opacity="0.7" />
-                      <circle cx="14.2" cy="-12.7" r="0.85" fill="#ffffff" opacity="0.9" />
-                    </g>
-                    <g className="animate-sleep-bubble-3">
-                      <circle cx="21" cy="-18" r="3.6" fill="#fde68a" opacity="0.6" />
-                      <circle cx="20.1" cy="-19.0" r="1.1" fill="#ffffff" opacity="0.85" />
-                    </g>
-                  </g>
-                </g>
-
-                {/* 2.5D 交互把手 */}
-                {effectiveGizmoId === 'shiba-inu' && (
-                  <IsoGizmo
-                    pos={{ x: 0, y: 10 }}
-                    displayCoords={currentLayout['shiba-inu'].screen}
-                    fixedW={0}
-                    label="柴犬宠物窝"
-                    onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
-                    onDragEnd={() => onDragGizmoEnd?.()}
-                  />
-                )}
-              </g>
+              {/* Sleeping Chinese Rural Dog in Woven Pet Bed (前廊软窝打盹的中华田园犬大黄狗) */}
+              <ShibaInuPuppy
+                x={currentLayout['shiba-inu'].screen.x}
+                y={currentLayout['shiba-inu'].screen.y}
+                isInspectorOpen={isInspectorOpen}
+                effectiveGizmoId={effectiveGizmoId}
+                onSelectGizmo={onSelectGizmo}
+                onDragGizmoDelta={onDragGizmoDelta}
+                onDragGizmoEnd={onDragGizmoEnd}
+                onTriggerToast={onTriggerToast}
+                setHoveredObject={setHoveredObject}
+              />
 
               {/* 🌟 WOODEN MAILBOX (门口草地迎客美式木信箱) */}
               <g {...svgAction('前廊木信箱')}
