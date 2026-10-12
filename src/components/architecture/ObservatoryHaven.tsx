@@ -4,8 +4,11 @@ import type { Person } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
+import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
+import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 
 export interface ObservatoryHavenProps {
+  theme: Pick<YorkshireSceneTheme, 'roadColor' | 'hillGreenFar'>;
   presenceSlots: Partial<Record<'observatory_post', ResolvedPresenceSlot>>;
   alienPulseEffect?: boolean;
   triggerAlienSignal: (event?: React.MouseEvent) => void;
@@ -42,6 +45,7 @@ const face = (...vertices: [number, number, number][]) =>
   vertices.map(([u, v, z]) => `${pt(u, v, z).x},${pt(u, v, z).y}`).join(' ');
 
 function ObservatoryHavenAsset({
+  theme,
   presenceSlots,
   alienPulseEffect,
   triggerAlienSignal,
@@ -76,6 +80,10 @@ function ObservatoryHavenAsset({
         <ellipse cx={pt(PU, -PV, 0).x} cy={pt(PU, -PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
         <ellipse cx={pt(PU, PV, 0).x} cy={pt(PU, PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
       </g>
+
+      {/* A short approach at the access ladder, rather than a ring around the platform. */}
+      <MeadowWearPatch id="observatory-entry-grass-wear" theme={theme}
+        transform="matrix(0.28 0.079 -0.5 0.35 -50 46)" opacity={0.85} />
 
       {/* ========================================================================= */}
       {/* 1. ASHLAR STONE FOOTINGS (4个工整规矩的石砌锚固基座)                     */}

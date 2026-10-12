@@ -84,7 +84,7 @@ test('default panorama exposes the tractor wheels and the viaduct arches', async
   expectContinuous(terrain);
 });
 
-for (const viewport of [{ width: 1200, height: 800 }, { width: 1600, height: 900 }, { width: 390, height: 844 }]) {
+for (const viewport of [{ width: 1200, height: 800 }, { width: 1600, height: 900 }, { width: 390, height: 844 }, { width: 1920, height: 800 }]) {
   test(`terrain joins cover every pan corner at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     test.setTimeout(60000);
     await page.setViewportSize(viewport);

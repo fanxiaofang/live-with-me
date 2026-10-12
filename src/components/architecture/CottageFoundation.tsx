@@ -1,4 +1,6 @@
 import React from 'react';
+import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
+import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
 
 /**
  * 2.5D 建筑基底体系 (Architectural Foundation, Crawl Space & Porch Steps)
@@ -13,10 +15,11 @@ import React from 'react';
  */
 
 interface CottageFoundationProps {
+  theme: YorkshireSceneTheme;
   className?: string;
 }
 
-export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className }) => {
+export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, className }) => {
   // 承重立柱沿前缘 X 轴分布坐标 (对称分布)
   const postsLeft = [-225, -165, -105, -45];
   const postsRight = [45, 105, 165, 225];
@@ -71,6 +74,9 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ className 
           <stop offset="100%" stopColor="#60a5fa" />
         </linearGradient>
       </defs>
+
+      {/* Entrance wear stays in the foundation's local space, under the stone and steps. */}
+      <MeadowWearPatch id="porch-entry-grass-wear" theme={theme} transform="translate(0,246)" />
 
       {/* ======================================================== */}
       {/* 1. 夯土垫层、碎石散水与接地柔和遮蔽阴影 (Ground AO & Gravel) */}

@@ -1,20 +1,16 @@
 import React from 'react';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 import { YorkshireCommonProps } from '../landscapeTypes';
-import { SheepPen } from './SheepPen';
 
 /**
- * 🧱 DrystoneWalls (Yorkshire Authentic Low Field Boundaries & Sheep Pen Gate)
+ * 🧱 DrystoneWalls (Yorkshire Authentic Low Field Boundaries)
  *
  * Layer: 04 BOUNDARIES
  *
  * - Renders the authentic low boundary stone wall along the northeastern hillside
- * - Integrates the SheepPen component containing the authentic 5-Bar Field Gate
+ * SheepPen is mounted separately by HomesteadMeadow.
  */
 export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
-  theme,
-  onTriggerToast,
-  setHoveredObject,
   className,
 }) => {
   const walls = YORKSHIRE_LAYOUT.drystoneWalls;
@@ -67,14 +63,6 @@ export const DrystoneWalls: React.FC<YorkshireCommonProps> = ({
         </g>
       </g>
 
-      {/* ----------------------------------------------------------------------- */}
-      {/* 🐑 约克郡经典原木五杠门干砌石墙小羊圈 (Integrated Sheep Pen with 5-Bar Gate)  */}
-      {/* ----------------------------------------------------------------------- */}
-      <SheepPen
-        theme={theme}
-        onTriggerToast={onTriggerToast}
-        setHoveredObject={setHoveredObject}
-      />
     </g>
   );
 };

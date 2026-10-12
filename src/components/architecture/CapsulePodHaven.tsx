@@ -4,6 +4,8 @@ import type { Person, RoomId } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
+import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
+import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 
 export interface CapsulePodHavenProps {
   onSelectRoom: (roomId: RoomId | 'overview') => void;
@@ -11,7 +13,7 @@ export interface CapsulePodHavenProps {
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
   hasMovedRef: React.MutableRefObject<boolean> | React.RefObject<boolean>;
-  theme: {
+  theme: Pick<YorkshireSceneTheme, 'roadColor' | 'hillGreenFar'> & {
     cottageGlow: string;
     isNight?: boolean;
   };
@@ -140,6 +142,9 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           <stop offset="100%" stopColor="#0d130f" />
         </linearGradient>
       </defs>
+
+      <MeadowWearPatch id="pod-entry-grass-wear" theme={theme}
+        transform="translate(-50,66) scale(0.42,0.32)" />
 
       {/* ========================================================================= */}
       {/* 2. 胶囊睡眠舱交互主组 (The 3D Sculpted Capsule Pod Interactive Room)        */}

@@ -4,12 +4,13 @@ import { useTimerScope } from '../../../../shared/timers/useTimerScope';
 import { svgAction } from '../../../../world/interactions/svgAction';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 import { YorkshireCommonProps } from '../landscapeTypes';
+import { MeadowWearPatch } from '../dressing/MeadowWearPatch';
 
 /**
  * 🐑 SheepPen (Yorkshire Authentic Masterpiece 2.5D Stone-and-Timber Meadow Sheepfold)
  *
  * Layer: 04 BOUNDARIES & MEADOW LIVING
- * Location: Outer East Pasture Slope (Anchor: x: 990, y: 585)
+ * Location: East Pasture, beside the terrace (placement owned by YORKSHIRE_LAYOUT)
  *
  * 核心针对性全方位重构升级：
  * 1. 避风雪松木高挑大草棚 (High-Clearance Lean-to Field Barn):
@@ -36,7 +37,7 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
   const [activeSheep, setActiveSheep] = useState<'mother' | 'peeking' | 'grazing' | null>(null);
   const [sheepSaying, setSheepSaying] = useState<string | null>(null);
 
-  const anchor = YORKSHIRE_LAYOUT.sheepPen?.anchor ?? { x: 990, y: 585 };
+  const anchor = YORKSHIRE_LAYOUT.sheepPen.anchor;
 
   const handleGateClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -200,32 +201,19 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
         fill="url(#spLoamBaseGrad)"
       />
 
-      {/* B. 羊蹄践踏形成的自然泥土小径 (门口 -> 草棚 -> 水槽；延伸穿过敞开大门到门外) */}
-      <path
-        d="M-20,40 Q35,42 90,24 T190,-16"
-        stroke="#453623"
-        strokeWidth="14"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.25"
-      />
-      <path
-        d="M90,24 Q165,16 250,-4"
-        stroke="#4a3b26"
-        strokeWidth="11"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.2"
-      />
-      {/* 门洞自然踩踏小径 (顺着大门向外轻柔延伸至小羊羔脚边) */}
-      <path
-        d="M-22,39 Q-40,46 -58,52"
-        stroke="#453623"
-        strokeWidth="12"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.22"
-      />
+      {/* B. Disconnected hoof wear at the gate, shelter approach and trough. */}
+      <g id="sheep-pen-interior-grass-wear" pointerEvents="none">
+        <MeadowWearPatch id="pen-gate-inner-wear" theme={theme} variant="scuff"
+          transform="matrix(0.7 -0.198 0.15 0.65 -6 40)" opacity={0.85} />
+        <MeadowWearPatch id="pen-grazing-approach-wear" theme={theme} variant="scuff"
+          transform="matrix(0.75 -0.212 0.15 0.7 42 30)" opacity={0.75} />
+        <MeadowWearPatch id="pen-shelter-approach-wear" theme={theme} variant="scuff"
+          transform="matrix(0.95 -0.269 0.2 0.75 130 9)" opacity={0.85} />
+        <MeadowWearPatch id="pen-trough-approach-wear" theme={theme} variant="scuff"
+          transform="matrix(0.65 -0.184 0.13 0.65 228 8)" opacity={0.65} />
+      </g>
+      <MeadowWearPatch id="sheep-pen-entry-grass-wear" theme={theme}
+        transform="matrix(0.36 0.102 -0.95 0.269 -28 43)" opacity={0.85} />
 
       {/* C. 围栏底沿低矮石砌基础 (平整收纳于各柱础内，消灭断裂刺角) */}
       <g id="sp-stone-footings" opacity="0.76">

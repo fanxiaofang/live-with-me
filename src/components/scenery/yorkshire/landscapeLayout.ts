@@ -11,8 +11,6 @@ drystoneWalls: {
     eastWall: {
       id: 'wall-east',
       segment1: { start: { x: 260, y: 490 }, end: { x: 440, y: 460 } },
-      // 5-bar gate is integrated into the sheep pen at the outer meadow slope beyond the living terrace
-      gateAnchor: { x: 995, y: 595 },
       stoneWallAnchor: { x: 1230, y: 196 },
       segment2: { start: { x: 498, y: 467 }, end: { x: 680, y: 435 } },
     },
@@ -23,8 +21,10 @@ drystoneWalls: {
     },
   },
   sheepPen: {
-    anchor: { x: 990, y: 585 },
-    gateAnchor: { x: 995, y: 595 },
+    // Southeast meadow, entirely outside the terrace with a grass buffer.
+    anchor: { x: 975, y: 560 },
+    // Includes the open gate, lamb and contact shadows; excludes temporary speech.
+    bounds: { minX: -115, maxX: 375, minY: -80, maxY: 92 },
   },
 railway: {
     anchor: { x: -160, y: 224 },

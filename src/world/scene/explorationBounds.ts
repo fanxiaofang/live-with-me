@@ -1,4 +1,5 @@
 import type { EntityId, SceneLayout } from './sceneTypes';
+import { YORKSHIRE_LAYOUT } from '../../components/scenery/yorkshire/landscapeLayout';
 
 export interface SceneBounds {
   minX: number;
@@ -25,6 +26,13 @@ export function sceneExplorationBounds(layout: SceneLayout): SceneBounds {
       minY: position.y + envelope.minY * scale,
       maxY: position.y + envelope.maxY * scale,
     };
+  });
+  const pen = YORKSHIRE_LAYOUT.sheepPen;
+  bounds.push({
+    minX: pen.anchor.x + pen.bounds.minX,
+    maxX: pen.anchor.x + pen.bounds.maxX,
+    minY: pen.anchor.y + pen.bounds.minY,
+    maxY: pen.anchor.y + pen.bounds.maxY,
   });
   return {
     minX: Math.min(...bounds.map(b => b.minX)),

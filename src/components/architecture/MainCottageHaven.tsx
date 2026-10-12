@@ -55,7 +55,7 @@ export interface MainCottageHavenProps {
 function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount, onTriggerToast }: MainCottageHavenProps) {
   return <>
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
-            <CottageFoundation />
+            <CottageFoundation theme={theme} />
 
             {/* 2.5D Artisan Hardwood Timber Flooring (工匠级实木企口地板与收边地袱大梁) */}
             <TimberFlooring />

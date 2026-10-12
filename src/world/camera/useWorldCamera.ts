@@ -21,13 +21,14 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
   const pointers=useRef(new Map<number,{x:number;y:number}>());
   const gesture=useRef<{origin:Camera;originMode:'focus'|'pan';start:Camera;client:{x:number;y:number};point:{x:number;y:number};distance:number;midpoint:{x:number;y:number}} | null>(null);
   const apply=(value:Camera)=>{cameraRef.current=value;setCamera(value);};
+  const content=useMemo(()=>sceneExplorationBounds(layout),[layout]);
   const focusedCamera=useMemo(()=>resolveRoomCamera(room,layout,viewport),[room,layout,viewport]);
   const selectionChanged=lastFocus.current.room!==room||lastFocus.current.revision!==focusRevision;
   // Put selection and its camera target in the same commit, rather than first
   // painting the old camera and scheduling another render from an effect.
   const renderedCamera=selectionChanged||mode.current==='focus'?focusedCamera:camera;
   const focus=()=>focusedCamera;
-  const constrain=(value:Camera)=>clampPan(value,focus(),viewport,sceneExplorationBounds(layout));
+  const constrain=(value:Camera)=>clampPan(value,focus(),viewport,content);
 
   useEffect(()=>{
     const svg=svgRef.current;

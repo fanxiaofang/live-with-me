@@ -7,6 +7,7 @@ import { sceneExplorationBounds } from '../../src/world/scene/explorationBounds'
 import { resolveRoomCamera } from '../../src/world/scene/roomTargets';
 import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
 import { scenePoint } from '../../src/world/scene/sceneTypes';
+import { YORKSHIRE_LAYOUT } from '../../src/components/scenery/yorkshire/landscapeLayout';
 
 test('visible slice rectangle follows wide and portrait screen crops', () => {
   assert.deepEqual(visibleViewBox(1200, 800), FULL_VIEWBOX);
@@ -43,8 +44,18 @@ test('bounds change with zoom, screen crop and moved scene placement', () => {
   assert.notDeepEqual(desktop, closeUp);
   const moved = { ...DEFAULT_SCENE_LAYOUT, observatory: { position: scenePoint(DEFAULT_SCENE_LAYOUT.observatory.position.x + 500, 600), scale: 0.8 } };
   const movedBounds = sceneExplorationBounds(moved);
-  assert.ok(movedBounds.maxX > sceneExplorationBounds(DEFAULT_SCENE_LAYOUT).maxX + 400);
+  assert.ok(movedBounds.maxX > sceneExplorationBounds(DEFAULT_SCENE_LAYOUT).maxX);
+  assert.ok(movedBounds.maxX >= moved.observatory.position.x);
   assert.notDeepEqual(panBounds(camera, OVERVIEW_CAMERA, FULL_VIEWBOX, movedBounds), desktop);
+});
+
+test('exploration includes the entire sheep pen, including its open gate and contact shadow', () => {
+  const content = sceneExplorationBounds(DEFAULT_SCENE_LAYOUT);
+  const { anchor, bounds } = YORKSHIRE_LAYOUT.sheepPen;
+  assert.ok(content.minX <= anchor.x + bounds.minX);
+  assert.ok(content.maxX >= anchor.x + bounds.maxX);
+  assert.ok(content.minY <= anchor.y + bounds.minY);
+  assert.ok(content.maxY >= anchor.y + bounds.maxY);
 });
 
 test('responsive room focuses and nearby travel remain reachable after placement changes', () => {

@@ -216,7 +216,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group/observatory"
             >
-  <ObservatoryHaven presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
+  <ObservatoryHaven theme={theme} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
     triggerAlienSignal={captureSignal} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
 </SceneEntity>
           </g>

@@ -4,6 +4,8 @@ import type { Person, RoomId } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
+import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
+import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 
 export interface WoodenCabinHavenProps {
   onSelectRoom: (roomId: RoomId | 'overview') => void;
@@ -11,7 +13,7 @@ export interface WoodenCabinHavenProps {
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
   hasMovedRef: React.MutableRefObject<boolean> | React.RefObject<boolean>;
-  theme: {
+  theme: Pick<YorkshireSceneTheme, 'roadColor' | 'hillGreenFar'> & {
     cottageGlow: string;
     isNight?: boolean;
     roofColor?: string;
@@ -88,6 +90,10 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
           <polygon points={cabinFace([6, 0, 45], [74, 0, 45], [74, 0], [6, 0])} />
         </clipPath>
       </defs>
+
+      {/* The worn grass follows the cabin's south-east facing stair approach. */}
+      <MeadowWearPatch id="cabin-entry-grass-wear" theme={theme}
+        transform="matrix(0.52 -0.104 0.4 0.258 9 92)" />
 
       <g {...svgAction('进入林间小木屋')} id="room-corn_lounge"
         onClick={() => { if (!hasMovedRef.current) onSelectRoom('corn_lounge'); }}
