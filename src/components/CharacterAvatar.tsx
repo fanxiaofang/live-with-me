@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { IsoDirection4, normalizeIsoFacing } from '../utils/characterFacing';
+import { CurlyHair } from './characters/CurlyHair';
+import { SidePartHair } from './characters/SidePartHair';
+import { ShaggyHair } from './characters/ShaggyHair';
 
 /**
  * 2.5D Isometric Character Avatar System
@@ -24,6 +27,7 @@ export interface CharacterHeadProps {
   isSleeping?: boolean;
   hasPompom?: boolean;
   facing?: CharacterFacing; // 2.5D 轴测三大核心视角：'front' (正身) | 'side' (侧身) | 'back' (后背)
+  hairFacing?: CharacterFacing; // Anatomical side when a scene mirrors the complete actor.
   className?: string;
 }
 
@@ -46,6 +50,7 @@ export const CharacterHead: React.FC<CharacterHeadProps> = ({
   isSleeping = false,
   hasPompom = true,
   facing = 'front',
+  hairFacing,
   className = '',
 }) => {
   if (isSleeping) {
@@ -68,14 +73,16 @@ export const CharacterHead: React.FC<CharacterHeadProps> = ({
 
         {/* 极简闭目弧线 (Peaceful Eyes) */}
         <path
-          d="M-2.5,1.2 Q-1.1,2.1 0.3,1.2 M1.6,1.2 Q3.0,2.1 4.4,1.2"
+          d={normalizeHairStyle(hairStyle) === 'long_wavy'
+            ? 'M1.6,1.2 Q3.0,2.1 4.4,1.2'
+            : 'M-2.5,1.2 Q-1.1,2.1 0.3,1.2 M1.6,1.2 Q3.0,2.1 4.4,1.2'}
           fill="none"
           stroke="#5c432d"
           strokeWidth="0.8"
           strokeLinecap="round"
         />
         {/* 柔和晚安腮红 */}
-        <circle cx="-3.2" cy="2.4" r="1.1" fill="#f87171" opacity="0.3" />
+        {normalizeHairStyle(hairStyle) !== 'long_wavy' && <circle cx="-3.2" cy="2.4" r="1.1" fill="#f87171" opacity="0.3" />}
         <circle cx="3.2" cy="2.4" r="1.1" fill="#f87171" opacity="0.3" />
 
         {showBeanie ? (
@@ -250,7 +257,10 @@ export const CharacterHead: React.FC<CharacterHeadProps> = ({
         <circle cx="0" cy="-14" r="7.1" fill={skinColor} />
 
         {/* 侧面视角延展发型 (卷发/长发/及肩直发自然落入后颈) */}
-        {renderSideHairstyle(hairStyle, hairColor)}
+        {/* Front's screen-left lock belongs to the character's right: NE shows
+            that lock, while SW exposes the tucked left temple. */}
+        {renderSideHairstyle(hairStyle, hairColor, normalizeIsoFacing(hairFacing ?? facing) === 'SW')}
+        {showBeanie && normalizeHairStyle(hairStyle) === 'wavy_curly' && <CurlyHair view="side" part="fringe" color={hairColor} />}
 
         {showBeanie ? (
           <g id="knit-beanie-side-view">
@@ -317,10 +327,10 @@ export const CharacterHead: React.FC<CharacterHeadProps> = ({
             <line x1="5.906" y1="-13.358" x2="5.674" y2="-10.865" stroke="rgba(0,0,0,0.14)" strokeWidth="0.45" />
 
             {/* 5. 经典短发侧颜发梢 (用户手动微调的高质感月牙弧线) */}
-            <path
+            {!['wavy_curly', 'long_wavy', 'medium_straight'].includes(normalizeHairStyle(hairStyle)) && <path
               d="M -6.873 -13.063 C -7.207 -12.431 -4.624 -11.731 -4.031 -11.783 C -2.144 -11.949 -2.13 -11.731 -2.381 -12.176 C -3.259 -11.654 -1.213 -11.98 -2.137 -12.044 C -2.63 -11.596 -2.334 -13.829 -6.873 -13.063 Z"
               fill={hairColor}
-            />
+            />}
           </g>
         ) : (
           <path d="M-6,-14 Q0,-22 7,-13 Q6,-8 0,-8 Z" fill={hairColor} />
@@ -347,6 +357,7 @@ export const CharacterHead: React.FC<CharacterHeadProps> = ({
 
       {/* 正面两侧垂落修饰发丝 (长发/卷发/直发在脸颊两侧的延展，不遮挡五官) */}
       {renderFrontFramingHair(hairStyle, hairColor)}
+      {showBeanie && normalizeHairStyle(hairStyle) === 'wavy_curly' && <CurlyHair view="front" part="fringe" color={hairColor} />}
 
       {showBeanie ? (
         <g id="knit-beanie-with-curtain-bangs">
@@ -434,6 +445,7 @@ function renderPeekingBangs(
   color: string = '#1f1b18',
   isSleeping: boolean = false
 ) {
+  if (['long_wavy', 'medium_straight'].includes(normalizeHairStyle(style))) return null;
   if (isSleeping) {
     // 睡眠姿势下的微八字刘海
     return (
@@ -445,6 +457,9 @@ function renderPeekingBangs(
       </g>
     );
   }
+
+  // Curly wisps are drawn before the beanie, which masks their roots.
+  if (normalizeHairStyle(style) === 'wavy_curly') return null;
 
   switch (style) {
     case 'soft_bangs':
@@ -515,8 +530,8 @@ function renderPeekingBangs(
  * 默认保持原先的经典月牙短发 ('curtain_crescent')
  * 新增 3 种发型严格参考用户提供的示意图（image.png）：
  * 1. wavy_curly: 蓬松波浪卷发 (图左)
- * 2. long_wavy: 随性披肩长发 (图中)
- * 3. medium_straight: 利落及肩直发 (图右)
+ * 2. long_wavy: 偏分低束发（兼容旧披肩长发 ID）
+ * 3. medium_straight: 双色蓬松碎发（兼容旧及肩直发 ID）
  */
 export function normalizeHairStyle(
   style?: string
@@ -533,111 +548,18 @@ export function normalizeHairStyle(
  * - 帽子设定原封不动 (保持毛线帽翻折卷檐与轮廓)
  * - 头发从帽檐下沿自然倾泻而下：
  *   - 图左款：蓬松波浪卷发，自然卷曲披落至肩颈
- *   - 图中款：随性披肩长发，轻盈微卷垂坠至肩背
- *   - 图右款：利落及肩直发，整齐垂直发束，发梢微散微翘
+ *   - 偏分款：后发收向后颈，低扎小发束（保留旧 long_wavy 标识）
+ *   - 碎发款：上层分束外翘，下层后颈深色短发
  *   - 默认款：经典利落短发后颈
  */
 function renderBackHairstyle(style?: string, color: string = '#1f1b18') {
   const normStyle = normalizeHairStyle(style);
 
-  if (normStyle === 'wavy_curly') {
-    return (
-      <g id="hair-back-wavy-curly">
-        {/* 蓬松波浪卷发 (参考图左款) */}
-        <path
-          d="M-7.6,-10.8
-             C-9.5,-9.5 -10.8,-7.0 -9.5,-4.2
-             C-10.8,-2.0 -9.6,0.8 -7.2,0.5
-             C-6.2,-0.5 -5.8,-1.8 -5.0,-0.8
-             C-4.2,1.2 -1.8,1.6 0,-0.2
-             C1.8,1.6 4.2,1.2 5.0,-0.8
-             C5.8,-1.8 6.2,-0.5 7.2,0.5
-             C9.6,0.8 10.8,-2.0 9.5,-4.2
-             C10.8,-7.0 9.5,-9.5 7.6,-10.8
-             Z"
-          fill={color}
-        />
-        {/* 卷曲波浪内部生动线条 (同图左细腻手绘卷纹) */}
-        <path
-          d="M-7.5,-7.2 C-8.6,-5.2 -7.2,-3.2 -8.0,-1.0
-             M-4.6,-7.8 C-3.6,-5.2 -5.6,-3.0 -4.2,-0.8
-             M-1.8,-8.2 C-2.8,-5.5 -0.6,-3.2 -1.2,-0.6
-             M1.8,-8.2 C2.8,-5.5 0.6,-3.2 1.2,-0.6
-             M4.6,-7.8 C3.6,-5.2 5.6,-3.0 4.2,-0.8
-             M7.5,-7.2 C8.6,-5.2 7.2,-3.2 8.0,-1.0"
-          stroke="rgba(0,0,0,0.32)"
-          strokeWidth="0.65"
-          strokeLinecap="round"
-          fill="none"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'wavy_curly') return <CurlyHair view="back" color={color} />;
 
-  if (normStyle === 'long_wavy') {
-    return (
-      <g id="hair-back-long-wavy">
-        {/* 随性披肩长发 (参考图中款) */}
-        <path
-          d="M-7.6,-10.8
-             C-8.4,-6.5 -8.8,-2.0 -8.2,1.2
-             C-7.6,3.2 -6.2,4.2 -5.2,2.8
-             C-4.6,1.8 -4.8,0.2 -4.0,2.2
-             C-3.2,4.0 -1.6,4.5 -0.8,2.4
-             C-0.3,1.2 0,0.6 0.8,2.4
-             C1.6,4.5 3.2,4.0 4.0,2.2
-             C4.8,0.2 4.6,1.8 5.2,2.8
-             C6.2,4.2 7.6,3.2 8.2,1.2
-             C8.8,-2.0 8.4,-6.5 7.6,-10.8
-             Z"
-          fill={color}
-        />
-        {/* 随性长发内部垂坠波浪纹理 (同图中自然光泽束线) */}
-        <path
-          d="M-5.8,-7.0 C-6.2,-3.0 -5.6,0.6 -5.2,2.2
-             M-2.6,-7.6 C-2.9,-3.5 -2.0,0.2 -1.6,2.6
-             M1.6,-7.6 C2.2,-3.5 1.6,0.2 1.8,2.6
-             M5.4,-7.0 C6.0,-3.0 5.4,0.6 5.2,2.2"
-          stroke="rgba(0,0,0,0.3)"
-          strokeWidth="0.6"
-          strokeLinecap="round"
-          fill="none"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'long_wavy') return <SidePartHair view="back" color={color} />;
 
-  if (normStyle === 'medium_straight') {
-    return (
-      <g id="hair-back-medium-straight">
-        {/* 利落及肩直发 (参考图右款) */}
-        <path
-          d="M-7.6,-10.8
-             C-7.9,-6.0 -8.0,-1.8 -9.0,1.2
-             C-8.4,1.8 -6.6,1.5 -6.2,-0.2
-             L-6.0,1.2
-             C-5.4,1.6 -3.8,1.5 -3.5,-0.2
-             L-3.2,1.2
-             C-2.5,1.6 -0.8,1.5 -0.4,-0.2
-             L0,1.2
-             C0.6,1.6 2.3,1.5 2.6,-0.2
-             L2.9,1.2
-             C3.6,1.6 5.2,1.5 5.6,-0.2
-             L5.8,1.2
-             C6.5,1.6 8.4,1.8 9.0,1.2
-             C8.0,-1.8 7.9,-6.0 7.6,-10.8
-             Z"
-          fill={color}
-        />
-        {/* 直发发丝纵向垂直整齐分缕线 (同图右一缕一缕的利落质感) */}
-        <line x1="-6.0" y1="-8.2" x2="-6.0" y2="0.6" stroke="rgba(0,0,0,0.32)" strokeWidth="0.55" />
-        <line x1="-3.2" y1="-8.5" x2="-3.2" y2="0.6" stroke="rgba(0,0,0,0.32)" strokeWidth="0.55" />
-        <line x1="0" y1="-8.8" x2="0" y2="0.6" stroke="rgba(0,0,0,0.32)" strokeWidth="0.55" />
-        <line x1="3.2" y1="-8.5" x2="3.2" y2="0.6" stroke="rgba(0,0,0,0.32)" strokeWidth="0.55" />
-        <line x1="6.0" y1="-8.2" x2="6.0" y2="0.6" stroke="rgba(0,0,0,0.32)" strokeWidth="0.55" />
-      </g>
-    );
-  }
+  if (normStyle === 'medium_straight') return <ShaggyHair view="back" color={color} />;
 
   // 默认短发：经典干净利落后颈 (curtain_crescent)
   return (
@@ -659,82 +581,11 @@ function renderBackHairstyle(style?: string, color: string = '#1f1b18') {
 function renderFrontFramingHair(style?: string, color: string = '#1f1b18') {
   const normStyle = normalizeHairStyle(style);
 
-  if (normStyle === 'wavy_curly') {
-    return (
-      <g id="hair-front-wavy-curly">
-        {/* 左侧卷曲发束 */}
-        <path
-          d="M-6.6,-12.0 C-8.4,-10.5 -9.4,-8.0 -8.2,-5.8 C-9.0,-4.2 -7.8,-3.2 -6.5,-4.0 C-5.8,-4.5 -6.0,-6.5 -5.8,-8.5 Z"
-          fill={color}
-        />
-        <path
-          d="M-7.6,-9.5 C-8.4,-7.8 -7.2,-5.8 -7.4,-4.5"
-          stroke="rgba(0,0,0,0.28)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-        {/* 右侧卷曲发束 */}
-        <path
-          d="M6.6,-12.0 C8.4,-10.5 9.4,-8.0 8.2,-5.8 C9.0,-4.2 7.8,-3.2 6.5,-4.0 C5.8,-4.5 6.0,-6.5 5.8,-8.5 Z"
-          fill={color}
-        />
-        <path
-          d="M7.6,-9.5 C8.4,-7.8 7.2,-5.8 7.4,-4.5"
-          stroke="rgba(0,0,0,0.28)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'wavy_curly') return <CurlyHair view="front" color={color} />;
 
-  if (normStyle === 'long_wavy') {
-    return (
-      <g id="hair-front-long-wavy">
-        {/* 左侧微卷长发 */}
-        <path
-          d="M-6.6,-12.0 C-8.0,-8.0 -8.2,-4.0 -7.6,-1.5 C-7.0,-0.5 -6.0,-1.0 -5.8,-2.5 C-5.6,-4.5 -5.6,-8.0 -5.6,-10.5 Z"
-          fill={color}
-        />
-        <path
-          d="M-7.2,-8.0 C-7.6,-4.5 -7.0,-2.0 -6.6,-1.8"
-          stroke="rgba(0,0,0,0.25)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-        {/* 右侧微卷长发 */}
-        <path
-          d="M6.6,-12.0 C8.0,-8.0 8.2,-4.0 7.6,-1.5 C7.0,-0.5 6.0,-1.0 5.8,-2.5 C5.6,-4.5 5.6,-8.0 5.6,-10.5 Z"
-          fill={color}
-        />
-        <path
-          d="M7.2,-8.0 C7.6,-4.5 7.0,-2.0 6.6,-1.8"
-          stroke="rgba(0,0,0,0.25)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'long_wavy') return <SidePartHair view="front" color={color} />;
 
-  if (normStyle === 'medium_straight') {
-    return (
-      <g id="hair-front-medium-straight">
-        {/* 左侧及肩直发 */}
-        <path
-          d="M-6.6,-12.0 C-7.4,-8.5 -7.6,-5.5 -8.2,-3.5 C-7.6,-3.0 -6.4,-3.2 -6.0,-4.5 C-5.8,-6.5 -5.6,-9.0 -5.6,-11.0 Z"
-          fill={color}
-        />
-        <line x1="-7.0" y1="-8.5" x2="-7.0" y2="-4.0" stroke="rgba(0,0,0,0.28)" strokeWidth="0.5" />
-        {/* 右侧及肩直发 */}
-        <path
-          d="M6.6,-12.0 C7.4,-8.5 7.6,-5.5 8.2,-3.5 C7.6,-3.0 6.4,-3.2 6.0,-4.5 C5.8,-6.5 5.6,-9.0 5.6,-11.0 Z"
-          fill={color}
-        />
-        <line x1="7.0" y1="-8.5" x2="7.0" y2="-4.0" stroke="rgba(0,0,0,0.28)" strokeWidth="0.5" />
-      </g>
-    );
-  }
+  if (normStyle === 'medium_straight') return <ShaggyHair view="front" color={color} />;
 
   // 默认短发：清爽面部无外延侧发
   return null;
@@ -744,54 +595,14 @@ function renderFrontFramingHair(style?: string, color: string = '#1f1b18') {
  * 视角 3 侧身发型渲染：
  * 卷发/长发/及肩直发沿侧后颈部自然垂落
  */
-function renderSideHairstyle(style?: string, color: string = '#1f1b18') {
+function renderSideHairstyle(style?: string, color: string = '#1f1b18', tuckedSide = false) {
   const normStyle = normalizeHairStyle(style);
 
-  if (normStyle === 'wavy_curly') {
-    return (
-      <g id="hair-side-wavy-curly">
-        <path
-          d="M3.2,-11.0 C5.8,-10.0 8.4,-7.5 7.2,-4.5 C8.2,-3.0 7.0,-1.5 5.2,-2.2 C4.2,-2.8 4.0,-5.0 2.8,-8.0 Z"
-          fill={color}
-        />
-        <path
-          d="M5.2,-8.0 C6.5,-6.0 6.2,-4.0 6.0,-2.8"
-          stroke="rgba(0,0,0,0.28)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'wavy_curly') return <CurlyHair view="side" color={color} />;
 
-  if (normStyle === 'long_wavy') {
-    return (
-      <g id="hair-side-long-wavy">
-        <path
-          d="M3.2,-11.0 C6.2,-7.0 7.5,-2.0 7.0,1.2 C6.0,2.0 5.0,1.0 4.5,-0.8 C4.0,-3.5 3.6,-7.0 2.8,-8.5 Z"
-          fill={color}
-        />
-        <path
-          d="M5.0,-7.0 C5.8,-3.0 5.5,0.2 5.2,1.0"
-          stroke="rgba(0,0,0,0.25)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'long_wavy') return <SidePartHair view="side" tuckedSide={tuckedSide} color={color} />;
 
-  if (normStyle === 'medium_straight') {
-    return (
-      <g id="hair-side-medium-straight">
-        <path
-          d="M3.2,-11.0 C5.5,-7.5 6.5,-4.0 7.2,-1.5 C6.5,-1.0 5.2,-1.2 4.8,-2.5 C4.2,-5.0 3.8,-8.0 2.8,-8.5 Z"
-          fill={color}
-        />
-        <line x1="5.4" y1="-7.0" x2="5.4" y2="-2.0" stroke="rgba(0,0,0,0.28)" strokeWidth="0.5" />
-      </g>
-    );
-  }
+  if (normStyle === 'medium_straight') return <ShaggyHair view="side" color={color} />;
 
   // 默认短发：干净侧颜
   return null;
@@ -820,39 +631,9 @@ function renderSleepingHairstyle(style?: string, color: string = '#1f1b18') {
     );
   }
 
-  if (normStyle === 'long_wavy') {
-    return (
-      <g id="hair-sleeping-long-wavy">
-        <path
-          d="M-5.8,0 C-7.8,2.0 -8.2,5.0 -6.0,6.5 C-4.8,6.8 -4.5,4.8 -4.8,2.8 Z"
-          fill={color}
-          opacity="0.9"
-        />
-        <path
-          d="M5.0,0 C7.5,2.0 8.0,5.0 5.8,6.5 C4.6,6.8 4.2,4.8 4.4,2.8 Z"
-          fill={color}
-          opacity="0.9"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'long_wavy') return <SidePartHair view="sleeping" color={color} />;
 
-  if (normStyle === 'medium_straight') {
-    return (
-      <g id="hair-sleeping-medium-straight">
-        <path
-          d="M-5.5,0 C-7.2,1.8 -7.5,4.5 -6.2,5.5 C-5.2,5.8 -4.8,4.2 -4.8,2.2 Z"
-          fill={color}
-          opacity="0.9"
-        />
-        <path
-          d="M4.8,0 C6.8,1.8 7.2,4.5 5.8,5.5 C4.8,5.8 4.4,4.2 4.2,2.2 Z"
-          fill={color}
-          opacity="0.9"
-        />
-      </g>
-    );
-  }
+  if (normStyle === 'medium_straight') return <ShaggyHair view="sleeping" color={color} />;
 
   return null;
 }

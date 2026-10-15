@@ -18,6 +18,8 @@ import { ThreeWorld } from './components/ThreeWorld';
 import { LayoutInspectorPanel } from './components/layout-gizmo';
 import { INITIAL_MEMORIES } from './data/initialData';
 import { LivingMemory, Person, RoomId, TimeOfDay } from './types';
+import type { CabinetPartId } from './components/cabinet/cabinetDetails';
+import type { DeskSeatId } from './components/desk/chairGeometry';
 
 const BookshelfModal = lazy(() => import('./components/bookshelf/BookshelfModal').then(module => ({ default: module.BookshelfModal })));
 const MemoryLogModal = lazy(() => import('./components/MemoryLogModal').then(module => ({ default: module.MemoryLogModal })));
@@ -26,6 +28,7 @@ const SvgExportModal = lazy(() => import('./components/SvgExportModal').then(mod
 const StatusPickerModal = lazy(() => import('./components/StatusPickerModal').then(module => ({ default: module.StatusPickerModal })));
 const MailboxModal = lazy(() => import('./components/MailboxModal').then(module => ({ default: module.MailboxModal })));
 const ChairInspectionModal = lazy(() => import('./components/desk/ChairInspectionModal').then(module => ({ default: module.ChairInspectionModal })));
+const CabinetDetailModal = lazy(() => import('./components/cabinet/CabinetDetailModal').then(module => ({ default: module.CabinetDetailModal })));
 
 export default function App() {
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('afternoon');
@@ -45,6 +48,10 @@ export default function App() {
 
   // 电脑桌椅子状态管理 (空椅态 vs 小人组合态)
   const [isChairModalOpen, setIsChairModalOpen] = useState(false);
+  const [chairInspectionSeat, setChairInspectionSeat] = useState<DeskSeatId>('desk_workstation');
+  const openChairInspector = (seat: DeskSeatId = 'desk_workstation') => {
+    setChairInspectionSeat(seat); setIsChairModalOpen(true);
+  };
   const [isChairEmptyOverride, setIsChairEmptyOverride] = useState(false);
 
   const handleToggleChairSeated = (nextSeated?: boolean) => {
@@ -55,11 +62,14 @@ export default function App() {
 
   // Bookshelf state
   const [isBookshelfModalOpen, setIsBookshelfModalOpen] = useState(false);
+  const [isCabinetModalOpen, setIsCabinetModalOpen] = useState(false);
+  const [selectedCabinetPart, setSelectedCabinetPart] = useState<CabinetPartId>('cabinet-group');
   const mountMailbox = useDeferredMount(isMailboxOpen);
   const mountMemories = useDeferredMount(isMemoriesOpen);
   const mountBookshelf = useDeferredMount(isBookshelfModalOpen);
   const mountSvgExport = useDeferredMount(isSvgExportOpen);
   const mountChair = useDeferredMount(isChairModalOpen);
+  const mountCabinet = useDeferredMount(isCabinetModalOpen);
   const { people, presenceAllocation, saveStatus: handleSaveMyStatus } = usePresenceState(triggerToast);
   const { letters, unreadCount, sendLetter: handleSendLetter, markRead: handleMarkLetterRead } = useMailbox(people, memory => setMemories(previous => [memory, ...previous]), triggerToast);
   const { bookshelfPreset, customBookshelfTiers, selectedBookshelfItem, setSelectedBookshelfItem, handleSelectBookshelfPreset, handleToggleBookPulled, handleAddCustomBook } = useBookshelf(triggerToast);
@@ -116,7 +126,7 @@ export default function App() {
         onSelectPerson={(p) => setSelectedPerson(p)}
         onEditMyStatus={() => setIsStatusPickerOpen(true)}
         onOpenSvgExport={() => setIsSvgExportOpen(true)}
-        onOpenChairInspector={() => setIsChairModalOpen(true)}
+        onOpenChairInspector={() => openChairInspector()}
       />
 
       {/* 3. Stylized Cozy 2.5D Layered World */}
@@ -140,6 +150,10 @@ export default function App() {
           bookshelfPreset={bookshelfPreset}
           customBookshelfTiers={customBookshelfTiers}
           onBookshelfClick={() => setIsBookshelfModalOpen(true)}
+          onOpenCabinetInspector={(part = 'cabinet-group') => {
+            setSelectedCabinetPart(part);
+            setIsCabinetModalOpen(true);
+          }}
           onBookClick={(book) => {
             setSelectedBookshelfItem({ type: 'book', item: book });
             setIsBookshelfModalOpen(true);
@@ -158,7 +172,7 @@ export default function App() {
           onDragGizmoCancel={cancelDrag}
           isChairEmptyOverride={isChairEmptyOverride}
           onToggleChairSeated={handleToggleChairSeated}
-          onOpenChairInspector={() => setIsChairModalOpen(true)}
+          onOpenChairInspector={openChairInspector}
           onTriggerToast={triggerToast}
         />
       </div>
@@ -173,7 +187,7 @@ export default function App() {
         isOpen={isLayoutInspectorOpen}
         isChairEmpty={isChairEmptyOverride}
         onToggleChairSeated={handleToggleChairSeated}
-        onOpenChairInspector={() => setIsChairModalOpen(true)}
+        onOpenChairInspector={() => openChairInspector()}
         onToggleOpen={() => {
           setIsLayoutInspectorOpen((prev) => {
             const next = !prev;
@@ -287,6 +301,8 @@ export default function App() {
         currentPreset={bookshelfPreset}
         onSelectPreset={handleSelectBookshelfPreset}
         tiers={customBookshelfTiers}
+        layout={roomLayout}
+        isLinReadingHere={presenceAllocation.slots.sofa_lounge?.occupant?.id === 'lin'}
         onToggleBookPulled={handleToggleBookPulled}
         onAddCustomBook={handleAddCustomBook}
         selectedItem={selectedBookshelfItem}
@@ -294,6 +310,14 @@ export default function App() {
       /></Suspense>)}
 
       {/* 11. 4-View SVG Export Modal */}
+      {mountCabinet && (<Suspense fallback={null}><CabinetDetailModal
+        isOpen={isCabinetModalOpen}
+        onClose={() => setIsCabinetModalOpen(false)}
+        layout={roomLayout}
+        selectedPart={selectedCabinetPart}
+        onSelectPart={setSelectedCabinetPart}
+      /></Suspense>)}
+
       {mountSvgExport && (<Suspense fallback={null}><SvgExportModal
         isOpen={isSvgExportOpen}
         onClose={() => setIsSvgExportOpen(false)}
@@ -302,13 +326,11 @@ export default function App() {
       {/* 12. 电脑桌工位座椅透视与就座组合态检视弹窗 */}
       {mountChair && (<Suspense fallback={null}><ChairInspectionModal
         isOpen={isChairModalOpen}
+        layout={roomLayout}
         onClose={() => setIsChairModalOpen(false)}
-        isSeatedInRoom={!isChairEmptyOverride}
-        onToggleSeatedInRoom={(seated) => {
-          setIsChairEmptyOverride(!seated);
-          triggerToast(seated ? '💻 已应用【小人组合态】' : '🪑 已应用【空椅子态】');
-        }}
-        currentPerson={people.find((p) => p.isSelf)}
+        occupants={{ desk_workstation: presenceAllocation.slots.desk_workstation.occupant,
+          desk_workstation_secondary: presenceAllocation.slots.desk_workstation_secondary.occupant }}
+        selectedSeat={chairInspectionSeat} onSelectSeat={setChairInspectionSeat}
       /></Suspense>)}
     </main>
   );

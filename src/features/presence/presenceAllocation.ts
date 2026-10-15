@@ -16,6 +16,7 @@ export type FurnitureSlotId =
   | 'tea_cushion_west'   // 茶桌 · 西席蒲团 (侧身向右镜像对坐，主人席)
   | 'tea_cushion_south'  // 茶桌 · 南席蒲团 (正背影朝桌静坐，观察席)
   | 'desk_workstation'   // 电脑桌 · 人体工学工作椅 (背影专注敲键盘)
+  | 'desk_workstation_secondary'
   | 'sofa_lounge'        // 懒人沙发 · 阅卷席 (正身放松倚靠，腿上展书)
   | 'tatami_capsule'     // 胶囊舱 · 榻榻米卧榻 (侧卧安睡裹被)
   | 'tatami_corn'        // 林间小木屋 · 暖木卧榻 (安心沉眠)
@@ -93,7 +94,7 @@ export const SCENE_SLOT_CONFIGS: Record<FurnitureSlotId, SceneSlotConfig> = {
     slotId: 'desk_workstation',
     furniture: 'computer_desk',
     furnitureName: '阁楼电脑桌',
-    slotName: '工作转椅',
+    slotName: '温莎椅工位',
     room: 'my_room',
     viewAngle: 'back',
     facing: 'back',
@@ -103,6 +104,12 @@ export const SCENE_SLOT_CONFIGS: Record<FurnitureSlotId, SceneSlotConfig> = {
     badgeLabel: '电脑桌 · 工作椅 (背身)',
     actionDesc: '头戴监听耳机，双手专注敲击键盘',
     offset: { dx: 0, dy: 0 },
+  },
+  desk_workstation_secondary: {
+    slotId: 'desk_workstation_secondary', furniture: 'computer_desk', furnitureName: '阁楼电脑桌',
+    slotName: '复古椅工位', room: 'my_room', viewAngle: 'back', facing: 'back',
+    pose: 'desk_sitting', accessory: 'headphones', badgeLabel: '电脑桌 · 第二工位',
+    actionDesc: '在自己的电脑前安静工作', offset: { dx: 0, dy: 0 },
   },
   sofa_lounge: {
     slotId: 'sofa_lounge',
@@ -162,7 +169,8 @@ export const SCENE_SLOT_CONFIGS: Record<FurnitureSlotId, SceneSlotConfig> = {
     accessory: 'headset',
     badgeLabel: '观测台 · 操作台 (侧身)',
     actionDesc: '佩戴无线电耳机，手持日志记录深空信号',
-    offset: { dx: 4, dy: -14 },
+    // Floor anchor at deck point (u=3,v=19,z=66), inside the operation mat.
+    offset: { dx: -16, dy: -11.77 },
   },
 };
 
@@ -180,7 +188,7 @@ export interface PresenceAllocation {
   unplaced: UnplacedPerson[];
 }
 export const ROOM_SLOT_CANDIDATES: Readonly<Record<RoomId, readonly FurnitureSlotId[]>> = {
-  my_room: ['desk_workstation'], friend_room: ['sofa_lounge'],
+  my_room: ['desk_workstation', 'desk_workstation_secondary'], friend_room: ['sofa_lounge'],
   living_nook: ['tea_cushion_east', 'tea_cushion_west', 'tea_cushion_south'],
   capsule_pod: ['tatami_capsule'], corn_lounge: ['tatami_corn'],
   observatory: ['observatory_post'], porch_mailbox: [],
@@ -197,7 +205,9 @@ export function resolvePresenceSlots(people: readonly Person[]): PresenceAllocat
     if (seen.has(person.id)) continue;
     seen.add(person.id);
     const candidates = ROOM_SLOT_CANDIDATES[person.currentRoom];
-    const id = candidates.find(id => !slots[id].isOccupied);
+    // A fixed roster preference lets one desk sitter leave without shifting the other.
+    const preferred = person.currentRoom === 'my_room' ? candidates[people.indexOf(person) % 2] : undefined;
+    const id = preferred && !slots[preferred].isOccupied ? preferred : candidates.find(id => !slots[id].isOccupied);
     if (!id) { unplaced.push({ personId: person.id, reason: candidates.length ? 'room_full' : 'no_indoor_slot' }); continue; }
     slots[id] = { config: SCENE_SLOT_CONFIGS[id], occupant: person, isOccupied: true };
     personToSlot[person.id] = slots[id].config;

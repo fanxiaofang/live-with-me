@@ -222,6 +222,7 @@ export const AtmosphereBar: React.FC<AtmosphereBarProps> = ({
           {onOpenBookshelf && (
             <button
               id="top-bookshelf-btn"
+              aria-label="原木书架"
               onClick={onOpenBookshelf}
               className="px-3 py-1.5 rounded-xl bg-[#1e1c19]/80 border border-[#38312a] text-xs font-medium text-[#e2b170] hover:bg-[#332b24] transition-colors flex items-center gap-1.5"
             >

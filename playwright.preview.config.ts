@@ -4,7 +4,7 @@ import baseline from './playwright.config';
 // Run the real entry and deferred panels against the already-built dist directory.
 export default defineConfig({
   ...baseline,
-  testMatch: ['baseline.spec.ts', 'delivery.spec.ts', 'interactions.spec.ts', 'layout-editor.spec.ts', 'runtime-failure.spec.ts', 'room-navigation.spec.ts', 'sheep-pen.spec.ts'],
+  testMatch: ['baseline.spec.ts', 'delivery.spec.ts', 'interactions.spec.ts', 'layout-editor.spec.ts', 'runtime-failure.spec.ts', 'room-navigation.spec.ts', 'sheep-pen.spec.ts', 'furniture-inspection.spec.ts', 'chair-inspection.spec.ts', 'character-export.spec.ts'],
   metadata: { productionPreview: true },
   grepInvert: /@visual/,
   use: { baseURL: 'http://127.0.0.1:4173' },

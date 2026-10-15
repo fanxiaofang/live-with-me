@@ -1,0 +1,297 @@
+{
+  "scope": "Production headless Chromium 141, normal motion, 1200x800, DPR 1/2, three repetitions each; rAF cadence only, uncontrolled host load; no performance threshold",
+  "beforeSvgElements": 7068,
+  "afterSvgElements": 7019,
+  "cssAnimations": 167,
+  "smilAnimations": 3,
+  "rows": [
+    {
+      "dpr": 1,
+      "scenario": "afternoon-overview-idle",
+      "before": {
+        "medianLongTaskCount": 8,
+        "p95MedianMs": 116.7,
+        "p95RangeMs": [
+          116.7,
+          150
+        ],
+        "maxMs": 150.0,
+        "p50MedianMs": 83.4
+      },
+      "after": {
+        "medianLongTaskCount": 12,
+        "p95MedianMs": 133.4,
+        "p95RangeMs": [
+          133.4,
+          150
+        ],
+        "maxMs": 183.2,
+        "p50MedianMs": 100
+      }
+    },
+    {
+      "dpr": 1,
+      "scenario": "afternoon-overview-pan",
+      "before": {
+        "medianLongTaskCount": 23,
+        "p95MedianMs": 149.9,
+        "p95RangeMs": [
+          133.4,
+          150
+        ],
+        "maxMs": 250.1,
+        "p50MedianMs": 100.1
+      },
+      "after": {
+        "medianLongTaskCount": 31,
+        "p95MedianMs": 150.1,
+        "p95RangeMs": [
+          150,
+          183.4
+        ],
+        "maxMs": 216.7,
+        "p50MedianMs": 116.7
+      }
+    },
+    {
+      "dpr": 1,
+      "scenario": "afternoon-overview-wheel",
+      "before": {
+        "medianLongTaskCount": 40,
+        "p95MedianMs": 233.3,
+        "p95RangeMs": [
+          233.3,
+          233.4
+        ],
+        "maxMs": 350.1,
+        "p50MedianMs": 150.1
+      },
+      "after": {
+        "medianLongTaskCount": 54,
+        "p95MedianMs": 299.9,
+        "p95RangeMs": [
+          266.6,
+          333.3
+        ],
+        "maxMs": 400.0,
+        "p50MedianMs": 166.7
+      }
+    },
+    {
+      "dpr": 1,
+      "scenario": "afternoon-desk-navigation",
+      "before": {
+        "medianLongTaskCount": 16,
+        "p95MedianMs": 233.3,
+        "p95RangeMs": [
+          199.9,
+          233.3
+        ],
+        "maxMs": 233.3,
+        "p50MedianMs": 150
+      },
+      "after": {
+        "medianLongTaskCount": 16,
+        "p95MedianMs": 316.6,
+        "p95RangeMs": [
+          283.2,
+          316.7
+        ],
+        "maxMs": 316.7,
+        "p50MedianMs": 166.7
+      }
+    },
+    {
+      "dpr": 1,
+      "scenario": "afternoon-desk-idle",
+      "before": {
+        "medianLongTaskCount": 15,
+        "p95MedianMs": 183.3,
+        "p95RangeMs": [
+          166.7,
+          183.4
+        ],
+        "maxMs": 183.4,
+        "p50MedianMs": 150
+      },
+      "after": {
+        "medianLongTaskCount": 13,
+        "p95MedianMs": 216.7,
+        "p95RangeMs": [
+          183.3,
+          250
+        ],
+        "maxMs": 250.0,
+        "p50MedianMs": 150
+      }
+    },
+    {
+      "dpr": 1,
+      "scenario": "rainy-overview-idle",
+      "before": {
+        "medianLongTaskCount": 13,
+        "p95MedianMs": 133.4,
+        "p95RangeMs": [
+          133.3,
+          133.4
+        ],
+        "maxMs": 166.6,
+        "p50MedianMs": 100
+      },
+      "after": {
+        "medianLongTaskCount": 15,
+        "p95MedianMs": 150,
+        "p95RangeMs": [
+          149.9,
+          166.7
+        ],
+        "maxMs": 233.3,
+        "p50MedianMs": 133.3
+      }
+    },
+    {
+      "dpr": 2,
+      "scenario": "afternoon-overview-idle",
+      "before": {
+        "medianLongTaskCount": 24,
+        "p95MedianMs": 133.3,
+        "p95RangeMs": [
+          116.6,
+          133.4
+        ],
+        "maxMs": 150.0,
+        "p50MedianMs": 99.9
+      },
+      "after": {
+        "medianLongTaskCount": 25,
+        "p95MedianMs": 149.9,
+        "p95RangeMs": [
+          133.3,
+          150
+        ],
+        "maxMs": 150.0,
+        "p50MedianMs": 100
+      }
+    },
+    {
+      "dpr": 2,
+      "scenario": "afternoon-overview-pan",
+      "before": {
+        "medianLongTaskCount": 52,
+        "p95MedianMs": 133.4,
+        "p95RangeMs": [
+          133.3,
+          150
+        ],
+        "maxMs": 216.7,
+        "p50MedianMs": 100
+      },
+      "after": {
+        "medianLongTaskCount": 55,
+        "p95MedianMs": 183.3,
+        "p95RangeMs": [
+          166.7,
+          183.3
+        ],
+        "maxMs": 300.0,
+        "p50MedianMs": 116.7
+      }
+    },
+    {
+      "dpr": 2,
+      "scenario": "afternoon-overview-wheel",
+      "before": {
+        "medianLongTaskCount": 56,
+        "p95MedianMs": 266.6,
+        "p95RangeMs": [
+          233.3,
+          266.7
+        ],
+        "maxMs": 350.0,
+        "p50MedianMs": 150
+      },
+      "after": {
+        "medianLongTaskCount": 51,
+        "p95MedianMs": 299.9,
+        "p95RangeMs": [
+          233.4,
+          300.1
+        ],
+        "maxMs": 466.7,
+        "p50MedianMs": 150
+      }
+    },
+    {
+      "dpr": 2,
+      "scenario": "afternoon-desk-navigation",
+      "before": {
+        "medianLongTaskCount": 19,
+        "p95MedianMs": 233.4,
+        "p95RangeMs": [
+          183.4,
+          266.7
+        ],
+        "maxMs": 266.7,
+        "p50MedianMs": 150
+      },
+      "after": {
+        "medianLongTaskCount": 16,
+        "p95MedianMs": 266.6,
+        "p95RangeMs": [
+          266.6,
+          350.1
+        ],
+        "maxMs": 350.1,
+        "p50MedianMs": 166.7
+      }
+    },
+    {
+      "dpr": 2,
+      "scenario": "afternoon-desk-idle",
+      "before": {
+        "medianLongTaskCount": 21,
+        "p95MedianMs": 183.4,
+        "p95RangeMs": [
+          166.7,
+          233.4
+        ],
+        "maxMs": 233.4,
+        "p50MedianMs": 149.9
+      },
+      "after": {
+        "medianLongTaskCount": 15,
+        "p95MedianMs": 200,
+        "p95RangeMs": [
+          183.4,
+          216.7
+        ],
+        "maxMs": 216.7,
+        "p50MedianMs": 166.6
+      }
+    },
+    {
+      "dpr": 2,
+      "scenario": "rainy-overview-idle",
+      "before": {
+        "medianLongTaskCount": 22,
+        "p95MedianMs": 149.9,
+        "p95RangeMs": [
+          133.4,
+          150
+        ],
+        "maxMs": 150.1,
+        "p50MedianMs": 116.6
+      },
+      "after": {
+        "medianLongTaskCount": 22,
+        "p95MedianMs": 166.7,
+        "p95RangeMs": [
+          166.6,
+          166.7
+        ],
+        "maxMs": 183.4,
+        "p50MedianMs": 133.2
+      }
+    }
+  ]
+}

@@ -181,7 +181,7 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
               className="w-full py-1.5 px-2 rounded-lg bg-[#26201b] hover:bg-[#332b24] border border-[#3b3127] hover:border-[#4d4033] text-[11px] text-[#c9bcad] hover:text-[#f0e8dc] flex items-center justify-center gap-1.5 transition-all group"
             >
               <ImageIcon className="w-3.5 h-3.5 text-[#c4794e] group-hover:scale-110 transition-transform" />
-              <span>导出 短发 4 视图 SVG</span>
+              <span>人物 4 视图 SVG</span>
             </button>
           )}
         </div>

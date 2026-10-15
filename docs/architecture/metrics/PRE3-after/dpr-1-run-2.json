@@ -1,0 +1,1059 @@
+{
+  "measuredAt": "2026-10-12T18:15:48.777Z",
+  "environment": {
+    "mode": "production preview / headless Chromium",
+    "browserVersion": "141.0.7390.37",
+    "platform": "win32",
+    "cpu": "Intel(R) Core(TM) i7-10710U CPU @ 1.10GHz",
+    "viewport": {
+      "width": 1200,
+      "height": 800
+    },
+    "dpr": 1,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36",
+    "visibility": "visible",
+    "svgElements": 7019,
+    "cssAnimations": 167,
+    "smilAnimations": 3,
+    "reducedMotion": false
+  },
+  "repeat": 1,
+  "chairSourceSha256": "e65fae5f29bafb7f567df0cb8b343dfc3b3ad7921b33dbda3234cec5e0304770",
+  "limitations": "requestAnimationFrame cadence and main-thread long tasks; not proof of presented/composited FPS or real mobile-device performance. Normal motion retained. No trace, screenshots or CPU throttle.",
+  "measurements": [
+    {
+      "scenario": "afternoon-overview-idle",
+      "elapsedMs": 3018.8,
+      "samples": 28,
+      "p50FrameIntervalMs": 100,
+      "p95FrameIntervalMs": 150,
+      "maxFrameIntervalMs": 150.1,
+      "intervalsOver33Ms": 28,
+      "initialFrameWaitMs": 31.42,
+      "finalFrameWaitMs": 71,
+      "longTaskCount": 12,
+      "longTaskTotalMs": 752,
+      "rawFrameIntervalsMs": [
+        116.48,
+        150.1,
+        116.7,
+        116.6,
+        100,
+        83.4,
+        83.3,
+        83.3,
+        83.3,
+        116.7,
+        150,
+        116.6,
+        150,
+        133.3,
+        116.7,
+        133.4,
+        99.9,
+        100,
+        116.7,
+        83.4,
+        83.2,
+        66.7,
+        66.7,
+        100,
+        83.4,
+        66.6,
+        100,
+        100
+      ],
+      "longTasks": [
+        {
+          "startMs": 41.7,
+          "durationMs": 69
+        },
+        {
+          "startMs": 163.3,
+          "durationMs": 70
+        },
+        {
+          "startMs": 302.2,
+          "durationMs": 61
+        },
+        {
+          "startMs": 428.1,
+          "durationMs": 64
+        },
+        {
+          "startMs": 975.4,
+          "durationMs": 58
+        },
+        {
+          "startMs": 1091.8,
+          "durationMs": 75
+        },
+        {
+          "startMs": 1243.1,
+          "durationMs": 60
+        },
+        {
+          "startMs": 1364.6,
+          "durationMs": 57
+        },
+        {
+          "startMs": 1515.2,
+          "durationMs": 63
+        },
+        {
+          "startMs": 1647.9,
+          "durationMs": 63
+        },
+        {
+          "startMs": 1763.1,
+          "durationMs": 59
+        },
+        {
+          "startMs": 2084.9,
+          "durationMs": 53
+        }
+      ]
+    },
+    {
+      "scenario": "afternoon-overview-pan",
+      "elapsedMs": 9870.4,
+      "samples": 82,
+      "p50FrameIntervalMs": 116.7,
+      "p95FrameIntervalMs": 150.1,
+      "maxFrameIntervalMs": 183.3,
+      "intervalsOver33Ms": 82,
+      "initialFrameWaitMs": 39.2,
+      "finalFrameWaitMs": 215,
+      "longTaskCount": 67,
+      "longTaskTotalMs": 6271,
+      "rawFrameIntervalsMs": [
+        116.6,
+        83.3,
+        116.7,
+        116.6,
+        133.3,
+        133.4,
+        83.3,
+        83.4,
+        83.2,
+        116.7,
+        150,
+        150,
+        166.7,
+        116.7,
+        116.6,
+        83.4,
+        99.9,
+        116.7,
+        133.3,
+        150,
+        150,
+        133.3,
+        116.7,
+        150,
+        150,
+        150,
+        150,
+        116.6,
+        83.4,
+        83.3,
+        116.7,
+        116.7,
+        133.2,
+        150.1,
+        183.3,
+        166.7,
+        133.2,
+        100,
+        83.4,
+        99.9,
+        116.8,
+        116.6,
+        150,
+        116.6,
+        100.1,
+        83.3,
+        83.4,
+        83.2,
+        116.7,
+        133.3,
+        133.4,
+        149.9,
+        133.3,
+        150.1,
+        133.3,
+        116.7,
+        133.3,
+        133.3,
+        83.4,
+        99.9,
+        116.7,
+        133.4,
+        150,
+        116.6,
+        116.6,
+        100.1,
+        99.9,
+        83.4,
+        100,
+        100,
+        116.7,
+        116.6,
+        116.7,
+        83.3,
+        83.3,
+        66.7,
+        100,
+        83.3,
+        100,
+        116.6,
+        116.7,
+        116.7
+      ],
+      "longTasks": [
+        {
+          "startMs": 54.7,
+          "durationMs": 64
+        },
+        {
+          "startMs": 119.2,
+          "durationMs": 84
+        },
+        {
+          "startMs": 204.3,
+          "durationMs": 52
+        },
+        {
+          "startMs": 364.9,
+          "durationMs": 113
+        },
+        {
+          "startMs": 493.8,
+          "durationMs": 141
+        },
+        {
+          "startMs": 748.2,
+          "durationMs": 52
+        },
+        {
+          "startMs": 831.7,
+          "durationMs": 82
+        },
+        {
+          "startMs": 1000,
+          "durationMs": 59
+        },
+        {
+          "startMs": 1118.3,
+          "durationMs": 170
+        },
+        {
+          "startMs": 1290.3,
+          "durationMs": 62
+        },
+        {
+          "startMs": 1423.8,
+          "durationMs": 78
+        },
+        {
+          "startMs": 1589,
+          "durationMs": 112
+        },
+        {
+          "startMs": 1704.6,
+          "durationMs": 111
+        },
+        {
+          "startMs": 2001.5,
+          "durationMs": 125
+        },
+        {
+          "startMs": 2127.3,
+          "durationMs": 50
+        },
+        {
+          "startMs": 2243.4,
+          "durationMs": 70
+        },
+        {
+          "startMs": 2397.6,
+          "durationMs": 157
+        },
+        {
+          "startMs": 2555.7,
+          "durationMs": 73
+        },
+        {
+          "startMs": 2680.7,
+          "durationMs": 132
+        },
+        {
+          "startMs": 2814.1,
+          "durationMs": 68
+        },
+        {
+          "startMs": 2947.8,
+          "durationMs": 58
+        },
+        {
+          "startMs": 3095.4,
+          "durationMs": 164
+        },
+        {
+          "startMs": 3263.2,
+          "durationMs": 146
+        },
+        {
+          "startMs": 3410.8,
+          "durationMs": 54
+        },
+        {
+          "startMs": 3600.2,
+          "durationMs": 93
+        },
+        {
+          "startMs": 3694.2,
+          "durationMs": 52
+        },
+        {
+          "startMs": 3794.5,
+          "durationMs": 65
+        },
+        {
+          "startMs": 3912.2,
+          "durationMs": 147
+        },
+        {
+          "startMs": 4060.3,
+          "durationMs": 96
+        },
+        {
+          "startMs": 4204.3,
+          "durationMs": 68
+        },
+        {
+          "startMs": 4380.1,
+          "durationMs": 184
+        },
+        {
+          "startMs": 4568,
+          "durationMs": 121
+        },
+        {
+          "startMs": 4690.1,
+          "durationMs": 50
+        },
+        {
+          "startMs": 4865.4,
+          "durationMs": 106
+        },
+        {
+          "startMs": 4973.7,
+          "durationMs": 50
+        },
+        {
+          "startMs": 5074.7,
+          "durationMs": 57
+        },
+        {
+          "startMs": 5191.9,
+          "durationMs": 167
+        },
+        {
+          "startMs": 5360.4,
+          "durationMs": 50
+        },
+        {
+          "startMs": 5571.3,
+          "durationMs": 86
+        },
+        {
+          "startMs": 5818.3,
+          "durationMs": 129
+        },
+        {
+          "startMs": 5948.2,
+          "durationMs": 58
+        },
+        {
+          "startMs": 6061.2,
+          "durationMs": 66
+        },
+        {
+          "startMs": 6194.9,
+          "durationMs": 167
+        },
+        {
+          "startMs": 6362,
+          "durationMs": 63
+        },
+        {
+          "startMs": 6490.1,
+          "durationMs": 142
+        },
+        {
+          "startMs": 6633.5,
+          "durationMs": 70
+        },
+        {
+          "startMs": 6884.8,
+          "durationMs": 139
+        },
+        {
+          "startMs": 7026.5,
+          "durationMs": 126
+        },
+        {
+          "startMs": 7230.5,
+          "durationMs": 68
+        },
+        {
+          "startMs": 7339.7,
+          "durationMs": 120
+        },
+        {
+          "startMs": 7461.2,
+          "durationMs": 59
+        },
+        {
+          "startMs": 7579.7,
+          "durationMs": 96
+        },
+        {
+          "startMs": 7731.6,
+          "durationMs": 127
+        },
+        {
+          "startMs": 7860,
+          "durationMs": 50
+        },
+        {
+          "startMs": 7966.4,
+          "durationMs": 52
+        },
+        {
+          "startMs": 8066,
+          "durationMs": 98
+        },
+        {
+          "startMs": 8354,
+          "durationMs": 112
+        },
+        {
+          "startMs": 8469.5,
+          "durationMs": 63
+        },
+        {
+          "startMs": 8557.3,
+          "durationMs": 62
+        },
+        {
+          "startMs": 8679.8,
+          "durationMs": 121
+        },
+        {
+          "startMs": 8965.2,
+          "durationMs": 91
+        },
+        {
+          "startMs": 9221.1,
+          "durationMs": 104
+        },
+        {
+          "startMs": 9325.8,
+          "durationMs": 54
+        },
+        {
+          "startMs": 9429.4,
+          "durationMs": 56
+        },
+        {
+          "startMs": 9547.4,
+          "durationMs": 128
+        },
+        {
+          "startMs": 9676.3,
+          "durationMs": 118
+        },
+        {
+          "startMs": 9794.7,
+          "durationMs": 63
+        }
+      ]
+    },
+    {
+      "scenario": "afternoon-overview-wheel",
+      "elapsedMs": 11085,
+      "samples": 60,
+      "p50FrameIntervalMs": 183.3,
+      "p95FrameIntervalMs": 266.6,
+      "maxFrameIntervalMs": 333.3,
+      "intervalsOver33Ms": 60,
+      "initialFrameWaitMs": 19.4,
+      "finalFrameWaitMs": 166.1,
+      "longTaskCount": 54,
+      "longTaskTotalMs": 7261,
+      "rawFrameIntervalsMs": [
+        116.6,
+        100.1,
+        100,
+        100,
+        100,
+        116.6,
+        116.7,
+        216.6,
+        83.4,
+        116.6,
+        166.7,
+        200,
+        200,
+        266.6,
+        150,
+        183.4,
+        233.2,
+        166.8,
+        166.6,
+        233.3,
+        216.7,
+        250,
+        166.6,
+        150,
+        166.6,
+        183.4,
+        150,
+        166.7,
+        116.6,
+        100,
+        183.3,
+        233.4,
+        333.3,
+        266.6,
+        183.4,
+        199.9,
+        200,
+        250,
+        200,
+        150,
+        233.4,
+        183.3,
+        266.6,
+        250,
+        183.3,
+        200.1,
+        183.3,
+        166.7,
+        166.6,
+        116.6,
+        150.1,
+        166.6,
+        233.4,
+        216.6,
+        216.7,
+        183.3,
+        166.6,
+        183.3,
+        233.3,
+        200
+      ],
+      "longTasks": [
+        {
+          "startMs": 33.6,
+          "durationMs": 61
+        },
+        {
+          "startMs": 146.4,
+          "durationMs": 57
+        },
+        {
+          "startMs": 442.8,
+          "durationMs": 60
+        },
+        {
+          "startMs": 549.2,
+          "durationMs": 64
+        },
+        {
+          "startMs": 664,
+          "durationMs": 264
+        },
+        {
+          "startMs": 1078.3,
+          "durationMs": 59
+        },
+        {
+          "startMs": 1193.2,
+          "durationMs": 86
+        },
+        {
+          "startMs": 1370.4,
+          "durationMs": 206
+        },
+        {
+          "startMs": 1577,
+          "durationMs": 294
+        },
+        {
+          "startMs": 1871.4,
+          "durationMs": 70
+        },
+        {
+          "startMs": 2028.4,
+          "durationMs": 84
+        },
+        {
+          "startMs": 2180.5,
+          "durationMs": 208
+        },
+        {
+          "startMs": 2388.7,
+          "durationMs": 317
+        },
+        {
+          "startMs": 2706.8,
+          "durationMs": 57
+        },
+        {
+          "startMs": 2765.3,
+          "durationMs": 100
+        },
+        {
+          "startMs": 2935.8,
+          "durationMs": 108
+        },
+        {
+          "startMs": 3155.8,
+          "durationMs": 107
+        },
+        {
+          "startMs": 3377.5,
+          "durationMs": 259
+        },
+        {
+          "startMs": 3636.8,
+          "durationMs": 171
+        },
+        {
+          "startMs": 3944.8,
+          "durationMs": 55
+        },
+        {
+          "startMs": 4111.6,
+          "durationMs": 53
+        },
+        {
+          "startMs": 4301.1,
+          "durationMs": 171
+        },
+        {
+          "startMs": 4473,
+          "durationMs": 186
+        },
+        {
+          "startMs": 4724.3,
+          "durationMs": 51
+        },
+        {
+          "startMs": 4836.5,
+          "durationMs": 80
+        },
+        {
+          "startMs": 5016.5,
+          "durationMs": 250
+        },
+        {
+          "startMs": 5266.9,
+          "durationMs": 331
+        },
+        {
+          "startMs": 5598.6,
+          "durationMs": 62
+        },
+        {
+          "startMs": 5851,
+          "durationMs": 59
+        },
+        {
+          "startMs": 6035.3,
+          "durationMs": 51
+        },
+        {
+          "startMs": 6229.6,
+          "durationMs": 214
+        },
+        {
+          "startMs": 6444.4,
+          "durationMs": 247
+        },
+        {
+          "startMs": 6692.2,
+          "durationMs": 88
+        },
+        {
+          "startMs": 6881.8,
+          "durationMs": 61
+        },
+        {
+          "startMs": 7035.5,
+          "durationMs": 84
+        },
+        {
+          "startMs": 7259.4,
+          "durationMs": 213
+        },
+        {
+          "startMs": 7473.2,
+          "durationMs": 262
+        },
+        {
+          "startMs": 7735.4,
+          "durationMs": 56
+        },
+        {
+          "startMs": 7961.4,
+          "durationMs": 77
+        },
+        {
+          "startMs": 8147.2,
+          "durationMs": 56
+        },
+        {
+          "startMs": 8351.7,
+          "durationMs": 192
+        },
+        {
+          "startMs": 8544.2,
+          "durationMs": 228
+        },
+        {
+          "startMs": 8772.9,
+          "durationMs": 61
+        },
+        {
+          "startMs": 8983.9,
+          "durationMs": 61
+        },
+        {
+          "startMs": 9126.8,
+          "durationMs": 180
+        },
+        {
+          "startMs": 9307.8,
+          "durationMs": 235
+        },
+        {
+          "startMs": 9543.7,
+          "durationMs": 107
+        },
+        {
+          "startMs": 9744.2,
+          "durationMs": 61
+        },
+        {
+          "startMs": 9962.3,
+          "durationMs": 152
+        },
+        {
+          "startMs": 10144.9,
+          "durationMs": 184
+        },
+        {
+          "startMs": 10329.1,
+          "durationMs": 267
+        },
+        {
+          "startMs": 10597.4,
+          "durationMs": 54
+        },
+        {
+          "startMs": 10727.4,
+          "durationMs": 66
+        },
+        {
+          "startMs": 10925.8,
+          "durationMs": 74
+        }
+      ]
+    },
+    {
+      "scenario": "afternoon-desk-navigation",
+      "elapsedMs": 3017.8,
+      "samples": 16,
+      "p50FrameIntervalMs": 166.7,
+      "p95FrameIntervalMs": 316.7,
+      "maxFrameIntervalMs": 316.7,
+      "intervalsOver33Ms": 16,
+      "initialFrameWaitMs": 120.39,
+      "finalFrameWaitMs": 147.7,
+      "longTaskCount": 16,
+      "longTaskTotalMs": 1194,
+      "rawFrameIntervalsMs": [
+        183.21,
+        133.3,
+        166.7,
+        133.3,
+        116.7,
+        100,
+        116.7,
+        200,
+        233.3,
+        150,
+        166.6,
+        200,
+        316.7,
+        183.3,
+        166.7,
+        183.3
+      ],
+      "longTasks": [
+        {
+          "startMs": 12.9,
+          "durationMs": 110
+        },
+        {
+          "startMs": 133,
+          "durationMs": 67
+        },
+        {
+          "startMs": 315.4,
+          "durationMs": 69
+        },
+        {
+          "startMs": 446.2,
+          "durationMs": 60
+        },
+        {
+          "startMs": 616.3,
+          "durationMs": 51
+        },
+        {
+          "startMs": 857.9,
+          "durationMs": 82
+        },
+        {
+          "startMs": 1075.1,
+          "durationMs": 133
+        },
+        {
+          "startMs": 1286.5,
+          "durationMs": 82
+        },
+        {
+          "startMs": 1507.7,
+          "durationMs": 53
+        },
+        {
+          "startMs": 1663.5,
+          "durationMs": 58
+        },
+        {
+          "startMs": 1832.7,
+          "durationMs": 69
+        },
+        {
+          "startMs": 2023.3,
+          "durationMs": 68
+        },
+        {
+          "startMs": 2344.7,
+          "durationMs": 72
+        },
+        {
+          "startMs": 2531.7,
+          "durationMs": 57
+        },
+        {
+          "startMs": 2688.9,
+          "durationMs": 113
+        },
+        {
+          "startMs": 2881.2,
+          "durationMs": 50
+        }
+      ]
+    },
+    {
+      "scenario": "afternoon-desk-idle",
+      "elapsedMs": 3046.7,
+      "samples": 17,
+      "p50FrameIntervalMs": 150.1,
+      "p95FrameIntervalMs": 250,
+      "maxFrameIntervalMs": 250,
+      "intervalsOver33Ms": 17,
+      "initialFrameWaitMs": 72.33,
+      "finalFrameWaitMs": 57.8,
+      "longTaskCount": 13,
+      "longTaskTotalMs": 991,
+      "rawFrameIntervalsMs": [
+        133.37,
+        183.3,
+        149.9,
+        150.1,
+        133.3,
+        150,
+        250,
+        199.9,
+        150,
+        133.3,
+        150.1,
+        183.3,
+        216.6,
+        250,
+        216.7,
+        150,
+        116.7
+      ],
+      "longTasks": [
+        {
+          "startMs": 76.6,
+          "durationMs": 50
+        },
+        {
+          "startMs": 222.5,
+          "durationMs": 76
+        },
+        {
+          "startMs": 402.1,
+          "durationMs": 63
+        },
+        {
+          "startMs": 553.9,
+          "durationMs": 60
+        },
+        {
+          "startMs": 988.8,
+          "durationMs": 153
+        },
+        {
+          "startMs": 1234.9,
+          "durationMs": 80
+        },
+        {
+          "startMs": 1434.2,
+          "durationMs": 60
+        },
+        {
+          "startMs": 1581.6,
+          "durationMs": 54
+        },
+        {
+          "startMs": 1868.6,
+          "durationMs": 70
+        },
+        {
+          "startMs": 2050,
+          "durationMs": 86
+        },
+        {
+          "startMs": 2275.8,
+          "durationMs": 93
+        },
+        {
+          "startMs": 2508.8,
+          "durationMs": 82
+        },
+        {
+          "startMs": 2729,
+          "durationMs": 64
+        }
+      ]
+    },
+    {
+      "scenario": "rainy-overview-idle",
+      "elapsedMs": 3017.9,
+      "samples": 20,
+      "p50FrameIntervalMs": 149.9,
+      "p95FrameIntervalMs": 166.7,
+      "maxFrameIntervalMs": 233.3,
+      "intervalsOver33Ms": 20,
+      "initialFrameWaitMs": 59.23,
+      "finalFrameWaitMs": 142.1,
+      "longTaskCount": 15,
+      "longTaskTotalMs": 1067,
+      "rawFrameIntervalsMs": [
+        116.67,
+        166.6,
+        166.7,
+        150,
+        150,
+        133.3,
+        150,
+        166.7,
+        150,
+        149.9,
+        133.3,
+        116.7,
+        133.4,
+        150,
+        166.6,
+        233.3,
+        83.4,
+        83.3,
+        100,
+        116.7
+      ],
+      "longTasks": [
+        {
+          "startMs": 191.1,
+          "durationMs": 55
+        },
+        {
+          "startMs": 350.1,
+          "durationMs": 77
+        },
+        {
+          "startMs": 516.3,
+          "durationMs": 63
+        },
+        {
+          "startMs": 664.3,
+          "durationMs": 85
+        },
+        {
+          "startMs": 812.4,
+          "durationMs": 95
+        },
+        {
+          "startMs": 958.6,
+          "durationMs": 70
+        },
+        {
+          "startMs": 1103.6,
+          "durationMs": 64
+        },
+        {
+          "startMs": 1262.5,
+          "durationMs": 79
+        },
+        {
+          "startMs": 1426.2,
+          "durationMs": 72
+        },
+        {
+          "startMs": 1571.1,
+          "durationMs": 60
+        },
+        {
+          "startMs": 1697.6,
+          "durationMs": 55
+        },
+        {
+          "startMs": 1817.4,
+          "durationMs": 63
+        },
+        {
+          "startMs": 1961.2,
+          "durationMs": 76
+        },
+        {
+          "startMs": 2110.2,
+          "durationMs": 92
+        },
+        {
+          "startMs": 2763.3,
+          "durationMs": 61
+        }
+      ]
+    }
+  ],
+  "pageErrors": []
+}

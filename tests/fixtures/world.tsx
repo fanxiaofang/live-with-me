@@ -26,7 +26,14 @@ if (entity && entity in sceneLayout) sceneLayout[entity] = {
   position: { ...sceneLayout[entity].position, x: Number(query.get('x') ?? sceneLayout[entity].position.x) },
 };
 const occupantRoom = query.has('observer') ? 'observatory' : query.get('occupantRoom') as RoomId;
-const people = query.has('empty') ? [] : INITIAL_PEOPLE.map(p => occupantRoom && p.isSelf ? { ...p, currentRoom: occupantRoom } : p);
+const people = query.has('empty') ? [] : INITIAL_PEOPLE.map((p, index) => {
+  if (query.has('deskCount')) return { ...p,
+    currentRoom: index < Number(query.get('deskCount')) ? 'my_room' as const : p.isSelf ? 'porch_mailbox' as const : p.currentRoom,
+    currentState: index < Number(query.get('deskCount')) ? 'coding' as const : p.currentState,
+    ...(query.get('deskHair') ? { hairStyle: query.get('deskHair')! } : {}),
+  };
+  return occupantRoom && p.isSelf ? { ...p, currentRoom: occupantRoom } : p;
+});
 function Fixture() {
   const editor=useLayoutEditor(() => {});
   const [requestedZoom,setRequestedZoom]=useState<number|null>(null);

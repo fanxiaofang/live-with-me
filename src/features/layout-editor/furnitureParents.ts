@@ -11,7 +11,7 @@ const parents = Object.fromEntries(Object.keys(DEFAULT_ROOM_LAYOUT).map(id => [i
 for (const id of ['record-player','moka-pot','coffee-beans','ceramic-cups','honey-jar'] as const) {
   parents[id] = { parent:'cabinet-group', selector:'#isometric-turntable-console' };
 }
-for (const id of ['desk-laptop','desk-lamp','desk-cup'] as const) {
+for (const id of ['desk-laptop','desk-laptop-secondary','desk-lamp','desk-cup','desk-cup-secondary'] as const) {
   parents[id] = { parent:'desk-group', selector:'#isometric-desk-container' };
 }
 for (const id of Object.keys(DEFAULT_ROOM_LAYOUT) as EditableObjectId[]) {

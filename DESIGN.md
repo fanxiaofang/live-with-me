@@ -1,6 +1,6 @@
 # Live With Me：当前设计与架构
 
-更新：2026-10-09（Asia/Shanghai）。本文对应 P0–P7 重构、中远景视差连续性修复、房间导航优化及建筑布局与资产调整后的生产代码。原始设计文档保存在 [历史设计](docs/architecture/history/DESIGN_BEFORE_REFACTOR.md)，逐批证据见 [执行记录](docs/architecture/EXECUTION_STATUS.md)。
+更新：2026-10-15（Asia/Shanghai）。本文对应 P0–P7 重构、中远景视差连续性修复、房间导航优化及建筑布局与资产调整后的生产代码。原始设计文档保存在 [历史设计](docs/architecture/history/DESIGN_BEFORE_REFACTOR.md)，逐批证据见 [执行记录](docs/architecture/EXECUTION_STATUS.md)。
 
 ## 产品与技术栈
 
@@ -23,9 +23,31 @@ P0–P7 架构重构保留了 RoomId、人物状态、SVG 导出、家具编辑�
 
 定义入口：src/world/scene/sceneLayout.ts。主屋大段几何位于 components/architecture/MainCottageHaven.tsx；景观、主题、浮层分别位于 world/render、world/theme、world/overlays。
 
+人物站坐尺寸由 characterProportions.ts 定义：标准站高约 48，名义头圆直径约 14.93 场景单位；独立侧坐含帽高度约 34.3、正背坐姿约 35.2，桌椅与沙发当前坐高约 44 / 43。坐姿围绕坐垫接触点校准，桌前手部与键盘、长袍与坐垫对齐。观测站标准站姿补偿建筑 0.8 倍缩放。SeatedSideBody 由参考图和蒲团品茶人物共享，v11 采用用户 Boxy SVG 的圆润胸背、圆手及宽扁袍摆，以真实最低点校准参考地面，增加贴合下摆的薄接触影；左右对应镜像。RoundCharacterHand 统一侧坐、站姿、打字及持书的可见手部，正面坐姿保留为基准；完整睡姿和八向素材待后续处理。详见 [人物校准与修订记录](docs/architecture/CHARACTER_PROPORTION_REVISION.md)。
+
+2026-10-15 桌前修订：桌面高约 22.6、厚度 2.4，温莎/复古固定脚软垫椅的坐垫高均为 14.2。DeskSeatedCharacter 从坐垫锚点推导头身位置，长袍遮住腿脚；DeskHeadphones 与头部使用相同缩放及位置，两侧耳罩贴合。DeskWorkstations 供世界与检视共用两席摆放与各自键盘锚点，超过肩腕可达距离则收手，休息状态不强制打字。两台电脑、两只杯子与共享灯具按桌面长边布置。检视支持两椅对比、实际占用和明确标注的双人示意；窗口内显示切换只影响预览。新观感尚待用户验收，当前性能样本与限制见 [书桌椅记录](docs/architecture/DESK_CHAIR_STATIC_REFINEMENT.md)。
+
+场景装配 v12：TeaCushion 与已认可的侧坐袍摆采用相同椭圆扁率；teaCharacterAtCushion 按实际袍摆中心对齐蒲团中心，再应用标准人物倍率和席位镜像。顶面与厚度复用同半径椭圆弧，袍底薄影落在坐垫上，蒲团的底部接触影与淡出投影落在地毯上。南席背坐的场景底部也匹配此平面；独立人物 SVG 沿用 v11。
+
+发型 v13：CurlyHair 为 wavy_curly / curly 绘制独立的层叠长卷发与分束帽下发梢，取代该发型原先叠加的短发月牙刘海。发根位于帽子绘制层之前，原帽型与头身保留；常规四朝向由共享 CharacterHead 驱动，装扮、场景及站姿同步，发色继续由角色配置决定。其它长发/直发与睡姿尚待精修，详见 [卷发修订记录](docs/architecture/CHARACTER_CURLY_HAIR_REVISION.md)。
+
+发型 v14：原 long_wavy / long 的披肩长发被 SidePartHair 偏分低束发替换。单侧长前发、耳后收拢和后颈小发束独立绘制，SW 与 NE 展示不同侧面；hairFacing 用于演员整体镜像时指定真实发型侧面。毛线帽和人物身体保留，场景、装扮及睡姿简化形态同步。详见 [偏分低束发修订](docs/architecture/CHARACTER_SIDEPART_HAIR_REVISION.md)。
+
+偏分低束发当前 v16：以正面画面左侧长前发（人物右侧）为身份基准，SW 为耳后侧，NE 为长前发侧。侧面帽檐下到后枕的发量连续收向后颈低扎点；NE 主发片从太阳穴垂落并保留额头前缘，SW 仅露远侧长前发窄轮廓。hairFacing 保持场景整个人物镜像后的侧面身份。正背、身体及帽型保留；睡姿沿用 v15 宽前发与遮挡规则。
+
+发型 v17：原 medium_straight / straight / bob 的及肩直发被 ShaggyHair 双色蓬松碎发替换。错落浅金刘海和侧面外翘发梢覆盖深色后颈短发，移除原及肩路径与该款共用月牙刘海。选择该款时带入参考浅金配色，上层发色仍可调，下层深色保持独立。常规四朝向、简化睡姿与场景共享头部；身体、帽型和接地保留。详见 [碎发修订](docs/architecture/CHARACTER_SHAGGY_HAIR_REVISION.md)。
+
+人物四视图入口位于左侧 PresencePanel：“人物 4 视图 SVG”。SvgExportModal 提供短发、层叠长卷发、偏分低束发和双色蓬松碎发选择，均可切换坐姿与站姿，总表可在窗口预览或打开完整网页，并支持复制/下载及四个独立朝向。短发保留原有比较/地面/材质页；其它三款由对应 generate-*-character.tsx 脚本维护，身体及头部复用场景组件。
+
+人物参考展示使用 CHARACTER_PREVIEW_PALETTE：浅暖灰 #DDD8CF 托住人物，浅底说明使用 #4A4036。四款发型的坐站总表及同头大小对照同步浅底人物区，标题与外围沿用深色风格；导出面板的总表容器及单图缩略图、装扮面板的顶部人物预览和四款发型小图使用相同底色。独立人物 SVG 保持透明，背景属于查看展示层，场景人物及其发色不变。
+
+装扮页与素材工具分工：用户在“人物装扮”中查看 64×80 的紧凑正面头像与衣服配色，点击头像或“查看完整装扮”展开面板内的站立四视图，替代独立头像放大弹窗。四视图复用 StandingCharacter，与草稿发型、帽色、发色、肤色、衣服和毛球实时同步；桌面四个横排、窄屏两行，显示正面/左侧/背面/右侧。紧凑摘要固定在选项滚动区上方，四视图位于该滚动区内，默认收起、按需挂载；从摘要展开时滚动到四视图，区域内收起按钮返回摘要操作焦点。装扮页不显示轴测参数或 SVG 导出；独立素材工具继续提供坐站四视图、比较与复制下载。场景姿态仍由生活状态决定，确认保存才同步；取消或 Escape 关闭整个配置面板且不保存。
+
 ## 建筑布局与资产调整
 
-第三阶段天气光效仍暂缓。小木屋与胶囊舱分别移到草台西、东侧，底座、台阶及接地阴影留在草台内；电波站移到靠近麦田的右后方草地，仍处于 1.0x 主舞台。TerrainMass 的四处地面阴影消费同一 sceneLayout 的 position / scale，不再使用与建筑脱离的绝对坐标。
+第三阶段前的总优先顺序与跨专项状态统一维护在 [资产准备总入口](docs/architecture/PRE_PHASE_3_ASSET_READINESS.md#6-当前优先顺序与历史顺序)。当前新增规划包括 [长帧诊断](docs/architecture/SCENE_PERFORMANCE_DIAGNOSIS.md)、[最小资产校准工具](docs/architecture/ASSET_AUTHORING_CALIBRATION.md)、[家具造型与布局](docs/architecture/DESK_CHAIR_STATIC_REFINEMENT.md) 和 [单层可悬浮生态屋顶](docs/architecture/ECO_ROOF_VIEWING_PLAN.md)。这些是需求/方案记录，尚未实施；原书架整体保留、已认可人物造型沿用，临时站台无椅，工具不要求用户会用 Boxy SVG。上文已实施双席仍是现有代码状态，用户已反馈局促，新布局未获验收。
+
+第三阶段天气光效仍暂缓；已确认需求、代码调查、实施顺序和验收约束统一维护在 [第三阶段详细规划](docs/architecture/PHASE_3_WEATHER_ATMOSPHERE_PLAN.md)，新增规划不代表启动实现。小木屋与胶囊舱分别移到草台西、东侧，底座、台阶及接地阴影留在草台内；电波站移到靠近麦田的右后方草地，仍处于 1.0x 主舞台。TerrainMass 的四处地面阴影消费同一 sceneLayout 的 position / scale，不再使用与建筑脱离的绝对坐标。
 
 小木屋用统一的浅轴测基底绘制屋顶、外墙、地板、床与台阶，正面朝画面右下方（东南），左侧可见圆木侧墙；窗台花保留在正面窗户上。木床恢复圆头床柱、木质床头/床尾板、蓬松软枕和陶土红羊毛厚被，床头在东侧，床头柜和单盏阅读灯在旁。无火炉的烟囱、烟雾和柴棚移除，人物局部床位随床铺调整。胶囊舱恢复原始正视舱身、圆形黄铜舷窗及支腿，不再剪切舱体或叠加偏移后壳；床铺限于舷窗开口，入口踏步与水平门槛对齐。电波站锅面增加背壳、倾斜口沿及朝天空右上方的馈源支架，并修正台面栏杆与机柜面板的投影。
 
@@ -70,7 +92,7 @@ sceneTypes 区分 LocalPoint、ScenePoint、ViewBoxPoint、ClientPoint 及对应
 
 features/presence/presenceAllocation.ts 是唯一候选与容量规则。App 派生一次 slots、personToSlot、unplaced，提供给场景及陪伴面板。预览调用同一分配函数。
 
-按 people 输入顺序分配；显式房间优先于生活状态。阁楼使用工作椅、书房使用沙发、起居角按东/西/南茶席顺序选择、两个睡眠房间使用各自床位、观测台使用监听席。每人最多一席，每席容量为 1。同房间满员不跨房间安置、不改写 currentRoom，不增加场景站位；面板显示“该房间席位已满，状态已保留”。前廊不分配室内席位，也不显示满员。
+分配按 people 输入顺序处理，显式房间优先于生活状态。阁楼使用两处电脑席位；同一固定人物列表中的前两人各有席位偏好，另一人暂离时不自动换座，第三人满员。书房使用沙发、起居角按东/西/南茶席顺序选择、两个睡眠房间使用各自床位、观测台使用监听席。每人最多一席，每席容量为 1。同房间满员不跨房间安置、不改写 currentRoom，不增加场景站位；面板显示“该房间席位已满，状态已保留”。前廊不分配室内席位，也不显示满员。
 
 ## 交互、状态与 CSS 生命周期
 
@@ -83,6 +105,8 @@ src/index.css 保留 Tailwind 入口；景观专属动画在 world/render/landsc
 ## 加载、测量与测试
 
 浮层按首次打开加载，已有信箱草稿等状态在关闭后保留。稳定事件回调与 React.memo 让相机移动避免重画无关建筑和景观。指标及限制见执行记录；大型主屋 SVG 仍在首屏，不能把拆文件等同于性能改善。
+
+书架与咖啡黑胶柜支持复用完整 SVG 资产的独立详细查看，使用当前布局和借阅状态，提供放大、拖动及完整取景。查看操作不写布局、不改主相机，普通点击与校准模式分开处理；预览资源 ID 按实例隔离。人物袍子和信箱的柔和投影、书架细节继续保留。实现及验证见 [家具详细查看记录](docs/architecture/FURNITURE_DETAIL_INSPECTION.md)。
 
 未捕获的 React 渲染异常、全局事件异常及 Promise 异常由独立于 root 的错误卡片显示，提供前端堆栈复制和保留已保存布局的重载入口。AI Studio 校准器问题的后续证据与结论边界见 [排查记录](docs/architecture/AI_STUDIO_CALIBRATOR_DIAGNOSTICS.md)。
 

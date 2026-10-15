@@ -1,13 +1,15 @@
 import {
 Check,
-Eye,
 Layers,
 Plus,
 Sparkles,
 X
 } from 'lucide-react';
-import React, { useState } from 'react';
-import { Bookshelf } from './Bookshelf';
+import React, { useId, useMemo, useRef, useState } from 'react';
+import { useDialogFocus } from '../../shared/hooks/useDialogFocus';
+import type { RoomLayoutConfig } from '../layout-gizmo';
+import { SvgDetailView } from '../inspection/SvgDetailView';
+import { Bookshelf, resolveBookshelfTiers } from './Bookshelf';
 import {
 BookItemConfig,
 BookshelfPreset,
@@ -21,6 +23,8 @@ interface BookshelfModalProps {
   currentPreset: BookshelfPreset;
   onSelectPreset: (preset: BookshelfPreset) => void;
   tiers: TierConfig[];
+  layout: RoomLayoutConfig;
+  isLinReadingHere: boolean;
   selectedItem: { type: 'book' | 'dec'; item: BookItemConfig | ShelfDecorationConfig } | null;
   onSelectItem: (item: { type: 'book' | 'dec'; item: BookItemConfig | ShelfDecorationConfig } | null) => void;
   onToggleBookPulled?: (bookId: string) => void;
@@ -33,7 +37,9 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
   currentPreset,
   onSelectPreset,
   tiers,
-  selectedItem,
+  layout,
+  isLinReadingHere,
+  selectedItem: requestedItem,
   onSelectItem,
   onToggleBookPulled,
   onAddCustomBook,
@@ -45,6 +51,15 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
   const [newNote, setNewNote] = useState('');
   const [newTierIndex, setNewTierIndex] = useState(2);
   const [hasRibbon, setHasRibbon] = useState(true);
+  const panel = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  useDialogFocus(isOpen, panel, onClose);
+  const resolvedTiers = useMemo(() => resolveBookshelfTiers(currentPreset, tiers, isLinReadingHere), [currentPreset, tiers, isLinReadingHere]);
+  const currentItem = requestedItem?.type === 'book'
+    ? resolvedTiers.flatMap(tier => tier.books ?? []).find(item => item.id === requestedItem.item.id)
+    : resolvedTiers.flatMap(tier => tier.decorations ?? []).find(item => item.id === requestedItem?.item.id);
+  const selectedItem = requestedItem && currentItem ? { ...requestedItem, item: currentItem } : null;
+  const isPresenceLoan = (id: string) => isLinReadingHere && id === 'b-borges';
 
   if (!isOpen) return null;
 
@@ -101,8 +116,10 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-[#211712] text-[#f7f2ea] rounded-2xl border border-[#523b2c] shadow-2xl overflow-hidden">
+    <div role="dialog" aria-modal="true" aria-labelledby={titleId}
+      onClick={event => { if (event.target === event.currentTarget) onClose(); }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+      <div ref={panel} tabIndex={-1} className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-[#211712] text-[#f7f2ea] rounded-2xl border border-[#523b2c] shadow-2xl overflow-hidden">
         {/* Modal Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#3d2a1f] bg-[#291d17]">
           <div className="flex items-center gap-2.5">
@@ -110,11 +127,11 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
               <Layers className="w-5 h-5" />
             </span>
             <div>
-              <h2 className="text-base sm:text-lg font-medium tracking-wide text-[#faf5ee]">
+              <h2 id={titleId} className="text-base sm:text-lg font-medium tracking-wide text-[#faf5ee]">
                 手作做旧粗原木书架 · 藏书插槽
               </h2>
               <p className="text-xs text-[#b89f8c]">
-                纯净架体与参数化插槽（ShelfFrame + BookSlots）· 结构与内容解耦
+                看看木纹、藏书和朋友留下的小物件
               </p>
             </div>
           </div>
@@ -128,7 +145,7 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center gap-1 px-5 pt-3 pb-2 border-b border-[#35251b] bg-[#241914] text-xs">
+        <div className="flex flex-wrap items-center gap-1 px-5 pt-3 pb-2 border-b border-[#35251b] bg-[#241914] text-xs">
           <button
             onClick={() => setActiveTab('tiers')}
             className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
@@ -161,52 +178,35 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
           </button>
         </div>
 
-        {/* 2.5D 纯净骨架与插槽实时视窗 */}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+        {/* The scene's original asset and resolved layout, with an independent camera. */}
         <div className="px-5 pt-3">
-          <div className="p-3 rounded-2xl bg-[#1e140f] border border-[#3f2a1e] flex flex-col sm:flex-row items-center gap-4">
-            <div className="w-full sm:w-52 h-44 bg-[#140c08] rounded-xl border border-[#332014] overflow-hidden flex items-center justify-center p-2 relative shadow-inner">
-              <div className="absolute top-2 left-2 text-[10px] text-[#b89f8c] flex items-center gap-1 bg-[#251710]/90 px-2 py-0.5 rounded-md border border-[#3f271a] z-10">
-                <Eye className="w-3 h-3 text-[#f59e0b]" /> 2.5D 纯净骨架实时预览
-              </div>
-              <svg viewBox="160 56 72 82" className="w-full h-full drop-shadow-md">
+          <div className="p-3 rounded-2xl bg-[#1e140f] border border-[#3f2a1e]">
+              <SvgDetailView label="书架细节视图" initialBounds={{ x: 160, y: 56, width: 72, height: 82 }} focusItem={selectedItem?.item.id} resetKey={currentPreset}>
                 <Bookshelf
                   preset={currentPreset}
                   customTiers={tiers}
+                  layout={layout}
+                  isLinReadingHere={isLinReadingHere}
                   selectedItemId={selectedItem?.item.id}
                   onBookClick={(book) => onSelectItem({ type: 'book', item: book })}
                   onDecorationClick={(dec) => onSelectItem({ type: 'dec', item: dec })}
                 />
-              </svg>
-            </div>
-            <div className="flex-1 text-xs space-y-1.5">
-              <div className="flex items-center gap-2">
+              </SvgDetailView>
+              <div className="flex flex-wrap items-center gap-2 pt-2 text-xs">
                 <span className="font-medium text-[#faf5ee]">
                   {presetsList.find((p) => p.id === currentPreset)?.label || '当前书架状态'}
                 </span>
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#422e22] text-[#f59e0b] font-mono">
-                  统一 2.5D 轴向体系
+                  当前房间陈设 · 实时同步
                 </span>
               </div>
-              <p className="text-[#a8907e] leading-relaxed text-[11px]">
-                全四层大板严格依循统一宽轴 (Slope 0.28) 与深轴 (+9, -2.5) 投射，四根通顶实木细立柱与对称侧框横撑稳固承托，采用温润琥珀蜜柚木质感，视觉开阔舒展。
-              </p>
-              <div className="flex flex-wrap gap-2 text-[10px] text-[#c4b09e] pt-1">
-                <span className="px-2 py-0.5 rounded bg-[#2b1c15] border border-[#442c1f]">
-                  左柱轴心: X = 173.0 (飞檐 5px)
-                </span>
-                <span className="px-2 py-0.5 rounded bg-[#2b1c15] border border-[#442c1f]">
-                  右柱轴心: X = 213.0 (飞檐 5px)
-                </span>
-                <span className="px-2 py-0.5 rounded bg-[#2b1c15] border border-[#442c1f]">
-                  四柱通顶 · 侧框加固
-                </span>
-              </div>
-            </div>
+              {isLinReadingHere && <p className="mt-1 text-xs text-[#dfb88a]">林木正在翻读《沙之书》</p>}
           </div>
         </div>
 
         {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-4 text-sm scrollbar-thin scrollbar-thumb-[#4a3426]">
+        <div className="p-5 space-y-4 text-sm">
           {/* TAB 1: TIERS BREAKDOWN */}
           {activeTab === 'tiers' && (
             <div className="space-y-4">
@@ -218,7 +218,7 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
               </div>
 
               {/* Reverse to show Tier 5 (Top) down to Tier 1 (Bottom) */}
-              {[...tiers]
+              {[...resolvedTiers]
                 .sort((a, b) => b.index - a.index)
                 .map((tier) => (
                   <div
@@ -268,7 +268,7 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
                               </h4>
                               {book.isPulled ? (
                                 <span className="text-[10px] px-1 py-0.2 rounded bg-[#452718] text-[#f97316]">
-                                  借读中
+                                  {isPresenceLoan(book.id) ? '林木正在阅读' : '借读中'}
                                 </span>
                               ) : (
                                 <button
@@ -286,7 +286,7 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
                               {book.author ? `作: ${book.author}` : ''}{' '}
                               {book.donor ? `· 留自: ${book.donor}` : ''}
                             </p>
-                            {book.isPulled && (
+                            {book.isPulled && !isPresenceLoan(book.id) && (
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -526,9 +526,10 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
                       <div className="pt-2 flex items-center gap-3">
                         <button
                           onClick={() => onToggleBookPulled?.(b.id)}
-                          className="px-3 py-1.5 rounded-lg bg-[#422e22] hover:bg-[#523a2b] text-xs text-[#f5ede1] transition-colors"
+                          disabled={isPresenceLoan(b.id)}
+                          className="px-3 py-1.5 rounded-lg bg-[#422e22] hover:bg-[#523a2b] disabled:opacity-65 text-xs text-[#f5ede1] transition-colors"
                         >
-                          {b.isPulled ? '📥 放回书架插槽' : '📖 抽出来在沙发翻读'}
+                          {isPresenceLoan(b.id) ? '林木读完后归位' : b.isPulled ? '📥 放回书架插槽' : '📖 抽出来在沙发翻读'}
                         </button>
                       </div>
                     </div>
@@ -549,6 +550,7 @@ export const BookshelfModal: React.FC<BookshelfModalProps> = ({
               )}
             </div>
           )}
+        </div>
         </div>
 
         {/* Modal Footer */}

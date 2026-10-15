@@ -3,11 +3,13 @@ import type { ResolvedPresenceSlot } from '../../features/presence/presenceAlloc
 import type { Person } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
-import { CharacterHead } from '../CharacterAvatar';
+import { StandingCharacter } from '../characters/StandingCharacter';
+import { CHARACTER_WORLD_SIZE } from '../characters/characterProportions';
 import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
 import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 
 export interface ObservatoryHavenProps {
+  characterParentScale?: number;
   theme: Pick<YorkshireSceneTheme, 'roadColor' | 'hillGreenFar'>;
   presenceSlots: Partial<Record<'observatory_post', ResolvedPresenceSlot>>;
   alienPulseEffect?: boolean;
@@ -46,6 +48,7 @@ const face = (...vertices: [number, number, number][]) =>
 
 function ObservatoryHavenAsset({
   theme,
+  characterParentScale = 1,
   presenceSlots,
   alienPulseEffect,
   triggerAlienSignal,
@@ -394,6 +397,7 @@ function ObservatoryHavenAsset({
 
         {/* 台面中央操作地垫 (为观测员提供专属站席标界，在控制台正前方留出充裕空间) */}
         <polygon
+          id="observatory-operation-mat"
           points={face(
             [-8, 14, DECK_Z + 0.2],
             [14, 14, DECK_Z + 0.2],
@@ -882,17 +886,9 @@ function ObservatoryHavenAsset({
             onMouseLeave={() => setHoveredObject(null)}
             className="cursor-pointer group/char"
           >
-            {/* 观测员脚下地垫柔和接触阴影 */}
-            <ellipse cx="0" cy="12" rx="7" ry="2.6" fill="#121813" opacity="0.45" />
-
-            {/* 温暖防风研究员冬装夹克 */}
-            <rect x="-6" y="-2" width="12" height="14" rx="4" fill={obsOccupant.shirtColor} filter="url(#softShadow)" />
-
-            {/* 人物头部 (侧身视角 facing="side"，专注望向右侧射电天线) */}
-            <CharacterHead
-              cx={0}
-              cy={-7}
-              r={5.5}
+            <StandingCharacter
+              parentScale={characterParentScale}
+              shirtColor={obsOccupant.shirtColor}
               skinColor={obsOccupant.skinColor || '#f5d6be'}
               hairColor={obsOccupant.hairColor || '#302319'}
               hairStyle={obsOccupant.hairStyle || 'curtain_crescent'}
@@ -900,20 +896,25 @@ function ObservatoryHavenAsset({
               hasPompom={obsOccupant.hasPompom ?? true}
               facing={slotCfg.facing}
             />
-
+            <g transform={`scale(${CHARACTER_WORLD_SIZE.authoringScale / characterParentScale})`}>
             {/* 无线电通信耳罩式耳机与拾音麦克风 */}
+            <g transform="translate(0,-34) scale(1.2727272727) translate(0,7)">
             <path d="M-6,-7 Q0,-13 6,-7" stroke="#1e293b" strokeWidth="1.8" fill="none" />
             <rect x="-7" y="-9" width="2.4" height="4.4" rx="1.2" fill="#34d399" />
             <rect x="4.6" y="-9" width="2.4" height="4.4" rx="1.2" fill="#34d399" />
             <path d="M-5,-5 Q-2,-2 1,-4" stroke="#1e293b" strokeWidth="0.9" fill="none" />
+            </g>
 
             {/* 观测手板日志夹 */}
+            <g transform="translate(-4.85,-17)">
             <polygon points="5,1 11,1 11,8 5,8" fill="#e2e8f0" stroke="#475569" strokeWidth="0.6" />
             <line x1="7" y1="3" x2="10" y2="3" stroke="#059669" strokeWidth="0.6" />
             <line x1="7" y1="5" x2="10" y2="5" stroke="#059669" strokeWidth="0.6" />
+            </g>
+            </g>
 
             {/* 纯净人物浮动名牌 */}
-            <g transform="translate(0, -24)" className="pointer-events-none">
+            <g transform={`translate(0,${-56 / characterParentScale})`} className="pointer-events-none">
               <rect x="-46" y="-7" width="92" height="15" rx="7.5" fill="#121a14" stroke="#10b981" strokeWidth="0.8" opacity="0.94" />
               <text x="0" y="3.5" fill="#d1fae5" fontSize="8.5" fontWeight="bold" textAnchor="middle">
                 📡 {obsOccupant.name} · {slotCfg.badgeLabel.split('(')[0].trim()}

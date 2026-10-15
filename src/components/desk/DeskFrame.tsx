@@ -19,6 +19,7 @@ export const DeskFrame: React.FC<DeskFrameProps> = ({
   return (
     <g
       id="minimal-craft-desk-frame"
+      data-desk-height="22.6" data-desk-thickness="2.4"
       className="cursor-pointer select-none group/deskframe"
       onClick={onClick}
       onMouseEnter={() => onHover?.(true)}
@@ -94,17 +95,17 @@ export const DeskFrame: React.FC<DeskFrameProps> = ({
       <line x1="52.2" y1="-5" x2="52.2" y2="12" stroke="#9e6939" strokeWidth="0.8" strokeLinecap="round" opacity="0.75" />
       <line x1="53" y1="12" x2="53" y2="16" stroke="url(#deskBrassTipGrad)" strokeWidth="3.4" strokeLinecap="round" />
 
-      {/* --- 3. 实木温润木蜡油桌面 (Solid Crafted Oiled Tabletop, 加厚至 4.5px 厚重质感) --- */}
-      {/* 正立面前沿厚度 (增厚至 4.5px，告别单薄) */}
+      {/* --- 3. 温润木蜡油桌面：2.4 场景单位厚度，保留桌下空间 --- */}
+      {/* 前沿厚度与侧沿一致 */}
       <polygon
-        points="-21,14.5 53,-6.6 53,-2.1 -21,19.0"
+        points="-21,14.5 53,-6.6 53,-4.2 -21,16.9"
         fill="url(#deskFrontEdgeGrad)"
         stroke="#683d1b"
         strokeWidth="0.5"
       />
       {/* 左侧沿厚度 */}
       <polygon
-        points="-53,5.4 -21,14.5 -21,19.0 -53,9.9"
+        points="-53,5.4 -21,14.5 -21,16.9 -53,7.8"
         fill="url(#deskSideEdgeGrad)"
         stroke="#4a2a11"
         strokeWidth="0.5"

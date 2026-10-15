@@ -24,6 +24,7 @@ import { BookItemConfig, BookshelfPreset, PRESET_COZY_TIERS, TierConfig } from '
 import { EditableObjectId, RoomLayoutConfig } from './layout-gizmo';
 import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
 import { PosterId } from './wall-posters';
+import type { CabinetPartId } from './cabinet/cabinetDetails';
 
 const PosterDetailModal = lazy(() => import('./wall-posters/PosterDetailModal').then(module => ({ default: module.PosterDetailModal })));
 
@@ -43,6 +44,7 @@ interface ThreeWorldProps {
   onFireplaceClick?: () => void;
   bookshelfPreset?: BookshelfPreset;
   onBookshelfClick?: () => void;
+  onOpenCabinetInspector?: (part?: CabinetPartId) => void;
   onBookClick?: (book: BookItemConfig, tierIndex: number) => void;
   customBookshelfTiers?: TierConfig[];
   roomLayout?: RoomLayoutConfig;
@@ -54,7 +56,7 @@ interface ThreeWorldProps {
   onSelectPoster?: (id: PosterId) => void;
   isChairEmptyOverride?: boolean;
   onToggleChairSeated?: (seated?: boolean) => void;
-  onOpenChairInspector?: () => void;
+  onOpenChairInspector?: (seat?: import('./desk/chairGeometry').DeskSeatId) => void;
   onTriggerToast?: (msg: string) => void;
 }
 
@@ -87,6 +89,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   isChairEmptyOverride = false,
   onToggleChairSeated: onToggleChairSeatedProp,
   onOpenChairInspector: onOpenChairInspectorProp,
+  onOpenCabinetInspector: onOpenCabinetInspectorProp,
   onTriggerToast,
 }) => {
   const selectGizmoEvent = useEventCallback((id: EditableObjectId | null) => onSelectGizmoProp?.(id));
@@ -95,8 +98,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const onDragGizmoDelta = onDragGizmoDeltaProp ? onDragGizmoDeltaEvent : undefined;
   const onDragGizmoEndEvent = useEventCallback(() => onDragGizmoEndProp?.());
   const onDragGizmoEnd = onDragGizmoEndProp ? onDragGizmoEndEvent : undefined;
-  const onOpenChairInspectorEvent = useEventCallback(() => onOpenChairInspectorProp?.());
+  const onOpenChairInspectorEvent = useEventCallback((seat?: import('./desk/chairGeometry').DeskSeatId) => onOpenChairInspectorProp?.(seat));
   const onOpenChairInspector = onOpenChairInspectorProp ? onOpenChairInspectorEvent : undefined;
+  const onOpenCabinetInspectorEvent = useEventCallback((part?: CabinetPartId) => onOpenCabinetInspectorProp?.(part));
+  const onOpenCabinetInspector = onOpenCabinetInspectorProp ? onOpenCabinetInspectorEvent : undefined;
   const onToggleChairSeatedEvent = useEventCallback((seated?: boolean) => onToggleChairSeatedProp?.(seated));
   const onToggleChairSeated = onToggleChairSeatedProp ? onToggleChairSeatedEvent : undefined;
   const currentLayout = roomLayout || DEFAULT_ROOM_LAYOUT;
@@ -218,7 +223,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               onMouseLeave={() => setHoveredObject(null)}
               className="cursor-pointer group/observatory"
             >
-  <ObservatoryHaven theme={theme} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
+  <ObservatoryHaven theme={theme} characterParentScale={sceneLayout.observatory.scale} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
     triggerAlienSignal={captureSignal} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
 </SceneEntity>
           </g>
@@ -228,7 +233,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/*    Surrounded by lawn, stone path & garden               */}
           {/* ======================================================== */}
           <SceneEntity entityId="main_cottage" layout={sceneLayout} id="living-cottage-haven">
-<MainCottageHaven theme={theme} hasMovedRef={hasMovedRef} onSelectRoom={onSelectRoom} setHoveredObject={setHoveredObject} selfPerson={selfPerson} linPerson={linPerson} yuPerson={yuPerson} currentLayout={currentLayout} effectiveGizmoId={effectiveGizmoId} isInspectorOpen={isInspectorOpen} onSelectGizmo={onSelectGizmo} onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd} presenceSlots={presenceSlots} isChairEmptyOverride={isChairEmptyOverride} onOpenChairInspector={onOpenChairInspector} onToggleChairSeated={onToggleChairSeated} stoveColor={stoveColor} setStoveColor={setStoveColor} dispatchInteraction={dispatchInteraction} onSelectPerson={onSelectPerson} bookshelfPreset={bookshelfPreset} customBookshelfTiers={customBookshelfTiers} isLinReading={isLinReading} onBookshelfClick={onBookshelfClick} onBookClick={onBookClick} triggerSofaSquish={triggerSofaSquish} sofaSquish={sofaSquish} sofaThought={sofaThought} onSelectMailbox={onSelectMailbox} unreadMailCount={unreadMailCount} onTriggerToast={onTriggerToast} />
+<MainCottageHaven theme={theme} hasMovedRef={hasMovedRef} onSelectRoom={onSelectRoom} setHoveredObject={setHoveredObject} selfPerson={selfPerson} linPerson={linPerson} yuPerson={yuPerson} currentLayout={currentLayout} effectiveGizmoId={effectiveGizmoId} isInspectorOpen={isInspectorOpen} onSelectGizmo={onSelectGizmo} onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd} presenceSlots={presenceSlots} isChairEmptyOverride={isChairEmptyOverride} onOpenChairInspector={onOpenChairInspector} onOpenCabinetInspector={onOpenCabinetInspector} onToggleChairSeated={onToggleChairSeated} stoveColor={stoveColor} setStoveColor={setStoveColor} dispatchInteraction={dispatchInteraction} onSelectPerson={onSelectPerson} bookshelfPreset={bookshelfPreset} customBookshelfTiers={customBookshelfTiers} isLinReading={isLinReading} onBookshelfClick={onBookshelfClick} onBookClick={onBookClick} triggerSofaSquish={triggerSofaSquish} sofaSquish={sofaSquish} sofaThought={sofaThought} onSelectMailbox={onSelectMailbox} unreadMailCount={unreadMailCount} onTriggerToast={onTriggerToast} />
 </SceneEntity>
 
           {/* ======================================================== */}

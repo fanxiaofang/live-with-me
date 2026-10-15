@@ -1,12 +1,15 @@
-import { Check, Download, MapPin, Palette, Sparkles, X } from 'lucide-react';
-import React, { lazy, Suspense, useState } from 'react';
+import { Check, MapPin, Palette, Sparkles, X } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 import { LIFE_STATES, ROOMS } from '../data/initialData';
 import { LifeStateId, Person, RoomId } from '../types';
-import { CharacterHead } from './CharacterAvatar';
+import { CharacterHead, normalizeHairStyle } from './CharacterAvatar';
+import { SHAGGY_HAIR_PALETTE } from './characters/ShaggyHair';
+import { CHARACTER_PREVIEW_PALETTE } from './characters/characterPreviewPalette';
+import { CharacterAppearancePreview } from './characters/CharacterAppearancePreview';
+import { CharacterAppearanceFourViews } from './characters/CharacterAppearanceFourViews';
+import { useDialogFocus } from '../shared/hooks/useDialogFocus';
 
 import { isRoomFull, previewPresence, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
-
-const SvgExportModal = lazy(() => import('./SvgExportModal').then(module => ({ default: module.SvgExportModal })));
 
 interface StatusPickerModalProps {
   isOpen: boolean;
@@ -59,6 +62,8 @@ const BEANIE_PRESETS = [
 ];
 
 const HAIR_PRESETS = [
+  { label: '浅麦金 (参考图)', value: SHAGGY_HAIR_PALETTE.top },
+  { label: '银灰', value: '#b8afa0' },
   { label: '经典纯墨黑 (图同款)', value: '#1a1a1a' },
   { label: '自然深褐', value: '#2b231d' },
   { label: '暖栗红棕', value: '#4a3020' },
@@ -74,21 +79,21 @@ const BANGS_STYLES = [
   },
   {
     id: 'wavy_curly',
-    name: '蓬松波浪卷发 (参考图左)',
-    desc: '帽檐下散落一圈生动波浪小卷，自然披覆至肩颈，随性治愈',
-    tag: '图同款 1',
+    name: '层叠长卷发',
+    desc: '帽下轻盈分束，脸侧发梢弯曲，长卷发层叠披落至肩背',
+    tag: '长卷发',
   },
   {
     id: 'long_wavy',
-    name: '随性披肩长发 (参考图中)',
-    desc: '从帽檐下延展出多缕轻盈微卷长发，自然披垂至后背与肩头，温柔慵懒',
-    tag: '图同款 2',
+    name: '偏分低束发',
+    desc: '一侧长前发贴脸垂落，另一侧收向耳后，后颈留一束短发尾',
+    tag: '偏分',
   },
   {
     id: 'medium_straight',
-    name: '利落及肩直发 (参考图右)',
-    desc: '帽檐下垂落整齐垂顺的齐肩发束，发梢微散微翘，简约清新',
-    tag: '图同款 3',
+    name: '双色蓬松碎发',
+    desc: '浅麦金碎刘海与两侧外翘发梢，后颈深色底发；上层发色可调',
+    tag: '双色碎发',
   },
 ];
 
@@ -125,8 +130,12 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
   );
   const [shirtColor, setShirtColor] = useState(initialAppearance?.shirtColor || '#425b6e');
   const [hasPompom, setHasPompom] = useState(initialAppearance?.hasPompom ?? true);
-  const [previewFacing, setPreviewFacing] = useState<'SE' | 'SW' | 'NW' | 'NE'>('SE');
-  const [showSvgExportModal, setShowSvgExportModal] = useState(false);
+  const [showAppearanceViews, setShowAppearanceViews] = useState(false);
+  const content = useRef<HTMLDivElement>(null);
+  const viewsToggle = useRef<HTMLButtonElement>(null);
+  const selectedHairstyle = BANGS_STYLES.find(style => style.id === normalizeHairStyle(hairStyle))!;
+  const panel = useRef<HTMLDivElement>(null);
+  useDialogFocus(isOpen, panel, onClose);
 
   const preview = previewPresence(people, personId, selectedRoom, selectedState);
   const predictedSlot = preview.personToSlot[personId];
@@ -152,22 +161,29 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
     onClose();
   };
 
+  const toggleAppearanceViews = () => {
+    setShowAppearanceViews(!showAppearanceViews);
+    if (!showAppearanceViews) content.current?.scrollTo({ top: 0 });
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-in fade-in duration-200">
       <div
         id="status-picker-modal"
+        ref={panel} role="dialog" aria-modal="true" aria-labelledby="status-picker-title" tabIndex={-1}
         className="w-full max-w-xl bg-[#201d1a] border border-[#443c34] rounded-2xl shadow-2xl overflow-hidden text-[#e8e2d8] flex flex-col max-h-[88vh]"
       >
         {/* Header with Navigation Tabs */}
-        <div className="px-6 pt-4 pb-3 border-b border-[#36302a] bg-[#272320]">
+        <div className="px-4 sm:px-6 pt-4 pb-3 border-b border-[#36302a] bg-[#272320] shrink-0">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-base font-semibold tracking-wide text-[#f2ece2]">状态与小人特征配置</h2>
+              <h2 id="status-picker-title" className="text-base font-semibold tracking-wide text-[#f2ece2]">状态与小人特征配置</h2>
               <p className="text-xs text-[#a39a8f] mt-0.5">
-                薄款纯色包头帽下露出一小撮自然刘海 · 肤色与参数随时自选
+                选择生活状态，搭配喜欢的帽子、发型和颜色
               </p>
             </div>
             <button
+              type="button" aria-label="关闭配置"
               onClick={onClose}
               className="w-8 h-8 rounded-lg flex items-center justify-center text-[#9c9186] hover:text-[#f2ece2] hover:bg-[#38312b] transition-colors"
             >
@@ -199,13 +215,44 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
               }`}
             >
               <Palette className="w-3.5 h-3.5 text-[#53907c]" />
-              <span>包头帽与刘海装扮</span>
+              <span>人物装扮</span>
             </button>
           </div>
         </div>
 
+        {activeTab === 'appearance' && <div className="px-4 sm:px-6 pt-4 shrink-0">
+          <div data-testid="appearance-summary" style={{ display: 'flex', alignItems: 'center', gap: 12 }}
+            className="p-3 rounded-xl bg-[#1a1715] border border-[#383028]">
+              <button type="button" aria-label="查看完整装扮四视图"
+                aria-expanded={showAppearanceViews} aria-controls="appearance-four-views"
+                onClick={toggleAppearanceViews} style={{ flex: '0 0 auto' }}
+                className="rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e0a96d]">
+                <CharacterAppearancePreview facing="SE" skinColor={skinColor}
+                  beanieColor={beanieColor} hairColor={hairColor} hairStyle={hairStyle}
+                  shirtColor={shirtColor} hasPompom={hasPompom} />
+              </button>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs text-[#a39a8f]">当前装扮</span>
+                    <button type="button" aria-pressed={hasPompom} onClick={() => setHasPompom(!hasPompom)}
+                      className={`min-h-8 px-2 rounded-lg text-xs border ${hasPompom
+                        ? 'bg-[#3b4b59] border-[#5a778c] text-[#d6e7f2]'
+                        : 'bg-[#25211e] border-[#5a4d40] text-[#c3b29e]'}`}>
+                      帽顶毛球：{hasPompom ? '有' : '无'}
+                    </button>
+                  </div>
+                  <p className="text-xs text-[#c3b29e] mt-1">{selectedHairstyle.name}</p>
+                  <button ref={viewsToggle} type="button" onClick={toggleAppearanceViews}
+                    aria-expanded={showAppearanceViews} aria-controls="appearance-four-views"
+                    className="mt-1 min-h-8 rounded-md px-2 -ml-2 text-xs text-[#e0a96d] hover:bg-[#38312b] focus-visible:outline-2 focus-visible:outline-[#e0a96d]">
+                    {showAppearanceViews ? '收起完整装扮' : '查看完整装扮'}
+                  </button>
+                </div>
+          </div>
+        </div>}
+
         {/* Body */}
-        <div className="p-6 overflow-y-auto space-y-5">
+        <div ref={content} className="p-4 sm:p-6 min-h-0 flex-1 overflow-y-auto space-y-5" data-testid="status-picker-content">
           {/* TAB 1: STATUS & ROOM */}
           {activeTab === 'status' && (
             <div className="space-y-5">
@@ -289,168 +336,19 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
           {/* TAB 2: APPEARANCE CUSTOMIZATION */}
           {activeTab === 'appearance' && (
             <div className="space-y-5">
-              {/* Live Character Visualizer with 3-Angle Perspective Switcher */}
-              <div className="p-4 rounded-xl bg-[#1a1715] border border-[#383028] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-xl bg-[#26211d] border border-[#3d342c] flex items-center justify-center shadow-inner overflow-hidden flex-shrink-0">
-                    <svg viewBox="-14 -25 28 36" className="w-14 h-14">
-                      {/* Character Avatar Live Preview */}
-                      <ellipse cx="0" cy="8" rx="12" ry="4.5" fill="#150f0a" opacity="0.4" />
-                      {/* Body according to 2.5D facing */}
-                      {(previewFacing === 'SW' || previewFacing === 'NE') ? (
-                        <g id="body-side-preview" transform={previewFacing === 'NE' ? 'scale(-1, 1)' : ''}>
-                          <path
-                            d="M-5.5,2 C-7.0,-3 -4.5,-8.5 -1.0,-9 C2.5,-9.5 5.5,-5.5 5.0,2 Z"
-                            fill={shirtColor}
-                          />
-                          <path
-                            d="M-2.2,-5.5 Q-4.2,-1.5 -2.0,2.0"
-                            stroke={shirtColor}
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            fill="none"
-                            opacity="0.85"
-                          />
-                        </g>
-                      ) : (
-                        <path
-                          d="M-6,2 C-7,-4 -5,-9 0,-9 C5,-9 7,-4 6,2 Z"
-                          fill={shirtColor}
-                        />
-                      )}
-                      {previewFacing === 'NW' && (
-                        <path d="M-4,-9 Q0,-7 4,-9" stroke="#000000" strokeWidth="0.8" opacity="0.18" fill="none" />
-                      )}
-                      <CharacterHead
-                        cx={0}
-                        cy={-14}
-                        r={7}
-                        skinColor={skinColor}
-                        hairColor={hairColor}
-                        hairStyle={hairStyle}
-                        beanieColor={beanieColor}
-                        hasPompom={hasPompom}
-                        showBeanie={true}
-                        facing={previewFacing}
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold text-[#f0e8dc] flex items-center gap-2">
-                      <span>2.5D 轴测毛线帽小人</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-[#354652] text-[#9dc2dc]">
-                        2:1 菱形轴测对齐
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-[#948777] mt-1 space-y-0.5">
-                      <div>
-                        空间朝向：
-                        <span className="text-[#ded5c7] ml-1 font-medium">
-                          {previewFacing === 'SE' && '东南 SE · 面向正前（露出自然月牙刘海）'}
-                          {previewFacing === 'SW' && '西南 SW · 面向左下（侧身向桌，露侧发梢）'}
-                          {previewFacing === 'NW' && '西北 NW · 正对后背（后脑勺厚实包裹，无刘海）'}
-                          {previewFacing === 'NE' && '东北 NE · 侧身后上（背向镜头右上方）'}
-                        </span>
-                      </div>
-                      <div>
-                        帽子质感：
-                        <span className="text-[#ded5c7] ml-1">
-                          翻折帽檐 · {hasPompom ? '带毛线顶球' : '平顶卷檐'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:items-end gap-2">
-                  {/* 2.5D 轴测四大标准方向切换开关 */}
-                  <div className="flex items-center gap-1 bg-[#241e1a] p-1 rounded-lg border border-[#3b322a]">
-                    <button
-                      type="button"
-                      onClick={() => setPreviewFacing('SE')}
-                      className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
-                        previewFacing === 'SE'
-                          ? 'bg-[#3b322a] text-[#f5eee4] border border-[#c4794e]/40 shadow-xs'
-                          : 'text-[#8c8175] hover:text-[#ded5c7]'
-                      }`}
-                      title="东南：正前视角"
-                    >
-                      正前 SE
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPreviewFacing('SW')}
-                      className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
-                        previewFacing === 'SW'
-                          ? 'bg-[#3b322a] text-[#f5eee4] border border-[#c4794e]/40 shadow-xs'
-                          : 'text-[#8c8175] hover:text-[#ded5c7]'
-                      }`}
-                      title="西南：侧前左下"
-                    >
-                      侧身 SW
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPreviewFacing('NW')}
-                      className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
-                        previewFacing === 'NW'
-                          ? 'bg-[#3b322a] text-[#f5eee4] border border-[#c4794e]/40 shadow-xs'
-                          : 'text-[#8c8175] hover:text-[#ded5c7]'
-                      }`}
-                      title="西北：后背视角"
-                    >
-                      后背 NW
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPreviewFacing('NE')}
-                      className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
-                        previewFacing === 'NE'
-                          ? 'bg-[#3b322a] text-[#f5eee4] border border-[#c4794e]/40 shadow-xs'
-                          : 'text-[#8c8175] hover:text-[#ded5c7]'
-                      }`}
-                      title="东北：侧后右上"
-                    >
-                      侧后 NE
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setHasPompom(!hasPompom)}
-                      className={`px-2.5 py-1 rounded-lg text-[10px] font-medium border transition-colors ${
-                        hasPompom
-                          ? 'bg-[#3b4b59] border-[#5a778c] text-[#d6e7f2]'
-                          : 'bg-[#25211e] border-[#3d352e] text-[#8c8175]'
-                      }`}
-                    >
-                      {hasPompom ? '顶端毛球：开' : '顶端毛球：关'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowSvgExportModal(true)}
-                      className="px-2.5 py-1 rounded-lg text-[10px] font-medium bg-[#382e26] hover:bg-[#483a2f] border border-[#594738] text-[#f2ce9d] flex items-center gap-1 transition-colors shadow-xs"
-                      title="导出标准 4 视图矢量 SVG"
-                    >
-                      <Download className="w-3 h-3" />
-                      <span>导出 4视图 SVG</span>
-                    </button>
-                    <span className="text-[10px] text-[#73685a] italic hidden sm:inline">
-                      实时同步世界
-                    </span>
-                  </div>
-                </div>
-              </div>
-
+              {showAppearanceViews && <CharacterAppearanceFourViews skinColor={skinColor}
+                beanieColor={beanieColor} hairColor={hairColor} hairStyle={hairStyle}
+                shirtColor={shirtColor} hasPompom={hasPompom}
+                onCollapse={() => { setShowAppearanceViews(false); viewsToggle.current?.focus(); }} />}
               {/* 1. 毛线帽颜色 (Knit Beanie Color) */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-[#b5aa9d]">厚织毛线帽颜色（纯哑光无反光）：</span>
+                  <span className="text-xs font-medium text-[#b5aa9d]">毛线帽颜色：</span>
                   <div className="flex items-center gap-1.5">
                     <span className="text-[10px] text-[#80766a]">自定义：</span>
                     <input
                       type="color"
+                      aria-label="自定义毛线帽颜色"
                       value={beanieColor}
                       onChange={(e) => setBeanieColor(e.target.value)}
                       className="w-5 h-5 rounded cursor-pointer border-0 bg-transparent"
@@ -464,6 +362,8 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                       <button
                         key={bp.value}
                         type="button"
+                        aria-label={bp.label}
+                        aria-pressed={isSelected}
                         onClick={() => setBeanieColor(bp.value)}
                         className={`p-1.5 rounded-lg border text-center transition-all flex flex-col items-center gap-1 ${
                           isSelected
@@ -486,10 +386,7 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium text-[#b5aa9d]">
-                    帽檐下露出的发型款式 (参考图发型)：
-                  </span>
-                  <span className="text-[10px] text-[#80766a]">
-                    毛线帽设定保持不变 · 支持正面与背影视角
+                    发型：
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -499,26 +396,31 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                       <button
                         key={style.id}
                         type="button"
-                        onClick={() => setHairStyle(style.id)}
+                        aria-pressed={isSelected}
+                        onClick={() => {
+                          if (style.id === 'medium_straight' && hairStyle !== style.id) setHairColor(SHAGGY_HAIR_PALETTE.top);
+                          setHairStyle(style.id);
+                        }}
                         className={`p-3 rounded-xl border text-left transition-all flex items-start gap-3 ${
                           isSelected
                             ? 'bg-[#3b322a] border-[#c4794e] text-[#f5eee4] ring-1 ring-[#c4794e]/40 shadow-sm'
                             : 'bg-[#25211e] border-[#38312b] text-[#9c9186] hover:border-[#4d4237] hover:text-[#ded5c7]'
                         }`}
                       >
-                        <div className="w-10 h-10 rounded-lg bg-[#1a1715] flex items-center justify-center shrink-0 border border-[#332b24]">
+                        <div style={{ backgroundColor: CHARACTER_PREVIEW_PALETTE.background }}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-[#8c8276]">
                           <svg viewBox="-12 -25 24 30" className="w-9 h-9">
                             <CharacterHead
                               cx={0}
                               cy={-14}
                               r={7}
                               skinColor={skinColor}
-                              hairColor={hairColor}
+                              hairColor={style.id === 'medium_straight' && !isSelected ? SHAGGY_HAIR_PALETTE.top : hairColor}
                               hairStyle={style.id}
                               beanieColor={beanieColor}
                               hasPompom={hasPompom}
                               showBeanie={true}
-                              facing={previewFacing === 'NW' ? 'NW' : 'SE'}
+                              facing="SE"
                             />
                           </svg>
                         </div>
@@ -551,6 +453,7 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                     <span className="text-[10px] text-[#80766a]">自定义：</span>
                     <input
                       type="color"
+                      aria-label="自定义小人肤色"
                       value={skinColor}
                       onChange={(e) => setSkinColor(e.target.value)}
                       className="w-5 h-5 rounded cursor-pointer border-0 bg-transparent"
@@ -564,6 +467,8 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                       <button
                         key={sp.value}
                         type="button"
+                        aria-label={sp.label}
+                        aria-pressed={isSelected}
                         onClick={() => setSkinColor(sp.value)}
                         className={`p-2 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
                           isSelected
@@ -585,7 +490,7 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
               {/* 4. 发色与衣服 (Hair Color & Shirt) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <div className="text-xs font-medium text-[#b5aa9d] mb-2">刘海发丝色泽：</div>
+                  <div className="text-xs font-medium text-[#b5aa9d] mb-2">发丝色泽：</div>
                   <div className="flex gap-2">
                     {HAIR_PRESETS.map((hp) => {
                       const isSelected = hairColor.toLowerCase() === hp.value.toLowerCase();
@@ -593,6 +498,9 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                         <button
                           key={hp.value}
                           type="button"
+                          aria-label={hp.label}
+                          aria-pressed={isSelected}
+                          title={hp.label}
                           onClick={() => setHairColor(hp.value)}
                           className={`flex-1 p-1.5 rounded-lg border text-center flex flex-col items-center gap-1 ${
                             isSelected
@@ -620,6 +528,8 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                         <button
                           key={shp.value}
                           type="button"
+                          aria-label={shp.label}
+                          aria-pressed={isSelected}
                           onClick={() => setShirtColor(shp.value)}
                           className={`flex-1 p-1.5 rounded-lg border text-center flex flex-col items-center gap-1 ${
                             isSelected
@@ -643,11 +553,11 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3.5 border-t border-[#332e29] flex items-center justify-between bg-[#24201d]">
-          <span className="text-[11px] text-[#807567]">
-            {activeTab === 'status' ? '朋友能在小世界里看到你的静默状态' : '实时保存在小世界和同住人视角中'}
+        <div className="px-4 sm:px-6 py-3 border-t border-[#332e29] flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#24201d] shrink-0">
+          <span className="text-[11px] text-[#b5aa9d]">
+            {activeTab === 'status' ? '朋友能在小世界里看到你的静默状态' : '保存后，小世界里的你会同步更新'}
           </span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-end gap-2">
             <button
               onClick={onClose}
               className="px-3.5 py-2 rounded-xl text-xs text-[#a39789] hover:text-[#e8e2d8] hover:bg-[#332c26] transition-colors"
@@ -665,12 +575,6 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
           </div>
         </div>
       </div>
-
-      {/* 4 视图 SVG 导出弹窗 */}
-      {showSvgExportModal && (<Suspense fallback={null}><SvgExportModal
-        isOpen={showSvgExportModal}
-        onClose={() => setShowSvgExportModal(false)}
-      /></Suspense>)}
     </div>
   );
 };

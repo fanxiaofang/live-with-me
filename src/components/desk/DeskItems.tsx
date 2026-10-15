@@ -4,9 +4,9 @@ import React from 'react';
  * 2.5D 轴测便携轻薄笔记本电脑
  * 包含键盘基座、俯仰微仰显示屏、青空荧光屏面、代码流光与屏幕柔光
  */
-export const LaptopDisplay: React.FC = () => {
+export const LaptopDisplay: React.FC<{ instance?: string }> = ({ instance = '' }) => {
   return (
-    <g id="component-isometric-laptop" className="select-none">
+    <g id={`component-isometric-laptop${instance}`} className="select-none">
       {/* 1. 底部漫反射微阴影 (严格遵循 ±0.2852 桌面轴测四边形) */}
       <polygon points="-15,-2.2 0,-6.5 15,-2.2 0,2.1" fill="#24160d" opacity="0.22" filter="url(#softShadow)" />
 
@@ -108,9 +108,9 @@ export const BankerLampDisplay: React.FC = () => {
  * 2.5D 手作白瓷温热咖啡杯 / 水杯
  * 包含白瓷杯身、咖啡液面、圆润把手与冉冉升起的治愈蒸汽
  */
-export const CoffeeMugDisplay: React.FC = () => {
+export const CoffeeMugDisplay: React.FC<{ instance?: string }> = ({ instance = '' }) => {
   return (
-    <g id="component-coffee-mug" className="select-none">
+    <g id={`component-coffee-mug${instance}`} className="select-none">
       {/* 杯底微阴影 */}
       <ellipse cx="0" cy="1" rx="3.3" ry="1.5" fill="#24160d" opacity="0.25" />
 

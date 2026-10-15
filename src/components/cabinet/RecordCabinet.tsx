@@ -8,6 +8,7 @@ import { CeramicCupsDisplay, CoffeeBeansDisplay } from './CoffeeCorner';
 import { HoneyJar } from './HoneyJar';
 import { MokaPot } from './MokaPot';
 import { RetroTurntable } from './RetroTurntable';
+import type { CabinetPartId } from './cabinetDetails';
 
 export interface RecordCabinetProps {
   onHoverObject?: (target: InteractionTarget | null) => void;
@@ -18,6 +19,7 @@ export interface RecordCabinetProps {
   onSelectGizmo?: (id: EditableObjectId | null) => void;
   onDragGizmoDelta?: (dx: number, dy: number) => void;
   onDragGizmoEnd?: () => void;
+  onInspect?: (id: CabinetPartId) => void;
 }
 
 /**
@@ -33,6 +35,7 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
   onSelectGizmo,
   onDragGizmoDelta,
   onDragGizmoEnd,
+  onInspect,
 }: RecordCabinetProps) => {
   // 坐标优先取 layout 动态状态，缺省兜底
   const beansPos = layout['coffee-beans'].screen;
@@ -52,7 +55,8 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
     ['record-player', 'moka-pot', 'honey-jar', 'coffee-beans', 'ceramic-cups'].includes(activeGizmoId));
 
   return (
-    <g id="record-cabinet-container" className="select-none">
+    <g id="record-cabinet-container" data-preview-item="cabinet-group" className="select-none"
+      onClick={event => { event.stopPropagation(); if (!isInspectorOpen) onInspect?.('cabinet-group'); }}>
       {/* 1. 复古胡桃木/老柚木边柜主体骨架 */}
       <CabinetFrame
         onHover={(hovered) => {
@@ -68,11 +72,13 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
         {/* 2.1 左侧格：手冲咖啡熟豆包与玻璃储豆罐 */}
         <g {...svgAction('cabinet-coffee-beans')}
           id="cabinet-coffee-beans"
+          data-preview-item="coffee-beans"
           transform={`translate(${beansPos.x}, ${beansPos.y}) scale(${beansScale})`}
           className="cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            onSelectGizmo?.(activeGizmoId === 'coffee-beans' ? null : 'coffee-beans');
+            if (isInspectorOpen) onSelectGizmo?.(activeGizmoId === 'coffee-beans' ? null : 'coffee-beans');
+            else onInspect?.('coffee-beans');
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
@@ -89,11 +95,13 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
         {/* 2.2 右侧格：几只手作小陶土咖啡杯 */}
         <g {...svgAction('cabinet-ceramic-cups')}
           id="cabinet-ceramic-cups"
+          data-preview-item="ceramic-cups"
           transform={`translate(${cupsPos.x}, ${cupsPos.y}) scale(${cupsScale})`}
           className="cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            onSelectGizmo?.(activeGizmoId === 'ceramic-cups' ? null : 'ceramic-cups');
+            if (isInspectorOpen) onSelectGizmo?.(activeGizmoId === 'ceramic-cups' ? null : 'ceramic-cups');
+            else onInspect?.('ceramic-cups');
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
@@ -113,11 +121,13 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
         {/* 3.1 顶面右后方：经典意式摩卡咖啡壶 */}
         <g {...svgAction('cabinet-moka-pot')}
           id="cabinet-moka-pot"
+          data-preview-item="moka-pot"
           transform={`translate(${mokaPos.x}, ${mokaPos.y}) scale(${mokaScale})`}
           className="cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            onSelectGizmo?.(activeGizmoId === 'moka-pot' ? null : 'moka-pot');
+            if (isInspectorOpen) onSelectGizmo?.(activeGizmoId === 'moka-pot' ? null : 'moka-pot');
+            else onInspect?.('moka-pot');
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
@@ -134,11 +144,13 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
         {/* 3.2 顶面中间偏右：金黄野花蜂蜜罐 */}
         <g {...svgAction('cabinet-honey-jar')}
           id="cabinet-honey-jar"
+          data-preview-item="honey-jar"
           transform={`translate(${honeyPos.x}, ${honeyPos.y}) scale(${honeyScale})`}
           className="cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            onSelectGizmo?.(activeGizmoId === 'honey-jar' ? null : 'honey-jar');
+            if (isInspectorOpen) onSelectGizmo?.(activeGizmoId === 'honey-jar' ? null : 'honey-jar');
+            else onInspect?.('honey-jar');
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();
@@ -155,11 +167,13 @@ export const RecordCabinet: React.FC<RecordCabinetProps> = ({
         {/* 3.3 顶面左侧：复古极简黑胶唱片机 */}
         <g {...svgAction('cabinet-record-player')}
           id="cabinet-record-player"
+          data-preview-item="record-player"
           transform={`translate(${turntablePos.x}, ${turntablePos.y}) scale(${turntableScale})`}
           className="cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            onSelectGizmo?.(activeGizmoId === 'record-player' ? null : 'record-player');
+            if (isInspectorOpen) onSelectGizmo?.(activeGizmoId === 'record-player' ? null : 'record-player');
+            else onInspect?.('record-player');
           }}
           onMouseEnter={(e) => {
             e.stopPropagation();

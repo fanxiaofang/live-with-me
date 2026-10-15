@@ -6,12 +6,19 @@ import { svgAction } from '../../world/interactions/svgAction';
 import { RoomHitArea } from '../../world/render/RoomSelection';
 import { CastIronWoodStove, StoveColorVariant } from '../CastIronWoodStove';
 import { CharacterHead } from '../CharacterAvatar';
+import { characterScaleAtSeat } from '../characters/characterProportions';
+import { SeatedSideBody } from '../characters/SeatedSideBody';
+import { RoundCharacterHand } from '../characters/RoundCharacterHand';
+import { TeaCushion, TEA_CUSHION, teaCharacterAtCushion } from '../tea/TeaCushion';
 import { NyankoSenseiCat } from '../NyankoSenseiCat';
 import { ShibaInuPuppy } from '../ShibaInuPuppy';
 import { LeftWallCraftBoard } from '../LeftWallCraftBoard';
 import { BookItemConfig, Bookshelf, BookshelfPreset, TierConfig } from '../bookshelf';
 import { RecordCabinet } from '../cabinet';
-import { AtticDesk, WindsorChair } from '../desk';
+import type { CabinetPartId } from '../cabinet/cabinetDetails';
+import { AtticDesk } from '../desk';
+import { DeskWorkstations } from '../desk/DeskWorkstations';
+import type { DeskSeatId } from '../desk/chairGeometry';
 import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
 import { FiddleLeafFig, MonsteraPlant } from '../plants';
 import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
@@ -36,7 +43,8 @@ export interface MainCottageHavenProps {
   onDragGizmoEnd?: () => void;
   presenceSlots: PresenceAllocation['slots'];
   isChairEmptyOverride: boolean;
-  onOpenChairInspector?: () => void;
+  onOpenChairInspector?: (seat?: DeskSeatId) => void;
+  onOpenCabinetInspector?: (part?: CabinetPartId) => void;
   onToggleChairSeated?: (seated?: boolean) => void;
   stoveColor: StoveColorVariant;
   setStoveColor: React.Dispatch<React.SetStateAction<StoveColorVariant>>;
@@ -54,7 +62,7 @@ export interface MainCottageHavenProps {
   unreadMailCount: number;
   onTriggerToast?: (msg: string) => void;
 }
-function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount, onTriggerToast }: MainCottageHavenProps) {
+function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onOpenCabinetInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount, onTriggerToast }: MainCottageHavenProps) {
   return <>
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation theme={theme} />
@@ -357,49 +365,13 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               </g>
 
               {/* 1.4 2.5D ERGONOMIC WORK CHAIR & CHARACTER: Self (阁楼手作白橡木温莎椅与工作人物：支持椅子与人物随动校准，修正朝向) */}
-              <g
-                id="isometric-chair-container"
-                transform={`translate(${currentLayout['attic-chair'].screen.x}, ${currentLayout['attic-chair'].screen.y})`}
-                className={isInspectorOpen ? 'cursor-pointer' : ''}
-              >
-                {(() => {
-                  const deskOccupant = presenceSlots.desk_workstation?.occupant;
-                  const isActuallySeated = !isChairEmptyOverride && Boolean(deskOccupant);
-
-                  return (
-                    <WindsorChair
-                      isSeated={isActuallySeated}
-                      occupant={deskOccupant}
-                      isInspectorOpen={isInspectorOpen}
-                      isSelected={effectiveGizmoId === 'attic-chair'}
-                      onClick={(e) => {
-                        if (isInspectorOpen) {
-                          e.stopPropagation();
-                          onSelectGizmo?.(effectiveGizmoId === 'attic-chair' ? null : 'attic-chair');
-                        } else {
-                          e.stopPropagation();
-                          onOpenChairInspector?.();
-                        }
-                      }}
-                      onHover={(label) => setHoveredObject(label)}
-                      onToggleSeated={() => onToggleChairSeated?.(!isActuallySeated)}
-                      onOpenInspectorModal={onOpenChairInspector}
-                    />
-                  );
-                })()}
-
-                {/* 2.5D 轴测校准把手 (仅在校准器开启且选中温莎椅时渲染) */}
-                {effectiveGizmoId === 'attic-chair' && (
-                  <IsoGizmo
-                    pos={{ x: 0, y: 19.5 }}
-                    displayCoords={currentLayout['attic-chair'].screen}
-                    fixedW={0}
-                    label="手作白橡木温莎椅"
-                    onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)}
-                    onDragEnd={() => onDragGizmoEnd?.()}
-                  />
-                )}
-              </g>
+              <DeskWorkstations layout={currentLayout}
+                occupants={{ desk_workstation: presenceSlots.desk_workstation.occupant,
+                  desk_workstation_secondary: presenceSlots.desk_workstation_secondary.occupant }}
+                interactive hiddenPrimary={isChairEmptyOverride} isInspectorOpen={isInspectorOpen}
+                activeGizmoId={effectiveGizmoId} onSelectGizmo={onSelectGizmo}
+                onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd}
+                onOpenInspector={onOpenChairInspector} onHover={setHoveredObject} />
             </g>
 
             {/* --- ROOM 2: LIVING NOOK (CENTER) - 暖炉黑胶与茶室 (2.5D 重构) --- */}
@@ -731,17 +703,21 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               </g>
 
               {/* 2.2 2.5D 轻盈日式咖啡黑胶边柜 (告别笨重沉闷实木，纤细斜腿，收纳咖啡豆、手作杯子、摩卡壶与黑胶唱片机) */}
-              <g {...svgAction('校准咖啡黑胶柜')}
+              <g {...svgAction(isInspectorOpen ? '校准咖啡黑胶柜' : '查看咖啡黑胶柜')}
                 id="isometric-turntable-console"
                 transform={`translate(${currentLayout['cabinet-group'].screen.x}, ${currentLayout['cabinet-group'].screen.y})`}
                 onClick={(e) => {
                   if (isInspectorOpen) {
                     e.stopPropagation();
                     onSelectGizmo?.(effectiveGizmoId === 'cabinet-group' ? null : 'cabinet-group');
+                  } else if (!hasMovedRef.current) {
+                    e.stopPropagation();
+                    onOpenCabinetInspector?.('cabinet-group');
                   }
                 }}
               >
                 <RecordCabinet
+                  onInspect={part => { if (!hasMovedRef.current) onOpenCabinetInspector?.(part); }}
                   onHoverObject={(label) => setHoveredObject(label)}
                   layout={currentLayout}
                   isInspectorOpen={isInspectorOpen}
@@ -1027,28 +1003,17 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                     onMouseLeave={() => setHoveredObject(null)}
                     className="cursor-pointer group/char"
                   >
-                    {/* Ground Cushion Shadow (草编蒲团接触阴影) */}
-                    <ellipse cx="0" cy="8" rx="14" ry="5" fill="#24180f" opacity="0.3" filter="url(#softShadow)" />
-
-                    {/* 2.5D Thick Zabuton Cushion (草编厚蒲团坐垫：透视贴合地面) */}
+                    {/* One shared plane for the robe, cushion top and floor shadow. */}
                     <g id={`zabuton-${slotKey}`}>
-                      <path d="M-12,3.5 C-12,7 12,7 12,3.5 L12,6.5 C12,10 -12,10 -12,6.5 Z" fill="#99876a" />
-                      <ellipse
-                        cx="0"
-                        cy="3.5"
-                        rx="12"
-                        ry="4.5"
-                        fill="#c7b99d"
-                        stroke={isGizmoActive ? '#fbbf24' : '#ded4bd'}
-                        strokeWidth={isGizmoActive ? 1.4 : 0.8}
-                      />
+                      <TeaCushion highlighted={isGizmoActive} />
                     </g>
 
                     {/* Character Nestled on Cushion based on Slot View Mapping */}
                     {person && (
                       <g transform={slotCfg.mirrored ? 'scale(-1, 1)' : undefined}>
+                        <g data-scene-character="tea-seated" transform={teaCharacterAtCushion(slotCfg.viewAngle !== 'back')}>
                         {/* 1. SEATED LOWER BODY / ROBE BASE */}
-                        <ellipse cx="0" cy="3" rx="10" ry="3.5" fill={person.shirtColor} filter="url(#softShadow)" />
+                        {slotCfg.viewAngle === 'back' && <ellipse data-robe-hem="true" cx="0" cy="3" rx="10" ry={TEA_CUSHION.backRobeRy} fill={person.shirtColor} />}
 
                         {/* 2. TORSO & SHOULDERS ACCORDING TO VIEW ANGLE */}
                         {slotCfg.viewAngle === 'back' ? (
@@ -1066,14 +1031,8 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                         ) : (
                           /* 东西席侧身对坐视效：圆润落肩，双手端茶/捧杯轻品 */
                           <g id="tea-person-side-torso">
-                            <path
-                              d="M-6,1 C-7,-5 -5,-10 0,-10 C5,-10 7,-5 6,1 Z"
-                              fill={person.shirtColor}
-                            />
-                            {/* Cupped Hands holding a cup */}
-                            <ellipse cx="-2" cy="0.5" rx="2.5" ry="1.5" fill={person.skinColor || '#f5d6be'} />
-                            <ellipse cx="-2" cy="-0.5" rx="1.8" ry="1.0" fill="#fcfbf7" />
-                            <path d="M-4,1.5 Q0,3 4,1.5" stroke="#000000" strokeWidth="0.5" opacity="0.15" fill="none" />
+                            <SeatedSideBody shirtColor={person.shirtColor}
+                              skinColor={person.skinColor || '#f5d6be'} holdingCup />
                           </g>
                         )}
 
@@ -1088,11 +1047,13 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                           beanieColor={person.beanieColor || '#38493d'}
                           hasPompom={person.hasPompom ?? true}
                           facing={slotCfg.facing}
+                          hairFacing={slotCfg.mirrored ? 'NE' : slotCfg.facing}
                         />
 
+                        </g>
                         {/* Character Status Tag (仅悬停时柔和显现，纠正镜像翻转) */}
                         <g
-                          transform={slotCfg.mirrored ? 'scale(-1, 1) translate(0, -28)' : 'translate(0, -28)'}
+                          transform={slotCfg.mirrored ? 'scale(-1, 1) translate(0, -34)' : 'translate(0, -34)'}
                           className="opacity-0 group-hover/char:opacity-100 transition-opacity duration-200 pointer-events-none"
                         >
                           <rect x="-44" y="-8" width="88" height="17" rx="8.5" fill="#1c1917" opacity="0.94" stroke="#c47a4f" strokeWidth="0.6" />
@@ -1400,6 +1361,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   >
                     {/* Character Body Nestled Deep into Beanbag */}
                     <g className={sofaSquish ? 'transition-transform duration-300 scale-95 origin-bottom' : 'transition-transform duration-300 scale-100 origin-bottom'}>
+                      <g data-scene-character="sofa-seated" transform={characterScaleAtSeat(4)}>
                       {/* Continuous Long Cozy Robe (严格采用小鱼黄金比例标准模板：肩线与小鱼完全一致，长袍自然垂坠盖住腿脚) */}
                       {/* Robe Seated Base Settled in Beanbag Cushion */}
                       <ellipse cx="0" cy="4" rx="9" ry="4" fill={sofaOccupant.shirtColor} filter="url(#softShadow)" />
@@ -1415,6 +1377,8 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                       {/* Relaxed Robe Sleeves Resting on Lap */}
                       <path d="M-5,-5 Q-8,-1 -2,1" stroke={sofaOccupant.shirtColor} strokeWidth="2.8" strokeLinecap="round" fill="none" />
                       <path d="M5,-5 Q8,-1 2,1" stroke={sofaOccupant.shirtColor} strokeWidth="2.8" strokeLinecap="round" fill="none" />
+                      <RoundCharacterHand cx={-2} cy={1.2} rx={1.8} ry={1.5} skinColor={sofaOccupant.skinColor || '#f5d6be'} />
+                      <RoundCharacterHand cx={2} cy={1.2} rx={1.8} ry={1.5} skinColor={sofaOccupant.skinColor || '#f5d6be'} />
 
                       {/* Open Hardcover Book Nestled on Robe Lap (腿上张开的精装书) */}
                       <g transform="translate(0, 1)">
@@ -1439,9 +1403,10 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                       />
                     </g>
 
+                    </g>
                     {/* Character Status Tag (仅悬停时柔和显现) */}
                     <g
-                      transform="translate(0, -28)"
+                      transform="translate(0, -34)"
                       className="opacity-0 group-hover/char:opacity-100 transition-opacity duration-200 pointer-events-none"
                     >
                       <rect x="-44" y="-7.5" width="88" height="15" rx="7.5" fill="#1c1917" opacity="0.94" stroke="#c47a4f" strokeWidth="0.6" />

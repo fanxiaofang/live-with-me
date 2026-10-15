@@ -38,3 +38,30 @@ test('storage failure is reported to the owner while resolved memory data remain
   try { assert.equal(saveRoomLayout(layout),false); assert.equal(layout['cabinet-group'].screen.x,-80); }
   finally { delete globalThis.localStorage; }
 });
+
+test('two-seat defaults upgrade only untouched legacy desk items and preserve custom v6 positions', () => {
+  const legacy = resolveRoomLayout({
+    'desk-group': { screen: { x: -130, y: 88 } },
+    'attic-chair': { screen: { x: -132, y: 101 } },
+    'desk-laptop': { screen: { x: 15, y: -1 } },
+  });
+  assert.deepEqual(legacy['desk-group'].screen, { x: -130, y: 88 });
+  assert.deepEqual(legacy['desk-laptop'].screen, DEFAULT_ROOM_LAYOUT['desk-laptop'].screen);
+  assert.deepEqual(legacy['attic-chair'].screen, DEFAULT_ROOM_LAYOUT['attic-chair'].screen);
+  const custom = resolveRoomLayout({
+    'desk-group': { screen: { x: -130, y: 88 } },
+    'attic-chair': { screen: { x: -111, y: 96 } },
+    'desk-laptop': { screen: { x: 18, y: -4 } },
+  });
+  assert.deepEqual(custom['attic-chair'].screen, { x: -111, y: 96 });
+  assert.deepEqual(custom['desk-laptop'].screen, { x: 18, y: -4 });
+  assert.equal(custom['desk-laptop-secondary'].screen.x, -14);
+  assert.equal(custom['attic-chair-secondary'].screen.x, -144);
+  assert.equal(FURNITURE_PARENTS['desk-laptop-secondary'].parent, 'desk-group');
+  assert.equal(FURNITURE_PARENTS['attic-chair-secondary'].parent, 'main_cottage');
+  const editedCurrent = structuredClone(DEFAULT_ROOM_LAYOUT);
+  editedCurrent['desk-laptop'].screen = { x: 15, y: -1 };
+  editedCurrent['attic-chair'].screen = { x: -132, y: 101 };
+  assert.deepEqual(resolveRoomLayout(editedCurrent)['desk-laptop'].screen, { x: 15, y: -1 });
+  assert.deepEqual(resolveRoomLayout(editedCurrent)['attic-chair'].screen, { x: -132, y: 101 });
+});

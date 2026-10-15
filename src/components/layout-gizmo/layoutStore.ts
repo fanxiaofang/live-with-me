@@ -13,9 +13,12 @@ export type EditableObjectId =
   // 2. 阁楼手工书桌、左墙挂物及台面摆件 (Attic Desk & Wall Group)
   | 'desk-group'
   | 'attic-chair'
+  | 'attic-chair-secondary'
   | 'desk-laptop'
+  | 'desk-laptop-secondary'
   | 'desk-lamp'
   | 'desk-cup'
+  | 'desk-cup-secondary'
   | 'desk-monstera'
   | 'left-wall-poster'
   | 'craft-tool-wall'
@@ -129,32 +132,47 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
     name: '阁楼手作白橡木温莎椅 (含工作者)',
     category: 'attic',
     categoryLabel: '阁楼书屋',
-    screen: { x: -132.0, y: 101.0 },
+    screen: { x: -148.0, y: 105.6 },
     fixedW: 0.0,
+  },
+  'attic-chair-secondary': {
+    id: 'attic-chair-secondary', name: '复古固定脚办公椅 (第二工位)',
+    category: 'attic', categoryLabel: '阁楼书屋',
+    screen: { x: -116, y: 96.4736 }, fixedW: 0,
   },
   'desk-laptop': {
     id: 'desk-laptop',
     name: '便携轻薄办公电脑',
     category: 'attic',
     categoryLabel: '阁楼书屋',
-    screen: { x: 15.0, y: -1.0 },
-    fixedW: 22.0,
+    screen: { x: -1, y: 3.6 },
+    fixedW: 22.6,
+  },
+  'desk-laptop-secondary': {
+    id: 'desk-laptop-secondary', name: '第二工位便携电脑',
+    category: 'attic', categoryLabel: '阁楼书屋',
+    screen: { x: 31, y: -5.5264 }, fixedW: 22.6,
   },
   'desk-lamp': {
     id: 'desk-lamp',
     name: '复古墨绿银行家台灯',
     category: 'attic',
     categoryLabel: '阁楼书屋',
-    screen: { x: -25.0, y: 6.0 },
-    fixedW: 22.0,
+    screen: { x: 8, y: -8 },
+    fixedW: 22.6,
   },
   'desk-cup': {
     id: 'desk-cup',
     name: '手作白瓷温热咖啡杯',
     category: 'attic',
     categoryLabel: '阁楼书屋',
-    screen: { x: 41.0, y: -7.0 },
-    fixedW: 22.0,
+    screen: { x: -35, y: 5.8 },
+    fixedW: 22.6,
+  },
+  'desk-cup-secondary': {
+    id: 'desk-cup-secondary', name: '第二工位白瓷杯',
+    category: 'attic', categoryLabel: '阁楼书屋',
+    screen: { x: 17, y: 1 }, fixedW: 22.6,
   },
   'desk-monstera': {
     id: 'desk-monstera',
@@ -379,14 +397,32 @@ export const STORAGE_KEY = 'live_with_me_room_layout_v6';
 /** v6 remains an object keyed by ID; saved metadata never overrides code. */
 export function resolveRoomLayout(input: unknown): RoomLayoutConfig {
   const overrides = input && typeof input === 'object' ? input as Record<string, unknown> : {};
-  return Object.fromEntries(Object.entries(DEFAULT_ROOM_LAYOUT).map(([id, defaults]) => {
+  // Move only the exact old defaults into the new two-seat arrangement; keep custom edits.
+  const legacyDefaults: Partial<Record<EditableObjectId, ScreenPoint2D>> = {
+    'attic-chair': { x: -132, y: 101 }, 'desk-laptop': { x: 15, y: -1 },
+    'desk-lamp': { x: -25, y: 6 }, 'desk-cup': { x: 41, y: -7 },
+  };
+  const legacyLayout = !('desk-laptop-secondary' in overrides) && !('attic-chair-secondary' in overrides);
+  const resolved = Object.fromEntries(Object.entries(DEFAULT_ROOM_LAYOUT).map(([id, defaults]) => {
     const item = overrides[id] as { screen?: { x?: unknown; y?: unknown }; scale?: unknown } | undefined;
     const validPoint = item?.screen && typeof item.screen.x === 'number' && Number.isFinite(item.screen.x)
       && typeof item.screen.y === 'number' && Number.isFinite(item.screen.y);
     const validScale = item?.scale === undefined || (typeof item.scale === 'number' && Number.isFinite(item.scale) && item.scale > 0);
-    return [id, { ...defaults, screen: validPoint && validScale ? { x: item.screen.x, y: item.screen.y } : { ...defaults.screen },
+    const legacy = legacyDefaults[id as EditableObjectId];
+    const unchangedLegacy = legacyLayout && legacy && item?.screen?.x === legacy.x && item?.screen?.y === legacy.y;
+    return [id, { ...defaults, screen: validPoint && validScale && !unchangedLegacy ? { x: item.screen.x, y: item.screen.y } : { ...defaults.screen },
       ...(validPoint && validScale && item.scale !== undefined ? { scale: item.scale } : {}) }];
   })) as RoomLayoutConfig;
+  if (!overrides['desk-laptop-secondary']) {
+    const first = resolved['desk-laptop'].screen;
+    const dx = first.x > 10 ? -32 : 32;
+    resolved['desk-laptop-secondary'].screen = { x: first.x + dx, y: Number((first.y - dx * 0.2852).toFixed(4)) };
+  }
+  if (!overrides['attic-chair-secondary']) {
+    const desk = resolved['desk-group'].screen, computer = resolved['desk-laptop-secondary'].screen;
+    resolved['attic-chair-secondary'].screen = { x: desk.x + computer.x, y: Number((desk.y + computer.y + 7).toFixed(4)) };
+  }
+  return resolved;
 }
 
 export function loadSavedRoomLayout(): RoomLayoutConfig {

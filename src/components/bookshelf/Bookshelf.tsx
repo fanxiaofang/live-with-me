@@ -501,26 +501,7 @@ export function getBooksSlotId(tierIndex: number): EditableObjectId | null {
   return null;
 }
 
-export const Bookshelf: React.FC<BookshelfProps> = ({
-  preset = 'cozy',
-  customTiers,
-  selectedBookId,
-  selectedItemId,
-  onBookClick,
-  onDecorationClick,
-  onShelfClick,
-  onHoverObject,
-  className = '',
-  isLinReadingHere = false,
-  layout = DEFAULT_ROOM_LAYOUT,
-  activeGizmoId,
-  isInspectorOpen = false,
-  onSelectGizmo,
-  onDragGizmoDelta,
-  onDragGizmoEnd,
-}) => {
-  // 当前解析的书架层级数据
-  const tiers = useMemo<TierConfig[]>(() => {
+export function resolveBookshelfTiers(preset: BookshelfPreset, customTiers?: TierConfig[], isLinReadingHere = false): TierConfig[] {
     if (customTiers && customTiers.length > 0) {
       if (isLinReadingHere) {
         return customTiers.map((tier) => {
@@ -558,7 +539,14 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
       default:
         return isLinReadingHere ? PRESET_READING_LIN_TIERS : PRESET_COZY_TIERS;
     }
-  }, [preset, customTiers, isLinReadingHere]);
+}
+
+export const Bookshelf: React.FC<BookshelfProps> = ({
+  preset = 'cozy', customTiers, selectedBookId, selectedItemId, onBookClick, onDecorationClick,
+  onShelfClick, onHoverObject, className = '', isLinReadingHere = false, layout = DEFAULT_ROOM_LAYOUT,
+  activeGizmoId, isInspectorOpen = false, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd,
+}) => {
+  const tiers = useMemo(() => resolveBookshelfTiers(preset, customTiers, isLinReadingHere), [preset, customTiers, isLinReadingHere]);
 
   const isShelfChild = Boolean(
     isInspectorOpen && activeGizmoId && SHELF_SLOT_IDS.includes(activeGizmoId)
@@ -615,6 +603,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
             return (
               <g
                 key={book.id}
+                data-preview-item={book.id}
                 transform={`translate(${pos.x}, ${pos.y + vOffset})`}
                 onMouseEnter={(e) => {
                   if (!isInspectorOpen) {
@@ -666,6 +655,7 @@ export const Bookshelf: React.FC<BookshelfProps> = ({
           return (
             <g {...svgAction('场景互动')}
               key={dec.id}
+              data-preview-item={dec.id}
               transform={`translate(${pos.x}, ${pos.y + vOffset})`}
               className={isInspectorOpen && slotId ? 'cursor-pointer' : ''}
               onClick={(e) => {

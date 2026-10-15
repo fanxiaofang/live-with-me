@@ -98,7 +98,9 @@ test('every rendered furniture handle can drag and then keyboard-nudge without c
   for (const [id, item] of Object.entries(DEFAULT_ROOM_LAYOUT)) {
     await panel.getByText(item.name, { exact: true }).click();
     if (!(await page.locator('#iso-interactive-gizmo').count())) {
-      expect(id).toBe('left-wall-poster');
+      // These v6 IDs remain for saved-layout compatibility; the current wall
+      // assets no longer render either the old poster or the photo montage.
+      expect(['left-wall-poster', 'left-wall-photos']).toContain(id);
       continue;
     }
     for (const [axis, x, y] of [['free', 0, 0], ['u', 14, -3.9928], ['v', 11.2, 3.192], ['w', 0, -14]] as const) {
