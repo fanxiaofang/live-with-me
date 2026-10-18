@@ -1,0 +1,11 @@
+Use case: precise-object-edit, identity-preserve.
+The ONLY input is the EDIT TARGET, original candidate v1. Use this original image as the base; do not redesign or reinterpret any of it.
+Make a very small positional edit: move the ENTIRE original head assembly (hat, pompom, hair, blank face, all together) approximately 12 pixels to IMAGE RIGHT, toward the shoulder/back, preserving its ORIGINAL shape, size, tilt, yaw, colors, and vertical height. This reduces slight forward head posture. Repair only the tiny neck/collar connection area exposed by this translation.
+CRITICAL FACE LOCK: preserve the exact original very soft rounded cheek-to-chin silhouette, the original jaw curvature and its original subtle edge. Do NOT flatten the jaw, narrow or lengthen the face, add a line along the cheek/chin, add orange outline strokes, or change the face area/shape. It must look like the very same original head merely shifted sideways, not a redrawn face.
+CRITICAL HEM/SHADOW LOCK: keep the ORIGINAL robe hem and ORIGINAL soft, low-opacity ground contact shadow from the input. It is a thin softly fading shadow resting on the ground, not a thick solid brown band, not a pedestal, not a dark extrusion or added sole under the robe. Do not thicken, darken, harden or widen this shadow. Preserve original hem contour, height, robe colors and folds.
+Preserve the rest of the input as faithfully as possible, especially ALL the body below the neckline, shoulders, sleeves, relaxed round hands, lower garment, background alpha, canvas/framing, and robe and shadow position. Same NW back-left neutral standing direction. No new styling, accessories or facial features. Output one full-body character on genuine transparent background at the original aspect ratio, with the original clear margins. Do not add captions or panels.
+
+Mode: built-in image_gen, transparent_background=true. Result NOT adopted.
+Original output: C:/Users/15176/.codex/generated_images/01a13fe7-08bb-7da2-a8d4-38803766444e/exec-14131ff3-611e-4645-a9d9-4b8e317de4aa.png
+Archive: rejected-generated-attempt.png
+The result retained a heavy shadow and moved the head too far. Final v3 review uses the original v1 image in HTML/CSS layers, not this generated result.

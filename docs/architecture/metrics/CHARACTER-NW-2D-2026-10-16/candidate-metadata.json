@@ -1,0 +1,41 @@
+{
+  "file": "public/character-shorthair-standing-nw-2d-candidate-v1.png",
+  "bytes": 523631,
+  "sha256": "fdb50cecd7bb24841093198bd7224ddce1849448b560244abf9976b0ebe0f799",
+  "pixels": {
+    "width": 1060,
+    "height": 1484,
+    "minX": 330,
+    "minY": 110,
+    "maxX": 777,
+    "maxY": 1364,
+    "opaquePixels": 389738,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "referenceBack": {
+    "width": 600,
+    "height": 840,
+    "minX": 156,
+    "minY": 32,
+    "maxX": 443,
+    "maxY": 779,
+    "opaquePixels": 155151,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "displayCalibration": {
+    "method": "align high-alpha silhouette top/bottom to original back view; approximate visual comparison only",
+    "targetTop": -47.86666666666667,
+    "targetBottom": 2,
+    "scale": 0.039734395750332004
+  }
+}

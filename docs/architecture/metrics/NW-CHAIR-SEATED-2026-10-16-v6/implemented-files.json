@@ -1,0 +1,22 @@
+[
+  {
+    "sha256": "301bd342504bf6737aecfceb2979fc7a154a843a00056e63403277542bdef12f",
+    "path": "src/components/characters/NwChairSeatedCharacter.tsx"
+  },
+  {
+    "sha256": "93e9f0c4833f84a6610c40e720acb450e045a2cb7c86588c45809ecee9db7db5",
+    "path": "src/components/characters/nwChairSeatedGeometry.ts"
+  },
+  {
+    "sha256": "a9d5e024b7935076d6e294f436962b80902f988c5aca5f0b4b392b1f5faddb5a",
+    "path": "src/components/characters/nwChairSeatedV6Assets.ts"
+  },
+  {
+    "sha256": "d3468d2c92328841d0070cd556aed1b02506f6d6d2e291000801c573a59eea1b",
+    "path": "src/components/desk/ChairInspectionModal.tsx"
+  },
+  {
+    "sha256": "7e8d6061b0afd7da4a654ff4a6ca79f60186584a907fe6b2971351bac3a91543",
+    "path": "public/character-shorthair-seated-nw-study.svg"
+  }
+]

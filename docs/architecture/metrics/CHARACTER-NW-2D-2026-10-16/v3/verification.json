@@ -1,0 +1,81 @@
+{
+  "status": "v3-layered-preview-awaiting-visual-review",
+  "acceptedGeneratedImage": false,
+  "source": "public/character-shorthair-standing-nw-2d-candidate-v1.png",
+  "sourceSha256": "fdb50cecd7bb24841093198bd7224ddce1849448b560244abf9976b0ebe0f799",
+  "headTranslationSourcePixels": 12,
+  "seamSourcePoints": [
+    [
+      0,
+      540
+    ],
+    [
+      484,
+      540
+    ],
+    [
+      500,
+      541
+    ],
+    [
+      508,
+      542
+    ],
+    [
+      572,
+      542
+    ],
+    [
+      580,
+      541
+    ],
+    [
+      588,
+      540
+    ],
+    [
+      596,
+      539
+    ],
+    [
+      604,
+      537
+    ],
+    [
+      612,
+      534
+    ],
+    [
+      620,
+      531
+    ],
+    [
+      626,
+      527
+    ],
+    [
+      660,
+      515
+    ],
+    [
+      740,
+      497
+    ],
+    [
+      1060,
+      497
+    ]
+  ],
+  "headRotation": 0,
+  "headScale": 1,
+  "robeAndShadow": "same v1 source and position",
+  "protectedFilesUnchanged": 53,
+  "v1AndV2Unchanged": true,
+  "layers": {
+    "transform": "matrix(1, 0, 0, 1, 7.88526, 0)",
+    "clip": "polygon(0% 0%, 100% 0%, 100% 33.4906%, 69.8113% 33.4906%, 62.2642% 34.7035%, 59.0566% 35.5121%, 58.4906% 35.7817%, 57.7358% 35.9838%, 56.9811% 36.186%, 56.2264% 36.3208%, 55.4717% 36.3881%, 54.717% 36.4555%, 53.9623% 36.5229%, 47.9245% 36.5229%, 47.1698% 36.4555%, 45.6604% 36.3881%, 0% 36.3881%)",
+    "source": "/character-shorthair-standing-nw-2d-candidate-v1.png"
+  },
+  "environment": "Windows headless Chromium DPR1; desktop1100x1000 and390x844 display only; no performance measurements",
+  "errors": []
+}

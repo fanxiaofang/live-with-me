@@ -1,0 +1,62 @@
+[
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\WindsorChair.tsx",
+    "sha256": "021AB507C2ECF245E4C88DDF241B9A28AA2CE230FB9983D3586D08038C36F4A9"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\chairGeometry.ts",
+    "sha256": "B007E2BBF7678A36BA60546DEF0252719F5D490565FC2B977E6D990D4FA0DF62"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\layout-gizmo\\layoutStore.ts",
+    "sha256": "16788BA77C20C55022E34ED53BD249FFE5253AD51424ED8FAA1C45F75BAF8E71"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\DeskSeatedCharacter.tsx",
+    "sha256": "240AE1190730B4B422A2C085E1B5FD44E5E45AAD24795D7342AA45C72C90E8AD"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\WindsorSeatedHead.tsx",
+    "sha256": "A52BB5A25EEC3E44979CAA59095CBD1985B995A47253DAB1C05EC8C2C2F62C42"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\nwSeatedHeadAssets.ts",
+    "sha256": "A063A2066D3E851132AC481DF7F99F7291C989DB9C434194FAE35152E2652F91"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\characters\\CharacterAppearanceFiveViews.tsx",
+    "sha256": "EAE8E8FA9BA0FED2DBA0C3DC2C3C75FA463BC646B17EBD76B5944D857BDD64BF"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\characters\\FinalizedNwStandingCharacter.tsx",
+    "sha256": "97D8514DF361CC3BBC03FDCDC638375DE8D8D340D0A53F3C532CEC92AAB12796"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\characters\\finalizedNwStandingAssets.ts",
+    "sha256": "22F59220AB73720A4B044BBF8CC2AA70C512AC28D431085C70677A4E37486A55"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\SvgExportModal.tsx",
+    "sha256": "BF5FD8467E271CB2C46927355A7EBF53DDAEF006E45A3C71247E312D98FC74C1"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\StatusPickerModal.tsx",
+    "sha256": "A4D392E077F98458FA388CE2BF325B2F7358F2032C3075E667BD642768E0A351"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\public\\character-curly-standing-5views.svg",
+    "sha256": "11BCBDF3D27F079589A83635A62BAFBF0EECF2B09CA22C816E03D0458A05C90C"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\public\\character-shaggy-standing-5views.svg",
+    "sha256": "22F9535B4C6B4364C98C93A86D1299E4A5BFE9E0A3376EE7017E0EE6F291E032"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\public\\character-shorthair-standing-5views.svg",
+    "sha256": "86EDC5C55255473D9197E348393C3715A591DD889EC775E0047BDF4C654C0137"
+  },
+  {
+    "path": "D:\\CodeStudy\\myProject\\liveWithMe\\public\\character-sidepart-standing-5views.svg",
+    "sha256": "D92BA3989E85DE779261FEC755C7E0AA1D4E0C2A43225C175AB05B8BF58E0753"
+  }
+]

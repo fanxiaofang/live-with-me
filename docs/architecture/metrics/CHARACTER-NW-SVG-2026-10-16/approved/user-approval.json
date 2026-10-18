@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-16",
+  "quote": "可以定稿",
+  "status": "user-visually-approved",
+  "scope": "current curly v4, sidepart v4, shaggy v3 in NW-eight-view neutral-standing; short-hair retained reference",
+  "files": [
+    {
+      "id": "shorthair",
+      "file": "public/character-shorthair-standing-nw.svg",
+      "bytes": 30485,
+      "sha256": "0c5987fb79d78f384072707e57e1876456f27f9214ab48a94a5a812c52c0bfa5",
+      "snapshot": "docs/architecture/metrics/CHARACTER-NW-SVG-2026-10-16/approved/character-shorthair-standing-nw.svg",
+      "scope": "retained reference; existing v4 2D design approval",
+      "revision": "unchanged"
+    },
+    {
+      "id": "curly",
+      "file": "public/character-curly-standing-nw.svg",
+      "bytes": 31988,
+      "sha256": "6fca4ed02525ef64375c8c445827a6f3094e0a2a0b8819b65095725c7d8100b0",
+      "snapshot": "docs/architecture/metrics/CHARACTER-NW-SVG-2026-10-16/approved/character-curly-standing-nw.svg",
+      "scope": "NW neutral-standing hairstyle visually finalized",
+      "revision": 4
+    },
+    {
+      "id": "sidepart",
+      "file": "public/character-sidepart-standing-nw.svg",
+      "bytes": 31608,
+      "sha256": "645e8a742271bf8dc31fe1ad75ab522e66d2e6c5daeae066f558e4a7a0195f8f",
+      "snapshot": "docs/architecture/metrics/CHARACTER-NW-SVG-2026-10-16/approved/character-sidepart-standing-nw.svg",
+      "scope": "NW neutral-standing hairstyle visually finalized",
+      "revision": 4
+    },
+    {
+      "id": "shaggy",
+      "file": "public/character-shaggy-standing-nw.svg",
+      "bytes": 31375,
+      "sha256": "71d805f851cb14ee2f9038311a49455c91903f036148e77fa1c78c4f02deb408",
+      "snapshot": "docs/architecture/metrics/CHARACTER-NW-SVG-2026-10-16/approved/character-shaggy-standing-nw.svg",
+      "scope": "NW neutral-standing hairstyle visually finalized",
+      "revision": 3
+    }
+  ],
+  "protectedFilesUnchanged": 53,
+  "geometryChangedThisTurn": false,
+  "technicalEvidence": "../hair-touchup-v4/verification.json",
+  "newRenderingTests": false,
+  "runtimeIntegrated": false,
+  "seatedPoseApproved": false
+}

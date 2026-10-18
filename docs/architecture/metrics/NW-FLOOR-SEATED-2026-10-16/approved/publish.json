@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\nw-floor-seated-approved",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "serviceStopped": false,
+  "browserStorageModified": false,
+  "changes": [
+    {
+      "relative": "character-shorthair-seated-5views-study.svg",
+      "beforeSha256": "9d29d3e56919c01785c3e18533615100743d74e04a390040f1e9ddd2d898e9f9",
+      "afterSha256": "9142a406806860070933ff699cf8a1babbea62fd9f1d7db0f9cd969068206455",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\approved\\publish-before\\character-shorthair-seated-5views-study.svg"
+    },
+    {
+      "relative": "character-shorthair-seated-nw-floor-review.html",
+      "beforeSha256": "f722e517f12480c150a4a607177f16576fe746d189e4a3467336b1f072e1e2d2",
+      "afterSha256": "6aebf34e05cc13852769a3aecf317315e9e7f319e08349b0eb457b1268d79004",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\approved\\publish-before\\character-shorthair-seated-nw-floor-review.html"
+    },
+    {
+      "relative": "character-shorthair-seated-nw-floor-study.svg",
+      "beforeSha256": "34d55cdc5e9290bd4724b8717a6db0717753d29462d637212269f4c1038de714",
+      "afterSha256": "fe8341c17d4cd798ace68f36a6892c56c18c7e1cc04c1a1814777e45a5c9f78f",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\approved\\publish-before\\character-shorthair-seated-nw-floor-study.svg"
+    },
+    {
+      "relative": "assets\\BookshelfModal-CVzA1__Y.js",
+      "beforeSha256": null,
+      "afterSha256": "06e44afddd1cb3e9c994b38d54b1a872e9eec3af7a96c8f3dad17a76d82d00de",
+      "backup": null
+    },
+    {
+      "relative": "assets\\CabinetDetailModal-Cp1aewta.js",
+      "beforeSha256": null,
+      "afterSha256": "f8dc0dea59278470dbac0bea2df09f15799b0c7a5058d6bf2e9959a1c9c26957",
+      "backup": null
+    },
+    {
+      "relative": "assets\\ChairInspectionModal-Z0uByV2a.js",
+      "beforeSha256": null,
+      "afterSha256": "f2baf3a99a83655a4aea17510251656076a18de593bc433226223df57d275df7",
+      "backup": null
+    },
+    {
+      "relative": "assets\\FriendCardModal-Bs_n6wai.js",
+      "beforeSha256": null,
+      "afterSha256": "f90ef060d2f0db8d32238efb0e2bfba2920c58a7e5080b3a72dd8182feb7a312",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-MBlCrvpp.js",
+      "beforeSha256": null,
+      "afterSha256": "ec0da507d214ec50cdb72505ab9dd9eea1e57a5a8579549e686e7823fc364829",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MailboxModal-MLsnUDmq.js",
+      "beforeSha256": null,
+      "afterSha256": "1b8762050d5d6a3eef367a649eb48c60700af00eba13bedcf62075d317ced9c6",
+      "backup": null
+    },
+    {
+      "relative": "assets\\map-pin-HYy4L1cE.js",
+      "beforeSha256": null,
+      "afterSha256": "5be86a4d827fb29574efddd841e3724f10393e256ed53a867cdb026cfea2c00d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MemoryLogModal-Bs2CSH8l.js",
+      "beforeSha256": null,
+      "afterSha256": "989d98fa1c7feaaf27d92335080afa4772599357ed8cc0e970ff0ce86bffafdb",
+      "backup": null
+    },
+    {
+      "relative": "assets\\PosterDetailModal-CCGmW3iv.js",
+      "beforeSha256": null,
+      "afterSha256": "12042f7d68c218bc8b5f78fb6934d28c7112bef64ac0f4027c175730cf2d5ae2",
+      "backup": null
+    },
+    {
+      "relative": "assets\\send-DrI7w7hy.js",
+      "beforeSha256": null,
+      "afterSha256": "0ab1b284ab9ba94ad6e1618fe6f7ea8817739cf6c6aebc34a3347eb06b5b8b1a",
+      "backup": null
+    },
+    {
+      "relative": "assets\\StatusPickerModal-DQoJpXJf.js",
+      "beforeSha256": null,
+      "afterSha256": "6b503da5c812b35d159e9ee8ab842e5f522392c5aa37f6f454d6e9ebd95f8359",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgDetailView-Dxt77B75.js",
+      "beforeSha256": null,
+      "afterSha256": "9f54bb8ff17cbc59457569778502f233d3d4ec61cb35a03275a37e3346568d13",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgExportModal-CHE6ut_j.js",
+      "beforeSha256": null,
+      "afterSha256": "d35a6e9b8efa1a08cc78fdd98a2f40378d1ff4138dbef928a99b8ea0905a572c",
+      "backup": null
+    },
+    {
+      "relative": "assets\\useDialogFocus-S5hZYo9n.js",
+      "beforeSha256": null,
+      "afterSha256": "7611e7686a4b87094744693dce6f037d50227c9b00978709947d8ace152b9885",
+      "backup": null
+    },
+    {
+      "relative": "assets\\usePreviewSvgIds-DodCcrlX.js",
+      "beforeSha256": null,
+      "afterSha256": "16337fd8edeb732ec2b25bef5b921d19db15d8182c07f470e2799fa4e2183f99",
+      "backup": null
+    },
+    {
+      "relative": "index.html",
+      "beforeSha256": "1ca4a3d5753058d06c1a08b8d567e6edbec08733eff4a555e299e1174d5f5337",
+      "afterSha256": "a20df89a6e4d9c50f4f96c398ff09b3baf185aace94354c93ed447d355ae6ad6",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\approved\\publish-before\\index.html"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "Algorithm": "SHA256",
+    "Hash": "B7EADA14E3765194B3E72928A5E900792BCEFF4A60753A3848B6516C3B9C7AB4",
+    "Path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\WindsorSeatedCharacter.tsx"
+  },
+  {
+    "Algorithm": "SHA256",
+    "Hash": "735FE56582E546987E8E1DA1CF6B6FB99A837AD04E2CA83574630222378B64D5",
+    "Path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\windsorSeatedPose.ts"
+  },
+  {
+    "Algorithm": "SHA256",
+    "Hash": "95435DC85FD42DB2727165A542C2F268C4B23B1585A6D05BC62E8EF5312ACE09",
+    "Path": "D:\\CodeStudy\\myProject\\liveWithMe\\src\\components\\desk\\ChairInspectionModal.tsx"
+  }
+]

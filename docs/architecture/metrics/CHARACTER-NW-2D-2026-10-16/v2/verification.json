@@ -1,0 +1,87 @@
+{
+  "status": "candidate-v2-awaiting-user-review",
+  "generator": "built-in image_gen",
+  "candidates": [
+    {
+      "version": 1,
+      "file": "public/character-shorthair-standing-nw-2d-candidate-v1.png",
+      "sha256": "fdb50cecd7bb24841093198bd7224ddce1849448b560244abf9976b0ebe0f799",
+      "bytes": 523631,
+      "width": 1060,
+      "height": 1484,
+      "rows": [
+        {
+          "y": 1039,
+          "left": 421,
+          "right": 704
+        },
+        {
+          "y": 1113,
+          "left": 412,
+          "right": 717
+        },
+        {
+          "y": 1187,
+          "left": 397,
+          "right": 737
+        },
+        {
+          "y": 1261,
+          "left": 373,
+          "right": 765
+        }
+      ],
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "version": 2,
+      "file": "public/character-shorthair-standing-nw-2d-candidate-v2.png",
+      "sha256": "267b7b7ac5b2fd16488d3f2630de96ec60cb25311fcea734377001d4210bd520",
+      "bytes": 606635,
+      "width": 1060,
+      "height": 1484,
+      "rows": [
+        {
+          "y": 1039,
+          "left": 427,
+          "right": 718
+        },
+        {
+          "y": 1113,
+          "left": 418,
+          "right": 731
+        },
+        {
+          "y": 1187,
+          "left": 402,
+          "right": 751
+        },
+        {
+          "y": 1261,
+          "left": 377,
+          "right": 779
+        }
+      ],
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "registration": {
+    "method": "same scale and vertical placement as v1; horizontal mean center of robe at 70/75/80/85 percent image height",
+    "shiftX": -9.625,
+    "scale": 0.039734395750332004
+  },
+  "protectedFilesUnchanged": 53,
+  "v1Unchanged": true,
+  "environment": "Windows headless Chromium DPR1; 1100x1000 and 390x844 display checks only; no performance evidence",
+  "errors": []
+}

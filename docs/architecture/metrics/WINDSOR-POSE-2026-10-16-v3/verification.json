@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-16",
+  "protectedOriginalFilesUnchanged": 53,
+  "approvedNwFilesUnchanged": 4,
+  "defaultHeadPathsMatchFinalizedAssets": true,
+  "chairAndPlacementsUnchanged": [
+    {
+      "path": "src/components/desk/WindsorChair.tsx",
+      "sha256": "021ab507c2ecf245e4c88ddf241b9a28aa2ce230fb9983d3586d08038c36f4a9"
+    },
+    {
+      "path": "src/components/desk/chairGeometry.ts",
+      "sha256": "b007e2bbf7678a36ba60546def0252719f5d490565fc2b977e6d990d4fa0df62"
+    },
+    {
+      "path": "src/components/layout-gizmo/layoutStore.ts",
+      "sha256": "16788ba77c20c55022e34ed53bd249ffe5253ad51424ed8faa1c45f75baf8e71"
+    },
+    {
+      "path": "src/components/desk/DeskWorkstations.tsx",
+      "sha256": "466cc9562c8b46aa587cf770888e6cd64074d0d8790b4c0900ae23de0c9107d3"
+    }
+  ],
+  "technicalEnvironment": "Windows headless Chromium DPR1; production preview 4182; 1200x900 and390x900 desktop simulation. stableScene disables animation for shape/function checks. No performance or real-phone measurement.",
+  "build": [
+    {
+      "file": "ChairInspectionModal-BRw3z-tc.js",
+      "sha256": "c42873e239f547db11845e216a8a12dcbd6fee22c5ed8028ccf038b492047bb8"
+    },
+    {
+      "file": "index-BRlVpI5c.js",
+      "sha256": "61d9794fa6f00e386ea5f2d098e42a2213813bcbe20fcb1fbdece996ee78dbb7"
+    }
+  ],
+  "implementation": "single Windsor sitter, continuous robe, approved NW head; second seat unchanged",
+  "userVisualApproval": "pending"
+}

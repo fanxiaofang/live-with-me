@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\nw-floor-seated-study",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "serviceStopped": false,
+  "browserStorageModified": false,
+  "changes": [
+    {
+      "relative": "character-shorthair-seated-nw-floor-review.html",
+      "oldSha256": "aafb482a91ae93d7f1c2199ef02d68505dfc7ddeb92c7b95966aafcbd63ec8f8",
+      "newSha256": "0d694b5874d0eece0fee9aed34381123a23b94149178dda81645a782d8551c93",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\publish-before\\character-shorthair-seated-nw-floor-review.html"
+    }
+  ]
+}

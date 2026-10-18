@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\dist",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "changes": [
+    {
+      "relative": "sofa-chair-recliner-empty.svg",
+      "beforeSha256": null,
+      "afterSha256": "6DDE0F4ECAD71985677518BF532471CB00F7AF9735A4E665641BCD6DE61ABC74"
+    },
+    {
+      "relative": "sofa-chair-nw-review.html",
+      "beforeSha256": null,
+      "afterSha256": "67E0A29AF13A78304F1C57E2CA6469B8D6FCF817BB79C30CFEB2F8D0F4776CBE"
+    },
+    {
+      "relative": "sofa-chair-club-occupied.svg",
+      "beforeSha256": null,
+      "afterSha256": "CCB9D8F427A10EA73D89ADC886A92056126003DB80CF2B4687F130BF7CCCA68D"
+    },
+    {
+      "relative": "sofa-chair-club-empty.svg",
+      "beforeSha256": null,
+      "afterSha256": "A5335E82F5C600FC978158B00940697D42D63970CBB267B8B5A4F7F328C580F9"
+    },
+    {
+      "relative": "sofa-chair-recliner-occupied.svg",
+      "beforeSha256": null,
+      "afterSha256": "C4B3BF1CE0034E68F57C2369AAA0BD6A6EDCBCB697A71A8C113713986EB55EDB"
+    },
+    {
+      "relative": "assets\\CabinetDetailModal-BENKvN6v.js",
+      "beforeSha256": null,
+      "afterSha256": "F6F1A13F9294D35405DE05B70507F25E63ABB3F69ED7553ECCF52F490BDA53A0"
+    },
+    {
+      "relative": "assets\\usePreviewSvgIds-831zva9O.js",
+      "beforeSha256": null,
+      "afterSha256": "7E081726A14A32CF8635515C46D09975DFE3B487504C9505A9790BB82A195960"
+    },
+    {
+      "relative": "assets\\useDialogFocus-D9Db3wyG.js",
+      "beforeSha256": null,
+      "afterSha256": "BA55BCC25691CB2CD898A4B40B26C65F3AE983E0A9D675CE219E7E17F135789E"
+    },
+    {
+      "relative": "assets\\SvgExportModal-BBA38OFt.js",
+      "beforeSha256": null,
+      "afterSha256": "0F61AF7903CC7E0BBABA85913789DB62BD63D1D576F1116641AC6F2E1C624C94"
+    },
+    {
+      "relative": "assets\\SvgDetailView-unt1MRK5.js",
+      "beforeSha256": null,
+      "afterSha256": "CB51099574B2A039B9E4ACDA42F6C1AB06DA24A704BF2D9918F693F88D97B2B8"
+    },
+    {
+      "relative": "assets\\StatusPickerModal-BkNrX9Je.js",
+      "beforeSha256": null,
+      "afterSha256": "2366C1365B30B9529085F3C1C70CBE803B7C900B47DD9DF5162EE90178227E8F"
+    },
+    {
+      "relative": "assets\\send-CmFsK0HG.js",
+      "beforeSha256": null,
+      "afterSha256": "85B139BEA6B1A83AFFE469E499DCC05B36F3306BC198A2ED55BF192206995308"
+    },
+    {
+      "relative": "assets\\PosterDetailModal-CbCheNJT.js",
+      "beforeSha256": null,
+      "afterSha256": "B3F03EC0440385FE55F502D7939A95464362E14BDC462B76639318010F964767"
+    },
+    {
+      "relative": "assets\\MemoryLogModal-BPkkDsMD.js",
+      "beforeSha256": null,
+      "afterSha256": "4F743EBE151C91A07B82DD2ABE213441ECB2DCF847B66301BCA795640353A133"
+    },
+    {
+      "relative": "assets\\map-pin-CNupHp4G.js",
+      "beforeSha256": null,
+      "afterSha256": "FEB6F97FFCEB53BC68D423D2AF4F0DECAD133E10533783013671EB24ECEEF26A"
+    },
+    {
+      "relative": "assets\\MailboxModal-Bnqwk3KW.js",
+      "beforeSha256": null,
+      "afterSha256": "7943F6E2925640ADEA008C5855DD677356B249A03CB3CDC4E3544084F5041943"
+    },
+    {
+      "relative": "assets\\index-jDep7Pra.js",
+      "beforeSha256": null,
+      "afterSha256": "190D26A1099BA847BE8445ABB64D89C2B91BC75C528B456FF897C91DF5217F20"
+    },
+    {
+      "relative": "assets\\index-BTy3yUzD.css",
+      "beforeSha256": null,
+      "afterSha256": "C5710F43B8E105B921EC5DB653C36E810D14B1BD18F9B12D1CE34327FB6A47FC"
+    },
+    {
+      "relative": "assets\\FriendCardModal-o5K9qKpi.js",
+      "beforeSha256": null,
+      "afterSha256": "8EF5E359DFC0CFFA7A768544C7619D0E79FCB85C390BC1DC052B552B4B35878B"
+    },
+    {
+      "relative": "assets\\ChairInspectionModal-CBiVZ36-.js",
+      "beforeSha256": null,
+      "afterSha256": "740F453B4EECCE6DFF7F0FEB00C15BB992F082E517DDDEF248A952E9E34D7650"
+    },
+    {
+      "relative": "assets\\BookshelfModal-CoLYIJDh.js",
+      "beforeSha256": null,
+      "afterSha256": "8A3F3F443563EB8E31CB5130F24B923E277DA25D7D6A7DB1799DB8FF0F2335AD"
+    },
+    {
+      "relative": "index.html",
+      "beforeSha256": "A20DF89A6E4D9C50F4F96C398FF09B3BAF185AACE94354C93ED447D355AE6AD6",
+      "afterSha256": "E1C4EC01A273CE959169657B549CA974837CA16E6C81597CE9D9DF3713C44298"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-15T15:08:35.341Z",
+  "measuredUntracedSegments": 180,
+  "groups": 60,
+  "traceSegments": 20,
+  "boundedTraceSegments": 7,
+  "documentFileLinks": 100,
+  "problems": [],
+  "note": "Integrity and collection checks only; not a performance threshold or visual acceptance."
+}

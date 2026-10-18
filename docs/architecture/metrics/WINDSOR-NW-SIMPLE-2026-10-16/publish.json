@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\windsor-nw-simple",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "serviceStopped": false,
+  "browserStorageModified": false,
+  "oldIndexSha256": "413f602db8e21102aa655c848826fe3be7454fc78313c7e09199a9da6f27bcd0",
+  "newIndexSha256": "0875b4199eaec32d0d44f0764b33d12b96e603e50c968b1219bfdccc7139af80",
+  "changes": [
+    {
+      "relative": "assets\\BookshelfModal-Cu2bRR_q.js",
+      "oldSha256": null,
+      "newSha256": "1aca830848efcea82fdc8fb6f26145b067e6421a5397603f28779ec082e7b27f",
+      "backup": null
+    },
+    {
+      "relative": "assets\\CabinetDetailModal-D4AJaCdR.js",
+      "oldSha256": null,
+      "newSha256": "c9c56878ed3f3af90f3715c3107fcd8e5622a437b2ab43b76b76050ee8731986",
+      "backup": null
+    },
+    {
+      "relative": "assets\\ChairInspectionModal-DDCXZRp4.js",
+      "oldSha256": null,
+      "newSha256": "f038d20842103a09d0e9020445f81b5ff6b0e4ad90dc3ecf9ed4b4b1d61e12d3",
+      "backup": null
+    },
+    {
+      "relative": "assets\\FriendCardModal-BGO0C4Uk.js",
+      "oldSha256": null,
+      "newSha256": "b4fbaff58ecd78387f9eed930d9ea8805350cd2d2f612d268141e182cb6b1e80",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-BVgvZMd_.js",
+      "oldSha256": null,
+      "newSha256": "d9b24066aa1c691aaa360e220f7d14c4bd9852e14679a7fa280b4666a6fd2cc8",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MailboxModal-C-NSvcE7.js",
+      "oldSha256": null,
+      "newSha256": "a44032942bd5bf611a690db1eac86d6951285490ab8c4ac86ddba6351de102a7",
+      "backup": null
+    },
+    {
+      "relative": "assets\\map-pin-C_wvfaIF.js",
+      "oldSha256": null,
+      "newSha256": "d3cd9bc5fb1f462b2058a99a11fe6b0e1659b717cc238028be44ec36658fc649",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MemoryLogModal-CF0GpF2e.js",
+      "oldSha256": null,
+      "newSha256": "6d969eb8b09408b3ace7841025f7c8ea86569c5f5e5128682794ee9c03c355c5",
+      "backup": null
+    },
+    {
+      "relative": "assets\\PosterDetailModal-By0C9Di4.js",
+      "oldSha256": null,
+      "newSha256": "79563d734279a53e871e0331c379c0a51f8cbd890ba67ce0e84afbe724757e23",
+      "backup": null
+    },
+    {
+      "relative": "assets\\send-B4c-ndfy.js",
+      "oldSha256": null,
+      "newSha256": "b9ccfc6e58c905abb0496504ea009d4c2b3c6a6fe48bba456d3d1453dc3ba2fe",
+      "backup": null
+    },
+    {
+      "relative": "assets\\StatusPickerModal-BWRHInJf.js",
+      "oldSha256": null,
+      "newSha256": "b7f7772b8825fd2e7debd57af6e032e6e2f33d6cd70d1ec5dde868a27c747941",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgDetailView-bNeKnH3Y.js",
+      "oldSha256": null,
+      "newSha256": "f0b698bff5cb115969e662f6c80bb138eb70a78ba4a0ce045f975f67d0b5b1e5",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgExportModal-BCoSTWpX.js",
+      "oldSha256": null,
+      "newSha256": "3eda2848cf123e0f106fa9970029999b021382832fd637d5fcf732220129351d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\useDialogFocus-DK6_7hG4.js",
+      "oldSha256": null,
+      "newSha256": "8fa780a511d40e75d3cb645f599a2388bdda9ee6dda2c3e8b282d7964eebbefc",
+      "backup": null
+    },
+    {
+      "relative": "assets\\usePreviewSvgIds-ql4Vb0h7.js",
+      "oldSha256": null,
+      "newSha256": "e921ad005c1a2d0a331ddaef43b4da711c43c560e23f3e956ffa101f72623963",
+      "backup": null
+    },
+    {
+      "relative": "index.html",
+      "oldSha256": "413f602db8e21102aa655c848826fe3be7454fc78313c7e09199a9da6f27bcd0",
+      "newSha256": "0875b4199eaec32d0d44f0764b33d12b96e603e50c968b1219bfdccc7139af80",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\WINDSOR-NW-SIMPLE-2026-10-16\\publish-before\\index.html"
+    }
+  ]
+}

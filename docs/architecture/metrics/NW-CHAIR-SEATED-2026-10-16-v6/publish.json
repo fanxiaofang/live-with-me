@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\nw-chair-seated-v6",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "serviceStopped": false,
+  "browserStorageModified": false,
+  "oldIndexSha256": "a67e994cbdfaeecb3f9202d870564d6d21e396a75803e4ec4edad6902d06b7ac",
+  "newIndexSha256": "95b3da353136497851678e6f66c3c7dfdda31c1963ef2ba665f776535225c5ff",
+  "changes": [
+    {
+      "relative": "character-shorthair-seated-nw-study.svg",
+      "oldSha256": "aa5f91691e55e7cb610de635abba242171c436f362a170130ef26151a5dbe250",
+      "newSha256": "7e8d6061b0afd7da4a654ff4a6ca79f60186584a907fe6b2971351bac3a91543",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-CHAIR-SEATED-2026-10-16-v6\\publish-before\\character-shorthair-seated-nw-study.svg"
+    },
+    {
+      "relative": "assets\\BookshelfModal-C0xTA1ba.js",
+      "oldSha256": null,
+      "newSha256": "4ecc1a883c4bb63d9b457c00ae47d14afc4b5d5543ad5344c1f4a794438ffa9d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\CabinetDetailModal-CEYPztP_.js",
+      "oldSha256": null,
+      "newSha256": "eb1f421da777a1b4d48f2dfea964ad4aee41bc81f77d48b5ed5b60e5bf12034f",
+      "backup": null
+    },
+    {
+      "relative": "assets\\ChairInspectionModal-BMP5cTVY.js",
+      "oldSha256": null,
+      "newSha256": "3eb59775dd09ab97f20f208c628623eee4a7d4a14f0867cc04a0ec4853f8f016",
+      "backup": null
+    },
+    {
+      "relative": "assets\\FriendCardModal-CEfauPqu.js",
+      "oldSha256": null,
+      "newSha256": "1c323e5eb06697480caa7b1b469ce146fe55fcbe70057d5608fd94a3bfc51c75",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-CkuzZW41.js",
+      "oldSha256": null,
+      "newSha256": "6e630cda2afe7bf4cf111d2c5a39c5b25f8bf311372ce3a11b13fd36c5066169",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-DtBsxNCr.css",
+      "oldSha256": null,
+      "newSha256": "61a851c45081f867d9bb237e8d2d4bd8ff2abaec9bbd22c347c392df4ffdd691",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MailboxModal-Dw1qh4h2.js",
+      "oldSha256": null,
+      "newSha256": "d6cf93e1116405cc193bd90449682d8dcf0a48e98df777eff205ce598519e088",
+      "backup": null
+    },
+    {
+      "relative": "assets\\map-pin-BlOidELN.js",
+      "oldSha256": null,
+      "newSha256": "bc67106dee7d4338242007fd65d893d238cda07b892f80733cbd8dd25a57644c",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MemoryLogModal-AOVCZuQy.js",
+      "oldSha256": null,
+      "newSha256": "911cf1627bcaa442826f6974ff0ff0b81a168478d78d3d3273a2e55845460902",
+      "backup": null
+    },
+    {
+      "relative": "assets\\PosterDetailModal-CKyk8pbE.js",
+      "oldSha256": null,
+      "newSha256": "a278d49deee71b0838aa84984d227cf225fa5cb4ae8f9c9d69e0c49bd38221d6",
+      "backup": null
+    },
+    {
+      "relative": "assets\\send-CEJiH76O.js",
+      "oldSha256": null,
+      "newSha256": "ff2ebd2c695afef105dc0220965e92d23a8e36746c45459fa78dc0f92dee6078",
+      "backup": null
+    },
+    {
+      "relative": "assets\\StatusPickerModal-Urnn3y4x.js",
+      "oldSha256": null,
+      "newSha256": "651c72f4c1a299c6b8d3c7fdb2e75b0a0b6e50daebd6ad39312d12398b8ce49e",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgDetailView-BOajwxUu.js",
+      "oldSha256": null,
+      "newSha256": "cea5838d4b90d33cc693cb191de0620b0c0db629fdafd31bf909db7ba3e18d96",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgExportModal-BFWCnMUn.js",
+      "oldSha256": null,
+      "newSha256": "c83b4629bd9ca6bb6ac30dfe4241763870fcb714c5f01300aba743450a1fb45f",
+      "backup": null
+    },
+    {
+      "relative": "assets\\useDialogFocus-C4YYM2vm.js",
+      "oldSha256": null,
+      "newSha256": "13c2caf162bbad044a3015aa728b55af84f7cda37d13bc143d275154b3326713",
+      "backup": null
+    },
+    {
+      "relative": "assets\\usePreviewSvgIds-DciyVJfR.js",
+      "oldSha256": null,
+      "newSha256": "9c0a9628e9aa19d4e5264afd7a17c8e3ee4b6bc610eab5673445533f7f626c66",
+      "backup": null
+    },
+    {
+      "relative": "index.html",
+      "oldSha256": "a67e994cbdfaeecb3f9202d870564d6d21e396a75803e4ec4edad6902d06b7ac",
+      "newSha256": "95b3da353136497851678e6f66c3c7dfdda31c1963ef2ba665f776535225c5ff",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-CHAIR-SEATED-2026-10-16-v6\\publish-before\\index.html"
+    }
+  ]
+}

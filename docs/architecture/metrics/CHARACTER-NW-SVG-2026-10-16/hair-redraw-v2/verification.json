@@ -1,0 +1,89 @@
+{
+  "status": "three-hair-redraws-awaiting-user-visual-review",
+  "inspection": [
+    {
+      "id": "shorthair",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "preserved": {
+        "head-skin": true,
+        "beanie": true,
+        "robe": true,
+        "round-hands": true,
+        "cuffs": true,
+        "soft-ground-shadow": true
+      }
+    },
+    {
+      "id": "curly",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "preserved": {
+        "head-skin": true,
+        "beanie": true,
+        "robe": true,
+        "round-hands": true,
+        "cuffs": true,
+        "soft-ground-shadow": true
+      }
+    },
+    {
+      "id": "sidepart",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "preserved": {
+        "head-skin": true,
+        "beanie": true,
+        "robe": true,
+        "round-hands": true,
+        "cuffs": true,
+        "soft-ground-shadow": true
+      }
+    },
+    {
+      "id": "shaggy",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "preserved": {
+        "head-skin": true,
+        "beanie": true,
+        "robe": true,
+        "round-hands": true,
+        "cuffs": true,
+        "soft-ground-shadow": true
+      }
+    }
+  ],
+  "protectedFilesUnchanged": 53,
+  "shortHairSvgUnchanged": true,
+  "environment": "Windows headless Chromium DPR1, 1200x1000 and 390x844; static asset and review checks only; no performance measurement",
+  "errors": []
+}

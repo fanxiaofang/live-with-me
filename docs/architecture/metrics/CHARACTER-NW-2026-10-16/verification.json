@@ -1,0 +1,124 @@
+{
+  "status": "draft-not-approved",
+  "environment": "headless Chromium, SwiftShader, DPR 1; authoring only, no runtime performance claim",
+  "info": {
+    "renderer": {
+      "frame": 1,
+      "calls": 67,
+      "triangles": 122618,
+      "points": 0,
+      "lines": 0
+    },
+    "direction": "NW-eight-view-study",
+    "pose": "standing",
+    "camera": {
+      "metadata": {
+        "version": 4.7,
+        "type": "Object",
+        "generator": "Object3D.toJSON"
+      },
+      "object": {
+        "uuid": "ab9062c4-c92a-4bbb-85b4-ba7d058247c4",
+        "type": "OrthographicCamera",
+        "name": "NW-back-quarter-orthographic-camera",
+        "castShadow": false,
+        "receiveShadow": false,
+        "visible": true,
+        "frustumCulled": true,
+        "renderOrder": 0,
+        "static": false,
+        "matrixAutoUpdate": true,
+        "userData": {
+          "view": "NW-eight-view-study",
+          "frontProjects": "upper-left",
+          "legacyDirectionMappingUnchanged": true
+        },
+        "layers": 1,
+        "matrix": [
+          -0.7071067811865481,
+          -1.3877787807814457e-17,
+          -0.7071067811865476,
+          0,
+          -0.19490504344652942,
+          0.9612616959383189,
+          0.19490504344652942,
+          0,
+          0.6797146636928665,
+          0.2756373558169992,
+          -0.679714663692867,
+          0,
+          98.99494936611664,
+          63.03094159518835,
+          -98.99494936611666,
+          1
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "zoom": 1,
+        "left": -20,
+        "right": 20,
+        "top": 28,
+        "bottom": -28,
+        "near": 0.1,
+        "far": 600
+      }
+    },
+    "parameters": {
+      "headRadius": 7,
+      "headY": 34,
+      "authoringScale": 1.0666666666666667,
+      "elevation": 0.2792526803190927,
+      "azimuth": 0.7853981633974483,
+      "colors": {
+        "robe": "#e07a5f",
+        "hat": "#425b6e",
+        "hair": "#1f1b18",
+        "skin": "#f5d6be",
+        "ink": "#302821"
+      }
+    },
+    "bounds": {
+      "min": [
+        -9.777724202473959,
+        0.014758106165947126,
+        -8.311810302734376
+      ],
+      "max": [
+        9.710758463541666,
+        50.05865348547187,
+        8.713226318359375
+      ]
+    },
+    "projectedForward": {
+      "x": -0.35355339059327345,
+      "y": 0.0696089440880463
+    },
+    "width": 1200,
+    "height": 1680,
+    "visible": 598561,
+    "opaque": 568743,
+    "cornerAlpha": 0
+  },
+  "model": {
+    "nodes": 59,
+    "meshes": 57,
+    "cameras": 1
+  },
+  "protectedFilesUnchanged": 53,
+  "files": [
+    {
+      "file": "public/character-shorthair-standing-nw-study.png",
+      "bytes": 151644,
+      "sha256": "c713da5d7479cf4a699799d8a5b1fe390dd49d7ddaf9f7223b7b96cbd33cbeb9"
+    },
+    {
+      "file": "public/character-shorthair-standing-nw-study.glb",
+      "bytes": 1724664,
+      "sha256": "d22befa4007d02cc0df39b58fbc53483fedb155039c26fe454e1da084cfa7437"
+    }
+  ],
+  "errors": []
+}

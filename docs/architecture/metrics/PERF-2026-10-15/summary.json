@@ -1,0 +1,2368 @@
+{
+  "generatedAt": "2026-10-15T15:06:04.640Z",
+  "summaries": [
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.8,
+      "p95MinMs": 66.8,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 100.1,
+      "largestInitialWaitMs": 16.499999997019586,
+      "largestFinalWaitMs": 71.99999999701959,
+      "over33_4Ms": 102,
+      "over50Ms": 79,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-overview-pan",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 67,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 100.2,
+      "maxFrameIntervalMs": 233.6,
+      "largestInitialWaitMs": 13.497999999999593,
+      "largestFinalWaitMs": 83.1999999970194,
+      "over33_4Ms": 131,
+      "over50Ms": 120,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        32,
+        32,
+        32
+      ],
+      "actionCompletedMs": [
+        3795.4000000059605,
+        3537.3999999910593,
+        3925.199999988079
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-overview-wheel",
+      "runs": 3,
+      "p50MedianMs": 233.5,
+      "p95MedianMs": 467.1,
+      "p95MinMs": 367,
+      "p95MaxMs": 467.2,
+      "maxFrameIntervalMs": 534,
+      "largestInitialWaitMs": 48.3000000059601,
+      "largestFinalWaitMs": 122.29999999404026,
+      "over33_4Ms": 121,
+      "over50Ms": 118,
+      "longTaskTotalMs": 1116,
+      "longTaskCount": 8,
+      "rootCommits": [
+        12,
+        12,
+        12
+      ],
+      "actionCompletedMs": [
+        8821.5,
+        9058.699999988079,
+        8705.5
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 66.9,
+      "p95MedianMs": 300.2,
+      "p95MinMs": 266.9,
+      "p95MaxMs": 400.4,
+      "maxFrameIntervalMs": 400.4,
+      "largestInitialWaitMs": 37.6000000089407,
+      "largestFinalWaitMs": 72.3999999880798,
+      "over33_4Ms": 57,
+      "over50Ms": 56,
+      "longTaskTotalMs": 124,
+      "longTaskCount": 1,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        593.5,
+        663.7999999970198,
+        322.5
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 67,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 100.1,
+      "maxFrameIntervalMs": 100.3,
+      "largestInitialWaitMs": 8.800000011920929,
+      "largestFinalWaitMs": 65.20000000000073,
+      "over33_4Ms": 121,
+      "over50Ms": 114,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "rainy-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.5,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 100.3,
+      "maxFrameIntervalMs": 133.5,
+      "largestInitialWaitMs": 205.500000005959,
+      "largestFinalWaitMs": 59,
+      "over33_4Ms": 112,
+      "over50Ms": 91,
+      "longTaskTotalMs": 61,
+      "longTaskCount": 1,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "rainy-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 66.8,
+      "p95MedianMs": 300.3,
+      "p95MinMs": 300.3,
+      "p95MaxMs": 300.4,
+      "maxFrameIntervalMs": 333.6,
+      "largestInitialWaitMs": 21.598000005960785,
+      "largestFinalWaitMs": 50.30000000000291,
+      "over33_4Ms": 78,
+      "over50Ms": 74,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        1,
+        1,
+        1
+      ],
+      "actionCompletedMs": [
+        254.70000000298023,
+        184.90000000596046,
+        183.19999998807907
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "rainy-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 100.2,
+      "maxFrameIntervalMs": 100.2,
+      "largestInitialWaitMs": 8.30000000000291,
+      "largestFinalWaitMs": 92.5999999910564,
+      "over33_4Ms": 117,
+      "over50Ms": 108,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "night-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 67,
+      "maxFrameIntervalMs": 383.98,
+      "largestInitialWaitMs": 31.41800001192314,
+      "largestFinalWaitMs": 63.09999999105639,
+      "over33_4Ms": 113,
+      "over50Ms": 80,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "first-chair-detail",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 100.1,
+      "p95MinMs": 67,
+      "p95MaxMs": 100.2,
+      "maxFrameIntervalMs": 167,
+      "largestInitialWaitMs": 25.462000011917553,
+      "largestFinalWaitMs": 104.09999999999854,
+      "over33_4Ms": 116,
+      "over50Ms": 104,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        637.4000000059605,
+        614.6000000089407,
+        617.5
+      ],
+      "files": [
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run1.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run2.json",
+        "baseline-headed-dpr1-final\\baseline-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 66.6,
+      "p95MedianMs": 66.8,
+      "p95MinMs": 66.8,
+      "p95MaxMs": 100.1,
+      "maxFrameIntervalMs": 100.5,
+      "largestInitialWaitMs": 17.999999991059667,
+      "largestFinalWaitMs": 43.20000000298023,
+      "over33_4Ms": 111,
+      "over50Ms": 95,
+      "longTaskTotalMs": 267,
+      "longTaskCount": 5,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-overview-pan",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 133.4,
+      "p95MinMs": 100.1,
+      "p95MaxMs": 133.6,
+      "maxFrameIntervalMs": 233.6,
+      "largestInitialWaitMs": 18.799999994040263,
+      "largestFinalWaitMs": 85.20000000298023,
+      "over33_4Ms": 135,
+      "over50Ms": 128,
+      "longTaskTotalMs": 53,
+      "longTaskCount": 1,
+      "rootCommits": [
+        32,
+        32,
+        32
+      ],
+      "actionCompletedMs": [
+        4112.899999991059,
+        3889.5999999940395,
+        3653.8999999910593
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-overview-wheel",
+      "runs": 3,
+      "p50MedianMs": 233.5,
+      "p95MedianMs": 333.7,
+      "p95MinMs": 300.4,
+      "p95MaxMs": 400.4,
+      "maxFrameIntervalMs": 433.9,
+      "largestInitialWaitMs": 48.99999999403917,
+      "largestFinalWaitMs": 122.09999999999854,
+      "over33_4Ms": 110,
+      "over50Ms": 107,
+      "longTaskTotalMs": 111,
+      "longTaskCount": 2,
+      "rootCommits": [
+        12,
+        12,
+        12
+      ],
+      "actionCompletedMs": [
+        8414.70000000298,
+        7915.899999991059,
+        8066.20000000298
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 66.8,
+      "p95MedianMs": 266.9,
+      "p95MinMs": 233.6,
+      "p95MaxMs": 300.2,
+      "maxFrameIntervalMs": 367.1,
+      "largestInitialWaitMs": 29.500000002979505,
+      "largestFinalWaitMs": 56.00000000595901,
+      "over33_4Ms": 67,
+      "over50Ms": 62,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        551.9000000059605,
+        557.1000000089407,
+        530
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 67,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 100.1,
+      "maxFrameIntervalMs": 133.4,
+      "largestInitialWaitMs": 22.299999999999272,
+      "largestFinalWaitMs": 53.70000000595974,
+      "over33_4Ms": 125,
+      "over50Ms": 112,
+      "longTaskTotalMs": 160,
+      "longTaskCount": 3,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "rainy-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.8,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 100.1,
+      "largestInitialWaitMs": 37.599999994039536,
+      "largestFinalWaitMs": 65.5000000029795,
+      "over33_4Ms": 115,
+      "over50Ms": 87,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "rainy-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 300.3,
+      "p95MinMs": 300.2,
+      "p95MaxMs": 367.2,
+      "maxFrameIntervalMs": 433.8,
+      "largestInitialWaitMs": 18.89600000000064,
+      "largestFinalWaitMs": 98.70000000298023,
+      "over33_4Ms": 78,
+      "over50Ms": 71,
+      "longTaskTotalMs": 189,
+      "longTaskCount": 3,
+      "rootCommits": [
+        1,
+        1,
+        1
+      ],
+      "actionCompletedMs": [
+        181.79999999701977,
+        208.5,
+        230.70000000298023
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "rainy-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 100.1,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 100.1,
+      "maxFrameIntervalMs": 133.2,
+      "largestInitialWaitMs": 12.899999991059303,
+      "largestFinalWaitMs": 68.00000000298314,
+      "over33_4Ms": 124,
+      "over50Ms": 115,
+      "longTaskTotalMs": 288,
+      "longTaskCount": 5,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "night-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.5,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 67,
+      "largestInitialWaitMs": 13.299999991060758,
+      "largestFinalWaitMs": 58.70000000298023,
+      "over33_4Ms": 112,
+      "over50Ms": 90,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headed",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "first-chair-detail",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 67,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 100.1,
+      "maxFrameIntervalMs": 166.8,
+      "largestInitialWaitMs": 36.46199999701639,
+      "largestFinalWaitMs": 78.40000000596046,
+      "over33_4Ms": 115,
+      "over50Ms": 105,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        587.7999999970198,
+        659.5,
+        602.2000000029802
+      ],
+      "files": [
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run1.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run2.json",
+        "baseline-headed-dpr2\\baseline-headed-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.3,
+      "p95MedianMs": 50,
+      "p95MinMs": 50,
+      "p95MaxMs": 50.1,
+      "maxFrameIntervalMs": 50.1,
+      "largestInitialWaitMs": 15.984000002979883,
+      "largestFinalWaitMs": 43.50000001192166,
+      "over33_4Ms": 65,
+      "over50Ms": 6,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-overview-pan",
+      "runs": 3,
+      "p50MedianMs": 50,
+      "p95MedianMs": 66.7,
+      "p95MinMs": 66.5,
+      "p95MaxMs": 66.7,
+      "maxFrameIntervalMs": 83.4,
+      "largestInitialWaitMs": 8.100000002979868,
+      "largestFinalWaitMs": 67.20000001192057,
+      "over33_4Ms": 182,
+      "over50Ms": 50,
+      "longTaskTotalMs": 582,
+      "longTaskCount": 11,
+      "rootCommits": [
+        32,
+        32,
+        32
+      ],
+      "actionCompletedMs": [
+        3384,
+        3123.5,
+        4352
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-overview-wheel",
+      "runs": 3,
+      "p50MedianMs": 66.8,
+      "p95MedianMs": 116.6,
+      "p95MinMs": 116.6,
+      "p95MaxMs": 116.7,
+      "maxFrameIntervalMs": 183.3,
+      "largestInitialWaitMs": 22.999999997020495,
+      "largestFinalWaitMs": 62.599999999998545,
+      "over33_4Ms": 186,
+      "over50Ms": 164,
+      "longTaskTotalMs": 3617,
+      "longTaskCount": 40,
+      "rootCommits": [
+        12,
+        12,
+        12
+      ],
+      "actionCompletedMs": [
+        5221.79999999702,
+        5547.9000000059605,
+        4271.9000000059605
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 100,
+      "p95MinMs": 83.5,
+      "p95MaxMs": 100,
+      "maxFrameIntervalMs": 116.6,
+      "largestInitialWaitMs": 21.597999991059623,
+      "largestFinalWaitMs": 75.49999999404099,
+      "over33_4Ms": 120,
+      "over50Ms": 108,
+      "longTaskTotalMs": 172,
+      "longTaskCount": 2,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        194.29999999701977,
+        184.69999998807907,
+        145.79999999701977
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 83.3,
+      "p95MinMs": 83.3,
+      "p95MaxMs": 83.4,
+      "maxFrameIntervalMs": 83.4,
+      "largestInitialWaitMs": 29.363999997018254,
+      "largestFinalWaitMs": 57.29999999999927,
+      "over33_4Ms": 130,
+      "over50Ms": 112,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "rainy-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 50,
+      "p95MedianMs": 66.7,
+      "p95MinMs": 66.6,
+      "p95MaxMs": 100,
+      "maxFrameIntervalMs": 100,
+      "largestInitialWaitMs": 26.785999997020554,
+      "largestFinalWaitMs": 72.19999999702122,
+      "over33_4Ms": 145,
+      "over50Ms": 59,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "rainy-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 100,
+      "p95MinMs": 83.4,
+      "p95MaxMs": 183.3,
+      "maxFrameIntervalMs": 183.3,
+      "largestInitialWaitMs": 20.800000008941424,
+      "largestFinalWaitMs": 73.10000000596119,
+      "over33_4Ms": 112,
+      "over50Ms": 97,
+      "longTaskTotalMs": 281,
+      "longTaskCount": 5,
+      "rootCommits": [
+        1,
+        1,
+        1
+      ],
+      "actionCompletedMs": [
+        233.40000000596046,
+        179.29999999701977,
+        167.1000000089407
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "rainy-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 83.4,
+      "p95MinMs": 83.3,
+      "p95MaxMs": 99.9,
+      "maxFrameIntervalMs": 100.1,
+      "largestInitialWaitMs": 25.799999994040263,
+      "largestFinalWaitMs": 69.09999999403954,
+      "over33_4Ms": 127,
+      "over50Ms": 110,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "night-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 50,
+      "p95MedianMs": 66.7,
+      "p95MinMs": 66.7,
+      "p95MaxMs": 83.4,
+      "maxFrameIntervalMs": 83.4,
+      "largestInitialWaitMs": 13.877999999996973,
+      "largestFinalWaitMs": 41.100000005957554,
+      "over33_4Ms": 160,
+      "over50Ms": 44,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "first-chair-detail",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 83.3,
+      "p95MinMs": 66.7,
+      "p95MaxMs": 83.4,
+      "maxFrameIntervalMs": 100,
+      "largestInitialWaitMs": 28.361999991058838,
+      "largestFinalWaitMs": 43.00000000894215,
+      "over33_4Ms": 139,
+      "over50Ms": 93,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        579.8000000119209,
+        549.8999999910593,
+        556
+      ],
+      "files": [
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run1.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run2.json",
+        "baseline-headless-dpr1\\baseline-headless-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 50.1,
+      "p95MinMs": 50,
+      "p95MaxMs": 50.1,
+      "maxFrameIntervalMs": 66.7,
+      "largestInitialWaitMs": 0.9159999940393391,
+      "largestFinalWaitMs": 37.60000000297987,
+      "over33_4Ms": 84,
+      "over50Ms": 12,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-overview-pan",
+      "runs": 3,
+      "p50MedianMs": 50,
+      "p95MedianMs": 66.7,
+      "p95MinMs": 66.7,
+      "p95MaxMs": 66.7,
+      "maxFrameIntervalMs": 83.3,
+      "largestInitialWaitMs": 5.300000005960101,
+      "largestFinalWaitMs": 80.1000000119202,
+      "over33_4Ms": 195,
+      "over50Ms": 77,
+      "longTaskTotalMs": 1660,
+      "longTaskCount": 28,
+      "rootCommits": [
+        32,
+        32,
+        32
+      ],
+      "actionCompletedMs": [
+        3355.9000000059605,
+        5114.9000000059605,
+        3185.4000000059605
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-overview-wheel",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 100,
+      "p95MinMs": 99.9,
+      "p95MaxMs": 116.8,
+      "maxFrameIntervalMs": 166.6,
+      "largestInitialWaitMs": 15.899999999999636,
+      "largestFinalWaitMs": 118.30000000894142,
+      "over33_4Ms": 190,
+      "over50Ms": 169,
+      "longTaskTotalMs": 4933,
+      "longTaskCount": 65,
+      "rootCommits": [
+        12,
+        12,
+        12
+      ],
+      "actionCompletedMs": [
+        4778.0999999940395,
+        5339.300000011921,
+        4356.800000011921
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 116.6,
+      "p95MinMs": 100,
+      "p95MaxMs": 116.6,
+      "maxFrameIntervalMs": 133.3,
+      "largestInitialWaitMs": 29.43000000596112,
+      "largestFinalWaitMs": 68.10000000298169,
+      "over33_4Ms": 116,
+      "over50Ms": 105,
+      "longTaskTotalMs": 456,
+      "longTaskCount": 6,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        334.20000000298023,
+        225.59999999403954,
+        235.6000000089407
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 83.3,
+      "p95MinMs": 83.3,
+      "p95MaxMs": 83.4,
+      "maxFrameIntervalMs": 100,
+      "largestInitialWaitMs": 26.299999999999272,
+      "largestFinalWaitMs": 85.50000000595901,
+      "over33_4Ms": 129,
+      "over50Ms": 114,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "rainy-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 50,
+      "p95MedianMs": 66.7,
+      "p95MinMs": 66.6,
+      "p95MaxMs": 83.3,
+      "maxFrameIntervalMs": 83.4,
+      "largestInitialWaitMs": 11.596000005960377,
+      "largestFinalWaitMs": 90.59999999403954,
+      "over33_4Ms": 149,
+      "over50Ms": 51,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "rainy-desk-navigation",
+      "runs": 3,
+      "p50MedianMs": 83.3,
+      "p95MedianMs": 116.6,
+      "p95MinMs": 100,
+      "p95MaxMs": 133.4,
+      "maxFrameIntervalMs": 150,
+      "largestInitialWaitMs": 22.99600000297869,
+      "largestFinalWaitMs": 56.500000002979505,
+      "over33_4Ms": 106,
+      "over50Ms": 96,
+      "longTaskTotalMs": 440,
+      "longTaskCount": 7,
+      "rootCommits": [
+        1,
+        1,
+        1
+      ],
+      "actionCompletedMs": [
+        274.90000000596046,
+        150.1000000089407,
+        229.29999999701977
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "rainy-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 83.4,
+      "p95MinMs": 83.4,
+      "p95MaxMs": 133.3,
+      "maxFrameIntervalMs": 150.1,
+      "largestInitialWaitMs": 11.099999994039536,
+      "largestFinalWaitMs": 82.40000000297732,
+      "over33_4Ms": 115,
+      "over50Ms": 111,
+      "longTaskTotalMs": 334,
+      "longTaskCount": 6,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "night-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 66.6,
+      "p95MedianMs": 83.3,
+      "p95MinMs": 66.7,
+      "p95MaxMs": 100.1,
+      "maxFrameIntervalMs": 116.7,
+      "largestInitialWaitMs": 30.914000008939183,
+      "largestFinalWaitMs": 84.80000000596192,
+      "over33_4Ms": 139,
+      "over50Ms": 75,
+      "longTaskTotalMs": 369,
+      "longTaskCount": 7,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "baseline",
+      "mode": "headless",
+      "dpr": 2,
+      "variant": "normal",
+      "scenario": "first-chair-detail",
+      "runs": 3,
+      "p50MedianMs": 66.7,
+      "p95MedianMs": 83.5,
+      "p95MinMs": 66.7,
+      "p95MaxMs": 116.7,
+      "maxFrameIntervalMs": 116.7,
+      "largestInitialWaitMs": 38.559999997021805,
+      "largestFinalWaitMs": 76,
+      "over33_4Ms": 124,
+      "over50Ms": 102,
+      "longTaskTotalMs": 105,
+      "longTaskCount": 2,
+      "rootCommits": [
+        2,
+        2,
+        2
+      ],
+      "actionCompletedMs": [
+        792.7000000029802,
+        579,
+        636.9000000059605
+      ],
+      "files": [
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run1.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run2.json",
+        "baseline-headless-dpr2\\baseline-headless-dpr2-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "calibration",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "blank-page-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.6,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 33.6,
+      "maxFrameIntervalMs": 52.07,
+      "largestInitialWaitMs": -8.099999994039536,
+      "largestFinalWaitMs": 32.19999999999982,
+      "over33_4Ms": 120,
+      "over50Ms": 1,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "calibration-headed\\calibration-headed-dpr1-run1.json",
+        "calibration-headed\\calibration-headed-dpr1-run2.json",
+        "calibration-headed\\calibration-headed-dpr1-run3.json"
+      ]
+    },
+    {
+      "suite": "calibration",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "simple-composited-transform",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.6,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 33.7,
+      "maxFrameIntervalMs": 34.2,
+      "largestInitialWaitMs": 24.699999999999818,
+      "largestFinalWaitMs": 33.09999999105912,
+      "over33_4Ms": 99,
+      "over50Ms": 0,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "calibration-headed\\calibration-headed-dpr1-run1.json",
+        "calibration-headed\\calibration-headed-dpr1-run2.json",
+        "calibration-headed\\calibration-headed-dpr1-run3.json"
+      ]
+    },
+    {
+      "suite": "calibration",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "blank-page-idle",
+      "runs": 3,
+      "p50MedianMs": 16.7,
+      "p95MedianMs": 16.8,
+      "p95MinMs": 16.7,
+      "p95MaxMs": 16.8,
+      "maxFrameIntervalMs": 16.8,
+      "largestInitialWaitMs": -1.2000000089407195,
+      "largestFinalWaitMs": 18.800000000000182,
+      "over33_4Ms": 0,
+      "over50Ms": 0,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "calibration-headless\\calibration-headless-dpr1-run1.json",
+        "calibration-headless\\calibration-headless-dpr1-run2.json",
+        "calibration-headless\\calibration-headless-dpr1-run3.json"
+      ]
+    },
+    {
+      "suite": "calibration",
+      "mode": "headless",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "simple-composited-transform",
+      "runs": 3,
+      "p50MedianMs": 16.7,
+      "p95MedianMs": 16.7,
+      "p95MinMs": 16.7,
+      "p95MaxMs": 16.8,
+      "maxFrameIntervalMs": 16.8,
+      "largestInitialWaitMs": 13.099999994039536,
+      "largestFinalWaitMs": 14.600000005960283,
+      "over33_4Ms": 0,
+      "over50Ms": 0,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "calibration-headless\\calibration-headless-dpr1-run1.json",
+        "calibration-headless\\calibration-headless-dpr1-run2.json",
+        "calibration-headless\\calibration-headless-dpr1-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "all-css-motion-paused",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.6,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 33.6,
+      "maxFrameIntervalMs": 33.8,
+      "largestInitialWaitMs": 9.728000008940398,
+      "largestFinalWaitMs": 32.80000000000018,
+      "over33_4Ms": 85,
+      "over50Ms": 0,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-all-css-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-css-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-css-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "all-css-motion-paused",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.6,
+      "p95MinMs": 33.6,
+      "p95MaxMs": 33.7,
+      "maxFrameIntervalMs": 33.8,
+      "largestInitialWaitMs": 15.49599999701968,
+      "largestFinalWaitMs": 24.3000000059601,
+      "over33_4Ms": 81,
+      "over50Ms": 0,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-all-css-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-css-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-css-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "all-motion-paused",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.7,
+      "p95MinMs": 33.6,
+      "p95MaxMs": 33.7,
+      "maxFrameIntervalMs": 34,
+      "largestInitialWaitMs": 0.10000001192111085,
+      "largestFinalWaitMs": 33.899999999999636,
+      "over33_4Ms": 100,
+      "over50Ms": 0,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-all-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "all-motion-paused",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.7,
+      "p95MinMs": 33.7,
+      "p95MaxMs": 33.7,
+      "maxFrameIntervalMs": 33.8,
+      "largestInitialWaitMs": -0.7999999970197678,
+      "largestFinalWaitMs": 17.59999999106003,
+      "over33_4Ms": 104,
+      "over50Ms": 0,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-all-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "all-svg-filters-off",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.5,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 67.1,
+      "maxFrameIntervalMs": 100,
+      "largestInitialWaitMs": 15.999999997019586,
+      "largestFinalWaitMs": 55.6000000089407,
+      "over33_4Ms": 97,
+      "over50Ms": 29,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-all-svg-filters-off-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-svg-filters-off-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-svg-filters-off-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "all-svg-filters-off",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.8,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 67,
+      "largestInitialWaitMs": 7.595999994038721,
+      "largestFinalWaitMs": 51.300000002980596,
+      "over33_4Ms": 73,
+      "over50Ms": 19,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-all-svg-filters-off-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-svg-filters-off-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-all-svg-filters-off-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "cloud-filter-off",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.5,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 66.7,
+      "maxFrameIntervalMs": 66.9,
+      "largestInitialWaitMs": 7.899999988078889,
+      "largestFinalWaitMs": 48.399999999999636,
+      "over33_4Ms": 93,
+      "over50Ms": 15,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-filter-off-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-filter-off-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-filter-off-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "cloud-filter-off",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.8,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 67,
+      "largestInitialWaitMs": 21.5,
+      "largestFinalWaitMs": 49.20000000000073,
+      "over33_4Ms": 76,
+      "over50Ms": 49,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-filter-off-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-filter-off-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-filter-off-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "cloud-motion-paused",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.8,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 66.8,
+      "maxFrameIntervalMs": 67.1,
+      "largestInitialWaitMs": 20.900000005960464,
+      "largestFinalWaitMs": 46.700000005960646,
+      "over33_4Ms": 86,
+      "over50Ms": 23,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "cloud-motion-paused",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.8,
+      "p95MinMs": 66.8,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 66.9,
+      "largestInitialWaitMs": 10.123999988079959,
+      "largestFinalWaitMs": 49.09999999106003,
+      "over33_4Ms": 84,
+      "over50Ms": 48,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-cloud-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.8,
+      "p95MinMs": 66.8,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 66.9,
+      "largestInitialWaitMs": 3.7979999940398557,
+      "largestFinalWaitMs": 31.999999997019586,
+      "over33_4Ms": 91,
+      "over50Ms": 59,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-normal-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-normal-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "normal",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 66.6,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 67,
+      "largestInitialWaitMs": 18.800000002980596,
+      "largestFinalWaitMs": 44.00000000894033,
+      "over33_4Ms": 102,
+      "over50Ms": 88,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-normal-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-normal-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-normal-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "smil-motion-paused",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.8,
+      "p95MinMs": 66.8,
+      "p95MaxMs": 66.8,
+      "maxFrameIntervalMs": 67,
+      "largestInitialWaitMs": 26.00000000596083,
+      "largestFinalWaitMs": 50.99999999403917,
+      "over33_4Ms": 97,
+      "over50Ms": 43,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-smil-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-smil-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-smil-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "smil-motion-paused",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 33.5,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.9,
+      "p95MaxMs": 66.9,
+      "maxFrameIntervalMs": 66.9,
+      "largestInitialWaitMs": 14.399999999999636,
+      "largestFinalWaitMs": 57.89999999702013,
+      "over33_4Ms": 93,
+      "over50Ms": 77,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-smil-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-smil-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-smil-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "vegetation-motion-paused",
+      "scenario": "afternoon-overview-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 33.5,
+      "p95MinMs": 33.5,
+      "p95MaxMs": 33.6,
+      "maxFrameIntervalMs": 66.8,
+      "largestInitialWaitMs": 6.763999994039295,
+      "largestFinalWaitMs": 26.90000000894088,
+      "over33_4Ms": 78,
+      "over50Ms": 4,
+      "longTaskTotalMs": 0,
+      "longTaskCount": 0,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-vegetation-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-vegetation-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-vegetation-motion-paused-run3.json"
+      ]
+    },
+    {
+      "suite": "controls",
+      "mode": "headed",
+      "dpr": 1,
+      "variant": "vegetation-motion-paused",
+      "scenario": "afternoon-desk-idle",
+      "runs": 3,
+      "p50MedianMs": 33.4,
+      "p95MedianMs": 66.9,
+      "p95MinMs": 66.7,
+      "p95MaxMs": 100.3,
+      "maxFrameIntervalMs": 133.4,
+      "largestInitialWaitMs": 10.098000005960785,
+      "largestFinalWaitMs": 39.70000000298023,
+      "over33_4Ms": 81,
+      "over50Ms": 49,
+      "longTaskTotalMs": 174,
+      "longTaskCount": 3,
+      "rootCommits": [
+        0,
+        0,
+        0
+      ],
+      "actionCompletedMs": [
+        null,
+        null,
+        null
+      ],
+      "files": [
+        "controls-headed-dpr1\\controls-headed-dpr1-vegetation-motion-paused-run1.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-vegetation-motion-paused-run2.json",
+        "controls-headed-dpr1\\controls-headed-dpr1-vegetation-motion-paused-run3.json"
+      ]
+    }
+  ],
+  "traces": [
+    {
+      "file": "traces-bounded-headed-dpr1\\trace-headed-dpr1-all-css-motion-paused-run1.json",
+      "scenario": "all-css-motion-paused-overview-idle",
+      "p95Ms": 33.6,
+      "boundedToProbe": true,
+      "traceWindowMs": 3005.002,
+      "elapsedMs": 3005,
+      "rootCommits": 0,
+      "functionCallMs": 7.2,
+      "paintMs": 811.03,
+      "styleMs": 49.25,
+      "layoutMs": 72.19,
+      "rasterWorkerMs": 9.32,
+      "gpuProcessTaskMs": 472.66,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-bounded-headed-dpr1\\trace-headed-dpr1-all-css-motion-paused-run1.json",
+      "scenario": "all-css-motion-paused-desk-idle",
+      "p95Ms": 33.6,
+      "boundedToProbe": true,
+      "traceWindowMs": 3006.345,
+      "elapsedMs": 3006.4000000059605,
+      "rootCommits": 0,
+      "functionCallMs": 6.57,
+      "paintMs": 783.17,
+      "styleMs": 47.24,
+      "layoutMs": 75.48,
+      "rasterWorkerMs": 9.08,
+      "gpuProcessTaskMs": 495.6,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-bounded-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-overview-idle",
+      "p95Ms": 66.9,
+      "boundedToProbe": true,
+      "traceWindowMs": 3010.254,
+      "elapsedMs": 3010.3999999910593,
+      "rootCommits": 0,
+      "functionCallMs": 11.22,
+      "paintMs": 532.12,
+      "styleMs": 216.65,
+      "layoutMs": 65.95,
+      "rasterWorkerMs": 88.58,
+      "gpuProcessTaskMs": 2281.07,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-bounded-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-overview-pan",
+      "p95Ms": 100.1,
+      "boundedToProbe": true,
+      "traceWindowMs": 3959.606,
+      "elapsedMs": 3959.5999999940395,
+      "rootCommits": 32,
+      "functionCallMs": 105.46,
+      "paintMs": 628.68,
+      "styleMs": 290.28,
+      "layoutMs": 56.63,
+      "rasterWorkerMs": 127.27999999999999,
+      "gpuProcessTaskMs": 3081.69,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-bounded-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-overview-wheel",
+      "p95Ms": 367,
+      "boundedToProbe": true,
+      "traceWindowMs": 9631.064,
+      "elapsedMs": 9631,
+      "rootCommits": 12,
+      "functionCallMs": 36.11,
+      "paintMs": 429.12,
+      "styleMs": 170.08,
+      "layoutMs": 152.73,
+      "rasterWorkerMs": 7112.6,
+      "gpuProcessTaskMs": 8788.03,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-bounded-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-desk-navigation",
+      "p95Ms": 367.1,
+      "boundedToProbe": true,
+      "traceWindowMs": 3019.778,
+      "elapsedMs": 3019.8999999910593,
+      "rootCommits": 2,
+      "functionCallMs": 17.2,
+      "paintMs": 290.08,
+      "styleMs": 114.43,
+      "layoutMs": 59.17,
+      "rasterWorkerMs": 759.21,
+      "gpuProcessTaskMs": 2567.57,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-bounded-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-desk-idle",
+      "p95Ms": 100.1,
+      "boundedToProbe": true,
+      "traceWindowMs": 3049.865,
+      "elapsedMs": 3049.8999999910593,
+      "rootCommits": 0,
+      "functionCallMs": 11.73,
+      "paintMs": 561.26,
+      "styleMs": 214.1,
+      "layoutMs": 65.19,
+      "rasterWorkerMs": 82.73,
+      "gpuProcessTaskMs": 2394.15,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-all-css-motion-paused-run1.json",
+      "scenario": "all-css-motion-paused-overview-idle",
+      "p95Ms": 33.7,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3004.2999999970198,
+      "rootCommits": 0,
+      "functionCallMs": 4.71,
+      "paintMs": 808.95,
+      "styleMs": 26.9,
+      "layoutMs": 76.91,
+      "rasterWorkerMs": 9.4,
+      "gpuProcessTaskMs": 492.03,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-all-css-motion-paused-run1.json",
+      "scenario": "all-css-motion-paused-desk-idle",
+      "p95Ms": 33.7,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3002.7999999970198,
+      "rootCommits": 0,
+      "functionCallMs": 4.06,
+      "paintMs": 583.45,
+      "styleMs": 28.58,
+      "layoutMs": 49.3,
+      "rasterWorkerMs": 8.47,
+      "gpuProcessTaskMs": 1066.31,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-all-svg-filters-off-run1.json",
+      "scenario": "all-svg-filters-off-overview-idle",
+      "p95Ms": 33.5,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3006.8999999910593,
+      "rootCommits": 0,
+      "functionCallMs": 11.47,
+      "paintMs": 683.68,
+      "styleMs": 319.42,
+      "layoutMs": 79.5,
+      "rasterWorkerMs": 104.49,
+      "gpuProcessTaskMs": 2227.59,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-all-svg-filters-off-run1.json",
+      "scenario": "all-svg-filters-off-desk-idle",
+      "p95Ms": 66.9,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3020.7999999970198,
+      "rootCommits": 0,
+      "functionCallMs": 11.54,
+      "paintMs": 553.26,
+      "styleMs": 224.81,
+      "layoutMs": 63.01,
+      "rasterWorkerMs": 87.66,
+      "gpuProcessTaskMs": 2214.57,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-cloud-filter-off-run1.json",
+      "scenario": "cloud-filter-off-overview-idle",
+      "p95Ms": 66.8,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3015.2000000029802,
+      "rootCommits": 0,
+      "functionCallMs": 11.85,
+      "paintMs": 677.16,
+      "styleMs": 283.01,
+      "layoutMs": 78.8,
+      "rasterWorkerMs": 106.08,
+      "gpuProcessTaskMs": 2199.68,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-cloud-filter-off-run1.json",
+      "scenario": "cloud-filter-off-desk-idle",
+      "p95Ms": 100.2,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3007,
+      "rootCommits": 0,
+      "functionCallMs": 9.92,
+      "paintMs": 461.88,
+      "styleMs": 194.49,
+      "layoutMs": 55.47,
+      "rasterWorkerMs": 139.43,
+      "gpuProcessTaskMs": 2372.14,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-cloud-motion-paused-run1.json",
+      "scenario": "cloud-motion-paused-overview-idle",
+      "p95Ms": 66.7,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3007.5,
+      "rootCommits": 0,
+      "functionCallMs": 10.56,
+      "paintMs": 664.52,
+      "styleMs": 247.65,
+      "layoutMs": 72.55,
+      "rasterWorkerMs": 108.32,
+      "gpuProcessTaskMs": 2206.33,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-cloud-motion-paused-run1.json",
+      "scenario": "cloud-motion-paused-desk-idle",
+      "p95Ms": 100.2,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3010.2000000029802,
+      "rootCommits": 0,
+      "functionCallMs": 10.88,
+      "paintMs": 416.69,
+      "styleMs": 183.4,
+      "layoutMs": 54.63,
+      "rasterWorkerMs": 258.15,
+      "gpuProcessTaskMs": 2393.03,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-overview-idle",
+      "p95Ms": 66.8,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3035.9000000059605,
+      "rootCommits": 0,
+      "functionCallMs": 8.14,
+      "paintMs": 534.09,
+      "styleMs": 195.14,
+      "layoutMs": 50.15,
+      "rasterWorkerMs": 96.25,
+      "gpuProcessTaskMs": 2336.97,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-overview-pan",
+      "p95Ms": 100.2,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 4096.70000000298,
+      "rootCommits": 32,
+      "functionCallMs": 105.65,
+      "paintMs": 613.03,
+      "styleMs": 267.63,
+      "layoutMs": 58.57,
+      "rasterWorkerMs": 131.41,
+      "gpuProcessTaskMs": 3251.9,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-normal-run1.json",
+      "scenario": "normal-desk-idle",
+      "p95Ms": 384.02,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3017.2000000029802,
+      "rootCommits": 0,
+      "functionCallMs": 9.22,
+      "paintMs": 332.18,
+      "styleMs": 142.74,
+      "layoutMs": 41.45,
+      "rasterWorkerMs": 511.39,
+      "gpuProcessTaskMs": 2512.61,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-vegetation-motion-paused-run1.json",
+      "scenario": "vegetation-motion-paused-overview-idle",
+      "p95Ms": 33.5,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3005.5,
+      "rootCommits": 0,
+      "functionCallMs": 13.09,
+      "paintMs": 970.14,
+      "styleMs": 270.76,
+      "layoutMs": 127.04,
+      "rasterWorkerMs": 43.47,
+      "gpuProcessTaskMs": 1737.3,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    },
+    {
+      "file": "traces-headed-dpr1\\trace-headed-dpr1-vegetation-motion-paused-run1.json",
+      "scenario": "vegetation-motion-paused-desk-idle",
+      "p95Ms": 66.9,
+      "boundedToProbe": false,
+      "traceWindowMs": null,
+      "elapsedMs": 3034.6000000089407,
+      "rootCommits": 0,
+      "functionCallMs": 7.73,
+      "paintMs": 735.9,
+      "styleMs": 110.49,
+      "layoutMs": 75.01,
+      "rasterWorkerMs": 45.13,
+      "gpuProcessTaskMs": 2278.94,
+      "note": "Inclusive event durations may nest and threads overlap. Do not sum into wall time or GPU execution cost. React commit duration is not separately profiled in production."
+    }
+  ],
+  "exclusions": "Failed setup attempts contain environment files only, excluded. IAB is reported separately. No historical results are merged. Trace event sums are inclusive, nested and across overlapping threads; they are not GPU hardware execution time or a partition of wall time."
+}

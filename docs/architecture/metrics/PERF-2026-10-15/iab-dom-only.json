@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-15 Asia/Shanghai",
+  "environment": "Codex In-app Browser, visible tab",
+  "url": "http://127.0.0.1:4175/",
+  "viewport": { "width": 1533, "height": 1252 },
+  "visibility": "visible",
+  "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+  "svgElements": 7215,
+  "characters": ["chair-seated", "tea-seated", "sofa-seated"],
+  "panel": "expanded, unlike the Playwright baseline",
+  "evidence": "DOM snapshot and screenshot inspected; default afternoon overview, default three people, full bookshelf and existing furniture visible. No product edits or layout saves.",
+  "frameIntervals": null,
+  "trace": null,
+  "dpr": null,
+  "browserVersion": null,
+  "limitation": "The connected interface evaluates in a read-only DOM scope; navigator was unavailable. No live performance observer/rAF probe or CDP tracing was available through this interface. This is loading/visual evidence only, not an IAB performance measurement or user visual acceptance. The temporary tab was closed."
+}

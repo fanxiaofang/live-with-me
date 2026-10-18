@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-15T16:46:04.983Z",
+  "browser": "141.0.7390.37",
+  "variant": "scale-check",
+  "url": "http://127.0.0.1:4177/",
+  "viewport": {
+    "width": 1200,
+    "height": 800
+  },
+  "dpr": 1,
+  "seed": 15176,
+  "limitations": "Isolated headed Chromium, not the user IAB. rAF is not presented FPS; physical foreground and host load unverified. One switch per destination, no trace/recording. Normal animations, sample starts in plant quiet phase.",
+  "build": {
+    "BookshelfModal-D4NqCEIV.js": "7c48dce7ce2e21e6c5e7348e34d1847c4cb0e0e3e3e82a2adb3c6961f78e6fd7",
+    "CabinetDetailModal-CzU0ZNFj.js": "12887e01b00c6bf07b42c33f7ead262305da8f17f96990cab9547e2d41181d40",
+    "ChairInspectionModal-ClD2gF0Y.js": "d70f49b6b41d58bb9badda44623788ba0813a21d5c83402aca363cdf86971644",
+    "characterPreviewPalette-D24KEPBs.js": "fc4f2c758f206510cadf4fda011a5563fa89469cd63f3712801bb42e1ba7bbd9",
+    "FriendCardModal-CLWlZlev.js": "f0301aa817c9cdbccdfacc3bd78a055452f3c348ae0394f96eca16866a455ebd",
+    "index-CBqoQ_EV.css": "04fd88a79fed296bab638853b52a54e58032751808320ad9f8385775b4b1c8c6",
+    "index-CK0U4n4N.js": "5b7ac3c4fe6b934b8a9ffca336ed5c2f47c60232c94ad30c3adb017dbe510bdb",
+    "MailboxModal-DigWuIQD.js": "158f3a32e4ce5a439eca989e5aa30d19d632f088a47371efc1d463ead75885c1",
+    "map-pin-DP4Z05Ax.js": "32f128b0b4a5837ac50545216d0d936326b8297ad9358d899a30425a6a3618db",
+    "MemoryLogModal-BQHRJvAI.js": "a88c2f7367b38cd023675554f5904547cdc5e4243a91228fbabfc8ca86f8246d",
+    "PosterDetailModal-B9uNDg0U.js": "5705a54cb4c6360f26d2f7e8d6c573e1f277761afefddc2b652c203f5d0da0e9",
+    "send-DNC7SgUq.js": "ee51d149b5916683c159f06db65a08c4434e37e1781923c6df690b35be794dfc",
+    "StatusPickerModal-C7h2s_Fa.js": "9b40b1e98396e5daca126c010b34392dac461ff15f85c8e8f352fbdea1fc38eb",
+    "SvgDetailView-BKz9Z4HZ.js": "7f46ce7f4c5d8cb16d67ee937dd7633902c661a06dbddb205adb197dc04c7e05",
+    "SvgExportModal-Cjgd9got.js": "2dba1efd42eed23b8209c120be9c761f7b8dcf372bcec58d8d155fce997949ab",
+    "useDialogFocus-BQUTmXbA.js": "d7e9e0f2d0695da04a10bb2421dd445942440603a9a46b4568310b8241459a25"
+  }
+}

@@ -1,0 +1,4 @@
+# Approved SVG hashes identify exact source bytes. Preserve their line endings
+# on every platform, including the intentional whitespace in supplied artwork.
+*.svg -text whitespace=-blank-at-eol
+public/*review.html whitespace=-blank-at-eol

@@ -14,6 +14,7 @@ import { BackgroundLandscape, HomesteadMeadow } from '../world/render/Background
 import { ForegroundLandscape } from '../world/render/ForegroundLandscape';
 import { SceneEntity } from '../world/render/SceneEntity';
 import { WorldDefs } from '../world/render/WorldDefs';
+import { useIntermittentBreeze } from '../world/render/useIntermittentBreeze';
 import { DEFAULT_SCENE_LAYOUT } from '../world/scene/sceneLayout';
 import type { SceneLayout } from '../world/scene/sceneTypes';
 import { COUNTRYSIDE_THEMES } from '../world/theme/worldTheme';
@@ -112,6 +113,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const [selectedPosterId, setSelectedPosterId] = useState<PosterId | null>(null);
 
   const { camera, isDragging, svgRef, hasMovedRef, pointerHandlers, zoomBy, restoreFocus } = useWorldCamera(activeRoom, sceneLayout, focusRevision, isInspectorOpen);
+  useIntermittentBreeze(svgRef);
   const beginGesture = useEventCallback(() => { hasMovedRef.current = false; onDragGizmoBegin?.(); });
   const cancelGesture = useEventCallback(() => onDragGizmoCancel?.());
   const markGestureMoved = useEventCallback(() => { hasMovedRef.current = true; });

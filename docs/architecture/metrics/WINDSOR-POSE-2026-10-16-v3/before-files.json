@@ -1,0 +1,34 @@
+[
+  {
+    "path": "src/components/desk/WindsorSeatedCharacter.tsx",
+    "sha256": "d0ba2048660a32d7995d12473975c0742b75b4b8b24175e9225c9a2f67562659"
+  },
+  {
+    "path": "src/components/desk/WindsorSeatedHead.tsx",
+    "sha256": "5c36863a4e53af3d0084c4918d5b784c5844be4a187d6a645d0ba55fe5cf411f"
+  },
+  {
+    "path": "src/components/desk/windsorSeatedPose.ts",
+    "sha256": "c4a4977f0bcae5463bb55ca5361a29d3d2ccbe03ceb2153b89f0388e6aa61266"
+  },
+  {
+    "path": "src/components/desk/ChairInspectionModal.tsx",
+    "sha256": "9d4a11edef7909a517f0667b71a242f5c01d68f8ef1540af942d2ec18ce4a2b6"
+  },
+  {
+    "path": "src/components/desk/WindsorChair.tsx",
+    "sha256": "021ab507c2ecf245e4c88ddf241b9a28aa2ce230fb9983d3586d08038c36f4a9"
+  },
+  {
+    "path": "src/components/desk/chairGeometry.ts",
+    "sha256": "b007e2bbf7678a36ba60546def0252719f5d490565fc2b977e6d990d4fa0df62"
+  },
+  {
+    "path": "src/components/layout-gizmo/layoutStore.ts",
+    "sha256": "16788ba77c20c55022e34ed53bd249ffe5253ad51424ed8faa1c45f75baf8e71"
+  },
+  {
+    "path": "src/components/desk/DeskWorkstations.tsx",
+    "sha256": "466cc9562c8b46aa587cf770888e6cd64074d0d8790b4c0900ae23de0c9107d3"
+  }
+]

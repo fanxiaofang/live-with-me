@@ -20,6 +20,8 @@ import { INITIAL_MEMORIES } from './data/initialData';
 import { LivingMemory, Person, RoomId, TimeOfDay } from './types';
 import type { CabinetPartId } from './components/cabinet/cabinetDetails';
 import type { DeskSeatId } from './components/desk/chairGeometry';
+import { DeskStudyContext } from './components/desk/DeskStudyContext';
+import type { DeskStudyDraft } from './components/desk/deskStudyModel';
 
 const BookshelfModal = lazy(() => import('./components/bookshelf/BookshelfModal').then(module => ({ default: module.BookshelfModal })));
 const MemoryLogModal = lazy(() => import('./components/MemoryLogModal').then(module => ({ default: module.MemoryLogModal })));
@@ -49,6 +51,9 @@ export default function App() {
   // 电脑桌椅子状态管理 (空椅态 vs 小人组合态)
   const [isChairModalOpen, setIsChairModalOpen] = useState(false);
   const [chairInspectionSeat, setChairInspectionSeat] = useState<DeskSeatId>('desk_workstation');
+  const [deskStudyDraft, setDeskStudyDraft] = useState<DeskStudyDraft | null>(null);
+  const [deskStudyPreview, setDeskStudyPreview] = useState<{ guides: boolean } | null>(null);
+  const [resumeDeskStudy, setResumeDeskStudy] = useState(false);
   const openChairInspector = (seat: DeskSeatId = 'desk_workstation') => {
     setChairInspectionSeat(seat); setIsChairModalOpen(true);
   };
@@ -57,7 +62,7 @@ export default function App() {
   const handleToggleChairSeated = (nextSeated?: boolean) => {
     const nextVal = nextSeated !== undefined ? !nextSeated : !isChairEmptyOverride;
     setIsChairEmptyOverride(nextVal);
-    triggerToast(nextVal ? '🪑 已切换为【空椅子态】：清晰查看修身实木工学椅的加厚云朵坐垫、护脊腰靠与自然木纹' : '💻 已切换为【小人组合态】：小人深陷云朵软包坐垫惬意敲代码，久坐释压');
+    triggerToast(nextVal ? '🪑 已切换为空椅，可查看沙发椅软包与扶手' : '💻 已恢复工位人物，显示 NW 上身与桌前手臂');
   };
 
   // Bookshelf state
@@ -131,6 +136,7 @@ export default function App() {
 
       {/* 3. Stylized Cozy 2.5D Layered World */}
       <div className="absolute inset-0 z-0">
+        <DeskStudyContext.Provider value={deskStudyPreview && deskStudyDraft ? { surface: deskStudyDraft.surface, guides: deskStudyPreview.guides } : null}>
         <ThreeWorld
           timeOfDay={timeOfDay}
           presenceAllocation={presenceAllocation}
@@ -158,8 +164,8 @@ export default function App() {
             setSelectedBookshelfItem({ type: 'book', item: book });
             setIsBookshelfModalOpen(true);
           }}
-          roomLayout={roomLayout}
-          isInspectorOpen={isLayoutInspectorOpen}
+          roomLayout={deskStudyPreview && deskStudyDraft ? deskStudyDraft.layout : roomLayout}
+          isInspectorOpen={isLayoutInspectorOpen && !deskStudyPreview}
           activeGizmoId={isLayoutInspectorOpen ? activeGizmoId : null}
           onSelectGizmo={(id) => {
             if (isLayoutInspectorOpen) {
@@ -175,10 +181,23 @@ export default function App() {
           onOpenChairInspector={openChairInspector}
           onTriggerToast={triggerToast}
         />
+        </DeskStudyContext.Provider>
       </div>
 
+      {deskStudyPreview && <aside aria-label="桌面草稿场景试放" className="fixed left-1/2 bottom-28 z-40 w-[min(94vw,510px)] -translate-x-1/2 rounded-xl border border-[#70523b] bg-[#241b16] p-3 text-[#eee2d3]">
+        <p className="text-sm">桌面草稿试放 · 未定稿，未写入布局</p>
+        <div className="mt-2 flex flex-wrap gap-2 text-sm">
+          <button type="button" className="rounded-md bg-[#705039] px-3 py-2" onClick={() => {
+            setDeskStudyPreview(null); setResumeDeskStudy(true); setIsChairModalOpen(true);
+          }}>返回接触校准</button>
+          <button type="button" className="rounded-md border border-[#70523b] px-3 py-2" onClick={() => {
+            setDeskStudyPreview(null); setDeskStudyDraft(null); setResumeDeskStudy(false);
+          }}>结束试放并恢复</button>
+        </div>
+      </aside>}
+
       {/* 3.5 2.5D 全屋轴测拖拽对齐校准面板 */}
-      <LayoutInspectorPanel
+      {!deskStudyPreview && <LayoutInspectorPanel
         layout={roomLayout}
         activeId={isLayoutInspectorOpen ? activeGizmoId : null}
         onSelectObject={setActiveGizmoId}
@@ -197,7 +216,7 @@ export default function App() {
             return next;
           });
         }}
-      />
+      />}
 
       {/* 4. Philosophy Badge / Manifesto (Dismissible subtle note) */}
       {showManifesto && (
@@ -327,10 +346,19 @@ export default function App() {
       {mountChair && (<Suspense fallback={null}><ChairInspectionModal
         isOpen={isChairModalOpen}
         layout={roomLayout}
-        onClose={() => setIsChairModalOpen(false)}
+        onClose={() => { setIsChairModalOpen(false); setDeskStudyDraft(null); setDeskStudyPreview(null); setResumeDeskStudy(false); }}
         occupants={{ desk_workstation: presenceAllocation.slots.desk_workstation.occupant,
           desk_workstation_secondary: presenceAllocation.slots.desk_workstation_secondary.occupant }}
         selectedSeat={chairInspectionSeat} onSelectSeat={setChairInspectionSeat}
+        onViewWindsorRoom={() => {
+          setIsChairModalOpen(false); setDeskStudyDraft(null); setDeskStudyPreview(null); setResumeDeskStudy(false);
+          setActiveRoom('my_room');
+        }}
+        studyDraft={deskStudyDraft} onStudyChange={setDeskStudyDraft} startInStudy={resumeDeskStudy}
+        onStudyPreview={(draft, guides) => {
+          setDeskStudyDraft(draft); setDeskStudyPreview({ guides }); setResumeDeskStudy(true);
+          setIsLayoutInspectorOpen(false); setActiveGizmoId(null); setActiveRoom('my_room'); setIsChairModalOpen(false);
+        }}
       /></Suspense>)}
     </main>
   );

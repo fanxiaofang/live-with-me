@@ -3,6 +3,7 @@ import { Person } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { DeskSeatedCharacter } from './DeskSeatedCharacter';
+import { WindsorSeatedCharacter } from './WindsorSeatedCharacter';
 import type { EditableObjectId } from '../layout-gizmo/layoutStore';
 import { chairPoint, chairSeatPath, chairXY, DESK_CHAIR_MEASUREMENTS as dimensions } from './chairGeometry';
 
@@ -92,7 +93,9 @@ export const WindsorChair: React.FC<WindsorChairProps> = ({
       </g>
     </g>
 
-    {seated && occupant && <DeskSeatedCharacter occupant={occupant} keyboardAnchor={keyboardAnchor} secondary={secondary} />}
+    {seated && occupant && (variant === 'windsor'
+      ? <WindsorSeatedCharacter occupant={occupant} keyboardAnchor={keyboardAnchor} />
+      : <DeskSeatedCharacter occupant={occupant} keyboardAnchor={keyboardAnchor} secondary={secondary} />)}
 
     {variant === 'windsor' ? <g id="chair-windsor-backrest" strokeLinecap="round" fill="none">
       {[-7, -4.7, -2.3, 0, 2.3, 4.7, 7].map((u, index) => {

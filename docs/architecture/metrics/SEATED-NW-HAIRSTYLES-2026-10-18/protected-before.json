@@ -1,0 +1,250 @@
+[
+  {
+    "path": "public\\character-curly-4views.svg",
+    "sha256": "2CDDB28EBC3F45D716CA6A394548C3050BFDC597D17709F01B10FF4277BC2987"
+  },
+  {
+    "path": "public\\character-curly-back.svg",
+    "sha256": "5D48799D7919E3294456684E93B9024AF91BDB1864CD2009EE7B68465867D1A5"
+  },
+  {
+    "path": "public\\character-curly-front.svg",
+    "sha256": "893E1A19B896877FB4BB6168F09DFE4AB04F7CEFB682E1FE50A54940B6753B1B"
+  },
+  {
+    "path": "public\\character-curly-left.svg",
+    "sha256": "2722F37FAB0FFF202ABFF309FBCAE0F7FB8E68E7946A1BA137DD4DC62AA6B329"
+  },
+  {
+    "path": "public\\character-curly-right.svg",
+    "sha256": "B4ECC920071C315A8D26409F73BA7430E7BC9773A684B83CAFC369623327EDE8"
+  },
+  {
+    "path": "public\\character-curly-standing-4views.svg",
+    "sha256": "8A43D9493F6869F5AADE00EAE04F2B6BCC4180348D102592F0A8AF0976974300"
+  },
+  {
+    "path": "public\\character-curly-standing-5views.svg",
+    "sha256": "11BCBDF3D27F079589A83635A62BAFBF0EECF2B09CA22C816E03D0458A05C90C"
+  },
+  {
+    "path": "public\\character-curly-standing-back.svg",
+    "sha256": "26DE00EA3AA1B707CB566DDC14ECCA229727B421BD493809088A3E5C2346485E"
+  },
+  {
+    "path": "public\\character-curly-standing-front.svg",
+    "sha256": "B807A6C34115058052AC5A8369D3157655FC35C6D3D79C8A98C644CEF0CE62A4"
+  },
+  {
+    "path": "public\\character-curly-standing-left.svg",
+    "sha256": "D95FA25EFC2E201D73900C6F93F2DE7DCA30DAF278552B41F166DAE45C00E005"
+  },
+  {
+    "path": "public\\character-curly-standing-nw.svg",
+    "sha256": "6FCA4ED02525EF64375C8C445827A6F3094E0A2A0B8819B65095725C7D8100B0"
+  },
+  {
+    "path": "public\\character-curly-standing-right.svg",
+    "sha256": "4BFE88D9986E417D611FD7F548F9F125D38F1D63D3F9090C33094E4E88F91CCB"
+  },
+  {
+    "path": "public\\character-seated-side-contact-v11.svg",
+    "sha256": "D1171843C102875C1248A3EAD923BCD14DACF30AE38C8293A7B477AE61889C6D"
+  },
+  {
+    "path": "public\\character-seated-side-relaxation-v10.svg",
+    "sha256": "B61F6F481F83F7BB01EA31C254C44AD5B991982913BECB43DE8E84561288A657"
+  },
+  {
+    "path": "public\\character-shaggy-4views.svg",
+    "sha256": "DE752888E95DB74D1A72B3AEDA8D14F879D15ED0893D015D3ADD1DF91088761D"
+  },
+  {
+    "path": "public\\character-shaggy-back.svg",
+    "sha256": "BCDE9F509304374409B92BF3994C4F009DE518A932E5DF9D4A11A0AF98406718"
+  },
+  {
+    "path": "public\\character-shaggy-front.svg",
+    "sha256": "F36F48B7815D5F8D5687920516F87FAD111E9768B61AF40E2E3113EA31A8084D"
+  },
+  {
+    "path": "public\\character-shaggy-left.svg",
+    "sha256": "B735069D85CE11AD776B1EC7AC73FBAD19CCB7D13EB34A76FA5BC9D5E28FC013"
+  },
+  {
+    "path": "public\\character-shaggy-right.svg",
+    "sha256": "7CFE0F0F7935B2869F4B4134EBC0296E7E6FAB8D3BBC550C5D020062328878E1"
+  },
+  {
+    "path": "public\\character-shaggy-standing-4views.svg",
+    "sha256": "1A57305E9F41DBE629BC03593D8F50270784425C214D13D28995A762CA21BB5C"
+  },
+  {
+    "path": "public\\character-shaggy-standing-5views.svg",
+    "sha256": "22F9535B4C6B4364C98C93A86D1299E4A5BFE9E0A3376EE7017E0EE6F291E032"
+  },
+  {
+    "path": "public\\character-shaggy-standing-back.svg",
+    "sha256": "94CFBA2EC152D84AA76709E55C962F7C8F12C6D51A958E847AE3D2FBAB594134"
+  },
+  {
+    "path": "public\\character-shaggy-standing-front.svg",
+    "sha256": "D76F0BB07AED35B4FF7034D42B18E269F8B65077F700672A40CC2E9553E57515"
+  },
+  {
+    "path": "public\\character-shaggy-standing-left.svg",
+    "sha256": "B9BF625634F19A0BD23B7454D8B6829269FFB8E50FA57F15CABF014E603B4C13"
+  },
+  {
+    "path": "public\\character-shaggy-standing-nw.svg",
+    "sha256": "71D805F851CB14EE2F9038311A49455C91903F036148E77FA1C78C4F02DEB408"
+  },
+  {
+    "path": "public\\character-shaggy-standing-right.svg",
+    "sha256": "3E4F59DB36ECF68D6133CE2C2E88D230F5FCA3DC910C1B643DC2DC3A7E3C6A59"
+  },
+  {
+    "path": "public\\character-shorthair-4views.svg",
+    "sha256": "2D3B629A05063777592C88D2807F53E9DE099CC371BE6B5FCB4FB1A6699C5910"
+  },
+  {
+    "path": "public\\character-shorthair-back.svg",
+    "sha256": "F70055A0D1C370A99FBF98AAD92924CAC9072A48F3122900C6D41AA55D4F7FFD"
+  },
+  {
+    "path": "public\\character-shorthair-front.svg",
+    "sha256": "3199015B824713AA46007B32B86767C7A2F989ACB0FBF08D18B3543498AFEE36"
+  },
+  {
+    "path": "public\\character-shorthair-left.svg",
+    "sha256": "8D46B19B6B707E41CCBC527B116D0853136C0E5D5E61CA18E60BD42B9BE43AE2"
+  },
+  {
+    "path": "public\\character-shorthair-proportion-comparison.svg",
+    "sha256": "08F7CA8322888B32BF2492F6E8F1E0E9064F071B24633123BCBC3D1F46204F31"
+  },
+  {
+    "path": "public\\character-shorthair-right.svg",
+    "sha256": "180CFD91556A0925E4B96D33527859AA0A2484E51477B96A089AF18722507A63"
+  },
+  {
+    "path": "public\\character-shorthair-seated-nw-study.svg",
+    "sha256": "7E8D6061B0AFD7DA4A654FF4A6CA79F60186584A907FE6B2971351BAC3A91543"
+  },
+  {
+    "path": "public\\character-shorthair-standing-4views.svg",
+    "sha256": "C20F9F41747579B2A69EAA0D0D948713F605A0CAD3C25DCFAD3B77E66E4E9059"
+  },
+  {
+    "path": "public\\character-shorthair-standing-5views.svg",
+    "sha256": "86EDC5C55255473D9197E348393C3715A591DD889EC775E0047BDF4C654C0137"
+  },
+  {
+    "path": "public\\character-shorthair-standing-back.svg",
+    "sha256": "74D831E7654D882B92F41F70F1D71D8BD8BB40BD6AFA5DB167FFCF19F31BCF05"
+  },
+  {
+    "path": "public\\character-shorthair-standing-front.svg",
+    "sha256": "BBE79C11BD2E26FC83D9BC01479A520C1528E05F27DB7BFF1E7F1EFFF8CE402E"
+  },
+  {
+    "path": "public\\character-shorthair-standing-ground-4views.svg",
+    "sha256": "012FBA84910B416D43B9CA75002BFE15D37A4E5B90CC5E445F5F349D8DC92741"
+  },
+  {
+    "path": "public\\character-shorthair-standing-left.svg",
+    "sha256": "785A7BFD639655D04F8054A95A527329EA5E010A76CDD7CF205BC31517F01C02"
+  },
+  {
+    "path": "public\\character-shorthair-standing-nw.svg",
+    "sha256": "0C5987FB79D78F384072707E57E1876456F27F9214AB48A94A5A812C52C0BFA5"
+  },
+  {
+    "path": "public\\character-shorthair-standing-right.svg",
+    "sha256": "FAB41CA466B9073A1E95AFBF42AD1337A6A2FFBC808DCC0985B3A6B1ED5339B7"
+  },
+  {
+    "path": "public\\character-shorthair-standing-surfaces.svg",
+    "sha256": "F24854A31A52F4DE685DD69C99542916420525A676079870583356788E8BCC0D"
+  },
+  {
+    "path": "public\\character-sidepart-4views.svg",
+    "sha256": "078346FCBC3CA53E59E9DEAA6A144EDB0DD1EB907D8448E2E91C37B5C8214B1D"
+  },
+  {
+    "path": "public\\character-sidepart-back.svg",
+    "sha256": "9580631EB6A86FEF28860593A7D4D020EF58F13881608FD28E173365CE73A67B"
+  },
+  {
+    "path": "public\\character-sidepart-front.svg",
+    "sha256": "820470910A1D9BBBA6B7ACCBC19DB6C442A472A7AD6798E814490C33CF771827"
+  },
+  {
+    "path": "public\\character-sidepart-left.svg",
+    "sha256": "F2F4EEDCCC0A29BBD59E2307E0DA259935894D9E2E3E70A7BA1E12CA6E9C2233"
+  },
+  {
+    "path": "public\\character-sidepart-right.svg",
+    "sha256": "AC5CDC0581749030A93DA5492D4E76F725774E141FEBC98C01E0F95E87EB4334"
+  },
+  {
+    "path": "public\\character-sidepart-standing-4views.svg",
+    "sha256": "BA28FB61D07DA564F1EC9689BE5CFCC9E0245C77C9A969D122E235B0DC8916AE"
+  },
+  {
+    "path": "public\\character-sidepart-standing-5views.svg",
+    "sha256": "D92BA3989E85DE779261FEC755C7E0AA1D4E0C2A43225C175AB05B8BF58E0753"
+  },
+  {
+    "path": "public\\character-sidepart-standing-back.svg",
+    "sha256": "C5AD8EF6DA12D4DE033C0F288D9CE25C84FCA90731495424ADB588EA4E1DB5A1"
+  },
+  {
+    "path": "public\\character-sidepart-standing-front.svg",
+    "sha256": "7EC0F0F1B29A9006BC25459B7B7B5A3065176F127A953DF9735D25FAC8B5D26D"
+  },
+  {
+    "path": "public\\character-sidepart-standing-left.svg",
+    "sha256": "89C60962D36E8634484F18E4127256E258C71A399D553496C5BFD317D102670F"
+  },
+  {
+    "path": "public\\character-sidepart-standing-nw.svg",
+    "sha256": "645E8A742271BF8DC31FE1AD75AB522E66D2E6C5DAEAE066F558E4A7A0195F8F"
+  },
+  {
+    "path": "public\\character-sidepart-standing-right.svg",
+    "sha256": "AFF4A4A618EC8478E0D7842365A3E8ADF0FD6CFA680D2583D91C60F594F49AA9"
+  },
+  {
+    "path": "public\\character-shorthair-seated-nw-floor-study.svg",
+    "sha256": "FE8341C17D4CD798ACE68F36A6892C56C18C7E1CC04C1A1814777E45A5C9F78F"
+  },
+  {
+    "path": "public\\character-shorthair-seated-5views-study.svg",
+    "sha256": "9142A406806860070933FF699CF8A1BABBEA62FD9F1D7DB0F9CD969068206455"
+  },
+  {
+    "path": "src\\components\\characters\\NwFloorSeatedCharacter.tsx",
+    "sha256": "BF22698A4629968A6DBB4E7D53F153AD2CF92D52DB88AAF0BB2932B97D25D05A"
+  },
+  {
+    "path": "src\\components\\characters\\approvedNwFloorSeatedAssets.ts",
+    "sha256": "15108E3489FA1E0A16F3E56D517FA3BAEED114C7147749CBDA0E531FF66ACA09"
+  },
+  {
+    "path": "src\\components\\desk\\nwSeatedHeadAssets.ts",
+    "sha256": "A063A2066D3E851132AC481DF7F99F7291C989DB9C434194FAE35152E2652F91"
+  },
+  {
+    "path": "src\\components\\characters\\finalizedNwStandingAssets.ts",
+    "sha256": "22F59220AB73720A4B044BBF8CC2AA70C512AC28D431085C70677A4E37486A55"
+  },
+  {
+    "path": "src\\components\\desk\\WindsorChair.tsx",
+    "sha256": "021AB507C2ECF245E4C88DDF241B9A28AA2CE230FB9983D3586D08038C36F4A9"
+  },
+  {
+    "path": "src\\components\\desk\\chairGeometry.ts",
+    "sha256": "B007E2BBF7678A36BA60546DEF0252719F5D490565FC2B977E6D990D4FA0DF62"
+  }
+]

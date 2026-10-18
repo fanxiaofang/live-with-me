@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "changes": [
+    {
+      "file": "character-shorthair-seated-nw-floor-study.svg",
+      "beforeSha256": "b8e4afe7bf617b13b80140ff36e31f70d97079eeb81485ee1eda1a081f2d2c22",
+      "afterSha256": "34d55cdc5e9290bd4724b8717a6db0717753d29462d637212269f4c1038de714",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\v2\\before\\character-shorthair-seated-nw-floor-study.svg"
+    },
+    {
+      "file": "character-shorthair-seated-5views-study.svg",
+      "beforeSha256": "e61f7993427cd8862eb03303b2b2152deda3bcc04842ddf33a2d1baf04a113ac",
+      "afterSha256": "9d29d3e56919c01785c3e18533615100743d74e04a390040f1e9ddd2d898e9f9",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\v2\\before\\character-shorthair-seated-5views-study.svg"
+    },
+    {
+      "file": "character-shorthair-seated-nw-floor-review.html",
+      "beforeSha256": "0d694b5874d0eece0fee9aed34381123a23b94149178dda81645a782d8551c93",
+      "afterSha256": "f722e517f12480c150a4a607177f16576fe746d189e4a3467336b1f072e1e2d2",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\v2\\before\\character-shorthair-seated-nw-floor-review.html"
+    }
+  ],
+  "indexUnchanged": true,
+  "serviceStopped": false,
+  "browserStorageModified": false
+}

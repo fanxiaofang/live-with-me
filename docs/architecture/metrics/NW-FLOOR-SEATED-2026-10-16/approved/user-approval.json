@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-16",
+  "quote": "那就暂时以我这版定稿",
+  "status": "current-approved",
+  "scope": "经典短发，NW斜侧，独立收腿坐姿；不扩大到椅坐或其它发型",
+  "source": "docs/architecture/metrics/NW-FLOOR-SEATED-2026-10-16/approved/user-original.svg",
+  "sourceSha256": "eaec0c2a9ff4e301b5fabc1378b63edcfa4d8799cf260d281503a897e3e76c60",
+  "normalization": "Remove document placement only; preserve supplied paths and exact uniform scale.",
+  "originalMatrix": [
+    1.0666669607162476,
+    0,
+    0,
+    1.0666669607162476,
+    490.77305539766076,
+    249.39551524506533
+  ]
+}

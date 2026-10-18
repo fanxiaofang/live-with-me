@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-16",
+  "status": "rejected-and-withdrawn",
+  "reason": "User rejected the displaced head and unnatural head/shoulder relationship.",
+  "restoredSource": "public/character-shorthair-standing-nw-2d-candidate-v1.png",
+  "sourceSha256": "fdb50cecd7bb24841093198bd7224ddce1849448b560244abf9976b0ebe0f799",
+  "headTranslation": 0,
+  "composition": "single complete v1 image; no head clipping, masks or translation",
+  "protectedFilesUnchanged": 53,
+  "currentPages": [
+    "public/character-shorthair-standing-nw-2d-review.html",
+    "public/character-shorthair-standing-nw-2d-review-v3.html"
+  ],
+  "historyPage": "public/character-shorthair-standing-nw-2d-review-v3-rejected.html",
+  "originalV1Approval": "not approved; original slight-forward-head feedback remains unresolved"
+}

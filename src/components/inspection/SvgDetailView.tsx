@@ -12,6 +12,7 @@ interface SvgDetailViewProps {
   resetKey?: string;
   className?: string;
   autoFit?: boolean;
+  surfaceColor?: string;
 }
 
 const padded = (box: Bounds): Bounds => {
@@ -20,7 +21,7 @@ const padded = (box: Bounds): Bounds => {
 };
 
 /** Re-render the original vector asset through a local viewBox, without world-camera changes. */
-export function SvgDetailView({ label, children, initialBounds, focusItem, resetKey, className = '', autoFit = true }: SvgDetailViewProps) {
+export function SvgDetailView({ label, children, initialBounds, focusItem, resetKey, className = '', autoFit = true, surfaceColor }: SvgDetailViewProps) {
   const svg = useRef<SVGSVGElement>(null);
   const content = useRef<SVGGElement>(null);
   const fit = useRef(padded(initialBounds));
@@ -112,6 +113,7 @@ export function SvgDetailView({ label, children, initialBounds, focusItem, reset
         </div>
       </div>
       <div role="region" aria-label={`${label}画布`} aria-describedby={hintId} tabIndex={0}
+        style={surfaceColor ? { backgroundColor: surfaceColor } : undefined}
         className="h-[clamp(190px,32vh,340px)] rounded-xl border border-[#5a402c] bg-[#19120e] overflow-hidden focus-visible:outline-2 focus-visible:outline-[#e7b76c]"
         onKeyDown={event => {
           if (event.target !== event.currentTarget) return;

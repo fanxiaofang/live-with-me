@@ -11,6 +11,7 @@
     "lint": "tsc --noEmit",
     "test:unit": "node --import tsx --test tests/unit/*.test.ts",
     "test:e2e": "playwright test --grep-invert @visual",
+    "test:authoring": "playwright test --config playwright.authoring.config.ts",
     "test:visual": "playwright test --grep @visual",
     "test:preview": "playwright test --config playwright.preview.config.ts"
   },

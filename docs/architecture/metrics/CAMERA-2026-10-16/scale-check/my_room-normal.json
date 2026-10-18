@@ -1,0 +1,403 @@
+{
+  "click": 16593.5,
+  "scaleEdits": 0,
+  "before": {
+    "room": "overview",
+    "phase": "quiet",
+    "visible": "visible",
+    "focus": true,
+    "layers": [
+      {
+        "id": "parallax-sky-layer",
+        "target": "translate(0px, 135px) scale(0.66)",
+        "actual": "matrix(0.66, 0, 0, 0.66, 0, 135)"
+      },
+      {
+        "id": "parallax-mountains-layer",
+        "target": "translate(0px, 135px) scale(0.66)",
+        "actual": "matrix(0.66, 0, 0, 0.66, 0, 135)"
+      },
+      {
+        "id": "parallax-wheat-layer",
+        "target": "translate(0px, 135px) scale(0.66)",
+        "actual": "matrix(0.66, 0, 0, 0.66, 0, 135)"
+      },
+      {
+        "id": "panoramic-world-stage",
+        "target": "translate(0px, 135px) scale(0.66)",
+        "actual": "matrix(0.66, 0, 0, 0.66, 0, 135)"
+      }
+    ]
+  },
+  "after": {
+    "room": "my_room",
+    "phase": "quiet",
+    "visible": "visible",
+    "focus": true,
+    "layers": [
+      {
+        "id": "parallax-sky-layer",
+        "target": "translate(19.68px, 135.45px) scale(0.741)",
+        "actual": "matrix(0.741, 0, 0, 0.741, 19.68, 135.45)"
+      },
+      {
+        "id": "parallax-mountains-layer",
+        "target": "translate(68.88px, 136.8px) scale(0.876)",
+        "actual": "matrix(0.876, 0, 0, 0.876, 68.88, 136.8)"
+      },
+      {
+        "id": "parallax-wheat-layer",
+        "target": "translate(159.9px, 139.95px) scale(1.038)",
+        "actual": "matrix(1.038, 0, 0, 1.038, 159.9, 139.95)"
+      },
+      {
+        "id": "panoramic-world-stage",
+        "target": "translate(246px, 144px) scale(1.2)",
+        "actual": "matrix(1.2, 0, 0, 1.2, 246, 144)"
+      }
+    ]
+  },
+  "frames": [
+    {
+      "start": -1477.4699999999993,
+      "end": -1394,
+      "ms": 83.46999999999935
+    },
+    {
+      "start": -1394,
+      "end": -1160.5,
+      "ms": 233.5
+    },
+    {
+      "start": -1160.5,
+      "end": -1127.1000000000004,
+      "ms": 33.399999999999636
+    },
+    {
+      "start": -1127.1000000000004,
+      "end": -1093.7999999999993,
+      "ms": 33.30000000000109
+    },
+    {
+      "start": -1093.7999999999993,
+      "end": -1027.1000000000004,
+      "ms": 66.69999999999891
+    },
+    {
+      "start": -1027.1000000000004,
+      "end": -960.2999999999993,
+      "ms": 66.80000000000109
+    },
+    {
+      "start": -960.2999999999993,
+      "end": -926.7000000000007,
+      "ms": 33.599999999998545
+    },
+    {
+      "start": -926.7000000000007,
+      "end": -893.6000000000004,
+      "ms": 33.100000000000364
+    },
+    {
+      "start": -893.6000000000004,
+      "end": -860.2000000000007,
+      "ms": 33.399999999999636
+    },
+    {
+      "start": -860.2000000000007,
+      "end": -793.5,
+      "ms": 66.70000000000073
+    },
+    {
+      "start": -793.5,
+      "end": -726.7000000000007,
+      "ms": 66.79999999999927
+    },
+    {
+      "start": -726.7000000000007,
+      "end": -660,
+      "ms": 66.70000000000073
+    },
+    {
+      "start": -660,
+      "end": -626.6000000000004,
+      "ms": 33.399999999999636
+    },
+    {
+      "start": -626.6000000000004,
+      "end": -526.6000000000004,
+      "ms": 100
+    },
+    {
+      "start": -526.6000000000004,
+      "end": -459.7999999999993,
+      "ms": 66.80000000000109
+    },
+    {
+      "start": -459.7999999999993,
+      "end": -393.10000000000036,
+      "ms": 66.69999999999891
+    },
+    {
+      "start": -393.10000000000036,
+      "end": -292.89999999999964,
+      "ms": 100.20000000000073
+    },
+    {
+      "start": -292.89999999999964,
+      "end": -192.79999999999927,
+      "ms": 100.10000000000036
+    },
+    {
+      "start": -192.79999999999927,
+      "end": -26,
+      "ms": 166.79999999999927
+    },
+    {
+      "start": -26,
+      "end": 73.90000000000146,
+      "ms": 99.90000000000146
+    },
+    {
+      "start": 73.90000000000146,
+      "end": 607.9000000000015,
+      "ms": 534
+    },
+    {
+      "start": 607.9000000000015,
+      "end": 1608.7999999999993,
+      "ms": 1000.8999999999978
+    },
+    {
+      "start": 1608.7999999999993,
+      "end": 1642.2999999999993,
+      "ms": 33.5
+    }
+  ],
+  "events": [
+    {
+      "type": "transitionrun",
+      "id": "parallax-sky-layer",
+      "t": 106.90000000596046,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionstart",
+      "id": "parallax-sky-layer",
+      "t": 107,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionrun",
+      "id": "parallax-mountains-layer",
+      "t": 107.1000000089407,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionstart",
+      "id": "parallax-mountains-layer",
+      "t": 107.80000001192093,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionrun",
+      "id": "parallax-wheat-layer",
+      "t": 108,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionstart",
+      "id": "parallax-wheat-layer",
+      "t": 108,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionrun",
+      "id": "panoramic-world-stage",
+      "t": 108.1000000089407,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionstart",
+      "id": "panoramic-world-stage",
+      "t": 108.40000000596046,
+      "elapsed": 0
+    },
+    {
+      "type": "transitionend",
+      "id": "parallax-sky-layer",
+      "t": 620.4000000059605,
+      "elapsed": 0.4
+    },
+    {
+      "type": "transitionend",
+      "id": "parallax-mountains-layer",
+      "t": 620.5,
+      "elapsed": 0.4
+    },
+    {
+      "type": "transitionend",
+      "id": "parallax-wheat-layer",
+      "t": 620.6000000089407,
+      "elapsed": 0.4
+    },
+    {
+      "type": "transitionend",
+      "id": "panoramic-world-stage",
+      "t": 620.6000000089407,
+      "elapsed": 0.4
+    }
+  ],
+  "tasks": [
+    {
+      "start": -567.5,
+      "duration": 55
+    },
+    {
+      "start": -449.59999999403954,
+      "duration": 74
+    },
+    {
+      "start": -367.69999998807907,
+      "duration": 72
+    },
+    {
+      "start": -284.29999999701977,
+      "duration": 102
+    },
+    {
+      "start": -168.29999999701977,
+      "duration": 151
+    },
+    {
+      "start": 22.80000001192093,
+      "duration": 73
+    },
+    {
+      "start": 99.30000001192093,
+      "duration": 90
+    },
+    {
+      "start": 616.3000000119209,
+      "duration": 61
+    }
+  ],
+  "summary": {
+    "room": "my_room",
+    "variant": "normal",
+    "maxAroundSwitch": 1000.8999999999978,
+    "framesDuring400ms": 1,
+    "gapsOver50": [
+      {
+        "start": -26,
+        "end": 73.90000000000146,
+        "ms": 99.90000000000146
+      },
+      {
+        "start": 73.90000000000146,
+        "end": 607.9000000000015,
+        "ms": 534
+      },
+      {
+        "start": 607.9000000000015,
+        "end": 1608.7999999999993,
+        "ms": 1000.8999999999978
+      }
+    ],
+    "events": [
+      {
+        "type": "transitionrun",
+        "id": "parallax-sky-layer",
+        "t": 106.90000000596046,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionstart",
+        "id": "parallax-sky-layer",
+        "t": 107,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionrun",
+        "id": "parallax-mountains-layer",
+        "t": 107.1000000089407,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionstart",
+        "id": "parallax-mountains-layer",
+        "t": 107.80000001192093,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionrun",
+        "id": "parallax-wheat-layer",
+        "t": 108,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionstart",
+        "id": "parallax-wheat-layer",
+        "t": 108,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionrun",
+        "id": "panoramic-world-stage",
+        "t": 108.1000000089407,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionstart",
+        "id": "panoramic-world-stage",
+        "t": 108.40000000596046,
+        "elapsed": 0
+      },
+      {
+        "type": "transitionend",
+        "id": "parallax-sky-layer",
+        "t": 620.4000000059605,
+        "elapsed": 0.4
+      },
+      {
+        "type": "transitionend",
+        "id": "parallax-mountains-layer",
+        "t": 620.5,
+        "elapsed": 0.4
+      },
+      {
+        "type": "transitionend",
+        "id": "parallax-wheat-layer",
+        "t": 620.6000000089407,
+        "elapsed": 0.4
+      },
+      {
+        "type": "transitionend",
+        "id": "panoramic-world-stage",
+        "t": 620.6000000089407,
+        "elapsed": 0.4
+      }
+    ],
+    "tasks": [
+      {
+        "start": 22.80000001192093,
+        "duration": 73
+      },
+      {
+        "start": 99.30000001192093,
+        "duration": 90
+      },
+      {
+        "start": 616.3000000119209,
+        "duration": 61
+      }
+    ],
+    "metricDelta": {
+      "TaskDuration": 1461.522,
+      "ScriptDuration": 38.425000000000004,
+      "LayoutDuration": 33.868,
+      "RecalcStyleDuration": 74.488
+    }
+  },
+  "errors": []
+}

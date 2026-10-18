@@ -69,22 +69,6 @@
   }
 }
 
-/* 金黄麦浪柔和自然漫射呼吸动效 (Gentle Soft Organic Wheat Sheen - 消除金属塑料反光) */
-@keyframes wheatWaveGleam {
-  0% {
-    opacity: 0.12;
-    transform: translateY(0px) scale(0.99);
-  }
-  50% {
-    opacity: 0.25;
-    transform: translateY(-1px) scale(1.01);
-  }
-  100% {
-    opacity: 0.12;
-    transform: translateY(0px) scale(0.99);
-  }
-}
-
 /* 麦穗在梯田边缘随微风起伏 (Subtle Wheat Tuft Drift) */
 @keyframes wheatTuftBreeze {
   0%, 100% {
@@ -122,8 +106,8 @@
 
 /* 动效通用类 */
 .animate-wheat-wave {
-  animation: wheatWaveGleam 7.5s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
-  will-change: opacity, transform;
+  /* Keep the faint field sheen, without continuously repainting two broad paths. */
+  opacity: 0.18;
 }
 
 /* 宁静梦幻睡眠气泡缓升消散动效 (Tranquil Slumber Bubbles - 高清无模糊矢量渲染) */
@@ -255,22 +239,36 @@
 .animate-wind-grass {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  animation: windWaveGrassSway 4.4s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-  will-change: transform;
+  --breeze-animation: windWaveGrassSway;
+  animation-duration: 4.4s;
 }
 
 .animate-wind-flower {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  animation: windNodFlower 4.0s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-  will-change: transform;
+  --breeze-animation: windNodFlower;
+  animation-duration: 4s;
 }
 
 .animate-wind-clover {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  animation: windNodClover 4.6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-  will-change: transform;
+  --breeze-animation: windNodClover;
+  animation-duration: 4.6s;
+}
+
+/* Each plant sways once with its existing local delay, then returns to rest.
+   Removing animation-name during the quiet window restarts the next gust. */
+.animate-wind-grass,
+.animate-wind-flower,
+.animate-wind-clover {
+  animation-name: none;
+  animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  animation-iteration-count: 1;
+}
+
+[data-breeze="gust"] :is(.animate-wind-grass, .animate-wind-flower, .animate-wind-clover) {
+  animation-name: var(--breeze-animation);
 }
 
 .animate-sunbeam-breathe {

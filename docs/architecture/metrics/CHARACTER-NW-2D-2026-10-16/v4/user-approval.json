@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-16",
+  "userQuote": "那就这版吧 其他发型是否也要同步增加",
+  "approved": "v4 classic short-hair NW neutral-standing 2D design, head/shoulder placement, original rounded face and soft ground shadow",
+  "notYetImplemented": [
+    "native NW SVG",
+    "other three hairstyles NW",
+    "runtime integration",
+    "NW seated pose"
+  ],
+  "nextOrder": [
+    "native SVG of approved short-hair design",
+    "adapt same NW direction for remaining hairstyles; preserve common head/body basis"
+  ],
+  "newTechnicalChecks": false
+}

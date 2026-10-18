@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "id": "shorthair",
+      "file": "public/character-shorthair-standing-nw.svg",
+      "bytes": 30485,
+      "sha256": "0c5987fb79d78f384072707e57e1876456f27f9214ab48a94a5a812c52c0bfa5"
+    },
+    {
+      "id": "curly",
+      "file": "public/character-curly-standing-nw.svg",
+      "bytes": 31166,
+      "sha256": "4ca114a74a7ad3e3cc03c510fbcb09f879d2944061affad4ff258cdbc85ba0d6"
+    },
+    {
+      "id": "sidepart",
+      "file": "public/character-sidepart-standing-nw.svg",
+      "bytes": 30954,
+      "sha256": "ae51e33f2fb64066b1def2d810972aa374f608d0506e42d45220bac5b9f50d6e"
+    },
+    {
+      "id": "shaggy",
+      "file": "public/character-shaggy-standing-nw.svg",
+      "bytes": 30819,
+      "sha256": "7e6625bbb916257762586aec59be967f7cf05499f1ba7430f24de56ab316addc"
+    }
+  ],
+  "protectedFilesUnchanged": 53,
+  "source": "public/character-shorthair-standing-nw-2d-candidate-v1.png",
+  "sourceSha256": "fdb50cecd7bb24841093198bd7224ddce1849448b560244abf9976b0ebe0f799",
+  "headTranslation": 10.875,
+  "sharedBodySha256": "23c2af460f435a11023479511d029782a7638aaf3e9b332cb2a3bb9be4b7cd50"
+}

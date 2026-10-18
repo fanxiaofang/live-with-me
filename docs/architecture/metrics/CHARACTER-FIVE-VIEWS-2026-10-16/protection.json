@@ -1,0 +1,23 @@
+{
+  "originalFilesUnchanged": 53,
+  "approvedNwAssetsUnchanged": 4,
+  "originalAppearanceFourViewsUnchanged": true,
+  "newAssets": [
+    {
+      "path": "public/character-shorthair-standing-5views.svg",
+      "sha256": "86edc5c55255473d9197e348393c3715a591dd889ec775e0047bdf4c654c0137"
+    },
+    {
+      "path": "public/character-curly-standing-5views.svg",
+      "sha256": "11bcbdf3d27f079589a83635a62bafbf0eecf2b09ca22c816e03d0458a05c90c"
+    },
+    {
+      "path": "public/character-sidepart-standing-5views.svg",
+      "sha256": "d92ba3989e85de779261fec755c7e0aa1d4e0c2a43225c175ab05b8bf58e0753"
+    },
+    {
+      "path": "public/character-shaggy-standing-5views.svg",
+      "sha256": "22f9535b4c6b4364c98c93a86d1299e4a5bfe9e0a3376ee7017e0ee6f291e032"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-16",
+  "shaggy": {
+    "quote": "双色蓬松碎发基本满足要求",
+    "asset": "public/character-shaggy-standing-nw.svg",
+    "sha256": "71d805f851cb14ee2f9038311a49455c91903f036148e77fa1c78c4f02deb408",
+    "action": "retain exact v3 NW standing asset"
+  },
+  "sidepart": {
+    "quote": "发根位置对了",
+    "scope": "far front-lock root in the v3 NW standing asset"
+  },
+  "pending": [
+    "curly short fringe v4",
+    "sidepart front-lock lower segment v4"
+  ]
+}

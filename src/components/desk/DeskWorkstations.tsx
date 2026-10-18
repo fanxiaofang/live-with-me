@@ -2,7 +2,10 @@ import type { Person } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { IsoGizmo, type EditableObjectId, type RoomLayoutConfig } from '../layout-gizmo';
 import { DESK_SEATS, deskKeyboardInChairSpace, type DeskSeatId } from './chairGeometry';
-import { WindsorChair } from './WindsorChair';
+import { SofaWorkChair } from './SofaWorkChair';
+import { useDeskStudy } from './DeskStudyContext';
+import { deskStudyRise } from './deskStudyModel';
+import { ChairContactGuide } from './DeskContactGuides';
 
 export type DeskOccupants = Record<DeskSeatId, Person | null>;
 type Props = {
@@ -17,21 +20,26 @@ type Props = {
 export function DeskWorkstations({ layout, occupants, relativeToDesk = false, interactive = false,
   hiddenPrimary = false, isInspectorOpen = false, activeGizmoId,
   onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, onOpenInspector, onHover }: Props) {
+  const study = useDeskStudy();
+  const rise = deskStudyRise(study?.surface);
   const origin = relativeToDesk ? layout['desk-group'].screen : { x: 0, y: 0 };
   const seats = [...DESK_SEATS].sort((a, b) => layout[a.chair].screen.y - layout[b.chair].screen.y);
   return <>{seats.map(seat => <g key={seat.slot} data-desk-seat={seat.slot}
     id={seat.slot === 'desk_workstation' ? 'isometric-chair-container' : 'isometric-chair-secondary-container'}
     transform={`translate(${layout[seat.chair].screen.x - origin.x},${layout[seat.chair].screen.y - origin.y})`}>
-    <WindsorChair chairId={seat.chair} variant={seat.variant} occupant={occupants[seat.slot]}
+    <SofaWorkChair chairId={seat.chair} variant={seat.slot === 'desk_workstation' ? 'club' : 'recliner'} occupant={occupants[seat.slot]}
       isSeated={Boolean(occupants[seat.slot]) && !(hiddenPrimary && seat.slot === 'desk_workstation')}
-      interactive={interactive} isInspectorOpen={isInspectorOpen} keyboardAnchor={deskKeyboardInChairSpace(layout, seat.slot)}
+      interactive={interactive} isInspectorOpen={isInspectorOpen} keyboardAnchor={deskKeyboardInChairSpace(layout, seat.slot, rise)}
       onHover={onHover} onClick={event => {
         event.stopPropagation();
         if (isInspectorOpen) onSelectGizmo?.(activeGizmoId === seat.chair ? null : seat.chair);
         else onOpenInspector?.(seat.slot);
       }} />
+    {study?.guides && <ChairContactGuide keyboard={deskKeyboardInChairSpace(layout, seat.slot, rise)}
+      sofa
+      working={Boolean(occupants[seat.slot] && ['coding', 'study', 'writing'].includes(occupants[seat.slot]!.currentState))} />}
     {interactive && activeGizmoId === seat.chair && <IsoGizmo pos={{ x: 0, y: 5.8 }}
-      displayCoords={layout[seat.chair].screen} fixedW={0} label={seat.label}
+      displayCoords={layout[seat.chair].screen} fixedW={0} label={seat.slot === 'desk_workstation' ? '方扶手沙发椅' : '高背电竞沙发椅'}
       onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)} onDragEnd={() => onDragGizmoEnd?.()} />}
   </g>)}</>;
 }

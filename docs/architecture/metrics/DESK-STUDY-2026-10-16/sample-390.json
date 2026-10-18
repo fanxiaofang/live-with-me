@@ -1,0 +1,103 @@
+{
+  "schema": "live-with-me/desk-study/v1",
+  "status": "draft-not-approved",
+  "units": "scene-units",
+  "surface": {
+    "outline": "cove",
+    "height": 22.6,
+    "thickness": 2.4,
+    "width": 1
+  },
+  "layout": {
+    "desk-group": {
+      "id": "desk-group",
+      "name": "阁楼手工白橡木书桌 (整体)",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": -144,
+        "y": 95
+      },
+      "fixedW": 0
+    },
+    "desk-lamp": {
+      "id": "desk-lamp",
+      "name": "复古墨绿银行家台灯",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": 8,
+        "y": -8
+      },
+      "fixedW": 22.6
+    },
+    "desk-cup": {
+      "id": "desk-cup",
+      "name": "手作白瓷温热咖啡杯",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": -35,
+        "y": 5.8
+      },
+      "fixedW": 22.6
+    },
+    "desk-cup-secondary": {
+      "id": "desk-cup-secondary",
+      "name": "第二工位白瓷杯",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": 17,
+        "y": 1
+      },
+      "fixedW": 22.6
+    },
+    "attic-chair": {
+      "id": "attic-chair",
+      "name": "阁楼手作白橡木温莎椅 (含工作者)",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": -147,
+        "y": 105.6
+      },
+      "fixedW": 0
+    },
+    "desk-laptop": {
+      "id": "desk-laptop",
+      "name": "便携轻薄办公电脑",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": -1,
+        "y": 3.6
+      },
+      "fixedW": 22.6
+    },
+    "attic-chair-secondary": {
+      "id": "attic-chair-secondary",
+      "name": "复古固定脚办公椅 (第二工位)",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": -116,
+        "y": 96.4736
+      },
+      "fixedW": 0
+    },
+    "desk-laptop-secondary": {
+      "id": "desk-laptop-secondary",
+      "name": "第二工位便携电脑",
+      "category": "attic",
+      "categoryLabel": "阁楼书屋",
+      "screen": {
+        "x": 31,
+        "y": -5.5264
+      },
+      "fixedW": 22.6
+    }
+  },
+  "fixedSeatHeight": 14.2,
+  "note": "仅制作草稿，不自动导入保存布局；新轮廓和双席容量均待评审。"
+}

@@ -82,12 +82,13 @@ test('tea robes rest centrally on a shared cushion plane with a continuous thick
   await page.screenshot({ path: testInfo.outputPath('tea-cushion-plane.png') });
 });
 
-test('scene poses share head size while retaining furniture contacts and standing scale', async ({ page }, testInfo) => {
+test('floor poses retain their head size, furniture contacts and standing scale', async ({ page }, testInfo) => {
   await stableScene(page);
   const measure = () => page.evaluate(() => {
     const stage = document.querySelector<SVGGElement>('#panoramic-world-stage')!;
     const inverse = stage.getScreenCTM()!.inverse();
-    return [...document.querySelectorAll<SVGGElement>('[data-scene-character], [data-character-pose="standing"]')].map(pose => {
+    return [...document.querySelectorAll<SVGGElement>('[data-scene-character], [data-character-pose="standing"]')]
+      .filter(pose => !pose.closest('[data-sofa-upper-body]')).map(pose => {
       const head = pose.querySelector<SVGGElement>('[id$="character-head-front"], [id$="character-head-back"], [id$="character-head-side"]')!;
       const matrix = inverse.multiply(head.getScreenCTM()!);
       const center = new DOMPoint(0, -14).matrixTransform(matrix);
@@ -108,14 +109,10 @@ test('scene poses share head size while retaining furniture contacts and standin
     });
   });
   const poses = await measure();
-  expect(poses.map(pose => pose.pose).sort()).toEqual(['chair-seated', 'sofa-seated', 'tea-seated']);
+  expect(poses.map(pose => pose.pose).sort()).toEqual(['sofa-seated', 'tea-seated']);
   for (const pose of poses) expect(pose.diameter, pose.pose).toBeCloseTo(14 * 48 / 45, 3);
   expect(poses.find(pose => pose.pose === 'tea-seated')!.seatY).toBeCloseTo(3.5, 4);
   expect(poses.find(pose => pose.pose === 'sofa-seated')!.seatY).toBeCloseTo(4, 4);
-  const chair = poses.find(pose => pose.pose === 'chair-seated')!;
-  expect(chair.floor - chair.center.y + 11 * 48 / 45).toBeCloseTo(43.93, 2);
-  await expect(page.locator('#seated-character-legs')).toHaveCount(0);
-  await expect(page.locator('#seated-character-body [data-desk-robe]')).toHaveCount(1);
   await page.getByText('更换状态与装扮', { exact: true }).click();
   await page.locator('#status-picker-modal').getByRole('button', { name: /山巅外星电波监听站/ }).click();
   await page.locator('#confirm-status-btn').click();
@@ -143,11 +140,11 @@ for (const width of [1200, 390]) {
       writeText: async (text: string) => { (window as Window & { copiedSvg?: string }).copiedSvg = text; },
     } }));
     await stableScene(page);
-    const opener = page.getByRole('button', { name: '人物 4 视图 SVG', exact: true });
+    const opener = page.getByRole('button', { name: '人物 5 视图 SVG', exact: true });
     const camera = await page.locator('#panoramic-world-stage').getAttribute('style');
     const layout = await page.evaluate(() => localStorage.getItem('live_with_me_room_layout_v6'));
     await opener.click();
-    const dialog = page.getByRole('dialog', { name: '人物四视图 · 查看与导出' });
+    const dialog = page.getByRole('dialog', { name: '人物五视图 · 查看与导出' });
     const box = (await dialog.boundingBox())!;
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(width);
@@ -160,21 +157,22 @@ for (const width of [1200, 390]) {
       const file = await download.path();
       expect(await fs.readFile(file!, 'utf8')).toBe(await fs.readFile(`public/${filename}`, 'utf8'));
     };
-    await expect(dialog.getByRole('img', { name: '标准坐姿四视图总表预览', exact: true }))
-      .toHaveAttribute('src', '/character-shorthair-4views.svg');
-    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-shorthair-4views.svg');
-    await dialog.getByRole('button', { name: '站姿四视图', exact: true }).click();
-    await expect(dialog.getByRole('button', { name: '站姿四视图', exact: true })).toHaveAttribute('aria-pressed', 'true');
-    await expect(dialog.getByRole('img', { name: '长袍站姿四视图总表预览', exact: true }))
-      .toHaveAttribute('src', '/character-shorthair-standing-4views.svg');
+    await dialog.getByRole('button', { name: '坐姿四视图 + NW', exact: true }).click();
+    await expect(dialog.getByRole('img', { name: '经典短发坐姿四视图 + NW（当前定稿）预览', exact: true }))
+      .toHaveAttribute('src', '/character-shorthair-seated-5views-study.svg');
+    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-shorthair-seated-5views-study.svg');
+    await dialog.getByRole('button', { name: '站姿五视图', exact: true }).click();
+    await expect(dialog.getByRole('button', { name: '站姿五视图', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(dialog.getByRole('img', { name: '长袍站姿五视图总表预览', exact: true }))
+      .toHaveAttribute('src', '/character-shorthair-standing-5views.svg');
     await expect.poll(() => dialog.locator('img').evaluateAll(images => images.every(image => {
       const img = image as HTMLImageElement; return img.complete && img.naturalWidth > 0;
     }))).toBe(true);
     await dialog.getByRole('button', { name: '复制代码', exact: true }).click();
     await expect(dialog.getByText('已复制', { exact: true })).toBeVisible();
     expect(await page.evaluate(() => (window as Window & { copiedSvg?: string }).copiedSvg))
-      .toBe(await fs.readFile('public/character-shorthair-standing-4views.svg', 'utf8'));
-    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-shorthair-standing-4views.svg');
+      .toBe(await fs.readFile('public/character-shorthair-standing-5views.svg', 'utf8'));
+    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-shorthair-standing-5views.svg');
     for (const [value, filename, label] of [
       ['comparison', 'character-shorthair-proportion-comparison.svg', '坐站同头大小对照预览'],
       ['ground', 'character-shorthair-standing-ground-4views.svg', '浅轴测地面参照预览'],
@@ -187,15 +185,16 @@ for (const width of [1200, 390]) {
     for (const view of ['front', 'left', 'back', 'right']) {
       const link = dialog.locator(`a[href="/character-shorthair-standing-${view}.svg"]`);
       const card = link.locator('..');
-      await downloadAsset(card.getByRole('button', { name: /^下载长袍站姿/ }), `character-shorthair-standing-${view}.svg`);
+      if (view === 'front') await downloadAsset(card.getByRole('button', { name: /^下载长袍站姿/ }), `character-shorthair-standing-${view}.svg`);
+      else await expect(link).toHaveCount(1);
     }
-    await dialog.getByRole('button', { name: '坐姿四视图', exact: true }).click();
-    await expect(dialog.getByRole('img', { name: '标准坐姿四视图总表预览', exact: true }))
-      .toHaveAttribute('src', '/character-shorthair-4views.svg');
+    await dialog.getByRole('button', { name: '坐姿四视图 + NW', exact: true }).click();
+    await expect(dialog.getByRole('img', { name: '经典短发坐姿四视图 + NW（当前定稿）预览', exact: true }))
+      .toHaveAttribute('src', '/character-shorthair-seated-5views-study.svg');
     await dialog.getByRole('button', { name: '层叠长卷发', exact: true }).click();
     await expect(dialog.getByRole('button', { name: '层叠长卷发', exact: true })).toHaveAttribute('aria-pressed', 'true');
-    await expect(dialog.getByRole('img', { name: '层叠长卷发四视图总表预览', exact: true }))
-      .toHaveAttribute('src', '/character-curly-4views.svg');
+    await expect(dialog.getByRole('img', { name: '层叠长卷发坐姿四视图 + NW预览', exact: true }))
+      .toHaveAttribute('src', '/character-curly-seated-5views-study.svg');
     await expect(dialog.getByRole('group', { name: '人物姿态', exact: true })).toHaveCount(1);
     await expect.poll(() => dialog.locator('img').evaluateAll(images => images.every(image => {
       const img = image as HTMLImageElement; return img.complete && img.naturalWidth > 0;
@@ -204,81 +203,85 @@ for (const width of [1200, 390]) {
     expect(overflow, 'curly export controls fit on a phone').toBeLessThanOrEqual(1);
     await dialog.getByRole('button', { name: '复制代码', exact: true }).click();
     await expect.poll(() => page.evaluate(() => (window as Window & { copiedSvg?: string }).copiedSvg))
-      .toBe(await fs.readFile('public/character-curly-4views.svg', 'utf8'));
-    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-curly-4views.svg');
+      .toBe(await fs.readFile('public/character-curly-seated-5views-study.svg', 'utf8'));
+    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-curly-seated-5views-study.svg');
     const opening = page.waitForEvent('popup');
-    await dialog.getByRole('link', { name: '打开完整四视图', exact: true }).click();
+    await dialog.getByRole('link', { name: /打开完整(五)?视图/, exact: true }).click();
     const opened = await opening;
     await expect(opened.locator('[data-character-pose="seated"]')).toHaveCount(4);
     await opened.close();
     for (const view of ['front', 'left', 'back', 'right']) {
       const link = dialog.locator(`a[href="/character-curly-${view}.svg"]`);
-      await downloadAsset(link.locator('..').getByRole('button', { name: /^下载长卷发坐姿/ }), `character-curly-${view}.svg`);
+      if (view === 'front') await downloadAsset(link.locator('..').getByRole('button', { name: /^下载长卷发坐姿/ }), `character-curly-${view}.svg`);
+      else await expect(link).toHaveCount(1);
     }
-    await dialog.getByRole('button', { name: '站姿四视图', exact: true }).click();
-    await expect(dialog.getByRole('img', { name: '层叠长卷发站姿四视图总表预览', exact: true }))
-      .toHaveAttribute('src', '/character-curly-standing-4views.svg');
+    await dialog.getByRole('button', { name: '站姿五视图', exact: true }).click();
+    await expect(dialog.getByRole('img', { name: '层叠长卷发站姿五视图总表预览', exact: true }))
+      .toHaveAttribute('src', '/character-curly-standing-5views.svg');
     await expect(dialog.getByLabel('站姿查看内容', { exact: true })).toHaveCount(0);
     await expect.poll(() => dialog.locator('img').evaluateAll(images => images.every(image => {
       const img = image as HTMLImageElement; return img.complete && img.naturalWidth > 0;
     }))).toBe(true);
     await dialog.getByRole('button', { name: '复制代码', exact: true }).click();
     await expect.poll(() => page.evaluate(() => (window as Window & { copiedSvg?: string }).copiedSvg))
-      .toBe(await fs.readFile('public/character-curly-standing-4views.svg', 'utf8'));
-    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-curly-standing-4views.svg');
+      .toBe(await fs.readFile('public/character-curly-standing-5views.svg', 'utf8'));
+    await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), 'character-curly-standing-5views.svg');
     const openingStanding = page.waitForEvent('popup');
-    await dialog.getByRole('link', { name: '打开完整四视图', exact: true }).click();
+    await dialog.getByRole('link', { name: /打开完整(五)?视图/, exact: true }).click();
     const openedStanding = await openingStanding;
-    await expect(openedStanding.locator('[data-character-pose="standing"]')).toHaveCount(4);
+    await expect(openedStanding.locator('[data-character-pose="standing"]')).toHaveCount(5);
     await openedStanding.close();
     for (const view of ['front', 'left', 'back', 'right']) {
       const link = dialog.locator(`a[href="/character-curly-standing-${view}.svg"]`);
-      await downloadAsset(link.locator('..').getByRole('button', { name: /^下载长卷发站姿/ }), `character-curly-standing-${view}.svg`);
+      if (view === 'front') await downloadAsset(link.locator('..').getByRole('button', { name: /^下载长卷发站姿/ }), `character-curly-standing-${view}.svg`);
+      else await expect(link).toHaveCount(1);
     }
-    await dialog.getByRole('button', { name: '坐姿四视图', exact: true }).click();
-    await expect(dialog.getByRole('img', { name: '层叠长卷发四视图总表预览', exact: true }))
-      .toHaveAttribute('src', '/character-curly-4views.svg');
+    await dialog.getByRole('button', { name: '坐姿四视图 + NW', exact: true }).click();
+    await expect(dialog.getByRole('img', { name: '层叠长卷发坐姿四视图 + NW预览', exact: true }))
+      .toHaveAttribute('src', '/character-curly-seated-5views-study.svg');
     await dialog.getByRole('button', { name: '偏分低束发', exact: true }).click();
     for (const newPose of ['seated', 'standing'] as const) {
-      await dialog.getByRole('button', { name: newPose === 'seated' ? '坐姿四视图' : '站姿四视图', exact: true }).click();
+      await dialog.getByRole('button', { name: newPose === 'seated' ? '坐姿四视图 + NW' : '站姿五视图', exact: true }).click();
       const prefix = `character-sidepart${newPose === 'standing' ? '-standing' : ''}`;
-      await expect(dialog.locator(`img[src="/${prefix}-4views.svg"]`)).toBeVisible();
-      await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), `${prefix}-4views.svg`);
+      await expect(dialog.locator(`img[src="/${prefix}${newPose === 'standing' ? '-5views' : '-seated-5views-study'}.svg"]`)).toBeVisible();
+      await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), `${prefix}${newPose === 'standing' ? '-5views' : '-seated-5views-study'}.svg`);
       await dialog.getByRole('button', { name: '复制代码', exact: true }).click();
       await expect.poll(() => page.evaluate(() => (window as Window & { copiedSvg?: string }).copiedSvg))
-        .toBe(await fs.readFile(`public/${prefix}-4views.svg`, 'utf8'));
+        .toBe(await fs.readFile(`public/${prefix}${newPose === 'standing' ? '-5views' : '-seated-5views-study'}.svg`, 'utf8'));
       for (const view of ['front', 'left', 'back', 'right']) {
         const link = dialog.locator(`a[href="/${prefix}-${view}.svg"]`);
-        await downloadAsset(link.locator('..').getByRole('button', { name: /^下载偏分低束发/ }), `${prefix}-${view}.svg`);
+        if (view === 'front') await downloadAsset(link.locator('..').getByRole('button', { name: /^下载偏分低束发/ }), `${prefix}-${view}.svg`);
+        else await expect(link).toHaveCount(1);
       }
     }
     await dialog.getByRole('button', { name: '双色蓬松碎发', exact: true }).click();
     for (const newPose of ['seated', 'standing'] as const) {
-      await dialog.getByRole('button', { name: newPose === 'seated' ? '坐姿四视图' : '站姿四视图', exact: true }).click();
+      await dialog.getByRole('button', { name: newPose === 'seated' ? '坐姿四视图 + NW' : '站姿五视图', exact: true }).click();
       const prefix = `character-shaggy${newPose === 'standing' ? '-standing' : ''}`;
-      await expect(dialog.locator(`img[src="/${prefix}-4views.svg"]`)).toBeVisible();
+      await expect(dialog.locator(`img[src="/${prefix}${newPose === 'standing' ? '-5views' : '-seated-5views-study'}.svg"]`)).toBeVisible();
       await expect.poll(() => dialog.locator('img').evaluateAll(images => images.every(image => {
         const img = image as HTMLImageElement; return img.complete && img.naturalWidth > 0;
       }))).toBe(true);
       expect(await dialog.locator('.overflow-y-auto').evaluate(node => node.scrollWidth - node.clientWidth)).toBeLessThanOrEqual(1);
-      await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), `${prefix}-4views.svg`);
+      await downloadAsset(dialog.getByRole('button', { name: '下载总表 SVG', exact: true }), `${prefix}${newPose === 'standing' ? '-5views' : '-seated-5views-study'}.svg`);
       await dialog.getByRole('button', { name: '复制代码', exact: true }).click();
       await expect.poll(() => page.evaluate(() => (window as Window & { copiedSvg?: string }).copiedSvg))
-        .toBe(await fs.readFile(`public/${prefix}-4views.svg`, 'utf8'));
+        .toBe(await fs.readFile(`public/${prefix}${newPose === 'standing' ? '-5views' : '-seated-5views-study'}.svg`, 'utf8'));
       const openingShaggy = page.waitForEvent('popup');
-      await dialog.getByRole('link', { name: '打开完整四视图', exact: true }).click();
+      await dialog.getByRole('link', { name: /打开完整(五)?视图/, exact: true }).click();
       const openedShaggy = await openingShaggy;
       await expect(openedShaggy.locator(`[data-character-pose="${newPose}"] [data-shaggy-hair]`)).toHaveCount(4);
       await openedShaggy.close();
       for (const view of ['front', 'left', 'back', 'right']) {
         const link = dialog.locator(`a[href="/${prefix}-${view}.svg"]`);
-        await downloadAsset(link.locator('..').getByRole('button', { name: /^下载双色蓬松碎发/ }), `${prefix}-${view}.svg`);
+        if (view === 'front') await downloadAsset(link.locator('..').getByRole('button', { name: /^下载双色蓬松碎发/ }), `${prefix}-${view}.svg`);
+        else await expect(link).toHaveCount(1);
       }
     }
-    await dialog.getByRole('button', { name: '坐姿四视图', exact: true }).click();
+    await dialog.getByRole('button', { name: '坐姿四视图 + NW', exact: true }).click();
     await dialog.getByRole('button', { name: '经典短发', exact: true }).click();
-    await expect(dialog.getByRole('img', { name: '标准坐姿四视图总表预览', exact: true }))
-      .toHaveAttribute('src', '/character-shorthair-4views.svg');
+    await expect(dialog.getByRole('img', { name: '经典短发坐姿四视图 + NW（当前定稿）预览', exact: true }))
+      .toHaveAttribute('src', '/character-shorthair-seated-5views-study.svg');
     expect(await page.locator('#panoramic-world-stage').getAttribute('style')).toBe(camera);
     expect(await page.evaluate(() => localStorage.getItem('live_with_me_room_layout_v6'))).toBe(layout);
     await dialog.getByRole('button', { name: '关闭导出窗口', exact: true }).press('Escape');
@@ -311,8 +314,8 @@ for (const width of [1200, 390]) {
     await expect(picker.getByText('2:1 菱形轴测对齐', { exact: true })).toHaveCount(0);
     await expect(picker.getByRole('button', { name: /导出.*SVG/ })).toHaveCount(0);
     const content = picker.getByTestId('status-picker-content');
-    const views = picker.getByRole('region', { name: '完整装扮四视图', exact: true });
-    const avatar = picker.getByRole('button', { name: '查看完整装扮四视图', exact: true });
+    const views = picker.getByRole('region', { name: '完整装扮五视图', exact: true });
+    const avatar = picker.getByRole('button', { name: '查看完整装扮五视图', exact: true });
     const toggle = picker.getByRole('button', { name: '查看完整装扮', exact: true });
     await expect(views).toHaveCount(0);
     await expect(avatar).toHaveAttribute('aria-expanded', 'false');
@@ -321,18 +324,18 @@ for (const width of [1200, 390]) {
     await expect(views).toBeVisible();
     await expect(avatar).toHaveAttribute('aria-expanded', 'true');
     await expect(detail).toHaveCount(0);
-    await expect(picker.locator('[data-character-pose="standing"]')).toHaveCount(4);
-    const boxes = await views.getByTestId('appearance-four-view').evaluateAll(nodes => nodes.map(node => {
+    await expect(picker.locator('[data-character-pose="standing"]')).toHaveCount(5);
+    const boxes = await views.getByTestId('appearance-five-view').evaluateAll(nodes => nodes.map(node => {
       const box = node.getBoundingClientRect();
       return { x: box.x, y: box.y, width: box.width };
     }));
-    expect(boxes).toHaveLength(4);
+    expect(boxes).toHaveLength(5);
     expect(boxes[1].x).toBeGreaterThan(boxes[0].x);
     expect(Math.abs(boxes[1].y - boxes[0].y)).toBeLessThan(1);
     if (width === 390) expect(boxes[2].y).toBeGreaterThan(boxes[0].y);
     else expect(Math.abs(boxes[3].y - boxes[0].y)).toBeLessThan(1);
     for (const [name, selector] of [
-      ['经典利落短发', '#bangs-classic-crescent-curtain'],
+      ['经典利落短发', '[id$="bangs-classic-crescent-curtain"]'],
       ['层叠长卷发', '[data-curly-hair="lengths"]'],
       ['双色蓬松碎发', '[data-shaggy-underlayer]'],
       ['偏分低束发', '[data-sidepart-hair]'],
@@ -352,7 +355,7 @@ for (const width of [1200, 390]) {
     await picker.getByRole('button', { name: '暖柿红', exact: true }).click();
     await picker.getByRole('button', { name: '健康暖棕', exact: true }).click();
     await picker.getByRole('button', { name: '牛仔灰蓝', exact: true }).click();
-    for (const view of await views.getByTestId('appearance-four-view').all()) {
+    for (const view of (await views.getByTestId('appearance-five-view').all()).slice(0, 4)) {
       for (const colour of ['#b8afa0', '#e07a5f', '#d4a373', '#4f6d85']) {
         expect(await view.locator(`[fill="${colour}"]`).count()).toBeGreaterThan(0);
       }
@@ -361,12 +364,12 @@ for (const width of [1200, 390]) {
     await picker.getByRole('button', { name: '收起完整装扮', exact: true }).click();
     await toggle.click();
     expect(await content.evaluate(node => node.scrollTop)).toBe(0);
-    await page.screenshot({ path: testInfo.outputPath(`appearance-four-views-${width}.png`) });
+    await page.screenshot({ path: testInfo.outputPath(`appearance-five-views-${width}.png`) });
     await picker.getByRole('button', { name: '关闭配置', exact: true }).press('Shift+Tab');
     await expect(picker.locator('#confirm-status-btn')).toBeFocused();
     await page.keyboard.press('Tab');
     await expect(picker.getByRole('button', { name: '关闭配置', exact: true })).toBeFocused();
-    await views.getByRole('button', { name: '收起四视图', exact: true }).click();
+    await views.getByRole('button', { name: '收起五视图', exact: true }).click();
     await expect(views).toHaveCount(0);
     await expect(toggle).toBeFocused();
     await expect(picker.getByRole('button', { name: '银灰', exact: true })).toHaveAttribute('aria-pressed', 'true');
@@ -376,10 +379,10 @@ for (const width of [1200, 390]) {
     await toggle.click();
     await expect(views.locator('[id^="beanie-pompom"]')).toHaveCount(0);
     await picker.locator('#confirm-status-btn').click();
-    const sceneHead = page.locator('#isometric-chair-container #seated-character-body');
-    await expect(sceneHead.locator('[data-sidepart-hair="back"]')).toHaveCount(1);
-    expect(await sceneHead.locator('[fill="#b8afa0"]').count()).toBeGreaterThan(0);
-    await expect(sceneHead.locator('#beanie-pompom-back')).toHaveCount(0);
+    const sceneHead = page.locator('#isometric-chair-container [data-sofa-upper-body]');
+    await expect(sceneHead.locator('[data-windsor-head]')).toHaveAttribute('data-nw-hairstyle', 'sidepart');
+    expect(await sceneHead.locator('[data-windsor-head]').evaluate(n => getComputedStyle(n).getPropertyValue('--nw-hair'))).toBe('#b8afa0');
+    await expect(sceneHead.locator('[data-windsor-head]')).toHaveAttribute('data-nw-pompom', 'false');
     await openAppearance();
     await expect(picker.getByRole('button', { name: '银灰', exact: true })).toHaveAttribute('aria-pressed', 'true');
     await expect(picker.getByRole('button', { name: '帽顶毛球：无', exact: true })).toHaveAttribute('aria-pressed', 'false');
@@ -395,8 +398,8 @@ for (const width of [1200, 390]) {
     await openAppearance();
     await expect(picker.getByRole('button', { name: /偏分低束发/ })).toHaveAttribute('aria-pressed', 'true');
     await picker.getByRole('button', { name: '关闭配置', exact: true }).click();
-    await page.getByRole('button', { name: '人物 4 视图 SVG', exact: true }).click();
-    await expect(page.getByRole('dialog', { name: '人物四视图 · 查看与导出' })).toBeVisible();
+    await page.getByRole('button', { name: '人物 5 视图 SVG', exact: true }).click();
+    await expect(page.getByRole('dialog', { name: '人物五视图 · 查看与导出' })).toBeVisible();
   });
 }
 

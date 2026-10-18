@@ -10,37 +10,16 @@ for (const width of [1200, 390]) {
     page.on('pageerror', error => errors.push(error.message));
     for (const count of [0, 1, 2, 3]) {
       await stableScene(page, `/tests/fixtures/world.html?deskCount=${count}&focusRoom=my_room`);
-      const sitters = page.locator('[data-desk-seat] [data-scene-character="chair-seated"]');
+      const sitters = page.locator('[data-desk-seat] [data-sofa-upper-body]');
       await expect(sitters).toHaveCount(Math.min(count, 2));
-      await expect(page.locator('[data-chair-kind="windsor"]')).toHaveCount(1);
-      await expect(page.locator('[data-chair-kind="retro"]')).toHaveCount(1);
-      await expect(page.locator('#seated-character-legs')).toHaveCount(0);
-      for (const sitter of await sitters.all()) {
-        await expect(sitter.locator('[data-desk-robe]')).toHaveCount(1);
-        await expect(sitter).toHaveAttribute('data-hand-mode', 'keyboard');
-        const robe = await sitter.locator('[data-desk-robe]').evaluate(node => {
-          const box = (node as SVGGraphicsElement).getBBox(); return { bottom: box.y + box.height };
-        });
-        expect(robe.bottom).toBeGreaterThan(19);
-        expect(robe.bottom).toBeLessThan(22);
+      await expect(page.locator('[data-chair-kind="club"]')).toHaveCount(1);
+      await expect(page.locator('[data-chair-kind="recliner"]')).toHaveCount(1);
+      for (const seat of await page.locator('[data-desk-seat]').all()) {
+        for (const arms of await seat.locator('[data-sofa-arms]').all()) await expect(arms).toHaveAttribute('data-hand-mode', 'desk');
       }
       if (count >= 2) {
-        await expect(page.locator('#isometric-chair-container [data-person-id="self"]')).toHaveCount(1);
-        await expect(page.locator('#isometric-chair-secondary-container [data-person-id="lin"]')).toHaveCount(1);
-        const contacts = await page.evaluate(() => {
-          return ['isometric-chair-container', 'isometric-chair-secondary-container'].map((id, index) => {
-            const chair = document.getElementById(id)!;
-            const laptop = document.getElementById(index === 0 ? 'component-isometric-laptop' : 'component-isometric-laptop-secondary')!;
-            const keyboard = laptop.querySelector<SVGPolygonElement>('polygon[points="-11,-2.8 -1,-5.6 9,-2.8 -1,0"]')!;
-            const inverse = keyboard.getScreenCTM()!.inverse();
-            return [...chair.querySelectorAll<SVGEllipseElement>('[id^="volumetric-"] ellipse:last-child')].map(hand => {
-              const point = new DOMPoint(hand.cx.baseVal.value, hand.cy.baseVal.value)
-                .matrixTransform(hand.getScreenCTM()!).matrixTransform(inverse);
-              return keyboard.isPointInFill(point);
-            });
-          });
-        });
-        expect(contacts).toEqual([[true, true], [true, true]]);
+        await expect(page.locator('#isometric-chair-container [data-sofa-upper-body]')).toHaveAttribute('data-person-id', 'self');
+        await expect(page.locator('#isometric-chair-secondary-container [data-sofa-upper-body]')).toHaveAttribute('data-person-id', 'lin');
       }
       if (count === 2) await page.screenshot({ path: info.outputPath(`desk-two-live-${width}.png`) });
     }
@@ -48,31 +27,24 @@ for (const width of [1200, 390]) {
   });
 }
 
-test('all four hairstyles keep head-sized headphones and long robes in both real desk seats', async ({ page }, info) => {
+test('all four hairstyles use their finalized NW head in both desk seats', async ({ page }) => {
   test.setTimeout(60000);
-  for (const style of ['curtain_crescent', 'wavy_curly', 'long_wavy', 'medium_straight']) {
+  for (const [style, hair] of [['curtain_crescent', 'shorthair'], ['wavy_curly', 'curly'], ['long_wavy', 'sidepart'], ['medium_straight', 'shaggy']]) {
     await stableScene(page, `/tests/fixtures/world.html?deskCount=2&deskHair=${style}&focusRoom=my_room`);
-    for (const sitter of await page.locator('[data-desk-seat] [data-scene-character="chair-seated"]').all()) {
-      const head = sitter.locator('#character-head-back');
-      await expect(sitter.locator('[data-desk-headphones="band"]')).toHaveAttribute('transform', (await head.getAttribute('transform'))!.replaceAll(', ', ','));
-      const cups = await sitter.locator('[data-ear-cup]').evaluateAll(nodes => nodes.map(node => {
-        const ellipse = node as SVGEllipseElement;
-        return new DOMPoint(ellipse.cx.baseVal.value, ellipse.cy.baseVal.value).matrixTransform(ellipse.getScreenCTM()!).y;
-      }));
-      expect(Math.abs(cups[0] - cups[1])).toBeLessThan(0.01);
-      if (style === 'wavy_curly') await expect(sitter.locator('[data-curly-hair="lengths"]')).toHaveCount(1);
-      if (style === 'long_wavy') await expect(sitter.locator('[data-sidepart-hair="back"]')).toHaveCount(1);
-      if (style === 'medium_straight') await expect(sitter.locator('[data-shaggy-underlayer]')).toHaveCount(1);
+    const heads = page.locator('[data-desk-seat] [data-windsor-head]');
+    await expect(heads).toHaveCount(2);
+    for (const head of await heads.all()) {
+      await expect(head).toHaveAttribute('data-nw-hairstyle', hair);
+      await expect(head).toHaveAttribute('data-nw-head-source', /[a-f0-9]{64}/);
     }
-    await page.screenshot({ path: info.outputPath(`desk-hair-${style}.png`) });
   }
 });
 
-test('moving one computer beyond reach leaves that sitter resting without affecting the other', async ({ page }) => {
+test('an unreachable computer returns only its sitter hands to the armrests', async ({ page }) => {
   const layout = structuredClone(DEFAULT_ROOM_LAYOUT);
   layout['desk-laptop-secondary'].screen.x += 60;
   await page.addInitScript(layout => localStorage.setItem('live_with_me_room_layout_v6', JSON.stringify(layout)), layout);
   await stableScene(page, '/tests/fixtures/world.html?deskCount=2&focusRoom=my_room');
-  await expect(page.locator('#seated-character-body-secondary')).toHaveAttribute('data-hand-mode', 'lap');
-  await expect(page.locator('#seated-character-body')).toHaveAttribute('data-hand-mode', 'keyboard');
+  for (const arm of await page.locator('#isometric-chair-secondary-container [data-sofa-arms]').all()) await expect(arm).toHaveAttribute('data-hand-mode', 'armrest');
+  for (const arm of await page.locator('#isometric-chair-container [data-sofa-arms]').all()) await expect(arm).toHaveAttribute('data-hand-mode', 'desk');
 });

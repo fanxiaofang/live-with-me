@@ -6,7 +6,7 @@ import { CharacterHead, normalizeHairStyle } from './CharacterAvatar';
 import { SHAGGY_HAIR_PALETTE } from './characters/ShaggyHair';
 import { CHARACTER_PREVIEW_PALETTE } from './characters/characterPreviewPalette';
 import { CharacterAppearancePreview } from './characters/CharacterAppearancePreview';
-import { CharacterAppearanceFourViews } from './characters/CharacterAppearanceFourViews';
+import { CharacterAppearanceFiveViews } from './characters/CharacterAppearanceFiveViews';
 import { useDialogFocus } from '../shared/hooks/useDialogFocus';
 
 import { isRoomFull, previewPresence, ROOM_FULL_MESSAGE } from '../features/presence/presenceAllocation';
@@ -223,8 +223,8 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
         {activeTab === 'appearance' && <div className="px-4 sm:px-6 pt-4 shrink-0">
           <div data-testid="appearance-summary" style={{ display: 'flex', alignItems: 'center', gap: 12 }}
             className="p-3 rounded-xl bg-[#1a1715] border border-[#383028]">
-              <button type="button" aria-label="查看完整装扮四视图"
-                aria-expanded={showAppearanceViews} aria-controls="appearance-four-views"
+              <button type="button" aria-label="查看完整装扮五视图"
+                aria-expanded={showAppearanceViews} aria-controls="appearance-five-views"
                 onClick={toggleAppearanceViews} style={{ flex: '0 0 auto' }}
                 className="rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e0a96d]">
                 <CharacterAppearancePreview facing="SE" skinColor={skinColor}
@@ -243,7 +243,7 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
                   </div>
                   <p className="text-xs text-[#c3b29e] mt-1">{selectedHairstyle.name}</p>
                   <button ref={viewsToggle} type="button" onClick={toggleAppearanceViews}
-                    aria-expanded={showAppearanceViews} aria-controls="appearance-four-views"
+                    aria-expanded={showAppearanceViews} aria-controls="appearance-five-views"
                     className="mt-1 min-h-8 rounded-md px-2 -ml-2 text-xs text-[#e0a96d] hover:bg-[#38312b] focus-visible:outline-2 focus-visible:outline-[#e0a96d]">
                     {showAppearanceViews ? '收起完整装扮' : '查看完整装扮'}
                   </button>
@@ -336,7 +336,7 @@ export const StatusPickerModal: React.FC<StatusPickerModalProps> = ({
           {/* TAB 2: APPEARANCE CUSTOMIZATION */}
           {activeTab === 'appearance' && (
             <div className="space-y-5">
-              {showAppearanceViews && <CharacterAppearanceFourViews skinColor={skinColor}
+              {showAppearanceViews && <CharacterAppearanceFiveViews skinColor={skinColor}
                 beanieColor={beanieColor} hairColor={hairColor} hairStyle={hairStyle}
                 shirtColor={shirtColor} hasPompom={hasPompom}
                 onCollapse={() => { setShowAppearanceViews(false); viewsToggle.current?.focus(); }} />}

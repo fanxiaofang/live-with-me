@@ -1,0 +1,18 @@
+[
+  {
+    "path": "src/components/SvgExportModal.tsx",
+    "sha256": "3a2d284642ef87b211f7852d4c49156c091a5fb60afca6850eb11385ca43046c"
+  },
+  {
+    "path": "src/components/StatusPickerModal.tsx",
+    "sha256": "673357b2f010d7779150d546e856c946809668b2c29a990ad7e4edc0efd9adc8"
+  },
+  {
+    "path": "src/components/PresencePanel.tsx",
+    "sha256": "cb8f7c79c4b3cebde3aedbcbb52ddc597ba0bca0b8d22f191ac5ceba740d0aac"
+  },
+  {
+    "path": "src/components/characters/CharacterAppearanceFourViews.tsx",
+    "sha256": "bd7bf078e5f8ecfa383cd1149ff908e7bfdd395c752ee99c7131e4a261fec3c5"
+  }
+]

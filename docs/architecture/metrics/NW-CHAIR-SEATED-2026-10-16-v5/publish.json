@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\nw-chair-seated",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "serviceStopped": false,
+  "browserStorageModified": false,
+  "oldIndexSha256": "0875b4199eaec32d0d44f0764b33d12b96e603e50c968b1219bfdccc7139af80",
+  "newIndexSha256": "a67e994cbdfaeecb3f9202d870564d6d21e396a75803e4ec4edad6902d06b7ac",
+  "changes": [
+    {
+      "relative": "character-shorthair-seated-nw-study.svg",
+      "oldSha256": null,
+      "newSha256": "aa5f91691e55e7cb610de635abba242171c436f362a170130ef26151a5dbe250",
+      "backup": null
+    },
+    {
+      "relative": "assets\\BookshelfModal-bBiayFvk.js",
+      "oldSha256": null,
+      "newSha256": "4ff157d45b1991fea1f83f937159070d8b25128c4af224cb6ecda4064a5c694d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\CabinetDetailModal-DtSnJajD.js",
+      "oldSha256": null,
+      "newSha256": "7b1ae0c65b155c013db5a1b851ea19d91ebde340171e6e691aadad6ea940ea68",
+      "backup": null
+    },
+    {
+      "relative": "assets\\ChairInspectionModal-C7iOTxI-.js",
+      "oldSha256": null,
+      "newSha256": "572a8c2c848c68f2faaa5f60532c9239d608c3c5f81a09d9ff882a5ecdd0aeee",
+      "backup": null
+    },
+    {
+      "relative": "assets\\FriendCardModal-CHeWyAyq.js",
+      "oldSha256": null,
+      "newSha256": "7bd08449f219ffb6e6558e1bfd355aebf5b4104861274f438d7118c94a2bd891",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-BbL3ej7y.js",
+      "oldSha256": null,
+      "newSha256": "b9e0022559b7c633e63a3605c38b84398c2372ea985890d5dc19deb87cab25e5",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-BEl5ec5p.css",
+      "oldSha256": null,
+      "newSha256": "eea889e9961ab7fb9affdfbfa8c0304e1660f8894f168ef17ed9ed8e2ff7a6ac",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MailboxModal-BppwBZ2r.js",
+      "oldSha256": null,
+      "newSha256": "328f7ea3ce9c887ef59fc9311ba9cd8e8223dcb3774c7b71be7bc013a2a41960",
+      "backup": null
+    },
+    {
+      "relative": "assets\\map-pin-B7xkvjSW.js",
+      "oldSha256": null,
+      "newSha256": "3df1f1c9ec485f55a447c90726e11f11326f7c38d5bf82299df24428abdca0fd",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MemoryLogModal-D6Lu2O4P.js",
+      "oldSha256": null,
+      "newSha256": "1e30585deb5377a3f531fa5cfe0bdf12f72dba1c0fe8b7646d0162766e23504d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\PosterDetailModal-BXO2vRvs.js",
+      "oldSha256": null,
+      "newSha256": "97dba60d7cd747d6ab8c5c65109865a2a7737871ddb28206c610baddecbac097",
+      "backup": null
+    },
+    {
+      "relative": "assets\\send-KOrufYeN.js",
+      "oldSha256": null,
+      "newSha256": "b42c0894fb26e6bc092b90dcfd0a3be654d95d99b494ef973c8e7dd1616c8cc3",
+      "backup": null
+    },
+    {
+      "relative": "assets\\StatusPickerModal-CxeHviCD.js",
+      "oldSha256": null,
+      "newSha256": "8fd49b5180e39bf1627d46b0925f6d39803ab6ed81e2f931223de0f3dac2fd0f",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgDetailView-Dwze3v8V.js",
+      "oldSha256": null,
+      "newSha256": "53f47fe3bbeb555d1ee419d66852b4f741cb6a37de3a54234c639846fd392436",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgExportModal-BLXScPpL.js",
+      "oldSha256": null,
+      "newSha256": "81cf22c98dba0a474374ba240045e9a33a14c98a1f26f26fb66d8009fee188d0",
+      "backup": null
+    },
+    {
+      "relative": "assets\\useDialogFocus-B5frkb0H.js",
+      "oldSha256": null,
+      "newSha256": "5d0f5ec20567baeac50b49aa1090a7ed78e96a2c3eec5a36fd57d144542d248b",
+      "backup": null
+    },
+    {
+      "relative": "assets\\usePreviewSvgIds-DJBRZdFt.js",
+      "oldSha256": null,
+      "newSha256": "a675434c5f1ca6cd1475f2459e5ce557867e6f11ac94dc567411382daae5fec1",
+      "backup": null
+    },
+    {
+      "relative": "index.html",
+      "oldSha256": "0875b4199eaec32d0d44f0764b33d12b96e603e50c968b1219bfdccc7139af80",
+      "newSha256": "a67e994cbdfaeecb3f9202d870564d6d21e396a75803e4ec4edad6902d06b7ac",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-CHAIR-SEATED-2026-10-16-v5\\publish-before\\index.html"
+    }
+  ]
+}

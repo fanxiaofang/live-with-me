@@ -1,0 +1,235 @@
+{
+  "date": "2026-10-16",
+  "url": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\character-five-views",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "oldIndexSha256": "8a1b18137b419c1b01312ab11c45b445232fd42c25afb6ef8af90b81c00dfe5f",
+  "newIndexSha256": "413f602db8e21102aa655c848826fe3be7454fc78313c7e09199a9da6f27bcd0",
+  "serviceStopped": false,
+  "browserStorageModified": false,
+  "changes": [
+    {
+      "relative": "assets\\BookshelfModal-CsX-NCmE.js",
+      "oldSha256": null,
+      "newSha256": "86d192adc2c6ada99de433ec28973d7d60875333d50125bd1c82eda91e046fec",
+      "backup": null
+    },
+    {
+      "relative": "assets\\CabinetDetailModal-CRftm2UI.js",
+      "oldSha256": null,
+      "newSha256": "e23afcaa6803573bdd12f9495fc9f7267e299ee6d9e5e11c4a0c404ce8ab807d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\ChairInspectionModal-GDv3GAh5.js",
+      "oldSha256": null,
+      "newSha256": "22a44223edab8b3314aea2b2b20afcf2600af04cc5937d9162ddc84dad7716bb",
+      "backup": null
+    },
+    {
+      "relative": "assets\\FriendCardModal-DD2qhJAR.js",
+      "oldSha256": null,
+      "newSha256": "49d6d9895e82b49380479d3f59991d47ee3b5c704cb29bc6e728516e6acf6db9",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-BdxbzSgo.js",
+      "oldSha256": null,
+      "newSha256": "ce7e5fac86cc8ee6c09fa7cfdfb7329222197c52c3339b1e5f54cd2d3d026ad6",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-BKVQbJin.css",
+      "oldSha256": null,
+      "newSha256": "de50187612323ad92e0c2ebdcf67d68a0bceffbde1f25d775e34732582996d5a",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MailboxModal-C9fK10J0.js",
+      "oldSha256": null,
+      "newSha256": "00847dc300a51bad4ad63ae5d26cf2eb9f36ac19445c532860850f1881deba9b",
+      "backup": null
+    },
+    {
+      "relative": "assets\\map-pin-scnQyQmA.js",
+      "oldSha256": null,
+      "newSha256": "dda885437de828cd12aae6b90fc3f1ec15bed356b9ae77ea71a8536a1efea5c5",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MemoryLogModal-DrJT1_KD.js",
+      "oldSha256": null,
+      "newSha256": "7d9d5f4b61629c69db0248040f80c6decd923f6a2e6cc6163a9cb80a3058f956",
+      "backup": null
+    },
+    {
+      "relative": "assets\\PosterDetailModal-dWJjSQzd.js",
+      "oldSha256": null,
+      "newSha256": "0beec88750fe38a0b362629d7d3faebc1c48e28674a00bb01a46e21418fbd1ca",
+      "backup": null
+    },
+    {
+      "relative": "assets\\send-Ck66ylid.js",
+      "oldSha256": null,
+      "newSha256": "05012ab347ef7a23e395590ecde81a03cc6fddb0a4bbdcd072df2086657a5aaf",
+      "backup": null
+    },
+    {
+      "relative": "assets\\StatusPickerModal-wd-KGugc.js",
+      "oldSha256": null,
+      "newSha256": "2f312ad44d6af4e4bc945c2404c346b90a1135cd1780efe1ef9bbc65089f6010",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgDetailView-hTQ0X-i-.js",
+      "oldSha256": null,
+      "newSha256": "6df598c0d7149ca0e71da24e3bb7efb33d910eacfd814b4007a59c98ece67f5d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgExportModal-SoxuZMKI.js",
+      "oldSha256": null,
+      "newSha256": "941f862f3a332b384561e32d1b45cde769f73b4355bc4cfaf0005dae770872e0",
+      "backup": null
+    },
+    {
+      "relative": "assets\\useDialogFocus-BNURhD3T.js",
+      "oldSha256": null,
+      "newSha256": "e93fe4b18ee20df4d477e22a0ca30142f29466e09c01ad248771efe6b9fae5e6",
+      "backup": null
+    },
+    {
+      "relative": "assets\\usePreviewSvgIds-CiB1iABI.js",
+      "oldSha256": null,
+      "newSha256": "174edf74dddc25a3969a8ba153bb74b639cd9fb74a5fd24ecc1c5e3faefe10f5",
+      "backup": null
+    },
+    {
+      "relative": "character-curly-standing-5views.svg",
+      "oldSha256": null,
+      "newSha256": "11bcbdf3d27f079589a83635a62bafbf0eecf2b09ca22c816e03d0458a05c90c",
+      "backup": null
+    },
+    {
+      "relative": "character-curly-standing-nw.svg",
+      "oldSha256": null,
+      "newSha256": "6fca4ed02525ef64375c8c445827a6f3094e0a2a0b8819b65095725c7d8100b0",
+      "backup": null
+    },
+    {
+      "relative": "character-shaggy-standing-5views.svg",
+      "oldSha256": null,
+      "newSha256": "22f9535b4c6b4364c98c93a86d1299e4a5bfe9e0a3376ee7017e0ee6f291e032",
+      "backup": null
+    },
+    {
+      "relative": "character-shaggy-standing-nw.svg",
+      "oldSha256": null,
+      "newSha256": "71d805f851cb14ee2f9038311a49455c91903f036148e77fa1c78c4f02deb408",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-5views.svg",
+      "oldSha256": null,
+      "newSha256": "86edc5c55255473d9197e348393c3715a591dd889ec775e0047bdf4c654c0137",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-candidate-v1.png",
+      "oldSha256": null,
+      "newSha256": "fdb50cecd7bb24841093198bd7224ddce1849448b560244abf9976b0ebe0f799",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-candidate-v2.png",
+      "oldSha256": null,
+      "newSha256": "267b7b7ac5b2fd16488d3f2630de96ec60cb25311fcea734377001d4210bd520",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-review-v1.html",
+      "oldSha256": null,
+      "newSha256": "cc5ff961ea143cb2080f8acee99c8f019feb681a63ee4533c482662f9086c494",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-review-v2.html",
+      "oldSha256": null,
+      "newSha256": "da569379cb95d14ee387aef946e216b287376ba9d2f86124f69900ce5b3a1804",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-review-v3-rejected.html",
+      "oldSha256": null,
+      "newSha256": "5116e02a7a2e947f60bece9c899c77d5f358da7c1e6e2aeb9804c4f3a7ee11d0",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-review-v3.html",
+      "oldSha256": null,
+      "newSha256": "8fefd31114e8be9879a5e862cfe12fd12214b35166aa2b01342150f8ed1ccd23",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-review-v4.html",
+      "oldSha256": null,
+      "newSha256": "6f8373fe84e3940a1b699156e1142e2faa0f2ee4abd0f3f7793d7d3055c721d0",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-2d-review.html",
+      "oldSha256": null,
+      "newSha256": "3d4e60efa8f7e628d3221ebba17232c2e3f749d0dbb22182bbf9b3eb1ad7f188",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-study.glb",
+      "oldSha256": null,
+      "newSha256": "d22befa4007d02cc0df39b58fbc53483fedb155039c26fe454e1da084cfa7437",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-study.html",
+      "oldSha256": null,
+      "newSha256": "19a69b1ab39173fdfd5070d11b779b1e3d3120b87af01a625ec5a9c13c087733",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw-study.png",
+      "oldSha256": null,
+      "newSha256": "c713da5d7479cf4a699799d8a5b1fe390dd49d7ddaf9f7223b7b96cbd33cbeb9",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-standing-nw.svg",
+      "oldSha256": null,
+      "newSha256": "0c5987fb79d78f384072707e57e1876456f27f9214ab48a94a5a812c52c0bfa5",
+      "backup": null
+    },
+    {
+      "relative": "character-sidepart-standing-5views.svg",
+      "oldSha256": null,
+      "newSha256": "d92ba3989e85de779261fec755c7e0aa1d4e0c2a43225c175ab05b8bf58e0753",
+      "backup": null
+    },
+    {
+      "relative": "character-sidepart-standing-nw.svg",
+      "oldSha256": null,
+      "newSha256": "645e8a742271bf8dc31fe1ad75ab522e66d2e6c5daeae066f558e4a7a0195f8f",
+      "backup": null
+    },
+    {
+      "relative": "character-standing-nw-svg-review.html",
+      "oldSha256": null,
+      "newSha256": "3d4e60efa8f7e628d3221ebba17232c2e3f749d0dbb22182bbf9b3eb1ad7f188",
+      "backup": null
+    },
+    {
+      "relative": "index.html",
+      "oldSha256": "8a1b18137b419c1b01312ab11c45b445232fd42c25afb6ef8af90b81c00dfe5f",
+      "newSha256": "413f602db8e21102aa655c848826fe3be7454fc78313c7e09199a9da6f27bcd0",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\CHARACTER-FIVE-VIEWS-2026-10-16\\publish-before\\index.html"
+    }
+  ]
+}

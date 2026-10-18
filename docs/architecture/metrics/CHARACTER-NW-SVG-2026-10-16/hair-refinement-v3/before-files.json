@@ -1,0 +1,38 @@
+[
+  {
+    "path": "public/character-curly-standing-nw.svg",
+    "sha256": "EEB06FF0D63D2B92F4E8299F9CBE20513EC26B3D448DE13C21320CB213074D1D"
+  },
+  {
+    "path": "public/character-sidepart-standing-nw.svg",
+    "sha256": "A1C8238C5D32E82D9608499A1B2640168C9E22298A1D33DCAE9ECEF665B4308E"
+  },
+  {
+    "path": "public/character-shaggy-standing-nw.svg",
+    "sha256": "4796B1A83FB59702F998C7F18ED7B9EF246FC675D0FC71E6BFADCBA9A9B96664"
+  },
+  {
+    "path": "public/character-shorthair-standing-nw.svg",
+    "sha256": "0C5987FB79D78F384072707E57E1876456F27F9214AB48A94A5A812C52C0BFA5"
+  },
+  {
+    "path": "public/character-standing-nw-svg-review.html",
+    "sha256": "85AA724EA6EB4E7A3611A92F9F938354C2EB49F004EF7488483518E0742F47D7"
+  },
+  {
+    "path": "tools/character-nw-svg/hair.mjs",
+    "sha256": "F434F83ADFCD2BB66529D5EC05B0436FA91D85ED8B55E4AB6E0C3BB24CB3864D"
+  },
+  {
+    "path": "scripts/build-character-nw-svg.mjs",
+    "sha256": "C531BA5CAB22FF21047AAA7BB105A4DDA3F265644AAC494C59FB01408D6EAC71"
+  },
+  {
+    "path": "scripts/review-character-nw-svg.mjs",
+    "sha256": "EC27DC96C1850D0943D7F9AADE3A9E3F00889772BDD4FB4887A68E3D4D86A1DE"
+  },
+  {
+    "path": "scripts/inspect-nw-hair-redraw.mjs",
+    "sha256": "CF0446F196988457AD513329907CC750FCDB7DCF8E9E16592479403BA54F8705"
+  }
+]

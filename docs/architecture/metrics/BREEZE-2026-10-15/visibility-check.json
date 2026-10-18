@@ -1,0 +1,11 @@
+{
+  "hidden": {
+    "visibility": "visible",
+    "phase": "gust"
+  },
+  "resumed": {
+    "visibility": "visible",
+    "phase": "gust"
+  },
+  "nightScreenshot": "after-night-settled.png"
+}

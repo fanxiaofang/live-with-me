@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-16",
+  "baseUrl": "http://127.0.0.1:4178/",
+  "source": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\nw-floor-seated-study",
+  "target": "D:\\CodeStudy\\myProject\\liveWithMe\\build\\desk-calibration",
+  "indexLast": true,
+  "serviceStopped": false,
+  "browserStorageModified": false,
+  "changes": [
+    {
+      "relative": "character-shorthair-seated-5views-study.svg",
+      "oldSha256": null,
+      "newSha256": "e61f7993427cd8862eb03303b2b2152deda3bcc04842ddf33a2d1baf04a113ac",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-seated-nw-floor-review.html",
+      "oldSha256": null,
+      "newSha256": "aafb482a91ae93d7f1c2199ef02d68505dfc7ddeb92c7b95966aafcbd63ec8f8",
+      "backup": null
+    },
+    {
+      "relative": "character-shorthair-seated-nw-floor-study.svg",
+      "oldSha256": null,
+      "newSha256": "b8e4afe7bf617b13b80140ff36e31f70d97079eeb81485ee1eda1a081f2d2c22",
+      "backup": null
+    },
+    {
+      "relative": "assets\\BookshelfModal-BlhDdNkf.js",
+      "oldSha256": null,
+      "newSha256": "2cbbb7dd5f7660b58f86e5a148c7e1d891ec3adc57ed2c8bbafdc5e07fd739a1",
+      "backup": null
+    },
+    {
+      "relative": "assets\\CabinetDetailModal-BkNXLmso.js",
+      "oldSha256": null,
+      "newSha256": "0d0b9d55679dbc24f20c8362d60d34c319f0ff990d5fbb645876789b1f1e201f",
+      "backup": null
+    },
+    {
+      "relative": "assets\\ChairInspectionModal-B6gY1oYW.js",
+      "oldSha256": null,
+      "newSha256": "17d4ad6957a71d18bcff5c7712dd8c8b7586b3bd6a14cd6b4e2b54b84f92f2be",
+      "backup": null
+    },
+    {
+      "relative": "assets\\FriendCardModal-BWUzR3pM.js",
+      "oldSha256": null,
+      "newSha256": "44acbdd877553582909b393492ee34ccef711a28cfc29668d946e9649b05efff",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-BKyn4zaA.css",
+      "oldSha256": null,
+      "newSha256": "2d49cc7ad8268a0eef9142a6fcc2490adc0e5b3467953a3131428096cf15b12f",
+      "backup": null
+    },
+    {
+      "relative": "assets\\index-CDIarHde.js",
+      "oldSha256": null,
+      "newSha256": "6aa05bc8d9aa71cb442f8930a63c722d8e578de9a6e7c8ab662161beb6ab172d",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MailboxModal-VK8bzosw.js",
+      "oldSha256": null,
+      "newSha256": "9c72753ca05a490b2aea15a30c10ded06a13473e9d182e497f4a69d904624bde",
+      "backup": null
+    },
+    {
+      "relative": "assets\\map-pin-B5w5AXWg.js",
+      "oldSha256": null,
+      "newSha256": "afc753392bf352b3482ed10a4af139f0164154c08bddc7d76b6157e137af0fe5",
+      "backup": null
+    },
+    {
+      "relative": "assets\\MemoryLogModal-Ch02oilh.js",
+      "oldSha256": null,
+      "newSha256": "dd183f5122acc863bc3eddf51259fa1df8a4bf0d96990b92a830aaf0e4cb5e67",
+      "backup": null
+    },
+    {
+      "relative": "assets\\PosterDetailModal-BJDB38Lt.js",
+      "oldSha256": null,
+      "newSha256": "c730557f79ecf79d2c31e94749ad5b25523d64c2d4611538ae50539720459103",
+      "backup": null
+    },
+    {
+      "relative": "assets\\send-01YZWWXG.js",
+      "oldSha256": null,
+      "newSha256": "988aca5c22b722ff1139bc7c1535f7af8f8d9350fea59408deb0c99e1d36da09",
+      "backup": null
+    },
+    {
+      "relative": "assets\\StatusPickerModal-DfAIkXD9.js",
+      "oldSha256": null,
+      "newSha256": "a720ad7e507534e1c6fd2444744adbb3d763cee8343b88f01b938b03aac3e1b7",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgDetailView-CdbByks7.js",
+      "oldSha256": null,
+      "newSha256": "081d0b0c51cd527e256baab8027172a06d1ea2415e97ccead06d7e925fd22d49",
+      "backup": null
+    },
+    {
+      "relative": "assets\\SvgExportModal-dkG2wNss.js",
+      "oldSha256": null,
+      "newSha256": "fc034ce57c502064c8441077ee7689a4252e6980e22a5aea05b3d99cb315d507",
+      "backup": null
+    },
+    {
+      "relative": "assets\\useDialogFocus-Cbb0562_.js",
+      "oldSha256": null,
+      "newSha256": "b2c42f91b97242f8d3144a76e111e1e7bd5b11c78fde27c384fe4dcb5007936f",
+      "backup": null
+    },
+    {
+      "relative": "assets\\usePreviewSvgIds-BeWuL4S9.js",
+      "oldSha256": null,
+      "newSha256": "6e328a9a9fcb680c3f35721ffbcc91734d3a5412771d6b490cf98fe9c12a5c98",
+      "backup": null
+    },
+    {
+      "relative": "index.html",
+      "oldSha256": "95b3da353136497851678e6f66c3c7dfdda31c1963ef2ba665f776535225c5ff",
+      "newSha256": "1ca4a3d5753058d06c1a08b8d567e6edbec08733eff4a555e299e1174d5f5337",
+      "backup": "D:\\CodeStudy\\myProject\\liveWithMe\\docs\\architecture\\metrics\\NW-FLOOR-SEATED-2026-10-16\\publish-before\\index.html"
+    }
+  ]
+}

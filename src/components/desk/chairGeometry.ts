@@ -30,9 +30,9 @@ export function chairSeatPath(height: number, inset = 0) {
     Q${p(-w, d)} ${p(-w, d - r)} L${p(-w, -d + r)} Q${p(-w, -d)} ${p(-w + r, -d)} Z`;
 }
 /** Keyboard location expressed in the independent chair's local SVG space. */
-export function deskKeyboardInChairSpace(layout: RoomLayoutConfig, seat: DeskSeatId = 'desk_workstation') {
+export function deskKeyboardInChairSpace(layout: RoomLayoutConfig, seat: DeskSeatId = 'desk_workstation', deskRise = 0) {
   const config = DESK_SEATS.find(item => item.slot === seat)!;
   const desk = layout['desk-group'].screen, laptop = layout[config.laptop].screen;
   const chair = layout[config.chair].screen;
-  return { x: desk.x + laptop.x - chair.x, y: desk.y + laptop.y - chair.y };
+  return { x: desk.x + laptop.x - chair.x, y: desk.y + laptop.y - chair.y - deskRise };
 }

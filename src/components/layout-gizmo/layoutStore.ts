@@ -129,14 +129,14 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
   },
   'attic-chair': {
     id: 'attic-chair',
-    name: '阁楼手作白橡木温莎椅 (含工作者)',
+    name: '苔绿方扶手沙发椅 (工位测试 A)',
     category: 'attic',
     categoryLabel: '阁楼书屋',
     screen: { x: -148.0, y: 105.6 },
     fixedW: 0.0,
   },
   'attic-chair-secondary': {
-    id: 'attic-chair-secondary', name: '复古固定脚办公椅 (第二工位)',
+    id: 'attic-chair-secondary', name: '烟蓝高背电竞沙发椅 (工位测试 B)',
     category: 'attic', categoryLabel: '阁楼书屋',
     screen: { x: -116, y: 96.4736 }, fixedW: 0,
   },

@@ -1,0 +1,68 @@
+{
+  "status": "native-svg-implemented-awaiting-visual-review",
+  "inspection": [
+    {
+      "id": "shorthair",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "paths": 38,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "curly",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "paths": 41,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "sidepart",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "paths": 43,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "shaggy",
+      "parseErrors": 0,
+      "bitmapElements": 0,
+      "paths": 40,
+      "headTransform": "translate(10.875,0)",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "fidelity": {
+    "method": "native 1060x1484 raster comparison to approved v4 composite; approximation checks, not visual approval",
+    "opaqueSilhouetteIoU": 0.9942579719852436,
+    "visibleFaceIoU": 0.977825773938085,
+    "outerFaceLeftMeanErrorPixels": 0.7058823529411765,
+    "outerFaceLeftMaxErrorPixels": 2,
+    "shadowAlphaMeanErrorOutOf255": 5.723770820216359
+  },
+  "protectedFilesUnchanged": 53,
+  "environment": "Windows headless Chromium DPR1, 1200x1000 and390x844; static SVG and page checks only, no performance measurements",
+  "errors": []
+}

@@ -5,6 +5,9 @@ import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
 import { DEFAULT_ROOM_LAYOUT } from '../layout-gizmo/layoutStore';
 import { DeskFrame } from './DeskFrame';
 import { BankerLampDisplay, CoffeeMugDisplay, LaptopDisplay } from './DeskItems';
+import { useDeskStudy } from './DeskStudyContext';
+import { deskStudyRise } from './deskStudyModel';
+import { DeskSurfaceGuide } from './DeskContactGuides';
 
 export interface AtticDeskProps {
   layout?: RoomLayoutConfig;
@@ -21,6 +24,8 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
   layout = DEFAULT_ROOM_LAYOUT, activeGizmoId, isInspectorOpen = false,
   onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, onHoverObject,
 }) => {
+  const study = useDeskStudy();
+  const rise = deskStudyRise(study?.surface);
   const items = [
     { id: 'desk-lamp', domId: 'desk-slot-banker-lamp', element: <BankerLampDisplay /> },
     { id: 'desk-laptop', domId: 'desk-slot-laptop', element: <LaptopDisplay /> },
@@ -36,7 +41,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
         event.stopPropagation(); onSelectGizmo?.(activeGizmoId === 'desk-group' ? null : 'desk-group');
       }}>
       {items.map(item => <g key={item.id} {...svgAction(item.domId)} id={item.domId}
-        transform={`translate(${layout[item.id].screen.x},${layout[item.id].screen.y})`} className="cursor-pointer"
+        transform={`translate(${layout[item.id].screen.x},${layout[item.id].screen.y - rise})`} className="cursor-pointer"
         onClick={event => {
           if (!isInspectorOpen) return;
           event.stopPropagation(); onSelectGizmo?.(activeGizmoId === item.id ? null : item.id);
@@ -45,6 +50,7 @@ export const AtticDesk: React.FC<AtticDeskProps> = ({
         onMouseLeave={event => { event.stopPropagation(); onHoverObject?.(null); }}>
         {item.element}
       </g>)}
+      {study?.guides && <DeskSurfaceGuide surface={study.surface} />}
     </DeskFrame>
     {isDeskChild && activeGizmoId && <IsoGizmo pos={layout[activeGizmoId].screen}
       displayCoords={layout[activeGizmoId].screen} fixedW={layout[activeGizmoId].fixedW}

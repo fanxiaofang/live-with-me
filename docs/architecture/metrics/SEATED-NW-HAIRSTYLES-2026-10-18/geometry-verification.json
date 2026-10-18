@@ -1,0 +1,25 @@
+{
+  "duplicateIds": 0,
+  "missingRefs": [],
+  "bodiesEqual": true,
+  "scalesEqual": true,
+  "heads": [
+    {
+      "hairstyle": "shorthair",
+      "transform": "translate(0,-14) scale(0.039734395750332004) translate(-545,-390)"
+    },
+    {
+      "hairstyle": "curly",
+      "transform": "translate(0,-14) scale(0.039734395750332004) translate(-545,-390)"
+    },
+    {
+      "hairstyle": "sidepart",
+      "transform": "translate(0,-14) scale(0.039734395750332004) translate(-545,-390)"
+    },
+    {
+      "hairstyle": "shaggy",
+      "transform": "translate(0,-14) scale(0.039734395750332004) translate(-545,-390)"
+    }
+  ],
+  "invalid": 0
+}

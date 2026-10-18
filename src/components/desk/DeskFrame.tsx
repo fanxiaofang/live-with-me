@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDeskStudy } from './DeskStudyContext';
+import { DeskStudyFrame } from './DeskStudyFrame';
 
 export interface DeskFrameProps {
   onHover?: (hovered: boolean) => void;
@@ -16,6 +18,8 @@ export const DeskFrame: React.FC<DeskFrameProps> = ({
   onClick,
   children,
 }) => {
+  const study = useDeskStudy();
+  if (study) return <DeskStudyFrame surface={study.surface}>{children}</DeskStudyFrame>;
   return (
     <g
       id="minimal-craft-desk-frame"

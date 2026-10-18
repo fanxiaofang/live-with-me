@@ -1,0 +1,30 @@
+[
+  {
+    "sha256": "a0080acb8a8b317e68b843f5d9b147ca3ee09e05299bfd62e7a728cd8a60fc24",
+    "path": "src/components/characters/NwChairSeatedCharacter.tsx"
+  },
+  {
+    "sha256": "02cc6e28290817f697f28d1ebf65fab1049068418f8e26725c193707879ad8f1",
+    "path": "src/components/characters/nwChairSeatedGeometry.ts"
+  },
+  {
+    "sha256": "ef7b99a14d9307add46837eaa31d036fbe38654726973403cc2fc67d77e136cb",
+    "path": "src/components/desk/WindsorSeatedCharacter.tsx"
+  },
+  {
+    "sha256": "d1a4aa1ab131e9eb1cd88c90c49be72870a9ed06e6a910222b4c6054e843da6f",
+    "path": "src/components/desk/ChairInspectionModal.tsx"
+  },
+  {
+    "sha256": "8b2392149e5f3b3cd9fcac6c475b6570d7185efcebefd121a489eef7ce3872ca",
+    "path": "src/components/desk/DeskContactGuides.tsx"
+  },
+  {
+    "sha256": "3a52a4fe865c00cdfd12a04925b9b5393c15d2a7291a6a0164abe920b4362217",
+    "path": "src/components/desk/DeskWorkstations.tsx"
+  },
+  {
+    "sha256": "aa5f91691e55e7cb610de635abba242171c436f362a170130ef26151a5dbe250",
+    "path": "public/character-shorthair-seated-nw-study.svg"
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-18",
+  "archive": "build/workspace-cleanup-2026-10-18/files",
+  "files": 453,
+  "bytes": 91060264,
+  "groups": {
+    "superseded character modelling experiment": {
+      "files": 4,
+      "bytes": 52699
+    },
+    "historical intermediate render or authoring snapshot": {
+      "files": 234,
+      "bytes": 39127650
+    },
+    "redundant source or pre-publish backup": {
+      "files": 84,
+      "bytes": 1643952
+    },
+    "raw performance trace; summarized findings retained": {
+      "files": 20,
+      "bytes": 44529020
+    },
+    "replaced by shared authoring test configuration": {
+      "files": 9,
+      "bytes": 2585
+    },
+    "superseded standalone authoring preview": {
+      "files": 12,
+      "bytes": 3315410
+    },
+    "one-off experiment or migration script": {
+      "files": 22,
+      "bytes": 109827
+    },
+    "regression assertions for rejected historical artwork": {
+      "files": 5,
+      "bytes": 33993
+    },
+    "raw performance sample; final summary retained": {
+      "files": 63,
+      "bytes": 2245128
+    }
+  }
+}

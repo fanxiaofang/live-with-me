@@ -1,0 +1,12 @@
+{
+  "fullCycle": true,
+  "plantsFinishBeforeQuiet": true,
+  "quietHasNoPlantAnimations": true,
+  "nextGust": true,
+  "cloudTransformsStatic": true,
+  "sheenStatic": true,
+  "themeGradientsChange": true,
+  "wheelAndDeskNavigation": true,
+  "reducedMotionAndResume": true,
+  "pageErrors": []
+}

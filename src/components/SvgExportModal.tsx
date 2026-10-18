@@ -12,7 +12,7 @@ interface SvgExportModalProps {
 export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose }) => {
   const timers = useTimerScope(isOpen);
   const panel = useRef<HTMLDivElement>(null);
-  const [pose, setPose] = useState<'seated' | 'standing'>('seated');
+  const [pose, setPose] = useState<'seated' | 'standing'>('standing');
   const [hairstyle, setHairstyle] = useState<'short' | 'curly' | 'sidepart' | 'shaggy'>('short');
   const [standingView, setStandingView] = useState<'shape' | 'comparison' | 'ground' | 'surfaces'>('shape');
   const [copiedView, setCopiedView] = useState<string | null>(null);
@@ -52,12 +52,17 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
   const shaggy = hairstyle === 'shaggy';
   const standing = pose === 'standing';
   const shortStanding = standing && hairstyle === 'short';
+  const seatedNwStudy = !standing;
+  const hairLabel = shaggy ? '双色蓬松碎发' : sidepart ? '偏分低束发' : curly ? '层叠长卷发' : '经典短发';
+  const fiveViews = seatedNwStudy || (standing && (!shortStanding || standingView === 'shape'));
   const poseLabel = shaggy ? `双色蓬松碎发${standing ? '站姿' : '坐姿'}` : sidepart ? `偏分低束发${standing ? '站姿' : '坐姿'}` : curly ? standing ? '长卷发站姿' : '长卷发坐姿' : standing ? '长袍站姿' : '标准坐姿';
   const filenamePrefix = `${shaggy ? 'character-shaggy' : sidepart ? 'character-sidepart' : curly ? 'character-curly' : 'character-shorthair'}${standing ? '-standing' : ''}`;
-  const sheetFilename = shortStanding && standingView === 'comparison' ? 'character-shorthair-proportion-comparison.svg'
+  const sheetFilename = seatedNwStudy ? `${filenamePrefix}-seated-5views-study.svg`
+    : shortStanding && standingView === 'comparison' ? 'character-shorthair-proportion-comparison.svg'
     : shortStanding && standingView === 'ground' ? 'character-shorthair-standing-ground-4views.svg'
-    : shortStanding && standingView === 'surfaces' ? 'character-shorthair-standing-surfaces.svg' : `${filenamePrefix}-4views.svg`;
-  const sheetLabel = shaggy ? `${poseLabel}四视图总表` : sidepart ? `偏分低束发${standing ? '站姿' : '坐姿'}四视图总表` : curly ? standing ? '层叠长卷发站姿四视图总表' : '层叠长卷发四视图总表' : standing && standingView === 'comparison' ? '坐站同头大小对照'
+    : shortStanding && standingView === 'surfaces' ? 'character-shorthair-standing-surfaces.svg' : `${filenamePrefix}-${fiveViews ? '5' : '4'}views.svg`;
+  const sheetLabel = seatedNwStudy ? `${hairLabel}坐姿四视图 + NW${hairstyle === 'short' ? '（当前定稿）' : ''}`
+    : fiveViews ? `${shaggy ? '双色蓬松碎发' : sidepart ? '偏分低束发' : curly ? '层叠长卷发' : '长袍'}站姿五视图总表` : shaggy ? `${poseLabel}四视图总表` : sidepart ? `偏分低束发${standing ? '站姿' : '坐姿'}四视图总表` : curly ? standing ? '层叠长卷发站姿四视图总表' : '层叠长卷发四视图总表' : standing && standingView === 'comparison' ? '坐站同头大小对照'
     : standing && standingView === 'ground' ? '浅轴测地面参照'
     : standing && standingView === 'surfaces' ? '木地板与草地接地对照' : `${poseLabel}四视图总表`;
   const views = [
@@ -81,6 +86,8 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
       title: '04 · 右侧视图 (Right Profile)',
       desc: shaggy ? 'NE 朝向 · 与左侧对应 · 两层短碎发' : sidepart ? 'NE 朝向 · 长前发侧 · 太阳穴垂落主发片' : curly ? 'NE 朝向 · 与左侧对应转向' : standing ? 'NE 朝向 · 与左侧共享比例 · 袍摆盖脚' : 'NE 朝向 · 侧向右侧对称平衡',
     },
+    ...(standing ? [{ id: 'nw', title: '05 · NW 斜侧视图', desc: '定稿的背左斜侧站姿 · 保留独立背面视图' }]
+      : [{id:'seated-nw-floor-study',title:`05 · NW 斜侧坐姿${hairstyle === 'short' ? '（当前定稿）' : ''}`,desc:'共用定稿收腿身体 · 配用各自定稿 NW 头部'}]),
   ];
 
   return (
@@ -103,9 +110,9 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
               <ImageIcon className="w-5 h-5" />
             </div>
             <div>
-              <h2 id="svg-export-title" className="text-base font-bold text-[#f5eee4]">人物四视图 · 查看与导出</h2>
+              <h2 id="svg-export-title" className="text-base font-bold text-[#f5eee4]">人物五视图 · 查看与导出</h2>
               <p className="text-xs text-[#c3b29e]">
-                选择发型，预览或打开完整四视图
+                四款发型均可查看和导出站姿、坐姿五方向
               </p>
             </div>
           </div>
@@ -132,14 +139,14 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
             {(['seated', 'standing'] as const).map(option => <button key={option} type="button"
               aria-pressed={pose === option} onClick={() => setPose(option)}
               className={`px-3.5 py-2 rounded-lg text-sm border ${pose === option ? 'bg-[#93603d] border-[#b77a50] text-[#fff5e9]' : 'border-[#5a4534] text-[#d6c6b4] hover:bg-[#34271f]'}`}>
-              {option === 'seated' ? '坐姿四视图' : '站姿四视图'}
+              {option === 'seated' ? '坐姿四视图 + NW' : '站姿五视图'}
             </button>)}
           </div>
           {shortStanding && <label className="flex flex-wrap items-center gap-3 text-sm text-[#d6c6b4]">
             站姿查看内容
             <select aria-label="站姿查看内容" value={standingView} onChange={event => setStandingView(event.target.value as typeof standingView)}
               className="rounded-lg border border-[#5a4534] bg-[#2b211a] px-3 py-2 text-[#f5ede2]">
-              <option value="shape">比例四视图</option>
+              <option value="shape">比例五视图</option>
               <option value="comparison">坐站同头大小对照</option>
               <option value="ground">浅轴测地面参照</option>
               <option value="surfaces">木地板与草地接地对照</option>
@@ -151,14 +158,15 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#c4794e]/20 text-[#e0a96d] border border-[#c4794e]/40">
-                    4 视图总表推荐
+                    {fiveViews ? '5 视图总表' : '视图总表'}
                   </span>
                   <span className="text-sm font-semibold text-[#f5eee4]">
                     {sheetLabel}
                   </span>
                 </div>
                 <p className="text-xs text-[#c3b29e]">
-                  {shaggy ? '浅麦金碎刘海、两侧外翘发梢与深色后颈底发，坐站共享同一头部。'
+                  {seatedNwStudy ? 'NW 共用定稿收腿坐姿身体，配用各自的定稿 NW 头部与发型；原四视图保持。'
+                    : shaggy ? '浅麦金碎刘海、两侧外翘发梢与深色后颈底发，坐站共享同一头部。'
                     : sidepart ? '偏分长前发、耳后收拢与后颈小发束，左右侧面分别展示发型的两侧。'
                     : curly ? standing ? '与坐姿共享头部和卷发，标准站高约 48，长袍自然垂落并盖住脚。'
                     : '帽下分束、脸侧卷梢与肩背长发，四个朝向按相同倍率展示。'
@@ -203,7 +211,7 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
                   className="px-3 py-1.5 rounded-lg bg-[#2e2620] hover:bg-[#3d3229] text-xs text-[#ded5c7] border border-[#4a3e33] transition-colors flex items-center gap-1.5"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  <span>打开完整四视图</span>
+                  <span>{fiveViews ? '打开完整五视图' : '打开完整视图'}</span>
                 </a>
               </div>
             </div>
@@ -218,6 +226,11 @@ export const SvgExportModal: React.FC<SvgExportModalProps> = ({ isOpen, onClose 
               />
             </div>
           </div>
+
+          {seatedNwStudy && <a href="/character-seated-nw-review.html" target="_blank" rel="noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-[#f0c394] underline underline-offset-4">
+            <Eye className="w-4 h-4"/>查看四款发型 NW 坐姿同倍率对照
+          </a>}
 
           {/* 4 Individual Views Grid */}
           <div>

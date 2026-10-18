@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-15T17:19:15.314Z",
+  "localReferences": 151,
+  "errors": [],
+  "preview": "http://127.0.0.1:4178",
+  "scope": "Functional checks only; no performance sampling.",
+  "checks": {
+    "typecheck": true,
+    "productionBuild": true,
+    "deskPoseUnit": 1,
+    "browserUniqueCases": 5,
+    "finalWorkbenchCases": 2
+  },
+  "buildHashes": {
+    "BookshelfModal-CUfQwHMG.js": "469e8638fc771a965e74e38a022d84329619847f83e024f9162f44e330eb6564",
+    "CabinetDetailModal-CF1FQ14w.js": "bfab629ea0f82d18d9df302676fbd136c54d0d21a2443463639a80aaa107ab1f",
+    "ChairInspectionModal-CaehrQBK.js": "5d22e31d993e42b3a6ee12bd1fa0834eeed2021110d6f73fa246cb52d1aec052",
+    "characterPreviewPalette-D24KEPBs.js": "fc4f2c758f206510cadf4fda011a5563fa89469cd63f3712801bb42e1ba7bbd9",
+    "FriendCardModal-C0M58mnx.js": "8844131fd18d052bae6987de5d3b07fdc92f5cc5f44d2711fd277d782a5c70a7",
+    "index-C0P2fcYH.js": "42b194c2d23ff86739a4bbf7e1eac56b70fd4515439b84f74993f6cb1a9b7db8",
+    "index-DJEfTiXK.css": "736a6e04f52c9808ee4171c5818e0d688fdb6ee21ea38793ba93eac11b699367",
+    "MailboxModal-Bsk1xmR4.js": "b40240fc4abdf15378f084d878f750224717868cff60354d9cf9076e9b11dd2a",
+    "map-pin-Dz2NqIII.js": "af0eddd61438a26a835713231d751176a566dfb247ab0a4c79571bf31f4c912f",
+    "MemoryLogModal-DEAlDQfG.js": "7b5d71c1bf004725587950d833d10dc68df9e05adb171bb738754eb32822cff9",
+    "PosterDetailModal-CSEfNoOr.js": "7813b54f57aae480992b17b84a4fc6c0489298f5bb6a070815cbdd3102d93c73",
+    "send-BHV6ATpD.js": "33d96d256e42f32d7f71a4dc18d548c8d904565937dad45622f9c20723296c8e",
+    "StatusPickerModal-Cnc1l9p0.js": "c257776a2e9aac03e0b65d0af892b4c90a7a2bb83b873bd9e29fda88f2250b72",
+    "SvgDetailView-ipM9xGV1.js": "4a23266f9c077bb2c31ed8895937dded0e0eb54f786ceabd6bdb5e03a98b811c",
+    "SvgExportModal-BXyk6Tfu.js": "83d62284a806d1493d664ae98c9d4801462f98c0f125e5df4cd766b62600c99a",
+    "useDialogFocus-BuJ-yf8H.js": "ef687d64bbaadf04f14b6557a9771b8104e9951814dbafbb4d1eb81b3ceb8702"
+  }
+}
