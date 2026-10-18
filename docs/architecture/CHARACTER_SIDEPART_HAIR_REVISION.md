@@ -1,5 +1,7 @@
 # 偏分低束发替换与精修
 
+> 2026-10-18 图片精简：本文部分历史过程图已转为本地归档，保留的代表图与恢复方法见[图片精简清单](metrics/IMAGE_RETENTION_2026-10-18.md)。历史技术记录不代表当前造型已获认可。
+
 日期：2026-10-14（Asia/Shanghai）。状态：当前为 v16 左右身份与侧面发量修正；坐站四视图及网页入口同步，观感待用户评审。
 
 ## 当前 v16：纠正侧面对应，补齐后枕发量
@@ -16,7 +18,7 @@ CharacterHead 根据真实 hairFacing 选择解剖侧面，茶桌西席的整个
 
 ![v16 站姿侧面对应](metrics/character-sidepart-standing-v16.jpg)
 
-![v16 茶桌场景](metrics/character-sidepart-tea-scene-v16.png)
+v16 茶桌场景（历史过程图 `character-sidepart-tea-scene-v16.png`，已本地归档）
 
 ## v15 历史记录：宽主发片、耳后收拢与连续发尾
 
@@ -28,9 +30,9 @@ CharacterHead 根据真实 hairFacing 选择解剖侧面，茶桌西席的整个
 
 类型检查、生产构建及 8 项人物浏览器检查分组通过，覆盖场景与睡姿遮挡、桌面/390px 三款发型坐站导出，以及 35 张 SVG 的资源、取景与朝向。桌面复制检查曾在异步 fetch/clipboard 完成前读取旧结果，已改为等待预期 SVG 内容并重新验证桌面与手机流程。短发及认可卷发共 23 张 SVG 重新生成后校验值一致。IAB 核对新坐站四视图并保存截图。本轮未新增依赖、动画或每帧计算，未进行性能采样；功能验证不代表新观感已获用户认可。
 
-![v15 坐姿精修](metrics/character-sidepart-seated-v15.jpg)
+v15 坐姿精修（历史过程图 `character-sidepart-seated-v15.jpg`，已本地归档）
 
-![v15 站姿精修](metrics/character-sidepart-standing-v15.jpg)
+v15 站姿精修（历史过程图 `character-sidepart-standing-v15.jpg`，已本地归档）
 
 ## v14 历史记录：替换披肩长发
 
@@ -44,6 +46,6 @@ CharacterHead 根据真实 hairFacing 选择解剖侧面，茶桌西席的整个
 
 类型检查、生产构建及 8 项人物浏览器检查分组通过：桌面/390px 三款发型坐站导出、总表复制和所有单图下载；35 张 SVG 的取景、朝向及实例引用；新装扮替换、实际场景和睡姿兼容；原蒲团共面和坐站尺寸。检查确认两个侧面分别使用长前发侧/耳后侧，后颈发束完整，无短发月牙叠加。原短发及卷发 23 张 SVG 重新生成后校验值均一致。IAB 核对两套四视图并保存截图。未新增依赖、动画或每帧计算，未进行新性能采样；及肩直发等剩余资产继续待后续。
 
-![偏分低束发坐姿](metrics/character-sidepart-seated-v14.jpg)
+偏分低束发坐姿（历史过程图 `character-sidepart-seated-v14.jpg`，已本地归档）
 
-![偏分低束发站姿](metrics/character-sidepart-standing-v14.jpg)
+偏分低束发站姿（历史过程图 `character-sidepart-standing-v14.jpg`，已本地归档）

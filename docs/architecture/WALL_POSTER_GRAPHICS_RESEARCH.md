@@ -1,5 +1,7 @@
 # 墙面海报构图与矢量工具调研
 
+> 2026-10-18 图片精简：本文部分历史过程图已转为本地归档，保留的代表图与恢复方法见[图片精简清单](metrics/IMAGE_RETENTION_2026-10-18.md)。历史技术记录不代表当前造型已获认可。
+
 调研日期：2026-10-13（Asia/Shanghai）。以下版本来自当日 npm registry 的 latest 元数据；版本和漏洞状态应在正式采用时重新核对。
 
 ## 项目结论
@@ -77,7 +79,7 @@
 - 本地浏览器确认《泳者之心》可正常点开，原 JPG 加载成功，原始尺寸为 848 × 1264。
 - 人工检查全景、书房取景和放大视角的海面遮挡、人物轮廓与画框裁切。本次不更新全站视觉基线。
 
-截图：[书房中的实际效果](metrics/wall-posters-room-after.jpg)、[墙面海报近景](metrics/wall-posters-closeup-after.jpg)。
+截图：书房中的实际效果（历史过程图 `wall-posters-room-after.jpg`，已本地归档）、墙面海报近景（历史过程图 `wall-posters-closeup-after.jpg`，已本地归档）。
 
 ## 《红辣椒》墙面图后续优化
 

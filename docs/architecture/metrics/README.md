@@ -7,3 +7,5 @@
 归档清单与 SHA256 位于 `build/workspace-cleanup-2026-10-18/manifest.json`；提交内的统计在 [cleanup-2026-10-18-summary.json](cleanup-2026-10-18-summary.json)。当前生成流程和回归命令见 [清理记录](../WORKSPACE_CLEANUP_2026-10-18.md)。
 
 自动回归的后续截图与下载只写入忽略的 `test-results/`。需要保留新的审阅证据时，再手动选取有用结果进入对应日期目录。
+
+同日补充整理原 `60378cd`：原 88 张图片精简为 14 张，74 张重复或历史过程图（约 13.12 MiB）转入本地 `build/image-pruning-2026-10-18/files/`。随后按用户要求从分支历史中移除这些图片，避免新克隆继续下载。保留清单、历史备份及恢复方法见[图片精简清单](IMAGE_RETENTION_2026-10-18.md)。

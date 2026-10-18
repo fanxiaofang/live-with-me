@@ -1,5 +1,7 @@
 # 书桌椅与就坐人物：首个静态姿态样例
 
+> 2026-10-18 图片精简：本文部分历史过程图已转为本地归档，保留的代表图与恢复方法见[图片精简清单](metrics/IMAGE_RETENTION_2026-10-18.md)。历史技术记录不代表当前造型已获认可。
+
 **当前定稿（2026-10-16）：** 用户明确暂以其SVG定稿，经典短发独立NW收腿方向本轮视觉确认通过，已原样保留身体路径、原始统一缩放及定稿头部并接入查看／导出。[确认原话、原稿及快照](metrics/NW-FLOOR-SEATED-2026-10-16/approved/README.md)。本批只完成独立方向定稿同步，尚未入椅／放回房间；原椅／布局／原四图／站姿保持，旧椅坐v3／v4／v5／v6均未通过。后续椅坐须单独验证坐面承托和遮挡，不挤压已确认身体以套椅；其它专项不启动，性能暂停。下方为历史。
 
 **最新反馈（2026-10-16）：** 用户提供更自然的独立NW收腿SVG并指出v2不如该稿。已原样归档及同倍率对照，后续以其主轮廓为参照，保留紧凑上身／清楚袍摆顶面／袖手衔接；停止沿v2加宽的方向继续改。[复核](metrics/NW-FLOOR-SEATED-2026-10-16/user-reference-review/README.md)。本轮只分析，未换产品或入椅；v2未获认可、新稿未最终定稿，原椅／布局／头部／四图保持。下方为历史。
@@ -147,13 +149,13 @@ v6 存储 key 与坐标结构继续兼容。只在没有第二工位字段的旧
 - 9 项生产浏览器检查分组通过：两种椅子查看、桌面/手机预览、无人不虚构实际占用者、样例资源 ID/引用隔离与真实占用不变，装扮保存/取消/焦点，头部比例，以及包含新增物件的全布局选择/微调。
 - 初次单元检查发现新增默认坐标的浮点尾数差异，统一到四位小数后复验通过。未更新历史视觉基线；本次截图核对不等于用户已认可造型。
 
-![当前双人工位静态样例](metrics/desk-two-person-study-2026-10-15.png)
+当前双人工位静态样例（历史过程图 `desk-two-person-study-2026-10-15.png`，已本地归档）
 
-![两种空椅与桌面关系](metrics/desk-two-empty-chairs-2026-10-15.png)
+两种空椅与桌面关系（历史过程图 `desk-two-empty-chairs-2026-10-15.png`，已本地归档）
 
-[实际双人场景夹具](metrics/desk-two-live-1200-2026-10-15.png) · [手机双人预览](metrics/desk-two-person-mobile-2026-10-15.png) · [复古椅对比](metrics/desk-retro-chair-study-2026-10-15.png)
+实际双人场景夹具（历史过程图 `desk-two-live-1200-2026-10-15.png`，已本地归档） · 手机双人预览（历史过程图 `desk-two-person-mobile-2026-10-15.png`，已本地归档） · 复古椅对比（历史过程图 `desk-retro-chair-study-2026-10-15.png`，已本地归档）
 
-四款头部/长袍细节：[经典短发](metrics/desk-robe-hair-short-2026-10-15.png) · [层叠卷发](metrics/desk-robe-hair-curly-2026-10-15.png) · [偏分低束发](metrics/desk-robe-hair-sidepart-2026-10-15.png) · [双色碎发](metrics/desk-robe-hair-shaggy-2026-10-15.png)。
+四款头部/长袍细节：经典短发（历史过程图 `desk-robe-hair-short-2026-10-15.png`，已本地归档） · 层叠卷发（历史过程图 `desk-robe-hair-curly-2026-10-15.png`，已本地归档） · 偏分低束发（历史过程图 `desk-robe-hair-sidepart-2026-10-15.png`，已本地归档） · 双色碎发（历史过程图 `desk-robe-hair-shaggy-2026-10-15.png`，已本地归档）。
 
 ### 当前生产正常动画样本
 
@@ -196,11 +198,11 @@ v6 存储 key 与坐标结构继续兼容。只在没有第二工位字段的旧
 
 在实际房间近景、独立空椅/坐姿对比和桌椅关系视图中核对了腿脚、坐面、手与键盘、靠背遮挡及暖木色调。全景仍使用原世界相机和布局。以下为开发浏览器的实际截图，交互验证另外使用生产构建。
 
-![实际房间中的桌椅与坐姿](metrics/desk-chair-room-after.jpg)
+实际房间中的桌椅与坐姿（历史过程图 `desk-chair-room-after.jpg`，已本地归档）
 
 ![同倍率空椅与坐姿对比](metrics/desk-chair-comparison-after.jpg)
 
-[原预览截图](metrics/desk-chair-before.jpg) · [当前桌椅关系截图](metrics/desk-chair-context-after.jpg)
+原预览截图（历史过程图 `desk-chair-before.jpg`，已本地归档） · 当前桌椅关系截图（历史过程图 `desk-chair-context-after.jpg`，已本地归档）
 
 这是一轮静态样例的本地验收。人物造型的最终观感仍以用户体验为准；没有更新历史全景视觉基线来隐藏有意的美术变化。
 

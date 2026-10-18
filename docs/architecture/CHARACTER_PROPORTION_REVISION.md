@@ -1,5 +1,7 @@
 # 人物比例稿：头肩轮廓修正与四视图
 
+> 2026-10-18 图片精简：本文部分历史过程图已转为本地归档，保留的代表图与恢复方法见[图片精简清单](metrics/IMAGE_RETENTION_2026-10-18.md)。历史技术记录不代表当前造型已获认可。
+
 日期：2026-10-14（Asia/Shanghai）。状态：**短发独立稿沿用 v11，蒲团装配沿用 v12；v13 新增长卷发常规四朝向重绘，详见 [卷发修订记录](CHARACTER_CURLY_HAIR_REVISION.md)。**
 
 ## 当前场景 v12：蒲团与袍摆共面
@@ -12,9 +14,9 @@
 
 类型检查、生产构建和 6 项人物浏览器检查通过。新增检查直接测量实际袍摆中心、与顶面相同的扁率、袍摆在顶面内、蒲团厚度和地面影衔接，覆盖默认单席/空席及双席对坐；原同头大小、场景尺寸、1200 / 390px 导出及 15 张 SVG 检查保留。IAB 放大核对单席与空蒲团，生产测试截图核对双席。此轮只修正静态装配与家具几何，未进行性能采样；其它发型兼容、睡姿、八向素材及第三阶段仍待后续处理。
 
-![v12 蒲团与袍摆实际场景](metrics/tea-cushion-plane-v12.jpg)
+v12 蒲团与袍摆实际场景（历史过程图 `tea-cushion-plane-v12.jpg`，已本地归档）
 
-![v12 双席品茶](metrics/character-tea-side-pair-v12.png)
+v12 双席品茶（历史过程图 `character-tea-side-pair-v12.png`，已本地归档）
 
 ## v11 独立资产基准：采用用户手绘轮廓与接地校准
 
@@ -28,7 +30,7 @@
 
 ![v11 用户手绘侧坐与接地](metrics/character-seated-side-contact-v11.jpg)
 
-![v11 双席品茶场景](metrics/character-tea-side-pair-v11.png)
+v11 双席品茶场景（历史过程图 `character-tea-side-pair-v11.png`，已本地归档）
 
 ## v10 历史记录：侧坐松弛感
 
@@ -40,9 +42,9 @@
 
 类型检查、生产构建及 5 项人物浏览器检查通过，覆盖双席持杯朝向、坐站尺寸、1200 / 390px 导出，以及 14 张 SVG 的取景、资源引用、同头大小。IAB 核对对照图；生产测试截图核对双席场景。未新增依赖、滤镜、动画或每帧计算，未进行新的性能采样；其它发型适配与第三阶段尚未启动。
 
-![v10 同头大小前后对照](metrics/character-side-relaxation-before-after-v10.jpg)
+v10 同头大小前后对照（历史过程图 `character-side-relaxation-before-after-v10.jpg`，已本地归档）
 
-![v10 双席品茶](metrics/character-tea-side-pair-v10.png)
+v10 双席品茶（历史过程图 `character-tea-side-pair-v10.png`，已本地归档）
 
 ## v9 历史记录：圆手风格统一
 
@@ -54,11 +56,11 @@
 
 类型检查、生产构建和 9 项人物/椅子浏览器检查通过，覆盖双席朝向、坐站尺寸、1200 / 390px 导出与椅子检视、装扮同步，以及 13 张 SVG 的资源和取景。IAB 核对坐站对照、桌前关系和持书场景，截图保存。未新增依赖、滤镜、动画或每帧计算，未进行新的性能采样。
 
-![v9 圆手坐站对照](metrics/character-proportion-comparison-v9.jpg)
+v9 圆手坐站对照（历史过程图 `character-proportion-comparison-v9.jpg`，已本地归档）
 
-![v9 桌前圆手](metrics/character-desk-round-hands-v9.jpg)
+v9 桌前圆手（历史过程图 `character-desk-round-hands-v9.jpg`，已本地归档）
 
-![v9 持书圆手](metrics/character-reading-round-hands-v9.jpg)
+v9 持书圆手（历史过程图 `character-reading-round-hands-v9.jpg`，已本地归档）
 
 ## v8 历史记录：袍底与手腕衔接
 
@@ -68,7 +70,7 @@
 
 类型检查、生产构建及 5 项人物浏览器检查通过，覆盖双席朝向、坐站尺寸、1200 / 390px 导出与 13 张 SVG 的资源和取景。IAB 核对坐站对照。正背面坐姿及左右站姿文件 SHA-256 与修改前一致；未新增依赖、动画或滤镜。
 
-![v8 坐姿袍底与手部衔接](metrics/character-proportion-comparison-v8.jpg)
+v8 坐姿袍底与手部衔接（历史过程图 `character-proportion-comparison-v8.jpg`，已本地归档）
 
 ## v7 历史记录：侧身盘坐轮廓
 
@@ -78,9 +80,9 @@
 
 四视图总表、坐姿左右单图、坐站同头大小对照及导出说明已同步。类型检查、生产构建及 5 项人物浏览器检查通过，覆盖双席朝向、实际坐站尺寸、1200 / 390px 导出操作，以及 13 张 SVG 的取景、资源引用和同头大小。IAB 核对对照图，生产测试截图核对双席场景；无新增依赖、动画或滤镜，未进行新的性能采样。此轮仍为四朝向手绘轮廓调整，未建立八向连续转身模型。
 
-![v7 坐姿侧身对照](metrics/character-proportion-comparison-v7.jpg)
+v7 坐姿侧身对照（历史过程图 `character-proportion-comparison-v7.jpg`，已本地归档）
 
-![v7 双席品茶场景](metrics/character-tea-side-pair-v7.png)
+v7 双席品茶场景（历史过程图 `character-tea-side-pair-v7.png`，已本地归档）
 
 ## v6 历史记录：站坐场景尺寸
 
@@ -94,11 +96,11 @@
 
 类型检查、生产构建、8 项人物导出及桌椅检视检查通过，覆盖 1200 / 390px、资源和取景、下载复制、家具接触锚点、实际头部倍率、站高及地垫内落脚位置。IAB 核对坐站对照和主屋；生产测试截图核对观测站。新增静态路径复用，无新依赖或每帧尺寸运算，未进行新的性能采样；第三阶段未启动。
 
-![v6 坐站同头大小](metrics/character-proportion-comparison-v6.jpg)
+v6 坐站同头大小（历史过程图 `character-proportion-comparison-v6.jpg`，已本地归档）
 
-![v6 主屋场景尺寸](metrics/character-room-sizing-v6.jpg)
+v6 主屋场景尺寸（历史过程图 `character-room-sizing-v6.jpg`，已本地归档）
 
-![v6 观测站站姿](metrics/character-observatory-sizing-v6.png)
+v6 观测站站姿（历史过程图 `character-observatory-sizing-v6.png`，已本地归档）
 
 ## v5 历史记录：侧身轻补厚与接触阴影
 
@@ -108,9 +110,9 @@
 
 新增 `character-shorthair-standing-surfaces.svg`：复用主屋 `TimberFlooring`，草地仅提取项目下午主题的 `isoGroundPastureGrad`；两种材质同倍率显示四朝向，左侧 3× 放大参照、右侧约 65px 高的小尺寸人物。各实例 ID 隔离，不引入无关的世界滤镜或动态元素。此图为材质检查样例，尚未替换实际世界人物，也不代表已验证全场景光照和家具遮挡。
 
-![v5 四视图](metrics/character-standing-4views-v5.jpg)
+v5 四视图（历史过程图 `character-standing-4views-v5.jpg`，已本地归档）
 
-![v5 木地板与草地接地对照](metrics/character-standing-surfaces-v5.jpg)
+v5 木地板与草地接地对照（历史过程图 `character-standing-surfaces-v5.jpg`，已本地归档）
 
 导出窗口新增材质对照选项，预览、复制和下载同步跟随。最终类型检查、生产构建及 3 项人物导出检查通过，覆盖 1200px / 390px、四种查看内容及独立单图、下载内容一致、焦点返回，以及八个 SVG 的资源引用、取景、同头大小和地面斜率。IAB 核对四视图及两种地面的放大 / 小尺寸人物，截图保存；保留历史版本截图。
 
@@ -124,11 +126,11 @@
 
 正面及背面独立 SVG 生成前后 SHA-256 完全相同，确认没有连带改变已认可的图形。当前四视图、坐站同头大小对照、独立单图、地面参照及导出说明已同步。
 
-![v4 四视图](metrics/character-standing-4views-v4.jpg)
+v4 四视图（历史过程图 `character-standing-4views-v4.jpg`，已本地归档）
 
-![v4 坐站同头大小对照](metrics/character-proportion-comparison-v4.jpg)
+v4 坐站同头大小对照（历史过程图 `character-proportion-comparison-v4.jpg`，已本地归档）
 
-![v4 地面与小尺寸人物](metrics/character-standing-ground-v4.jpg)
+v4 地面与小尺寸人物（历史过程图 `character-standing-ground-v4.jpg`，已本地归档）
 
 `npm run lint`、生产构建和 3 项人物导出检查通过，覆盖桌面 / 手机切换、复制与下载内容一致性、SVG 取景和资源引用、同头大小及地面斜率。IAB 核对四视图、坐站对照及约 65px 的小尺寸人物，保存截图；v1 / v2 / v3 截图继续保留。未新增依赖、动画或每帧计算，未重复性能采样，第三阶段未启动。
 
@@ -140,9 +142,9 @@
 
 地面浅角参照用于接地和朝向检查，不能据此强制改掉用户认可的手绘头肩轮廓。已同步生成五个站姿 SVG、坐站同头大小对照和地面参照图，并更新导出窗口说明。
 
-![v3 四视图](metrics/character-standing-4views-v3.jpg)
+v3 四视图（历史过程图 `character-standing-4views-v3.jpg`，已本地归档）
 
-![v3 同头大小对照](metrics/character-proportion-comparison-v3.jpg)
+v3 同头大小对照（历史过程图 `character-proportion-comparison-v3.jpg`，已本地归档）
 
 本轮 `npm run lint`、生产构建和 3 项人物导出检查通过，包含 1200px / 390px 预览、复制及下载一致性、SVG 取景与资源引用、坐站同头大小和地面斜率。IAB 已核对四视图及坐站对照，截图保存为 v3；保留 v1 / v2 截图作为历史。没有新依赖或常驻站姿动画，第三阶段仍未启动。
 
@@ -166,7 +168,7 @@
 
 坐姿与站姿同头大小对照采用同一头部组件、同一名义头圆直径及 5× 绘制倍率，横线对齐头心。坐姿身体保留原轮廓，不把坐姿地面高度直接与站姿比较。
 
-![坐站同头大小对照](metrics/character-proportion-comparison-v2.jpg)
+坐站同头大小对照（历史过程图 `character-proportion-comparison-v2.jpg`，已本地归档）
 
 ### 2. 刘海与原坐姿同步
 
@@ -184,7 +186,7 @@
 
 增加 `character-shorthair-standing-ground-4views.svg`：每个人物下方是相同的主屋浅轴测地面菱形，包含网格和朝向提示，另附约 65px 高的小尺寸人物，检查在场景大小下的可读性。
 
-![地面参照与小尺寸](metrics/character-standing-ground-v2.jpg)
+地面参照与小尺寸（历史过程图 `character-standing-ground-v2.jpg`，已本地归档）
 
 这不是把全世界换成统一 3D 摄像机。现有建筑、地形和布局 Gizmo 保持原合同；头部继续为圆润手绘造型，帽子曲线不宣称经过完整 3D 相机投影。本轮完成服装深度、袖子层级及接地的共同浅投影参照，后续放入具体席位仍须核对该家具的接触和遮挡。
 

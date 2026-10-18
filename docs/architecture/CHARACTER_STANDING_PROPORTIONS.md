@@ -1,5 +1,7 @@
 # 人物比例稿与长袍站立四视图
 
+> 2026-10-18 图片精简：本文部分历史过程图已转为本地归档，保留的代表图与恢复方法见[图片精简清单](metrics/IMAGE_RETENTION_2026-10-18.md)。历史技术记录不代表当前造型已获认可。
+
 本文件记录第一轮 v1。当前 v5 保留原刘海和正背面身体，在已修正的侧身结构上轻补厚，并增加接触阴影及木地板 / 草地材质对照。当前资产及对照图以 [v5 修正记录](CHARACTER_PROPORTION_REVISION.md) 为准，下文保留第一轮事实。
 
 日期：2026-10-13（Asia/Shanghai）。状态：**站姿比例稿与导出功能已实现并验证，造型待用户评估；第三阶段未启动。**
@@ -26,7 +28,7 @@
 
 SE / SW / NW / NE 沿用项目原有方向标签。旧坐姿总表的“2:1 Isometric Ratio”文本不用于推导本稿或场景地面投影。本轮没有修改旧图，以保持原稿；新图明确区分朝向与地面投影。
 
-![长袍站立四视图](metrics/character-standing-4views.jpg)
+长袍站立四视图（历史过程图 `character-standing-4views.jpg`，已本地归档）
 
 ## 2. 单一绘制来源与导出入口
 
@@ -43,7 +45,7 @@ node --import tsx scripts/generate-standing-character.tsx
 
 现有“导出 短发 4 视图 SVG”入口中增加“坐姿四视图 / 站姿四视图”选择；默认仍显示原坐姿。切换后总表、预览、四个单图、下载与复制使用同一姿态的文件。保留原坐姿五个文件及内容，新增导出窗口 Escape 关闭与焦点返回。
 
-![站姿导出窗口](metrics/character-standing-export-desktop.jpg)
+站姿导出窗口（历史过程图 `character-standing-export-desktop.jpg`，已本地归档）
 
 ## 3. 与当前姿态工作的关系
 
