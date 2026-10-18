@@ -1,0 +1,86 @@
+[
+  {
+    "tag": "SPAN",
+    "classes": "w-2.5 h-2.5 rounded-full bg-[#d68c68] shadow-[0_0_10px_#d68c68]",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(214, 140, 104) 0px 0px 10px 0px",
+    "backdrop": "none",
+    "border": "0px solid rgb(232, 228, 220)"
+  },
+  {
+    "tag": "BUTTON",
+    "classes": "px-2.5 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 bg-[#3b332b] text-[#f2ece2] shadow-sm",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px",
+    "backdrop": "none",
+    "border": "0px solid rgb(242, 236, 226)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "px-3 py-2 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3c342c] shadow-2xl flex items-center gap-1.5 text-xs max-sm:overflow-x-auto max-sm:whitespace-nowrap",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+    "backdrop": "blur(12px)",
+    "border": "1px solid rgb(60, 52, 44)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "p-3 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3b332b] shadow-xl space-y-2.5",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+    "backdrop": "blur(12px)",
+    "border": "1px solid rgb(59, 51, 43)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "w-7 h-7 rounded-full overflow-hidden border border-white/15 shrink-0 flex items-center justify-center shadow-sm",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px",
+    "backdrop": "none",
+    "border": "1px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.15)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "w-7 h-7 rounded-full overflow-hidden border border-white/15 shrink-0 flex items-center justify-center shadow-sm",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px",
+    "backdrop": "none",
+    "border": "1px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.15)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "w-7 h-7 rounded-full overflow-hidden border border-white/15 shrink-0 flex items-center justify-center shadow-sm",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px",
+    "backdrop": "none",
+    "border": "1px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.15)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "absolute top-4 right-4 z-20 flex items-center gap-1.5 bg-[#1e1c19]/85 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 shadow-lg",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px",
+    "backdrop": "blur(12px)",
+    "border": "1px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.1)"
+  },
+  {
+    "tag": "BUTTON",
+    "classes": "fixed bottom-5 right-5 z-40 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#241c14]/90 backdrop-blur-md border border-[#523d29] text-[#ecd8c2] text-xs font-medium shadow-2xl hover:bg-[#34271c] hover:border-[#b48053] transition-all group",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+    "backdrop": "blur(12px)",
+    "border": "1px solid rgb(82, 61, 41)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "w-full max-w-2xl bg-[#201d1a] border border-[#443c34] rounded-2xl shadow-2xl overflow-hidden text-[#e8e2d8] flex flex-col max-h-[85vh]",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px",
+    "backdrop": "none",
+    "border": "1px solid rgb(68, 60, 52)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "relative p-5 rounded-xl border transition-all cursor-pointer bg-[#302a25] border-[#a86542]/60 shadow-lg ring-1 ring-[#a86542]/30",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.573678 0.0672776 0.0736278 / 0.3) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px",
+    "backdrop": "none",
+    "border": "1px solid oklab(0.573678 0.0672776 0.0736278 / 0.6)"
+  },
+  {
+    "tag": "DIV",
+    "classes": "relative p-5 rounded-xl border transition-all cursor-pointer bg-[#302a25] border-[#a86542]/60 shadow-lg ring-1 ring-[#a86542]/30",
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.573678 0.0672776 0.0736278 / 0.3) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px",
+    "backdrop": "none",
+    "border": "1px solid oklab(0.573678 0.0672776 0.0736278 / 0.6)"
+  }
+]
