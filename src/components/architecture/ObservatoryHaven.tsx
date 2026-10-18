@@ -70,13 +70,10 @@ function ObservatoryHavenAsset({
   return (
     <>
       {/* ========================================================================= */}
-      {/* 0. GROUND CONTACT & OCCLUSION SHADOWS (地面柔和阴影与接触遮蔽)            */}
+      {/* 0. PILLAR CONTACT SHADOWS (支柱贴地接触影)                             */}
       {/* ========================================================================= */}
       <g id="observatory-ground-shadows">
-        {/* 高架平台投射在草地上的整体柔和阴影 */}
-        <ellipse cx="0" cy="48" rx="74" ry="22" fill="#17221a" opacity="0.42" filter="url(#softShadow)" />
-        <ellipse cx="0" cy="48" rx="60" ry="16" fill="#121a14" opacity="0.25" />
-
+        {/* TerrainMass owns the broad gradient AO; keep only local contacts here. */}
         {/* 4 处支柱立足点的局部接触加深阴影 */}
         <ellipse cx={pt(-PU, -PV, 0).x} cy={pt(-PU, -PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
         <ellipse cx={pt(-PU, PV, 0).x} cy={pt(-PU, PV, 0).y} rx="9" ry="3.8" fill="#111712" opacity="0.5" />
