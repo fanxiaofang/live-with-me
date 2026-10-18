@@ -10,12 +10,27 @@ function WorldDefsAsset({ theme }: WorldDefsProps) {
             {/* Unified Low-Poly Theme Defs, Gradients & Patterns */}
             <YorkshireDefs theme={theme} />
 
-            {/* Seamless Panoramic Sky Fill Gradient (万物生灵参考图经典4阶渐变：夏日灰蓝天际 -> 柔和浅青 -> 暖金晨雾 -> 地平线奶油杏黄) */}
-            <linearGradient id="skyFillGrad" x1="0" y1="0" x2="0" y2="1">
+            {/* Master Ghibli Anime Sky Dome Gradient (极简干净的三段式渐变：天顶 -> 天光 -> 地平线) */}
+            <linearGradient id="skyFillGrad" gradientUnits="userSpaceOnUse" x1="0" y1="-320" x2="0" y2="420">
               <stop offset="0%" stopColor={theme.skyTop} />
-              <stop offset="48%" stopColor="#96bac5" />
-              <stop offset="78%" stopColor="#dbe8e0" />
+              <stop offset="50%" stopColor={theme.skyMid || theme.skyTop} />
               <stop offset="100%" stopColor={theme.skyBottom} />
+            </linearGradient>
+
+            {/* Billowing cumulus cloud volume gradients (纯净高通透度受光与阴影) */}
+            <linearGradient id="cumulusSunlitCap" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor={theme.cloudHighlight || '#ffffff'} stopOpacity="0.96" />
+              <stop offset="65%" stopColor={theme.cloudHighlight || '#ffffff'} stopOpacity="0.88" />
+              <stop offset="100%" stopColor={theme.cloudShadow || '#8aa5b9'} stopOpacity="0.45" />
+            </linearGradient>
+            <linearGradient id="cumulusUnderbelly" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor={theme.cloudHighlight || '#ffffff'} stopOpacity="0.4" />
+              <stop offset="50%" stopColor={theme.cloudShadow || '#8aa5b9'} stopOpacity="0.75" />
+              <stop offset="100%" stopColor={theme.cloudShadow || '#7692a6'} stopOpacity="0.88" />
+            </linearGradient>
+            <linearGradient id="cumulusRimHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
             </linearGradient>
 
             {/* Yorkshire Dales wheat field texture (toasted oat & straw) */}
@@ -185,34 +200,34 @@ function WorldDefsAsset({ theme }: WorldDefsProps) {
 
             {/* Retro Anime & Diorama Atmospheric Cloud Gradients (低对比度灰蓝、柔乳灰与晨霭紫蓝，融入远山与大气) */}
             <linearGradient id="cloudFarBandGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#c2d5e2" stopOpacity="0.68" />
-              <stop offset="35%" stopColor="#d5e3ec" stopOpacity="0.55" />
-              <stop offset="70%" stopColor="#a8bfd0" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#92abc0" stopOpacity="0.08" />
+              <stop offset="0%" stopColor={theme.cloudHighlight || '#c2d5e2'} stopOpacity="0.75" />
+              <stop offset="35%" stopColor={theme.cloudHighlight || '#d5e3ec'} stopOpacity="0.6" />
+              <stop offset="70%" stopColor={theme.cloudShadow || '#a8bfd0'} stopOpacity="0.45" />
+              <stop offset="100%" stopColor={theme.cloudShadow || '#92abc0'} stopOpacity="0.1" />
             </linearGradient>
 
             {/* Cloud Crest Soft Highlight (绝非死板纯白，而是晨光透射下的极淡乳蓝灰天光) */}
             <linearGradient id="cloudCrestGlaze" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#edf3f7" stopOpacity="0.48" />
-              <stop offset="50%" stopColor="#cde0ed" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#b2c8d8" stopOpacity="0.0" />
+              <stop offset="0%" stopColor={theme.cloudHighlight || '#edf3f7'} stopOpacity="0.55" />
+              <stop offset="50%" stopColor={theme.cloudHighlight || '#cde0ed'} stopOpacity="0.28" />
+              <stop offset="100%" stopColor={theme.cloudShadow || '#b2c8d8'} stopOpacity="0.0" />
             </linearGradient>
 
-            {/* Midground Mountain Ridge & Valley Mist (山谷流岚与山脊薄雾，与远山交融晕染) */}
+            {/* Midground Mountain Ridge & Valley Mist (山谷流岚与山脊薄雾，极轻盈通透地与远山交融) */}
             <linearGradient id="ridgeValleyMistGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#c8dbe6" stopOpacity="0.0" />
-              <stop offset="30%" stopColor="#dde7ee" stopOpacity="0.45" />
-              <stop offset="65%" stopColor={theme.skyBottom} stopOpacity="0.55" />
+              <stop offset="35%" stopColor="#dde7ee" stopOpacity="0.2" />
+              <stop offset="70%" stopColor={theme.skyBottom} stopOpacity="0.25" />
               <stop offset="100%" stopColor={theme.skyBottom} stopOpacity="0.0" />
             </linearGradient>
 
             {/* Upper Atmosphere Wispy Cirrus Gradient */}
             <linearGradient id="wispyCirrusGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#9bb4c7" stopOpacity="0.0" />
-              <stop offset="25%" stopColor="#c0d4e2" stopOpacity="0.4" />
-              <stop offset="60%" stopColor="#d4e3ed" stopOpacity="0.5" />
-              <stop offset="85%" stopColor="#b2c8d8" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#9bb4c7" stopOpacity="0.0" />
+              <stop offset="0%" stopColor={theme.cloudShadow || '#9bb4c7'} stopOpacity="0.0" />
+              <stop offset="25%" stopColor={theme.cloudHighlight || '#c0d4e2'} stopOpacity="0.45" />
+              <stop offset="60%" stopColor={theme.cloudHighlight || '#d4e3ed'} stopOpacity="0.6" />
+              <stop offset="85%" stopColor={theme.cloudShadow || '#b2c8d8'} stopOpacity="0.35" />
+              <stop offset="100%" stopColor={theme.cloudShadow || '#9bb4c7'} stopOpacity="0.0" />
             </linearGradient>
 
             {/* Distant Atmospheric Aerial Haze (极致空气透视雾霭，让远山与天际线柔和交融) */}

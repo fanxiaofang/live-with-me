@@ -1,11 +1,31 @@
 
-/* Preserve the initial cloud composition and theme-dependent gradients/blur.
-   These broad layers no longer translate continuously between theme changes. */
+/* Gentle ambient atmospheric motion: Slow-drifting clouds with zero visual distraction */
 .cloud-drift-far {
-  transform: translateX(-160px);
+  animation: cloudDriftFar 140s ease-in-out infinite alternate;
+  will-change: transform;
 }
 .cloud-drift-mist {
-  transform: translateX(180px);
+  animation: cloudDriftMist 110s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.cloud-drift-cumulus {
+  animation: cloudDriftCumulus 150s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes cloudDriftFar {
+  0% { transform: translateX(-80px); }
+  100% { transform: translateX(60px); }
+}
+
+@keyframes cloudDriftMist {
+  0% { transform: translateX(60px); }
+  100% { transform: translateX(-40px); }
+}
+
+@keyframes cloudDriftCumulus {
+  0% { transform: translateX(-25px) translateY(0px); }
+  100% { transform: translateX(25px) translateY(-4px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

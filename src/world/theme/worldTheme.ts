@@ -2,10 +2,13 @@ import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/lan
 import type { TimeOfDay } from '../../types';
 export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
   afternoon: {
-    // Exact palette extracted from "All Creatures Great and Small" (万物生灵) intro reference:
-    // Sky: English summer cerulean into warm golden buttercream horizon glow
-    skyTop: '#4a7896',
-    skyBottom: '#faedd6',
+    // 经典英伦夏日晴空：纯净蔚蓝天顶 -> 清爽透亮天光 -> 干净奶油地平线
+    skyTop: '#31739c',
+    skyMid: '#69a1c2',
+    skyWarm: '#cce1ec',
+    skyBottom: '#fdf6ec',
+    cloudHighlight: '#ffffff',
+    cloudShadow: '#a6bcd0',
     hillGreenFar: '#73896b',
     hillGreenMid: '#8ea344',
     hillGreenNear: '#485f2a',
@@ -23,9 +26,13 @@ export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
     isRainy: false,
   },
   morning: {
-    // Yorkshire Dales crisp morning: misty silvery azure sky, soft morning gold horizon, dewy olive hills
-    skyTop: '#42708e',
-    skyBottom: '#f5ead4',
+    // 约克郡清晨：清透银蓝天顶 -> 晨曦薄雾天光 -> 柔和晨光白金地平线
+    skyTop: '#366d8f',
+    skyMid: '#6b9bb8',
+    skyWarm: '#d4e5ee',
+    skyBottom: '#f9f3e6',
+    cloudHighlight: '#ffffff',
+    cloudShadow: '#adbcca',
     hillGreenFar: '#6d8367',
     hillGreenMid: '#869b40',
     hillGreenNear: '#445926',
@@ -43,9 +50,13 @@ export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
     isRainy: false,
   },
   dusk: {
-    // Yorkshire Dales golden hour: slate violet sky into dusty apricot, bronze-olive knolls
-    skyTop: '#393452',
-    skyBottom: '#e5906c',
+    // 约克郡黄金时刻：深邃暮紫天顶 -> 绚丽绯红晚霞 -> 纯净落日金橙地平线
+    skyTop: '#3a2754',
+    skyMid: '#8a4263',
+    skyWarm: '#e66b57',
+    skyBottom: '#f4b286',
+    cloudHighlight: '#ffecd0',
+    cloudShadow: '#6e3955',
     hillGreenFar: '#5d5843',
     hillGreenMid: '#474f30',
     hillGreenNear: '#313a22',
@@ -63,9 +74,13 @@ export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
     isRainy: false,
   },
   night: {
-    // Yorkshire moorland night: deep slate indigo, dark woodland shadows, warm lantern glow
-    skyTop: '#0b111a',
-    skyBottom: '#141f2e',
+    // 约克郡旷野深夜：纯净深靛青天顶 -> 幽蓝星空漫射 -> 宁静深蓝地平线
+    skyTop: '#08101d',
+    skyMid: '#122035',
+    skyWarm: '#1e334f',
+    skyBottom: '#17273d',
+    cloudHighlight: '#2c4360',
+    cloudShadow: '#0d1624',
     hillGreenFar: '#131d1a',
     hillGreenMid: '#0e1814',
     hillGreenNear: '#0a120f',
@@ -83,9 +98,13 @@ export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
     isRainy: false,
   },
   rainy: {
-    // Yorkshire Dales drizzle: stormy charcoal-slate sky, wet limestone and deep rainy moss
-    skyTop: '#323f4b',
-    skyBottom: '#5c6d7a',
+    // 约克郡微雨连绵：铅灰雨幕天顶 -> 湿润青灰天光 -> 水汽石灰石地平线
+    skyTop: '#313e48',
+    skyMid: '#4a5b6a',
+    skyWarm: '#687b8d',
+    skyBottom: '#7b8e9f',
+    cloudHighlight: '#9eb0c2',
+    cloudShadow: '#3b4a56',
     hillGreenFar: '#465c50',
     hillGreenMid: '#364a3b',
     hillGreenNear: '#26372b',

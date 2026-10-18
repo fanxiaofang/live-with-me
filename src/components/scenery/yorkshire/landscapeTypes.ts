@@ -5,7 +5,13 @@ import type { InteractionTarget } from '../../../world/interactions/interactionT
  */
 export interface YorkshireSceneTheme {
   skyTop: string;
+  skyMid?: string;
+  skyWarm?: string;
   skyBottom: string;
+  sunGlow?: string;
+  sunbeamColor?: string;
+  cloudHighlight?: string;
+  cloudShadow?: string;
   hillGreenFar: string;
   hillGreenMid: string;
   hillGreenNear: string;

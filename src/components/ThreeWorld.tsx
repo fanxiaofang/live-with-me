@@ -160,7 +160,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       className="relative w-full h-full overflow-hidden select-none cursor-grab active:cursor-grabbing"
       style={{
         touchAction: 'none',
-        background: `linear-gradient(180deg, ${theme.skyTop} 0%, ${theme.skyBottom} 100%)`,
+        background: `linear-gradient(180deg, ${theme.skyTop} 0%, ${theme.skyMid || theme.skyTop} 45%, ${theme.skyBottom} 100%)`,
         transition: 'background 1.4s ease-in-out',
       }}
     >

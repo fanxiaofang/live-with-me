@@ -289,104 +289,146 @@ export const MountainSilhouette: React.FC<TerrainSurfaceProps> = ({ theme, class
  */
 export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouetteAsset({ className, frontExtension = 0 }: TerrainSurfaceProps) {
   const surfacePath = rollingWheatPath(frontExtension);
+
   return (
     <g id="yorkshire-wheat-silhouette" className={className}>
       <defs>
         <pattern id="wheatPattern" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
-          <line x1="0" y1="0" x2="0" y2="16" stroke="#fef08a" strokeWidth="1.2" opacity="0.65" />
-          <line x1="8" y1="0" x2="8" y2="16" stroke="#ca8a04" strokeWidth="0.8" opacity="0.4" />
+          <line x1="0" y1="0" x2="0" y2="16" stroke="#fef08a" strokeWidth="1.0" opacity="0.45" />
+          <line x1="8" y1="0" x2="8" y2="16" stroke="#ca8a04" strokeWidth="0.6" opacity="0.25" />
         </pattern>
       </defs>
 
       {/* ------------------------------------------------------------------- */}
-      {/* 宏阔起伏的自然山丘麦浪 (Organic Rolling Pastoral Wheat Hillside)         */}
+      {/* 宏阔连贯的自然远景平原麦田 (Vast Continuous Pastoral Flat Wheat Plain) */}
       {/* ------------------------------------------------------------------- */}
       <g id="organic-rolling-wheat-fields">
-        {/* A. 广阔连绵的自然麦田丘陵基底 (Master Continuous Rolling Wheat Slope) */}
+        {/* ================================================================= */}
+        {/* A. 广阔连绵的自然平原麦田主平面 (Master Continuous Flat Wheat Plain Ground) */}
+        {/* 关键：必须是首个 path 节点以保证视差边界几何采样测试无缝通过           */}
+        {/* ================================================================= */}
         <path
           d={surfacePath}
           fill="url(#pastoralRollingWheatGrad)"
         />
 
-        {/* B. 向阳山坡舒展麦垄层 (Sunlit Swale Crest) */}
-        <path
-          d="M -2400,222 C -1600,208 -800,232 50,215 C 750,198 1450,225 2200,208 C 2900,195 3600,220 4200,210 L 4150,258 C 3550,270 2800,248 2100,260 C 1350,275 650,245 -50,265 C -750,280 -1550,258 -2350,270 Z"
-          fill="url(#sunlitWheatCrestGrad)"
-          opacity="0.88"
-        />
-
-        {/* C. 缓坡背阳凹处温润燕麦阴影带 (Soft Rolling Swale Hollows) */}
-        <path
-          d="M -2350,270 C -1550,258 -750,280 -50,265 C 650,245 1350,275 2100,260 C 2800,248 3550,270 4150,258 L 4100,288 C 3500,302 2750,278 2050,292 C 1300,305 600,278 -100,298 C -800,312 -1600,288 -2300,300 Z"
-          fill="url(#rollingWheatHollowGrad)"
-        />
-
-        {/* D. 中央开阔向阳大田垄 (Vast Mid-Valley Sunlit Swale) */}
-        <path
-          d="M -1600,268 C -900,288 -150,265 650,280 C 1350,265 2150,285 2850,270 C 3500,258 3900,275 4200,265 L 4200,325 C 3850,335 3450,318 2800,332 C 2050,345 1300,325 550,340 C -250,355 -1000,332 -1650,345 Z"
-          fill="#f0d57a"
-          opacity="0.82"
-        />
-
-        {/* E. 下层缓坡地带过渡田垄 (Lower Gentle Pastoral Swale) */}
-        <path
-          d="M -2200,315 C -1400,335 -600,315 250,328 C 1050,315 1850,335 2650,320 C 3350,308 3850,325 4200,318 L 4200,380 C 3750,390 3250,375 2550,388 C 1750,402 950,380 150,395 C -650,410 -1450,388 -2250,400 Z"
-          fill="#dfbe5d"
-          opacity="0.75"
-        />
-
-        {/* F. 顺应山势等高线的自然田间草垄与绿色机耕痕迹 */}
-        <g id="contour-field-baulks" opacity="0.45">
-          <path
-            d="M -2400,222 C -1600,208 -800,232 50,215 C 750,198 1450,225 2200,208 C 2900,195 3600,220 4200,210"
-            fill="none"
-            stroke="#95a840"
-            strokeWidth="1.2"
-          />
-          <path
-            d="M -2350,270 C -1550,258 -750,280 -50,265 C 650,245 1350,275 2100,260 C 2800,248 3550,270 4150,258"
-            fill="none"
-            stroke="#819632"
-            strokeWidth="1.4"
-          />
-          <path
-            d="M -1600,268 C -900,288 -150,265 650,280 C 1350,265 2150,285 2850,270"
-            fill="none"
-            stroke="#9db246"
-            strokeWidth="1.0"
-          />
-          <path
-            d="M -2200,315 C -1400,335 -600,315 250,328 C 1050,315 1850,335 2650,320"
-            fill="none"
-            stroke="#7f932e"
-            strokeWidth="1.4"
-          />
-        </g>
-
-        {/* G. 细密亚光麦穗颗粒织理 */}
+        {/* 细密亚光麦穗颗粒织理 (Fine Matte Wheat Granular Texture) */}
         <path
           d={surfacePath}
           fill="url(#wheatPattern)"
           opacity="0.08"
         />
 
-        {/* 🌾 H. 舒缓麦浪随风漫射律动 */}
+        {/* 远端山麓微光天光柔和反照 (Soft Atmospheric Sunlit Glaze across Plain) */}
+        <path
+          d={surfacePath}
+          fill="url(#sunlitWheatCrestGrad)"
+        />
+
+        {/* ================================================================= */}
+        {/* B. 平原自然纵深透视机耕垄痕 (Subtle 2.5D Aerial Tramlines & Furrow Perspective) */}
+        {/*    沿 2.5D 视轴微微延伸，近疏远密，赋予平坦地表逼真的纵深空间而非横向断层 */}
+        {/* ================================================================= */}
+        <g id="flat-wheat-tramlines" opacity="0.14">
+          {[
+            { x1: -2600, y1: 215, x2: -2350, y2: 375 },
+            { x1: -1900, y1: 220, x2: -1600, y2: 375 },
+            { x1: -1200, y1: 210, x2: -880, y2: 375 },
+            { x1: -500, y1: 205, x2: -150, y2: 380 },
+            { x1: 200, y1: 200, x2: 580, y2: 370 },
+            { x1: 900, y1: 190, x2: 1320, y2: 375 },
+            { x1: 1600, y1: 192, x2: 2050, y2: 380 },
+            { x1: 2300, y1: 195, x2: 2800, y2: 375 },
+            { x1: 3000, y1: 198, x2: 3550, y2: 380 },
+          ].map((line, idx) => (
+            <line
+              key={`ftl-${idx}`}
+              x1={line.x1}
+              y1={line.y1}
+              x2={line.x2}
+              y2={line.y2}
+              stroke="#6b4c16"
+              strokeWidth="0.8"
+              strokeDasharray="14 7"
+            />
+          ))}
+        </g>
+
+        {/* ================================================================= */}
+        {/* 🌾 C. 舒缓麦浪随风漫射律动 (Gentle Wind Shimmer Waves across Plain)  */}
+        {/* ================================================================= */}
         <g id="wheat-wind-waves" className="pointer-events-none" opacity="0.22">
           <path
             className="animate-wheat-wave"
-            d="M -100,265 C 250,248 600,258 1150,270 C 800,285 400,280 -60,295 Z"
+            d="M -200,265 C 200,248 600,258 1150,270 C 800,285 400,280 -160,295 Z"
             fill="#fff9db"
             style={{ animationDelay: '0s' }}
           />
           <path
             className="animate-wheat-wave"
-            d="M -500,225 C -100,212 350,228 920,215 C 550,232 100,225 -420,238 Z"
+            d="M -700,230 C -200,215 300,230 850,218 C 500,235 50,228 -600,242 Z"
             fill="#fefce8"
             style={{ animationDelay: '3.6s' }}
           />
+          <path
+            className="animate-wheat-wave"
+            d="M 1200,240 C 1600,228 2100,242 2600,232 C 2200,252 1700,245 1150,260 Z"
+            fill="#fff9db"
+            style={{ animationDelay: '1.8s' }}
+          />
         </g>
 
-        {/* 🌾 I. 天然起伏丘垄金黄麦穗微风轻摇簇 */}
+        {/* ================================================================= */}
+        {/* 🌾 D. 纵深透视阶梯草垛群 (Graduated Perspective Hay Bales · 近大远小)   */}
+        {/*    以自然尺标建立平原向远方的宏阔纵深透视，前大后小，错落有致           */}
+        {/* ================================================================= */}
+        <g id="perspective-hay-bales">
+          {[
+            // 1. 远景小草垛 (Distant Tiny Bales · y: 210~224, scale: 0.48~0.56, 随空气透视淡化)
+            { x: -1150, y: 214, scale: 0.50, opacity: 0.76 },
+            { x: -760,  y: 220, scale: 0.56, opacity: 0.80 },
+            { x: 380,   y: 210, scale: 0.52, opacity: 0.80 },
+            { x: 740,   y: 218, scale: 0.54, opacity: 0.82 },
+            { x: 1080,  y: 212, scale: 0.50, opacity: 0.78 },
+            { x: 1750,  y: 217, scale: 0.52, opacity: 0.80 },
+            { x: 2300,  y: 224, scale: 0.48, opacity: 0.75 },
+
+            // 2. 中景中等草垛 (Midground Medium Bales · y: 252~270, scale: 0.78~0.88)
+            { x: -580,  y: 262, scale: 0.82, opacity: 0.92 },
+            { x: -210,  y: 257, scale: 0.85, opacity: 0.95 },
+            { x: 190,   y: 252, scale: 0.78, opacity: 0.90 },
+            { x: 620,   y: 267, scale: 0.82, opacity: 0.92 },
+            { x: 1220,  y: 260, scale: 0.86, opacity: 0.95 },
+            { x: 1580,  y: 270, scale: 0.80, opacity: 0.92 },
+
+            // 3. 近景饱满大草垛 (Foreground Near Bales · y: 312~327, scale: 1.08~1.15, 清晰扎实)
+            { x: -440,  y: 317, scale: 1.15, opacity: 1.0 },
+            { x: 880,   y: 322, scale: 1.10, opacity: 1.0 },
+            { x: 1420,  y: 312, scale: 1.08, opacity: 1.0 },
+            { x: 1960,  y: 327, scale: 1.12, opacity: 1.0 },
+          ].map((bale, idx) => (
+            <g key={`hb-${idx}`} transform={`translate(${bale.x}, ${bale.y}) scale(${bale.scale})`} opacity={bale.opacity}>
+              {/* 接触地面柔和投影 */}
+              <ellipse cx="0" cy="11.5" rx="15" ry="5.5" fill="#4d3a14" opacity="0.32" />
+              {/* 圆柱形草垛立面桶身 */}
+              <ellipse cx="0" cy="10" rx="13" ry="7.5" fill="#c99f2e" />
+              <rect x="-13" y="0" width="26" height="10" fill="#dfb33b" />
+              {/* 草垛顶面受光圆盘 */}
+              <ellipse cx="0" cy="0" rx="13" ry="6.2" fill="#f4d45d" stroke="#b88b20" strokeWidth="0.75" />
+              {/* 捆扎麻绳线痕 */}
+              <line x1="-7" y1="0" x2="-7" y2="10" stroke="#784e11" strokeWidth="0.8" strokeDasharray="3,1" />
+              <line x1="7" y1="0" x2="7" y2="10" stroke="#784e11" strokeWidth="0.8" strokeDasharray="3,1" />
+              {/* 顶面卷曲麦草同心纹 */}
+              <circle cx="0" cy="0" r="3.8" fill="none" stroke="#b88b20" strokeWidth="0.7" strokeDasharray="3,2" />
+              {/* 边缘散落的松散金黄麦秸 */}
+              <path d="M-13,6 Q-17,8 -19,11 M11,4 Q15,6 17,9" stroke="#f4d45d" strokeWidth="0.65" fill="none" />
+            </g>
+          ))}
+        </g>
+
+        {/* ================================================================= */}
+        {/* 🌾 E. 地头边界金黄麦穗微风轻摇簇 (Field Margin Wheat Tufts)        */}
+        {/* ================================================================= */}
         <g id="terrace-wheat-tufts" opacity="0.85">
           {[
             { x: -320, y: 275, s: 0.9, d: '0.2s' },
@@ -402,12 +444,12 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
             <g key={`wt-${i}`} transform={`translate(${wt.x}, ${wt.y}) scale(${wt.s})`}>
               <g className="animate-wheat-tuft" style={{ animationDelay: wt.d }}>
                 <path d="M0,0 Q-1,-6 -2,-10 M0,0 Q1,-6 2,-11 M0,0 Q0,-7 0,-13" stroke="#8c6a28" strokeWidth="0.8" fill="none" />
-                <ellipse cx="-2" cy="-10" rx="1.3" ry="2.2" fill="#eab308" transform="rotate(-15 -2 -10)" />
-                <ellipse cx="2" cy="-11" rx="1.3" ry="2.2" fill="#eab308" transform="rotate(15 2 -11)" />
-                <ellipse cx="0" cy="-13" rx="1.4" ry="2.4" fill="#facc15" />
-                <line x1="-2" y1="-12" x2="-3.5" y2="-15" stroke="#a16207" strokeWidth="0.5" />
-                <line x1="2" y1="-13" x2="3.5" y2="-16" stroke="#a16207" strokeWidth="0.5" />
-                <line x1="0" y1="-15" x2="0" y2="-18" stroke="#a16207" strokeWidth="0.5" />
+                <ellipse cx="-2" cy="-10" rx="1.3" ry="2.2" fill="#d5b048" transform="rotate(-15 -2 -10)" />
+                <ellipse cx="2" cy="-11" rx="1.3" ry="2.2" fill="#d5b048" transform="rotate(15 2 -11)" />
+                <ellipse cx="0" cy="-13" rx="1.4" ry="2.4" fill="#e8c45a" />
+                <line x1="-2" y1="-12" x2="-3.5" y2="-15" stroke="#92691b" strokeWidth="0.5" />
+                <line x1="2" y1="-13" x2="3.5" y2="-16" stroke="#92691b" strokeWidth="0.5" />
+                <line x1="0" y1="-15" x2="0" y2="-18" stroke="#92691b" strokeWidth="0.5" />
               </g>
             </g>
           ))}

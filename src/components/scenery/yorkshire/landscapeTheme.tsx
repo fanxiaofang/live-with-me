@@ -20,37 +20,46 @@ export const YorkshireDefs: React.FC<{ theme: YorkshireSceneTheme }> = ({ theme 
         <stop offset="100%" stopColor={theme.hillGreenNear} />
       </linearGradient>
 
-      {/* 🔷 远山与中景麦田自然交融坡面渐变 (Mountain Fell to Golden Wheat Apron Gradient) */}
+      {/* 🔷 远山与中景山谷麦田自然交融坡面渐变 (Mountain Fell to Golden Plain Apron Gradient) */}
       <linearGradient id="mountainWheatApronGrad" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stopColor="#4d6444" stopOpacity="0.95" />
         <stop offset="30%" stopColor="#627a4d" stopOpacity="0.88" />
-        <stop offset="65%" stopColor="#929d4c" stopOpacity="0.85" />
-        <stop offset="100%" stopColor="#caa64c" stopOpacity="0.9" />
+        <stop offset="65%" stopColor="#85994d" stopOpacity="0.85" />
+        <stop offset="100%" stopColor="#c5ad66" stopOpacity="0.9" />
       </linearGradient>
 
-      {/* 🔷 宏阔起伏的自然山坡麦田主渐变 (Pastoral Rolling Hillside Wheat Base Gradient) */}
+      {/* 🔷 中景山麓与山谷草丘主基底渐变 (Midground Rolling Valley Green Pasture Gradient) */}
+      <linearGradient id="midgroundValleyPastureGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#56703f" />
+        <stop offset="25%" stopColor="#6c8b42" />
+        <stop offset="55%" stopColor="#84a345" />
+        <stop offset="80%" stopColor="#7a983b" />
+        <stop offset="100%" stopColor="#63802e" />
+      </linearGradient>
+
+      {/* 🔷 宏阔连贯的自然平原麦田渐变 (Continuous Vast Flat Wheat Plain Gradient) */}
       <linearGradient id="pastoralRollingWheatGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#caa64c" />
-        <stop offset="25%" stopColor="#e8c864" />
-        <stop offset="55%" stopColor="#ddba57" />
-        <stop offset="80%" stopColor="#cca247" />
-        <stop offset="100%" stopColor="#b58d34" />
+        <stop offset="0%" stopColor="#c5ad66" />
+        <stop offset="25%" stopColor="#dfc776" />
+        <stop offset="55%" stopColor="#d6bc68" />
+        <stop offset="85%" stopColor="#c5a752" />
+        <stop offset="100%" stopColor="#ae8f3e" />
       </linearGradient>
 
-      {/* 🔷 中景麦田与前景深绿草地无缝过渡渐变 (Seamless Wheat to Deep-Green Pasture Blend Gradient) */}
+      {/* 🔷 中景平原麦田与前景深绿草地无缝过渡渐变 (Seamless Wheat to Deep-Green Pasture Blend Gradient) */}
       <linearGradient id="wheatPastureBlendGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#caa64c" stopOpacity="0" />
-        <stop offset="25%" stopColor="#bba042" stopOpacity="0.45" />
-        <stop offset="55%" stopColor="#9baa3e" stopOpacity="0.75" />
-        <stop offset="80%" stopColor="#789734" stopOpacity="0.92" />
+        <stop offset="0%" stopColor="#ae8f3e" stopOpacity="0" />
+        <stop offset="30%" stopColor="#a3963a" stopOpacity="0.45" />
+        <stop offset="65%" stopColor="#8b9f36" stopOpacity="0.75" />
+        <stop offset="85%" stopColor="#718d2f" stopOpacity="0.92" />
         <stop offset="100%" stopColor="#5e7b2d" stopOpacity="1" />
       </linearGradient>
 
-      {/* 🔷 麦浪向阳坡顶暖金光影渐变 (Sunlit Swale Crest Highlight Gradient) */}
-      <linearGradient id="sunlitWheatCrestGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#fae58e" stopOpacity="0.95" />
-        <stop offset="50%" stopColor="#ebd174" stopOpacity="0.8" />
-        <stop offset="100%" stopColor="#d5b050" stopOpacity="0.6" />
+      {/* 🔷 麦田向阳坡顶柔和微光渐变 (Soft Sunlit Plain Glaze Gradient) */}
+      <linearGradient id="sunlitWheatCrestGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#faeaad" stopOpacity="0.38" />
+        <stop offset="50%" stopColor="#f3dd88" stopOpacity="0.15" />
+        <stop offset="100%" stopColor="#e2c564" stopOpacity="0" />
       </linearGradient>
 
       {/* 🔷 麦浪背阳凹处温润燕麦阴影渐变 (Soft Rolling Swale Hollow Shadow Gradient) */}
