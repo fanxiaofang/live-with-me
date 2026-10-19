@@ -158,8 +158,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
         onMouseLeave={() => setHoveredObject(null)}
         className="cursor-pointer group/pod"
       >
-        {/* A. 舱身底部柔和草甸漫反射软阴影 (消解粗暴的大黑椭圆块) */}
-        <ellipse cx="-6" cy="62" rx="60" ry="12" fill="#182419" opacity="0.18" filter="url(#softShadow)" />
+        {/* A. TerrainMass owns broad ground AO; landing-gear contacts stay local. */}
 
 
         {/* B. 四足重型液压升降支撑架 (每个支脚配备独立精确的 Contact Shadows) */}

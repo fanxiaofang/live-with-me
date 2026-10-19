@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDeskStudy } from './DeskStudyContext';
 import { DeskStudyFrame } from './DeskStudyFrame';
+import { SoftSurfaceShadow } from '../../world/render/GroundShadow';
 
 export interface DeskFrameProps {
   onHover?: (hovered: boolean) => void;
@@ -64,12 +65,13 @@ export const DeskFrame: React.FC<DeskFrameProps> = ({
       </defs>
 
       {/* --- 1. 地面漫反射接触阴影 (四脚微印迹 + 桌面悬空柔和投影) --- */}
-      <polygon
-        points="-55,28 21,7 53,16 -21,37"
-        fill="#24160d"
-        opacity="0.22"
-        filter="url(#softShadow)"
-      />
+      <SoftSurfaceShadow bounds={{ x: -55, y: 7, width: 108, height: 30 }} blur={1.2}>
+        <polygon
+          points="-55,28 21,7 53,16 -21,37"
+          fill="#24160d"
+          opacity="0.22"
+        />
+      </SoftSurfaceShadow>
       {/* 4 Delicate Leg Contact Footprints */}
       <ellipse cx="-53" cy="28" rx="3.5" ry="1.6" fill="#24160d" opacity="0.3" />
       <ellipse cx="21" cy="7" rx="3.5" ry="1.6" fill="#24160d" opacity="0.3" />

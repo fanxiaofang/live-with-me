@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTimerScope } from '../../shared/timers/useTimerScope';
+import { AmbientGroundShadow, ContactGroundShadow } from '../../world/render/GroundShadow';
 
 export interface MonsteraPlantProps {
   onHover?: (hovered: boolean) => void;
@@ -71,8 +72,12 @@ export const MonsteraPlant: React.FC<MonsteraPlantProps> = ({ onHover, onClick }
         </linearGradient>
       </defs>
 
-      {/* --- 1. 地面漫反射接触阴影 (花盆底在木地板上的投影) --- */}
-      <ellipse cx="0" cy="11.5" rx="10" ry="4.5" fill="#1b120c" opacity="0.32" filter="url(#softShadow)" />
+      {/* --- 1. 外围环境软影与四个花架脚触点分开绘制 --- */}
+      <AmbientGroundShadow cx={0} cy={11.5} rx={10} ry={4.5} color="#1b120c" opacity={0.32} />
+      <ContactGroundShadow cx={-5.5} cy={10.5} rx={1.2} ry={0.45} color="#1b120c" opacity={0.26} />
+      <ContactGroundShadow cx={5.5} cy={9.5} rx={1.2} ry={0.45} color="#1b120c" opacity={0.26} />
+      <ContactGroundShadow cx={-4.5} cy={12.2} rx={1.35} ry={0.5} color="#1b120c" opacity={0.34} />
+      <ContactGroundShadow cx={4.5} cy={11.5} rx={1.35} ry={0.5} color="#1b120c" opacity={0.34} />
 
       {/* --- 2. 北欧实木矮脚花架 (Wooden Plant Stand Legs) --- */}
       {/* 4条圆柱实木矮脚 */}

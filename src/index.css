@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @import "./components/scenery/yorkshire/yorkshire.css";
+
+@theme {
+  /* Scene controls sit close to the canvas; expanded panels lift one step. */
+  --shadow-overlay-control: 0 2px 6px -2px rgb(0 0 0 / 0.2);
+  --shadow-overlay-panel: 0 3px 8px -2px rgb(0 0 0 / 0.24);
+}

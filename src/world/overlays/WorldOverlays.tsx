@@ -17,7 +17,7 @@ export interface WorldOverlaysProps {
   triggerAlienSignal: () => void;
 }
 export function WorldOverlays({ handleZoomIn, handleZoomOut, handleResetOverview, hoveredObject, people, interactionTiers, isInspectorOpen, alienTransmissionText, setAlienTransmissionText, triggerAlienSignal }: WorldOverlaysProps) {
-  return <>      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 bg-[#1e1c19]/85 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 shadow-lg">
+  return <>      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 bg-[#1e1c19]/85 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 shadow-overlay-control">
         <button
           onClick={handleZoomIn}
           title="放大画面"
@@ -53,7 +53,7 @@ export function WorldOverlays({ handleZoomIn, handleZoomOut, handleResetOverview
       {/* Contextual Hover Whispers */}
       {hoveredObject && (
         <div role="tooltip" className="absolute top-5 left-1/2 -translate-x-1/2 pointer-events-none z-20">
-          <div className="px-3.5 py-1.5 rounded-full bg-[#1e1c1a]/85 backdrop-blur-md border border-[#ffffff]/10 text-xs text-[#e6ded0] shadow-lg flex items-center gap-2">
+          <div className="px-3.5 py-1.5 rounded-full bg-[#1e1c1a]/85 backdrop-blur-md border border-[#ffffff]/10 text-xs text-[#e6ded0] shadow-overlay-control flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#d68c68] animate-pulse" />
             <span>
               {describeInteraction(hoveredObject, { people, tiers: interactionTiers, editing: isInspectorOpen })}

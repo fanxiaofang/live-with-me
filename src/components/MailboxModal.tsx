@@ -163,7 +163,7 @@ export const MailboxModal: React.FC<MailboxModalProps> = ({
                       className={`relative p-5 rounded-xl border transition-all cursor-pointer ${
                         letter.read
                           ? 'bg-[#282421] border-[#3d362f] hover:border-[#52483f]'
-                          : 'bg-[#302a25] border-[#a86542]/60 shadow-lg ring-1 ring-[#a86542]/30'
+                          : 'bg-[#302a25] border-[#a86542]/60'
                       }`}
                     >
                       {/* Top Stamp / Date / Unread badge */}

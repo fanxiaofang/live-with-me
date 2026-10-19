@@ -4,6 +4,7 @@ import type { Person, RoomId } from '../../types';
 import type { HoverTarget, InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { RoomHitArea } from '../../world/render/RoomSelection';
+import { AmbientGroundShadow, ContactGroundShadow, SoftContactShadow, SoftSurfaceShadow } from '../../world/render/GroundShadow';
 import { CastIronWoodStove, StoveColorVariant } from '../CastIronWoodStove';
 import { CharacterHead } from '../CharacterAvatar';
 import { characterScaleAtSeat } from '../characters/characterProportions';
@@ -245,7 +246,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               >
                 <title>倒挂风干香草束 · 散发着淡淡薰衣草与鼠尾草安神清香 🌿</title>
                 <rect x="-8" y="-2" width="16" height="24" fill="transparent" />
-                <ellipse cx="1.2" cy="1.6" rx="2.4" ry="1.4" fill="#1b120c" opacity="0.32" filter="url(#softShadow)" />
+                <SoftContactShadow cx={1.2} cy={1.6} rx={2.4} ry={1.4} color="#1b120c" opacity={0.32} />
                 <circle cx="0" cy="0" r="1.8" fill="#6b3e1f" stroke="#3b200e" strokeWidth="0.4" />
                 <circle cx="-0.3" cy="-0.3" r="1.2" fill="#8f572b" />
                 <circle cx="-0.6" cy="-0.6" r="0.5" fill="#d99b64" />
@@ -445,18 +446,19 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 onMouseLeave={() => setHoveredObject(null)}
               >
                 {/* 1. Floor Ambient Occlusion & Plinth Shadows (微内收满跨度地袱大梁投影：稳如泰山、扎实沉稳) */}
-                <polygon
-                  points="22,76 48,68 103,84 77,93"
-                  fill="#1b120a"
-                  opacity="0.25"
-                  filter="url(#softShadow)"
-                />
+                <SoftSurfaceShadow bounds={{ x: 22, y: 68, width: 81, height: 25 }} blur={1.3}>
+                  <polygon
+                    points="22,76 48,68 103,84 77,93"
+                    fill="#1b120a"
+                    opacity="0.25"
+                  />
+                </SoftSurfaceShadow>
                 {/* Plinth Base Footprint Contact Shadow (满跨度底座与地板严密咬合的接触深阴影) */}
                 <polygon
                   points="25,79.4 76,93.7 99,87.4 48,73.1"
+                  data-shadow-role="contact" aria-hidden="true" pointerEvents="none"
                   fill="#0e0704"
                   opacity="0.55"
-                  filter="url(#softShadow)"
                 />
 
                 {/* 2. Full-Span Subtly Inset Timber Plinth Base (方案 1：日式微内收 2px 满跨度实木地袱大梁底座，力学绝对对称稳固) */}
@@ -586,7 +588,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 {/* 5. Plump 3D Cloud Pillow (温润天然亚麻燕麦米色羽绒枕：柔和舒适，告别生硬死白) */}
                 <g id="tatami-pillow" transform="translate(38, 62)">
                   {/* Pillow Drop Shadow on Tatami (落在草席上的真实凹陷柔和投影) */}
-                  <ellipse cx="0" cy="3.5" rx="10" ry="5.2" fill="#2b3b2c" opacity="0.32" filter="url(#softShadow)" />
+                  <SoftContactShadow cx={0} cy={3.5} rx={10} ry={5.2} color="#2b3b2c" opacity={0.32} />
                   {/* Plump Pillow Bottom Shaded Cushion (枕下侧阴影托底) */}
                   <path
                     d="M-9,2 C-10,5 -3,7 0,7 C3,7 10,5 9,2 C8,-1 4,-2 0,-2 C-4,-2 -8,-1 -9,2 Z"
@@ -630,12 +632,13 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 {/* 7. Thick Folded Terracotta Quilt (温润红陶瓦色双层厚折叠羊毛盖毯：居中安放在榻榻米席面中间，平整安全扎实，告别边缘滑落感) */}
                 <g id="tatami-folded-quilt">
                   {/* Quilt Cast Ambient Shadow on Mat Surface */}
-                  <polygon
-                    points="67,73.5 89,79.8 83,82.8 61,76.5"
-                    fill="#233024"
-                    opacity="0.25"
-                    filter="url(#softShadow)"
-                  />
+                  <SoftSurfaceShadow bounds={{ x: 61, y: 73.5, width: 28, height: 9.3 }} blur={0.65} role="soft-contact">
+                    <polygon
+                      points="67,73.5 89,79.8 83,82.8 61,76.5"
+                      fill="#233024"
+                      opacity="0.25"
+                    />
+                  </SoftSurfaceShadow>
 
                   {/* Quilt Lower Fold Layer (底层折叠垫层：厚实温润红陶色) */}
                   <polygon
@@ -677,13 +680,13 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 {/* 8. Cozily Slipped-Off Straw Slippers on Timber Floor in Front of Daybed (挪出至床沿前地板整齐摆放的小草编拖鞋) */}
                 <g id="daybed-slippers-front" transform="translate(40, 91)">
                   {/* Left Slipper */}
-                  <ellipse cx="-4.5" cy="0.8" rx="4.0" ry="2.0" fill="#1b120a" opacity="0.35" filter="url(#softShadow)" />
+                  <SoftContactShadow cx={-4.5} cy={0.8} rx={4} ry={2} color="#1b120a" opacity={0.35} />
                   <ellipse cx="-4.5" cy="0" rx="3.6" ry="1.8" fill="#c4aa7f" stroke="#8a6e4d" strokeWidth="0.4" />
                   <ellipse cx="-4.5" cy="0" rx="2.8" ry="1.2" fill="#d9c298" opacity="0.6" />
                   <path d="M-6.8,-0.2 C-6.8,-2.4 -2.2,-2.4 -2.2,-0.2" fill="#523824" stroke="#382416" strokeWidth="0.5" />
 
                   {/* Right Slipper (并排稍错开半步，自然生活化) */}
-                  <ellipse cx="4.0" cy="2.8" rx="4.0" ry="2.0" fill="#1b120a" opacity="0.35" filter="url(#softShadow)" />
+                  <SoftContactShadow cx={4} cy={2.8} rx={4} ry={2} color="#1b120a" opacity={0.35} />
                   <ellipse cx="4.0" cy="2.0" rx="3.6" ry="1.8" fill="#c4aa7f" stroke="#8a6e4d" strokeWidth="0.4" />
                   <ellipse cx="4.0" cy="2.0" rx="2.8" ry="1.2" fill="#d9c298" opacity="0.6" />
                   <path d="M1.7,1.8 C1.7,-0.4 6.3,-0.4 6.3,1.8" fill="#523824" stroke="#382416" strokeWidth="0.5" />
@@ -744,12 +747,13 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               {/* 2.3 2.5D ISOMETRIC WOVEN TATAMI HEARTH RUG (扩建28%温润大织毯：完全契合等轴测±0.2852轴线，充实中央生活区) */}
               <g id="isometric-hearth-rug">
                 {/* Floor Contact Soft Ambient Shadow */}
-                <polygon
-                  points="-87,130 12,101.5 111,130 12,158.5"
-                  fill="#1f140b"
-                  opacity="0.25"
-                  filter="url(#softShadow)"
-                />
+                <SoftSurfaceShadow bounds={{ x: -87, y: 101.5, width: 198, height: 57 }} blur={0.6} role="soft-contact">
+                  <polygon
+                    points="-87,130 12,101.5 111,130 12,158.5"
+                    fill="#1f140b"
+                    opacity="0.25"
+                  />
+                </SoftSurfaceShadow>
 
                 {/* Outer Dark Linen Border (深咖色外滚边：严格平行于左右墙轴线) */}
                 <polygon
@@ -819,19 +823,18 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 className="cursor-pointer group/teatable"
               >
                 {/* 1. Ground Contact Shadows on Tatami Rug (地毯上的柔和漫反射环境光遮蔽投影) */}
-                <ellipse cx="0" cy="11" rx="25" ry="10" fill="#29180c" opacity="0.22" filter="url(#softShadow)" />
-                <ellipse cx="0" cy="10" rx="16" ry="6.5" fill="#1b1008" opacity="0.28" filter="url(#softShadow)" />
+                <AmbientGroundShadow cx={0} cy={11} rx={25} ry={10} color="#29180c" opacity={0.32} />
 
                 {/* 2. Rear Legs (后方两根实木桌腿：稳稳扎根于地毯上，呈现真实桌下离地纵深) */}
                 {/* Back-Left Leg (后左桌腿) */}
                 <g id="tea-leg-back-left">
-                  <ellipse cx="-13" cy="8.2" rx="2.5" ry="1.1" fill="#1c0f06" opacity="0.4" filter="url(#softShadow)" />
+                  <ContactGroundShadow cx={-13} cy={8.2} rx={2.5} ry={1.1} color="#1c0f06" opacity={0.4} />
                   <polygon points="-11,-2.5 -8,-3.5 -11.5,8 -14.5,8" fill="#422915" stroke="#2e1b0c" strokeWidth="0.4" />
                   <ellipse cx="-13" cy="8" rx="1.6" ry="0.75" fill="#2d1a0b" />
                 </g>
                 {/* Back-Right Leg (后右桌腿) */}
                 <g id="tea-leg-back-right">
-                  <ellipse cx="13" cy="8.2" rx="2.5" ry="1.1" fill="#1c0f06" opacity="0.4" filter="url(#softShadow)" />
+                  <ContactGroundShadow cx={13} cy={8.2} rx={2.5} ry={1.1} color="#1c0f06" opacity={0.4} />
                   <polygon points="8,-3.5 11,-2.5 14.5,8 11.5,8" fill="#4a2e18" stroke="#2e1b0c" strokeWidth="0.4" />
                   <ellipse cx="13" cy="8" rx="1.6" ry="0.75" fill="#2d1a0b" />
                 </g>
@@ -844,7 +847,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 {/* Front-Left Leg (前左实木桌腿) */}
                 <g id="tea-leg-front-left">
                   {/* Floor Contact Occlusion Shadow */}
-                  <ellipse cx="-12" cy="13.2" rx="3.2" ry="1.3" fill="#1f1208" opacity="0.4" filter="url(#softShadow)" />
+                  <ContactGroundShadow cx={-12} cy={13.2} rx={3.2} ry={1.3} color="#1f1208" opacity={0.4} />
                   {/* Leg Tapered Body */}
                   <polygon points="-9,0.5 -5.8,2.2 -10.5,12.8 -13.8,12" fill="#754b27" stroke="#4d2f16" strokeWidth="0.5" />
                   {/* Highlight along leg */}
@@ -855,7 +858,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 {/* Front-Right Leg (前右实木桌腿) */}
                 <g id="tea-leg-front-right">
                   {/* Floor Contact Occlusion Shadow */}
-                  <ellipse cx="12" cy="13.2" rx="3.2" ry="1.3" fill="#1f1208" opacity="0.4" filter="url(#softShadow)" />
+                  <ContactGroundShadow cx={12} cy={13.2} rx={3.2} ry={1.3} color="#1f1208" opacity={0.4} />
                   {/* Leg Tapered Body */}
                   <polygon points="5.8,2.2 9,0.5 13.8,12 10.5,12.8" fill="#694120" stroke="#3d240f" strokeWidth="0.5" />
                   {/* Highlight along leg */}
@@ -901,7 +904,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 {/* 6. Tea Service Set (精准轴测椭圆长短轴比、立体实木茶盘、青瓷急须壶、品茗杯与茶点) */}
                 <g id="tea-set">
                   {/* Tea Tray Contact Ambient Occlusion Shadow on Wooden Tabletop (茶盘与茶桌的微暗贴合阴影，彻底消除悬浮) */}
-                  <ellipse cx="-2" cy="-7.0" rx="14.8" ry="6.2" fill="#2e1a0b" opacity="0.35" filter="url(#softShadow)" />
+                  <ContactGroundShadow cx={-2} cy={-7} rx={14.8} ry={6.2} color="#2e1a0b" opacity={0.35} />
 
                   {/* Solid Walnut Tea Tray (实木小茶盘底托：严格锁定等轴椭圆比，消除俯视畸变) */}
                   <ellipse cx="-2" cy="-7.5" rx="14" ry="5.8" fill="#4d3018" stroke="#361f0e" strokeWidth="0.5" />
@@ -1252,7 +1255,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 className="cursor-pointer group/sofa"
               >
                 {/* 1. Floor Shadow & Hand-Braided Jute & Wool Oval Rug (复古粗纺双色麻毛编织圆毯：厚重扎实，连续锁边与柔和编织毛边) */}
-                <ellipse cx="0" cy="12" rx="19" ry="8.5" fill="#1b120c" opacity="0.28" filter="url(#softShadow)" />
+                <SoftContactShadow cx={0} cy={11.8} rx={22} ry={10.6} color="#1b120c" opacity={0.24} />
                 {/* 暖燕麦黄麻厚实底毯 */}
                 <ellipse cx="0" cy="11" rx="21" ry="9.8" fill="#d9cbba" stroke="#b5a18a" strokeWidth="0.9" />
                 {/* 外缘连续细腻手工锁边滚边 (Continuous Artisan Overlock Stitch Band，消除孤零牙签碎刺) */}
@@ -1458,7 +1461,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 className="cursor-pointer group/mail"
               >
                 {/* 1. 扎入草坪的深层漫反射阴影 (Ground Contact Shadow on Lawn) */}
-                <ellipse cx="0" cy="1" rx="14" ry="5.5" fill="#1b2e17" opacity="0.45" filter="url(#softShadow)" />
+                <AmbientGroundShadow cx={0} cy={1} rx={14} ry={5.5} color="#1b2e17" opacity={0.45} />
 
                 {/* 2. 迎客草台天然凿刻石柱础基座 (Chiseled Granite Plinth Footing) */}
                 <polygon
@@ -1479,7 +1482,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 <circle cx="-13" cy="-7" r="0.6" fill="#facc15" />
 
                 {/* 4. 稳固挺拔的防腐雪松原木立柱 (Weathered Cedar Timber Post) */}
-                <rect x="-3.5" y="-36" width="7" height="36" rx="1" fill="#523924" stroke="#332113" strokeWidth="0.6" filter="url(#softShadow)" />
+                <rect x="-3.5" y="-36" width="7" height="36" rx="1" fill="#523924" stroke="#332113" strokeWidth="0.6" />
                 <line x1="-1.8" y1="-35" x2="-1.8" y2="-1" stroke="#7d5939" strokeWidth="0.6" opacity="0.8" />
                 <line x1="1.8" y1="-35" x2="1.8" y2="-1" stroke="#362214" strokeWidth="0.5" opacity="0.6" />
 
@@ -1522,7 +1525,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   {unreadMailCount > 0 && (
                     <g transform="translate(0, -28)">
                       <g className="animate-[pulse_2.8s_infinite]">
-                        <rect x="-32" y="-8.5" width="64" height="17" rx="8.5" fill="#2d1c10" stroke="#d97706" strokeWidth="0.8" opacity="0.95" filter="url(#softShadow)" />
+                        <rect x="-32" y="-8.5" width="64" height="17" rx="8.5" fill="#2d1c10" stroke="#d97706" strokeWidth="0.8" opacity="0.95" />
                         <text x="0" y="3.5" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">
                           📬 新信件 ({unreadMailCount})
                         </text>

@@ -58,8 +58,6 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
   const button = (selected: boolean) => `px-3 py-2 rounded-lg text-sm transition-colors ${selected
     ? 'bg-[#93603d] text-[#fff5e9]' : 'text-[#d5c2ad] hover:bg-[#3b2b21]'}`;
   const comparisonBounds = { x: -19, y: -32, width: 40, height: 58 };
-  const shadow = <defs><filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
-    <feDropShadow dx="0" dy="3" stdDeviation="3" floodOpacity="0.18" /></filter></defs>;
 
   return <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70" onClick={onClose}>
     <div ref={panel} role="dialog" aria-modal="true" aria-labelledby="chair-modal-title" tabIndex={-1}
@@ -116,7 +114,7 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
               {showPoseGuides && <WindsorPoseGuides classic={usesNwChairStudy(windsorPerson)} />}
             </SvgDetailView>
             <SvgDetailView label="坐入温莎椅" initialBounds={{ x: -24, y: -33, width: 45, height: 59 }} autoFit={false} surfaceColor={CHARACTER_PREVIEW_PALETTE.background}>
-              {shadow}<WindsorChair interactive={false} isSeated occupant={windsorPerson} keyboardAnchor={windsorKeyboard} />
+              <WindsorChair interactive={false} isSeated occupant={windsorPerson} keyboardAnchor={windsorKeyboard} />
               {showPoseGuides && <WindsorPoseGuides classic={usesNwChairStudy(windsorPerson)} />}
             </SvgDetailView>
           </div>
@@ -130,15 +128,15 @@ export const ChairInspectionModal: React.FC<ChairInspectionModalProps> = ({
           selectedSeat={selectedSeat} onSelectSeat={onSelectSeat} onChange={onStudyChange} onPreviewRoom={onStudyPreview}
           history={studyHistory} onHistoryChange={setStudyHistory} /> : mode === 'both' ? <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <SvgDetailView label="空椅" initialBounds={comparisonBounds} autoFit={false} resetKey={`chair-empty-${selectedSeat}`}>
-            {shadow}<WindsorChair interactive={false} variant={seat.variant} chairId={seat.chair} />
+            <WindsorChair interactive={false} variant={seat.variant} chairId={seat.chair} />
           </SvgDetailView>
           <SvgDetailView label="桌前坐姿" initialBounds={comparisonBounds} autoFit={false} resetKey={`chair-seated-${selectedSeat}`}>
-            {shadow}<WindsorChair interactive={false} variant={seat.variant} chairId={seat.chair}
+            <WindsorChair interactive={false} variant={seat.variant} chairId={seat.chair}
               isSeated occupant={person} keyboardAnchor={keyboard} />
           </SvgDetailView>
         </div> : <SvgDetailView label={mode === 'sample' ? '双人姿态样例' : '当前桌椅关系'}
           initialBounds={{ x: -60, y: -35, width: 125, height: 85 }} resetKey={`desk-chair-${mode}`}>
-          {shadow}<g pointerEvents="none">
+          <g pointerEvents="none">
             <AtticDesk layout={layout} />
             <DeskWorkstations layout={layout} relativeToDesk occupants={mode === 'sample' ? sampleOccupants : visibleOccupants} />
           </g>

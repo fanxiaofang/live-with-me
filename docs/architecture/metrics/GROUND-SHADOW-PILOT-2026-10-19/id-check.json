@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "duplicates": [],
+      "unresolved": [],
+      "ambientIds": [
+        "ambient-ground-_r_0_",
+        "preview-_r_2_-ambient-ground-_r_3_",
+        "preview-_r_5_-ambient-ground-_r_6_"
+      ],
+      "contacts": 12,
+      "filters": 0
+    },
+    {
+      "duplicates": [],
+      "unresolved": [],
+      "ambientIds": [
+        "ambient-ground-_r_7_",
+        "preview-_r_2_-ambient-ground-_r_8_",
+        "preview-_r_5_-ambient-ground-_r_9_"
+      ],
+      "contacts": 12,
+      "filters": 0
+    }
+  ],
+  "errors": []
+}

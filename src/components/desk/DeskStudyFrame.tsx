@@ -1,6 +1,7 @@
 import { useId, type ReactNode } from 'react';
 import type { DeskSurfaceStudy } from './deskStudyModel';
 import { deskStudyRise, deskSurfacePaths } from './deskStudyModel';
+import { SoftSurfaceShadow } from '../../world/render/GroundShadow';
 
 /** Low-detail study using the same top, support feet and local axes in every view. */
 export function DeskStudyFrame({ surface, children }: { surface: DeskSurfaceStudy; children: ReactNode }) {
@@ -13,7 +14,9 @@ export function DeskStudyFrame({ surface, children }: { surface: DeskSurfaceStud
       <stop stopColor="#eed7be" /><stop offset=".5" stopColor="#dfbe98" /><stop offset="1" stopColor="#cb9e70" />
     </linearGradient></defs>
     <g transform={`scale(${surface.width},1)`}>
-      <polygon points="-55,28 21,7 53,16 -21,37" fill="#24160d" opacity=".22" filter="url(#softShadow)" />
+      <SoftSurfaceShadow bounds={{ x: -55, y: 7, width: 108, height: 30 }} blur={1.2}>
+        <polygon points="-55,28 21,7 53,16 -21,37" fill="#24160d" opacity=".22" />
+      </SoftSurfaceShadow>
       {feet.map((foot, index) => <g key={index}>
         <ellipse cx={foot.x} cy={foot.y} rx="3.5" ry="1.6" fill="#24160d" opacity=".3" />
         <line x1={foot.x} y1={foot.y - 22.6 - rise + surface.thickness} x2={foot.x} y2={foot.y}

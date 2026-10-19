@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTimerScope } from '../../shared/timers/useTimerScope';
+import { AmbientGroundShadow, ContactGroundShadow } from '../../world/render/GroundShadow';
 
 export interface FiddleLeafFigProps {
   onHover?: (hovered: boolean) => void;
@@ -135,8 +136,12 @@ export const FiddleLeafFig: React.FC<FiddleLeafFigProps> = ({ onHover, onClick }
         - 冠幅与卧榻、书架、懒人沙发形成协调的室内家具生态天际线。
       */}
       <g transform="translate(0, 15.5) scale(0.74) translate(0, -15.5)">
-        {/* --- 1. 地面漫反射接触阴影 (花架脚与陶筒在木地板上的投影) --- */}
-        <ellipse cx="0" cy="15.5" rx="12" ry="5.2" fill="#1b120c" opacity="0.3" filter="url(#softShadow)" />
+        {/* --- 1. 环境遮蔽与四处花架脚接触分开，跟随原 0.74 倍缩放 --- */}
+        <AmbientGroundShadow cx={0} cy={15.5} rx={12} ry={5.2} color="#1b120c" opacity={0.3} />
+        <ContactGroundShadow cx={-8} cy={14.2} rx={1.35} ry={0.5} color="#1b120c" opacity={0.26} />
+        <ContactGroundShadow cx={8} cy={13.2} rx={1.35} ry={0.5} color="#1b120c" opacity={0.26} />
+        <ContactGroundShadow cx={-8.5} cy={15.8} rx={1.5} ry={0.55} color="#1b120c" opacity={0.34} />
+        <ContactGroundShadow cx={8.5} cy={14.8} rx={1.5} ry={0.55} color="#1b120c" opacity={0.34} />
 
       {/* --- 2. 北欧实木十字高脚架 (Mid-Century Modern Timber Stand) --- */}
       {/* 2.1 后侧支腿 (在花盆背面) */}

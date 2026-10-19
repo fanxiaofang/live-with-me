@@ -221,7 +221,7 @@ export default function App() {
       {/* 4. Philosophy Badge / Manifesto (Dismissible subtle note) */}
       {showManifesto && (
         <aside aria-label="设计初心" className="fixed bottom-16 right-5 z-20 pointer-events-auto max-w-xs">
-          <div className="p-3.5 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3c342d] shadow-xl text-xs text-[#cfc5b6] space-y-1.5">
+          <div className="p-3.5 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3c342d] shadow-overlay-panel text-xs text-[#cfc5b6] space-y-1.5">
             <div className="flex items-center justify-between text-[#e8ded0]">
               <span className="font-medium flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#d68c68]" />
@@ -247,7 +247,7 @@ export default function App() {
       {/* 5. Quiet Toast Notification */}
       {toastMessage && (
         <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none animate-in fade-in duration-200">
-          <div className="px-4 py-2 rounded-full bg-[#27221e] border border-[#524538] text-xs text-[#f2ece2] shadow-2xl flex items-center gap-2">
+          <div className="px-4 py-2 rounded-full bg-[#27221e] border border-[#524538] text-xs text-[#f2ece2] shadow-overlay-panel flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#d68c68]" />
             <span>{toastMessage}</span>
           </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { SoftSurfaceShadow } from '../../world/render/GroundShadow';
 
 /**
  * 2.5D 轴测便携轻薄笔记本电脑
@@ -8,7 +9,9 @@ export const LaptopDisplay: React.FC<{ instance?: string }> = ({ instance = '' }
   return (
     <g id={`component-isometric-laptop${instance}`} className="select-none">
       {/* 1. 底部漫反射微阴影 (严格遵循 ±0.2852 桌面轴测四边形) */}
-      <polygon points="-15,-2.2 0,-6.5 15,-2.2 0,2.1" fill="#24160d" opacity="0.22" filter="url(#softShadow)" />
+      <SoftSurfaceShadow bounds={{ x: -15, y: -6.5, width: 30, height: 8.6 }} blur={0.5}>
+        <polygon points="-15,-2.2 0,-6.5 15,-2.2 0,2.1" fill="#24160d" opacity="0.22" />
+      </SoftSurfaceShadow>
 
       {/* 2. C 面机身底座厚度立面 (Front-Left & Front-Right Chamfer Faces) */}
       {/* 靠近视角的左前立面 (V 轴方向: 斜率 +0.2857) */}

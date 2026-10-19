@@ -106,7 +106,6 @@ export function DeskCalibrationWorkbench({ draft: savedDraft, layout, occupants,
       <div ref={canvas} className="min-w-0">
         <DeskStudyContext.Provider value={compare ? null : { surface: shown.surface, guides }}>
           <SvgDetailView label={compare ? '原稿对照' : '校准草稿'} autoFit={false} initialBounds={{ x: -68, y: -39, width: 140, height: 100 }}>
-            <defs><filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="3" floodOpacity=".18" /></filter></defs>
             <g pointerEvents="none"><AtticDesk layout={shown.layout} />
               {view === 'assembly' && <DeskWorkstations layout={shown.layout} relativeToDesk occupants={people ? previewOccupants : empty} />}
             </g>

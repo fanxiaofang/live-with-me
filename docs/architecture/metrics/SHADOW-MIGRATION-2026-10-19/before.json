@@ -1,0 +1,272 @@
+{
+  "summary": {
+    "geometryCount": 3505,
+    "geometryHash": "2180235b71b25a833baf598139e7e37b82b6d7aca9b9fe226dc12b678c3d065a",
+    "placements": [
+      {
+        "id": "isometric-houseplant",
+        "transform": "translate(112, 90)"
+      },
+      {
+        "id": "isometric-tea-table",
+        "transform": "translate(10, 128)"
+      },
+      {
+        "id": "isometric-daybed",
+        "transform": "translate(14, 4)"
+      },
+      {
+        "id": "isometric-lazy-sofa",
+        "transform": "translate(142, 118)"
+      },
+      {
+        "id": "isometric-desk-container",
+        "transform": "translate(-147, 95)"
+      },
+      {
+        "id": "mailbox-group",
+        "transform": "translate(58, 246)"
+      },
+      {
+        "id": "capsule-pod-cluster",
+        "transform": "translate(1000, 350) scale(1)"
+      }
+    ],
+    "figScale": "translate(0, 15.5) scale(0.74) translate(0, -15.5)",
+    "global": "<filter id=\"softShadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"3\" flood-opacity=\"0.18\"></feDropShadow></filter>",
+    "legacy": [
+      {
+        "ancestor": "asset-hearth-ground-shadow",
+        "tag": "polygon",
+        "inDefs": true,
+        "preserve": false,
+        "html": "<polygon points=\"-27,65.5 -18,68.2 -7,65.2 7,65.2 18,68.2 27,65.5 25,62 0,56 -25,62\" fill=\"#150f0a\" opacity=\"0.28\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "asset-country-picnic-scene",
+        "tag": "polygon",
+        "inDefs": true,
+        "preserve": false,
+        "html": "<polygon points=\"162,652 278,630 306,686 188,708\" fill=\"#152113\" opacity=\"0.4\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "dried-herb-bouquet",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"1.2\" cy=\"1.6\" rx=\"2.4\" ry=\"1.4\" fill=\"#1b120c\" opacity=\"0.32\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "minimal-craft-desk-frame",
+        "tag": "polygon",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<polygon points=\"-55,28 21,7 53,16 -21,37\" fill=\"#24160d\" opacity=\"0.22\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "component-isometric-laptop",
+        "tag": "polygon",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<polygon points=\"-15,-2.2 0,-6.5 15,-2.2 0,2.1\" fill=\"#24160d\" opacity=\"0.22\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "component-isometric-laptop-secondary",
+        "tag": "polygon",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<polygon points=\"-15,-2.2 0,-6.5 15,-2.2 0,2.1\" fill=\"#24160d\" opacity=\"0.22\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "cast-iron-floor-shadows",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"0\" cy=\"65.1\" rx=\"24.839999999999996\" ry=\"9.66\" fill=\"#160e07\" opacity=\"0.34\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "cast-iron-floor-shadows",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"-7.727999999999999\" cy=\"60.90800000000001\" rx=\"3.312\" ry=\"1.518\" fill=\"#120c08\" opacity=\"0.35\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "cast-iron-floor-shadows",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"7.727999999999999\" cy=\"60.90800000000001\" rx=\"3.312\" ry=\"1.518\" fill=\"#120c08\" opacity=\"0.35\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "cast-iron-floor-shadows",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"-10.764\" cy=\"65.89999999999999\" rx=\"3.8639999999999994\" ry=\"1.656\" fill=\"#120c08\" opacity=\"0.45\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "cast-iron-floor-shadows",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"10.764\" cy=\"65.89999999999999\" rx=\"3.8639999999999994\" ry=\"1.656\" fill=\"#120c08\" opacity=\"0.45\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "cast-iron-cylindrical-chimney",
+        "tag": "rect",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<rect x=\"-0.9\" y=\"-86.6\" width=\"3.8\" height=\"114.388\" fill=\"#2b1f17\" opacity=\"0.18\" filter=\"url(#softShadow)\"></rect>"
+      },
+      {
+        "ancestor": "stove-color-palette-dock",
+        "tag": "rect",
+        "inDefs": false,
+        "preserve": true,
+        "html": "<rect x=\"-38\" y=\"-6.5\" width=\"76\" height=\"13\" rx=\"6.5\" fill=\"#1e1812\" fill-opacity=\"0.88\" stroke=\"#453526\" stroke-width=\"0.6\" filter=\"url(#softShadow)\"></rect>"
+      },
+      {
+        "ancestor": "isometric-daybed",
+        "tag": "polygon",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<polygon points=\"22,76 48,68 103,84 77,93\" fill=\"#1b120a\" opacity=\"0.25\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "isometric-daybed",
+        "tag": "polygon",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<polygon points=\"25,79.4 76,93.7 99,87.4 48,73.1\" fill=\"#0e0704\" opacity=\"0.55\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "tatami-pillow",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"0\" cy=\"3.5\" rx=\"10\" ry=\"5.2\" fill=\"#2b3b2c\" opacity=\"0.32\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "tatami-folded-quilt",
+        "tag": "polygon",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<polygon points=\"67,73.5 89,79.8 83,82.8 61,76.5\" fill=\"#233024\" opacity=\"0.25\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "daybed-slippers-front",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"-4.5\" cy=\"0.8\" rx=\"4.0\" ry=\"2.0\" fill=\"#1b120a\" opacity=\"0.35\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "daybed-slippers-front",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"4.0\" cy=\"2.8\" rx=\"4.0\" ry=\"2.0\" fill=\"#1b120a\" opacity=\"0.35\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "isometric-hearth-rug",
+        "tag": "polygon",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<polygon points=\"-87,130 12,101.5 111,130 12,158.5\" fill=\"#1f140b\" opacity=\"0.25\" filter=\"url(#softShadow)\"></polygon>"
+      },
+      {
+        "ancestor": "isometric-tea-table",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"0\" cy=\"11\" rx=\"25\" ry=\"10\" fill=\"#29180c\" opacity=\"0.22\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "isometric-tea-table",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"0\" cy=\"10\" rx=\"16\" ry=\"6.5\" fill=\"#1b1008\" opacity=\"0.28\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "tea-set",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"-2\" cy=\"-7.0\" rx=\"14.8\" ry=\"6.2\" fill=\"#2e1a0b\" opacity=\"0.35\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "component-fiddle-leaf-fig",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"0\" cy=\"15.5\" rx=\"12\" ry=\"5.2\" fill=\"#1b120c\" opacity=\"0.3\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "isometric-lazy-sofa",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"0\" cy=\"12\" rx=\"19\" ry=\"8.5\" fill=\"#1b120c\" opacity=\"0.28\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "person-study-lin",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": true,
+        "html": "<ellipse cx=\"0\" cy=\"4\" rx=\"9\" ry=\"4\" fill=\"#8a583d\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "mailbox-group",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"0\" cy=\"1\" rx=\"14\" ry=\"5.5\" fill=\"#1b2e17\" opacity=\"0.45\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "mailbox-group",
+        "tag": "rect",
+        "inDefs": false,
+        "preserve": true,
+        "html": "<rect x=\"-3.5\" y=\"-36\" width=\"7\" height=\"36\" rx=\"1\" fill=\"#523924\" stroke=\"#332113\" stroke-width=\"0.6\" filter=\"url(#softShadow)\"></rect>"
+      },
+      {
+        "ancestor": "mailbox-group",
+        "tag": "rect",
+        "inDefs": false,
+        "preserve": true,
+        "html": "<rect x=\"-32\" y=\"-8.5\" width=\"64\" height=\"17\" rx=\"8.5\" fill=\"#2d1c10\" stroke=\"#d97706\" stroke-width=\"0.8\" opacity=\"0.95\" filter=\"url(#softShadow)\"></rect>"
+      },
+      {
+        "ancestor": "room-capsule_pod",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": false,
+        "html": "<ellipse cx=\"-6\" cy=\"62\" rx=\"60\" ry=\"12\" fill=\"#182419\" opacity=\"0.18\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "pod-bedroom-interior",
+        "tag": "circle",
+        "inDefs": false,
+        "preserve": true,
+        "html": "<circle cx=\"0\" cy=\"0\" r=\"28\" fill=\"url(#portholeBrassRingGrad)\" stroke=\"#473311\" stroke-width=\"1.8\" filter=\"url(#softShadow)\"></circle>"
+      },
+      {
+        "ancestor": "interior-pillow",
+        "tag": "ellipse",
+        "inDefs": false,
+        "preserve": true,
+        "html": "<ellipse cx=\"-12\" cy=\"9.2\" rx=\"7\" ry=\"4.2\" fill=\"#ffffff\" filter=\"url(#softShadow)\"></ellipse>"
+      },
+      {
+        "ancestor": "interior-duvet",
+        "tag": "path",
+        "inDefs": false,
+        "preserve": true,
+        "html": "<path d=\"M-8,10 C5,9.5 16,10.5 22,12 C22,22.5 -20,22.5 -20,15.5 C-12,15.5 -9,12 -8,10 Z\" fill=\"#c95f3b\" stroke=\"#8c3b1e\" stroke-width=\"0.8\" filter=\"url(#softShadow)\"></path>"
+      }
+    ]
+  },
+  "errors": []
+}

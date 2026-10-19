@@ -1,0 +1,16 @@
+{
+  "summary": {
+    "mailboxHash": "a680e5b0dc438e7ea128ac41fe98e36e4bf79e069fdba0e1bae33fa45e4797dd",
+    "groundHash": "1895849641873d4955e769a2a03f981071a76f8c8df497841fe0158baa93261f",
+    "robeHash": "cc63cd2de30ce69a8c4fa2d81ac0fc07f42d55ffdf216592df139bc38679e0d2",
+    "robeFilters": 1,
+    "global": "<filter id=\"softShadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"3\" flood-opacity=\"0.18\"></feDropShadow></filter>",
+    "mailboxFilters": 2
+  },
+  "errors": [],
+  "interaction": true,
+  "states": [
+    "unread",
+    "read"
+  ]
+}

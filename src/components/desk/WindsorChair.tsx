@@ -6,6 +6,7 @@ import { DeskSeatedCharacter } from './DeskSeatedCharacter';
 import { WindsorSeatedCharacter } from './WindsorSeatedCharacter';
 import type { EditableObjectId } from '../layout-gizmo/layoutStore';
 import { chairPoint, chairSeatPath, chairXY, DESK_CHAIR_MEASUREMENTS as dimensions } from './chairGeometry';
+import { AmbientGroundShadow } from '../../world/render/GroundShadow';
 
 export interface WindsorChairProps {
   isSeated?: boolean;
@@ -58,7 +59,7 @@ export const WindsorChair: React.FC<WindsorChairProps> = ({
     </defs>
 
     <g id={`chair-floor-shadow${suffix}`}>
-      <ellipse cx="0" cy="20.5" rx="14" ry="4.7" fill="#24170e" opacity="0.2" filter="url(#softShadow)" />
+      <AmbientGroundShadow cx={0} cy={20.5} rx={14} ry={4.7} color="#24170e" opacity={0.2} />
       {legs.map(({ u, v }, index) => {
         const foot = chairPoint(u * 1.16, v * 1.16, 0);
         return <ellipse key={index} cx={foot.x} cy={foot.y} rx="1.8" ry="0.65" fill="#20140b" opacity="0.35" />;

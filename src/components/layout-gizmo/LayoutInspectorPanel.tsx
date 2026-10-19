@@ -144,7 +144,7 @@ export const roomLayoutConfig = ${JSON.stringify(formattedObj, null, 2)};`;
     return (
       <button
         onClick={onToggleOpen}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#241c14]/90 backdrop-blur-md border border-[#523d29] text-[#ecd8c2] text-xs font-medium shadow-2xl hover:bg-[#34271c] hover:border-[#b48053] transition-all group"
+        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#241c14]/90 backdrop-blur-md border border-[#523d29] text-[#ecd8c2] text-xs font-medium shadow-overlay-control hover:bg-[#34271c] hover:border-[#b48053] transition-all group"
         title="打开 2.5D 轴测室内全屋校准器"
       >
         <Wrench className="w-4 h-4 text-[#d97706] group-hover:rotate-45 transition-transform duration-300" />
@@ -162,7 +162,7 @@ export const roomLayoutConfig = ${JSON.stringify(formattedObj, null, 2)};`;
   return (
     <aside
       aria-label="2.5D 室内全屋布局校准面板"
-      className="fixed bottom-5 right-5 z-40 w-84 max-h-[82vh] flex flex-col rounded-2xl bg-[#1c1815]/95 backdrop-blur-md border border-[#4a3b2c] shadow-2xl text-[#e6ded5] overflow-hidden select-none transition-all"
+      className="fixed bottom-5 right-5 z-40 w-84 max-h-[82vh] flex flex-col rounded-2xl bg-[#1c1815]/95 backdrop-blur-md border border-[#4a3b2c] shadow-overlay-panel text-[#e6ded5] overflow-hidden select-none transition-all"
     >
       {/* 头部标题与收起/关闭按钮 */}
       <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#2a221b] border-b border-[#3d2f23] shrink-0">

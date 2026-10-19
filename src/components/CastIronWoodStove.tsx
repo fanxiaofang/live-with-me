@@ -1,5 +1,6 @@
 import React from 'react';
 import { svgAction } from '../world/interactions/svgAction';
+import { AmbientGroundShadow, ContactGroundShadow, SoftSurfaceShadow } from '../world/render/GroundShadow';
 
 export type StoveColorVariant = 'terracotta' | 'walnut' | 'sage' | 'charcoal' | 'forest_green';
 
@@ -612,21 +613,20 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
       {/* --- 2. Ground Contact Shadows & Floor Glow (随炉体等比放大并自然贴合地面) --- */}
       <g id="cast-iron-floor-shadows">
         {/* Soft Belly Diffuse Shadow on Floor (炉腹沉稳漫反射闭塞投影) */}
-        <ellipse
-          cx="0"
+        <AmbientGroundShadow
+          cx={0}
           cy={floorAnchorY - 0.5}
           rx={18.0 * scale}
           ry={7.0 * scale}
-          fill="#160e07"
-          opacity="0.34"
-          filter="url(#softShadow)"
+          color="#160e07"
+          opacity={0.34}
         />
 
         {/* 4 粗壮敦实稳重脚撑地面接触柔和投影 (4 Leg Foot Contact Shadows) */}
-        <ellipse cx={-5.6 * scale} cy={62.2 + (floorAnchorY - 62.2) * (1 - scale)} rx={2.4 * scale} ry={1.1 * scale} fill="#120c08" opacity="0.35" filter="url(#softShadow)" />
-        <ellipse cx={5.6 * scale} cy={62.2 + (floorAnchorY - 62.2) * (1 - scale)} rx={2.4 * scale} ry={1.1 * scale} fill="#120c08" opacity="0.35" filter="url(#softShadow)" />
-        <ellipse cx={-7.8 * scale} cy={floorAnchorY + 0.3} rx={2.8 * scale} ry={1.2 * scale} fill="#120c08" opacity="0.45" filter="url(#softShadow)" />
-        <ellipse cx={7.8 * scale} cy={floorAnchorY + 0.3} rx={2.8 * scale} ry={1.2 * scale} fill="#120c08" opacity="0.45" filter="url(#softShadow)" />
+        <ContactGroundShadow cx={-5.6 * scale} cy={62.2 + (floorAnchorY - 62.2) * (1 - scale)} rx={2.4 * scale} ry={1.1 * scale} color="#120c08" opacity={0.35} />
+        <ContactGroundShadow cx={5.6 * scale} cy={62.2 + (floorAnchorY - 62.2) * (1 - scale)} rx={2.4 * scale} ry={1.1 * scale} color="#120c08" opacity={0.35} />
+        <ContactGroundShadow cx={-7.8 * scale} cy={floorAnchorY + 0.3} rx={2.8 * scale} ry={1.2 * scale} color="#120c08" opacity={0.45} />
+        <ContactGroundShadow cx={7.8 * scale} cy={floorAnchorY + 0.3} rx={2.8 * scale} ry={1.2 * scale} color="#120c08" opacity={0.45} />
 
         {/* 宽厚柔和的地面漫射壁炉火光 (Cozy Soft Floor Warm Glow, 自然过渡消除硬边界) */}
         <ellipse
@@ -913,15 +913,16 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
       {/* --- 4. CYLINDRICAL CHIMNEY FLUE (轻盈排烟管: 直通天花板屋脊, 消除大黑粗铁柱压迫感) --- */}
       <g id="cast-iron-cylindrical-chimney">
         {/* 墙面微弱漫反射柔光阴影 (消除硬边缘切墙感) */}
-        <rect
-          x={pipeX + 0.6}
-          y="-86.6"
-          width={pipeWidth + 0.8}
-          height={topCollarY - (-86.6)}
-          fill="#2b1f17"
-          opacity="0.18"
-          filter="url(#softShadow)"
-        />
+        <SoftSurfaceShadow bounds={{ x: pipeX + 0.6, y: -86.6, width: pipeWidth + 0.8, height: topCollarY + 86.6 }} blur={0.8}>
+          <rect
+            x={pipeX + 0.6}
+            y="-86.6"
+            width={pipeWidth + 0.8}
+            height={topCollarY - (-86.6)}
+            fill="#2b1f17"
+            opacity="0.18"
+          />
+        </SoftSurfaceShadow>
 
         <rect
           x={pipeX}

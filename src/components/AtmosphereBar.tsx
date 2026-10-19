@@ -115,7 +115,7 @@ export const AtmosphereBar: React.FC<AtmosphereBarProps> = ({
 
             {/* Audio Mixer Dropdown */}
             {showAudioMixer && isPlayingAudio && (
-              <div className="absolute right-0 top-10 w-52 p-3.5 rounded-2xl bg-[#231f1c] border border-[#423930] shadow-2xl space-y-2.5 text-xs text-[#cfc5b6]">
+              <div className="absolute right-0 top-10 w-52 p-3.5 rounded-2xl bg-[#231f1c] border border-[#423930] shadow-overlay-panel space-y-2.5 text-xs text-[#cfc5b6]">
                 <div className="font-medium text-[11px] text-[#8e8274] pb-1 border-b border-[#362e26]">
                   治愈白噪音混音台
                 </div>
@@ -262,7 +262,7 @@ export const AtmosphereBar: React.FC<AtmosphereBarProps> = ({
 
       {/* Bottom Floating Room Navigation Bar */}
       <nav aria-label="房间视角" className="fixed bottom-16 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 pointer-events-auto w-[calc(100%-2rem)] sm:w-auto">
-        <div className="px-3 py-2 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3c342c] shadow-2xl flex items-center gap-1.5 text-xs max-sm:overflow-x-auto max-sm:whitespace-nowrap">
+        <div className="px-3 py-2 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3c342c] shadow-overlay-control flex items-center gap-1.5 text-xs max-sm:overflow-x-auto max-sm:whitespace-nowrap">
           <button
             id="nav-room-overview"
             aria-current={activeRoom === 'overview' ? 'page' : undefined}
