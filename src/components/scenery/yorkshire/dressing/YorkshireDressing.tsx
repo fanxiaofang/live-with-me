@@ -7,7 +7,7 @@ import { YorkshireCommonProps } from '../landscapeTypes';
  * 🐑 YorkshireDressing (Swaledale Sheep Flock, Meadow Dressing & The Guardian Heritage Tree)
  *
  * Layer: 06 DRESSING
- * Spatial Region: YORKSHIRE_LAYOUT.foregroundSlope.sheepFlock & right open meadow
+ * Spatial Region: foreground meadow, with the guardian tree on the southwest slope.
  *
  * Features:
  * - 5 interactive Swaledale sheep with quotes, click animations & speech bubbles
@@ -98,12 +98,11 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       </defs>
 
       {/* ========================================================================= */}
-      {/* 🌳 庄园百年守护树 (The Heritage Guardian Tree · 前景右侧草地上的核心视觉焦点) */}
-      {/*    位置：右侧向阳开阔草甸 (x: 710, y: 520)，平衡构图，打破右侧单调，富有诗意故事性 */}
+      {/* 左前方守护树；根部约在 y=613–628，避开全景底栏并承接较低的树下缓坡。 */}
       {/* ========================================================================= */}
       <g {...svgAction('guardian-heritage-tree')}
         id="guardian-heritage-tree"
-        transform="translate(710, 520) scale(1.08)"
+        transform="translate(295, 568) scale(1.08)"
         className="cursor-pointer group/tree"
         onClick={handleTreeClick}
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'guardian-tree' })}
@@ -340,11 +339,11 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         )}
       </g>
 
-      {/* 🐑 Sheep 3 & 4: 东侧开阔大草场母子羊 (x: 360, y: 560) */}
+      {/* 母子羊移至右前方开阔草地，避开左前方树冠并留出中央前院。 */}
       <g id="sheep-mother-and-lamb-group">
         <g {...svgAction('sheep-3')}
           id="sheep-3"
-          transform="translate(360, 560) scale(1.0)"
+          transform="translate(735, 575) scale(1.0)"
           className="cursor-pointer group/sheep"
           onClick={(e) => handleSheepClick(2, e)}
           onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-2' })}
@@ -376,7 +375,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         {/* 欢脱小羊羔 */}
         <g {...svgAction('sheep-4')}
           id="sheep-4"
-          transform="translate(410, 575) scale(0.68)"
+          transform="translate(790, 595) scale(0.68)"
           className="cursor-pointer group/sheep"
           onClick={(e) => handleSheepClick(3, e)}
           onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-3' })}

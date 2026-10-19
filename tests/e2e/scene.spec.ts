@@ -36,8 +36,8 @@ test('one station: facility, occupant, hit area and focus follow placement; dist
 
 test('capsule and cabin retain the full local bed and occupant chain under placement scale', async ({ page }) => {
   for (const [room,entity,person,expected] of [
-    ['capsule_pod','capsule_pod','#person-in-pod-self',{x:1002,y:361}],
-    ['corn_lounge','wooden_cabin','#person-in-cabin-self',{x:118.36,y:381.2}],
+    ['capsule_pod','capsule_pod','#person-in-pod-self',{x:952,y:401}],
+    ['corn_lounge','wooden_cabin','#person-in-cabin-self',{x:143.36,y:331.2}],
   ] as const) {
     const sample=async (extra='') => {
       await stableScene(page, `/tests/fixtures/world.html?occupantRoom=${room}${extra}`);

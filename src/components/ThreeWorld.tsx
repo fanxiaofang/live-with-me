@@ -231,6 +231,20 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           </g>
 
           {/* ======================================================== */}
+          {/* 左后侧休息小木屋先绘制，交界处由前方主屋自然遮挡。 */}
+          {/* ======================================================== */}
+          <SceneEntity entityId="wooden_cabin" layout={sceneLayout} id="wooden-cabin-cluster">
+            <WoodenCabinHaven
+              onSelectRoom={onSelectRoom}
+              presenceSlots={presenceSlots}
+              onSelectPerson={onSelectPerson}
+              setHoveredObject={setHoveredObject}
+              hasMovedRef={hasMovedRef}
+              theme={theme}
+            />
+          </SceneEntity>
+
+          {/* ======================================================== */}
           {/* 2. THE COTTAGE HAVEN (NOW SITUATED ACROSS THE ROAD)       */}
           {/*    Surrounded by lawn, stone path & garden               */}
           {/* ======================================================== */}
@@ -244,21 +258,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/* ======================================================== */}
           <SceneEntity entityId="capsule_pod" layout={sceneLayout} id="capsule-pod-cluster">
             <CapsulePodHaven
-              onSelectRoom={onSelectRoom}
-              presenceSlots={presenceSlots}
-              onSelectPerson={onSelectPerson}
-              setHoveredObject={setHoveredObject}
-              hasMovedRef={hasMovedRef}
-              theme={theme}
-            />
-          </SceneEntity>
-
-          {/* ======================================================== */}
-          {/* 2.6 COZY TIMBER SLEEPING CABIN (左侧独立安睡小木屋 · 暖木卧房) */}
-          {/*     西侧独立休息区，底座与台阶保留在草台内部              */}
-          {/* ======================================================== */}
-          <SceneEntity entityId="wooden_cabin" layout={sceneLayout} id="wooden-cabin-cluster">
-            <WoodenCabinHaven
               onSelectRoom={onSelectRoom}
               presenceSlots={presenceSlots}
               onSelectPerson={onSelectPerson}

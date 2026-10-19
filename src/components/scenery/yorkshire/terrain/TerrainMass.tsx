@@ -15,24 +15,25 @@ const GROUND_SHADOWS: { entity: EntityId; x: number; y: number; rx: number; ry: 
  * ⛰️ TerrainMass (Seamless Ground Architecture & Homestead Meadow Grounds)
  *
  * Layer: 02 TERRAIN MASS
- * Edge Optimization per User Request:
- * - Retains an approximate rounded rectangle/oval geometry embracing the cabin cluster
- * - Scope preserved: spans comfortably from west sleeping cabin to east capsule pod
- * - Edge feathered and smoothly dissolved into the master pasture ground (与整块草地自然衔接)
- * - Removed all harsh cutout outlines, dark border crescents, and artificial dashed seams
- * - Grounding AO placed strictly under building footings
+ * An asymmetric terrace embraces both sleeping cabins and opens into a deeper front yard.
+ * Matching feather contours dissolve its edge into the pasture. The lower tree slope and
+ * the independent radio-station rise remain shallow, without hard outlines or retaining walls.
+ * Building contact shadows follow sceneLayout rather than the authored terrace outline.
  */
 export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneLayout }> = ({ className, sceneLayout = DEFAULT_SCENE_LAYOUT }) => {
   const boundary = YORKSHIRE_LAYOUT.drystoneWalls.eastWall;
-  // Approximate rounded isometric rectangle geometry embracing cottage cluster
+  const station = sceneLayout.observatory;
+  // Matching curve segments keep both feather rings around the entire organic silhouette.
+  // The west apron gives the pumpkin rack a grass margin. The east shoulder
+  // recedes before the sheep pen; the front yard extends toward y=630.
   const terracePath =
-    'M -70,398 C -70,305 450,215 540,215 C 630,215 1150,305 1150,398 C 1150,488 630,585 540,585 C 450,585 -70,488 -70,398 Z';
+    'M -115,399 C -124,340 131,272 314,246 C 405,232 494,211 550,215 C 671,219 771,271 932,296 C 1056,318 1105,349 1099,408 C 1095,455 1013,490 951,500 C 858,521 774,534 713,587 C 666,622 597,637 528,624 C 459,617 409,586 339,599 C 250,602 198,564 112,537 C 6,520 -113,470 -115,399 Z';
 
   const outerFeatherPath =
-    'M -95,398 C -95,295 440,198 540,198 C 640,198 1175,295 1175,398 C 1175,498 640,602 540,602 C 440,602 -95,498 -95,398 Z';
+    'M -140,399 C -149,328 121,253 309,228 C 403,214 494,193 551,197 C 676,201 779,253 940,278 C 1077,301 1130,340 1124,410 C 1120,467 1024,505 955,515 C 865,536 788,550 727,602 C 675,640 598,657 524,644 C 454,637 409,607 339,619 C 244,622 187,581 105,556 C -14,537 -138,482 -140,399 Z';
 
   const midFeatherPath =
-    'M -82,398 C -82,300 445,206 540,206 C 635,206 1162,300 1162,398 C 1162,493 635,593 540,593 C 445,593 -82,493 -82,398 Z';
+    'M -127,399 C -136,334 126,263 312,237 C 404,223 494,202 550,206 C 673,210 775,262 936,287 C 1066,310 1117,345 1111,409 C 1107,461 1018,497 953,507 C 861,528 781,542 720,594 C 670,631 597,647 526,634 C 457,627 409,596 339,609 C 247,612 193,572 109,546 C -4,528 -125,476 -127,399 Z';
 
   return (
     <g id="yorkshire-terrain-mass" className={className}>
@@ -62,6 +63,15 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
         <mask id="homesteadTerraceBlendMask">
           <path d={terracePath} fill="#ffffff" filter="url(#terraceFeatherFilter)" />
         </mask>
+
+        <filter id="meadowLowSlopeFeather" x="-25%" y="-40%" width="150%" height="180%">
+          <feGaussianBlur stdDeviation="9" />
+        </filter>
+        <radialGradient id="meadowLowSlopeGrad" cx="48%" cy="35%" r="65%">
+          <stop offset="0%" stopColor="#b0c66b" stopOpacity="0.32" />
+          <stop offset="58%" stopColor="#86a34d" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#6b873a" stopOpacity="0" />
+        </radialGradient>
 
         {/* 胶囊仓天然基岩与木栈道挡土矮墙渐变 */}
         <linearGradient id="stoneWallCapGrad" x1="0" y1="0" x2="1" y2="0">
@@ -152,7 +162,7 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
       </g>
 
       {/* ========================================================================= */}
-      {/* 2. 主屋庭院草台缓坡（几何规整矩形/椭圆轮廓 · 360°自然羽化融汇大地）          */}
+      {/* 2. 主屋庭院草台缓坡：两翼承接小屋，中央前缘自然外伸。 */}
       {/* ========================================================================= */}
       <g id="homestead-organic-meadow-grounds">
         {/* A. 外缘两重微渐变消隐层 (Multi-step soft alpha feathering into master pasture) */}
@@ -166,12 +176,12 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
           {/* 阳光在庭院中央的温和漫射光斑 (Warm Dappled Sunlight across Central Lawn · 11s 超长周期呼吸律动) */}
           <ellipse
             cx="540"
-            cy="460"
-            rx="480"
-            ry="155"
+            cy="490"
+            rx="450"
+            ry="175"
             fill="url(#lawnSunDapple)"
             className="animate-sunbeam-breathe"
-            style={{ transformOrigin: '540px 460px' }}
+            style={{ transformOrigin: '540px 490px' }}
           />
         </g>
 
@@ -191,10 +201,10 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
             { x: 30, y: 440, s: 1.0 },
             { x: 120, y: 470, s: 1.1 },
             { x: 260, y: 510, s: 1.0 },
-            { x: 380, y: 535, s: 1.15 },
-            { x: 500, y: 545, s: 1.2 },
-            { x: 620, y: 540, s: 1.1 },
-            { x: 740, y: 520, s: 1.0 },
+            { x: 410, y: 570, s: 1.0 },
+            { x: 500, y: 590, s: 1.1 },
+            { x: 620, y: 595, s: 1.05 },
+            { x: 740, y: 545, s: 1.0 },
             { x: 860, y: 485, s: 1.1 },
             { x: 960, y: 450, s: 1.0 },
             { x: 210, y: 425, s: 0.9 },
@@ -237,8 +247,8 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
           {[
             { x: 160, y: 460, r: 20 },
             { x: 320, y: 505, r: 24 },
-            { x: 460, y: 525, r: 26 },
-            { x: 640, y: 520, r: 24 },
+            { x: 450, y: 570, r: 22 },
+            { x: 640, y: 565, r: 22 },
             { x: 820, y: 480, r: 22 },
           ].map((patch, idx) => {
             const cloverDelay = Number(((patch.x + 100) * 0.0033).toFixed(2));
@@ -274,8 +284,8 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
             { x: 80, y: 450, c: '#facc15', stemH: 10, stemCurv: -2 },
             { x: 220, y: 485, c: '#ffffff', stemH: 12, stemCurv: 2 },
             { x: 340, y: 515, c: '#fef08a', stemH: 11, stemCurv: -1 },
-            { x: 440, y: 535, c: '#ffffff', stemH: 13, stemCurv: 3 },
-            { x: 580, y: 530, c: '#facc15', stemH: 12, stemCurv: -2 },
+            { x: 440, y: 590, c: '#ffffff', stemH: 11, stemCurv: 3 },
+            { x: 580, y: 605, c: '#facc15', stemH: 10, stemCurv: -2 },
             { x: 720, y: 510, c: '#ffffff', stemH: 11, stemCurv: 2 },
             { x: 840, y: 475, c: '#fef08a', stemH: 10, stemCurv: -1 },
             { x: 920, y: 445, c: '#ffffff', stemH: 9, stemCurv: 1 },
@@ -319,9 +329,18 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
       </g>
 
       {/* ========================================================================= */}
-      {/* 3. 东翼胶囊仓区域草地 (Clean Seamless Pasture Grounds)                    */}
+      {/* 3. 外围低缓地形。只用柔和光影暗示起伏，不把外围设施并入主草台。 */}
       {/* ========================================================================= */}
-      <g id="terrace-embedded-features" />
+      <g id="terrace-embedded-features" pointerEvents="none">
+        <path id="guardian-tree-lower-slope"
+          d="M 188,584 C 178,553 215,526 265,519 C 313,512 382,536 398,568 C 417,608 372,652 309,657 C 255,666 202,636 188,584 Z"
+          fill="url(#meadowLowSlopeGrad)" filter="url(#meadowLowSlopeFeather)" />
+        <g id="station-independent-meadow-rise"
+          transform={`translate(${station.position.x}, ${station.position.y}) scale(${station.scale})`}>
+          <path d="M -112,45 C -120,13 -72,-17 -8,-16 C 57,-19 113,5 116,42 C 121,77 61,98 -5,94 C -68,97 -109,76 -112,45 Z"
+            fill="url(#meadowLowSlopeGrad)" filter="url(#meadowLowSlopeFeather)" />
+        </g>
+      </g>
     </g>
   );
 };

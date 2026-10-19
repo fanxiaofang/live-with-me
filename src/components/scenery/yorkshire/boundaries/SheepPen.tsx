@@ -5,6 +5,7 @@ import { svgAction } from '../../../../world/interactions/svgAction';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 import { YorkshireCommonProps } from '../landscapeTypes';
 import { MeadowWearPatch } from '../dressing/MeadowWearPatch';
+import { HayBaleStack } from '../dressing/HayBaleStack';
 
 /**
  * 🐑 SheepPen (Yorkshire Authentic Masterpiece 2.5D Stone-and-Timber Meadow Sheepfold)
@@ -1243,6 +1244,9 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
       </g>
 
       {/* ========================================================================= */}
+      {/* Exterior feed storage shares the pen's ground plane and camera. */}
+      <HayBaleStack />
+
       {/* 11. 温馨交互对白气泡 (Speech Bubble for Sheep in Pen)                      */}
       {/* ========================================================================= */}
       {sheepSaying && (
