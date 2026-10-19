@@ -1,0 +1,146 @@
+{
+  "errors": [],
+  "results": [
+    {
+      "theme": "afternoon",
+      "focus": "overview",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": false,
+      "differentPixels": 206,
+      "pixelDifferenceRatio": 0.00021458333333333334,
+      "differenceBounds": [
+        501,
+        423,
+        641,
+        516
+      ]
+    },
+    {
+      "theme": "afternoon",
+      "focus": "porch",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": true,
+      "differentPixels": 0,
+      "pixelDifferenceRatio": 0.0,
+      "differenceBounds": null
+    },
+    {
+      "theme": "afternoon",
+      "focus": "cabin",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": true,
+      "differentPixels": 0,
+      "pixelDifferenceRatio": 0.0,
+      "differenceBounds": null
+    },
+    {
+      "theme": "night",
+      "focus": "overview",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": false,
+      "differentPixels": 206,
+      "pixelDifferenceRatio": 0.00021458333333333334,
+      "differenceBounds": [
+        501,
+        423,
+        641,
+        516
+      ]
+    },
+    {
+      "theme": "night",
+      "focus": "porch",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": true,
+      "differentPixels": 0,
+      "pixelDifferenceRatio": 0.0,
+      "differenceBounds": null
+    },
+    {
+      "theme": "night",
+      "focus": "cabin",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": true,
+      "differentPixels": 0,
+      "pixelDifferenceRatio": 0.0,
+      "differenceBounds": null
+    },
+    {
+      "theme": "rainy",
+      "focus": "overview",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": false,
+      "differentPixels": 188,
+      "pixelDifferenceRatio": 0.00019583333333333334,
+      "differenceBounds": [
+        501,
+        424,
+        641,
+        516
+      ]
+    },
+    {
+      "theme": "rainy",
+      "focus": "porch",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": true,
+      "differentPixels": 0,
+      "pixelDifferenceRatio": 0.0,
+      "differenceBounds": null
+    },
+    {
+      "theme": "rainy",
+      "focus": "cabin",
+      "geometryAndPaintMatch": true,
+      "matrixTolerance": 0.0001,
+      "maximumMatrixDifference": 2.5000000050567905e-05,
+      "architectureAndShrubsIdentical": true,
+      "clumps": 36,
+      "pngIdentical": true,
+      "differentPixels": 0,
+      "pixelDifferenceRatio": 0.0,
+      "differenceBounds": null
+    }
+  ],
+  "checks": [
+    "formal app defaults to accepted v9",
+    "world-space paths, colours, opacity and gradients match all nine reference views",
+    "protected architecture and shrubs unchanged",
+    "layout anchors and pointer / keyboard interaction",
+    "390px app without overflow",
+    "historical review remains isolated",
+    "retained asset hashes unchanged"
+  ]
+}

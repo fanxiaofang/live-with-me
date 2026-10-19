@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTimerScope } from '../../../../shared/timers/useTimerScope';
 import { svgAction } from '../../../../world/interactions/svgAction';
 import { YorkshireCommonProps } from '../landscapeTypes';
+import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 
 /**
  * 🐑 YorkshireDressing (Swaledale Sheep Flock, Meadow Dressing & The Guardian Heritage Tree)
@@ -19,6 +20,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
   className,
 }) => {
   const timers = useTimerScope();
+  const tree = YORKSHIRE_LAYOUT.guardianTree;
   const [activeSheepIndex, setActiveSheepIndex] = useState<number | null>(null);
   const [sheepSaying, setSheepSaying] = useState<string | null>(null);
 
@@ -102,7 +104,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       {/* ========================================================================= */}
       <g {...svgAction('guardian-heritage-tree')}
         id="guardian-heritage-tree"
-        transform="translate(295, 568) scale(1.08)"
+        transform={`translate(${tree.position.x}, ${tree.position.y}) scale(${tree.scale})`}
         className="cursor-pointer group/tree"
         onClick={handleTreeClick}
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'guardian-tree' })}
@@ -125,6 +127,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <path d="M-2,46 Q2,54 8,56" stroke="#24140a" strokeWidth="3.5" strokeLinecap="round" fill="none" />
 
           {/* 树根旁生机小雏菊与绿苔 (Moss & Daisies at tree base) */}
+          <g id="guardian-tree-root-flora">
           <ellipse cx="-24" cy="45" rx="8" ry="3.5" fill="#2d4a23" opacity="0.85" />
           <ellipse cx="26" cy="46" rx="7" ry="3" fill="#2d4a23" opacity="0.8" />
           <circle cx="-28" cy="44" r="2.2" fill="#ffffff" />
@@ -133,6 +136,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <circle cx="-21" cy="46" r="0.7" fill="#facc15" />
           <circle cx="28" cy="45" r="2.0" fill="#fef08a" />
           <circle cx="28" cy="45" r="0.8" fill="#ca8a04" />
+          </g>
         </g>
 
         {/* 3. 苍劲古老主树干与伸展大枝 (Stately Ancient Oak Trunk & Sprawling Limbs) */}

@@ -1,0 +1,52 @@
+{
+  "status": "current-accepted-baseline",
+  "acceptedOn": "2026-10-19",
+  "userQuote": "暂时就这样先验收吧吧",
+  "assetRequest": "中的三组草 作为资产保留",
+  "scope": "Current scene composition accepted for now; retain all three v2 compositions as reusable assets. Future artwork revisions should be versioned separately.",
+  "source": "src/components/scenery/yorkshire/vegetation/MeadowVegetationAssets.tsx",
+  "sourceSha256": "df90f8ffc2c4313e8e468d0a909c2016a72b6c40f47630058e60737fd57debc1",
+  "assets": [
+    {
+      "id": "soft",
+      "name": "短草甸簇",
+      "component": "ShortMeadowCluster",
+      "svg": "src/assets/meadow/short-meadow.svg",
+      "viewBox": "-78 -30 155 55",
+      "sha256": "c0d9b1f3b27e09f68693d274b180aa0513eb3f727067effe101e01de68f44c24",
+      "reviewedSample": "docs/architecture/metrics/MEADOW-VEGETATION-B-2026-10-19/v2/approved/soft.svg",
+      "reviewedSampleSha256": "3fa4ee45c762a84ef8d5124309459388ad36e162f8ad9a66fb118e5985505f98",
+      "exactReviewedSvgMatch": true,
+      "paths": 9
+    },
+    {
+      "id": "wild",
+      "name": "禾本科野草簇",
+      "component": "WildGrassCluster",
+      "svg": "src/assets/meadow/wild-grass.svg",
+      "viewBox": "-80 -72 150 100",
+      "sha256": "527966cd10a9d97988978a7285db95bd65a0f67d93172a06fc19979103cb80e2",
+      "reviewedSample": "docs/architecture/metrics/MEADOW-VEGETATION-B-2026-10-19/v2/approved/wild.svg",
+      "reviewedSampleSha256": "c0cf7bf42a4c5f01cd245870898ca4d70afee184f61fc017074b78bb439bfaf2",
+      "exactReviewedSvgMatch": true,
+      "paths": 10
+    },
+    {
+      "id": "flower",
+      "name": "野花混生簇",
+      "component": "WildflowerCluster",
+      "svg": "src/assets/meadow/wildflower-mix.svg",
+      "viewBox": "-78 -48 166 78",
+      "sha256": "9518de5c490d15d57e18096156f4ee5cae45c63b125e3ed740e95c47040a38a4",
+      "reviewedSample": "docs/architecture/metrics/MEADOW-VEGETATION-B-2026-10-19/v2/approved/flower.svg",
+      "reviewedSampleSha256": "0cc81b51fda860cbd1e146ac1721fea40f7ce610b9b81da0d50e63baee7e9f2b",
+      "exactReviewedSvgMatch": true,
+      "paths": 31
+    }
+  ],
+  "scene": {
+    "revision": 9,
+    "record": "docs/architecture/metrics/MEADOW-SCENE-TRIAL-2026-10-19/round-9/README.md",
+    "productionEnabled": false
+  }
+}

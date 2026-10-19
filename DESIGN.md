@@ -1,5 +1,9 @@
 # Live With Me：当前设计与架构
 
+2026-10-20 草甸正式接入：将已验收第九轮组合设为正式默认。正式植被／表面组件位于 `src/components/scenery/yorkshire/vegetation/`，包含 36 个草簇、轻接地／台阶使用痕迹、蜂箱混生植被和四处石缝短草；主屋灌木／绣球及布局保留。类型检查、生产构建、日夜雨九组同镜头对比、正式首页与交互／窄屏检查通过。6 组近景 PNG 一致，3 组总览有 188–206 像素差异（低于 0.1% 阈值），详见记录，不宣称全部字节一致。三组保留资产校验值未变。[集成记录](docs/architecture/metrics/MEADOW-SCENE-TRIAL-2026-10-19/integration/README.md)。
+
+2026-10-19 草甸美术方向定稿：用户明确草地可保持平整；终止地形体积和色带式坡面方案。经过草丛造型、局部群落与表面综合色差多轮审阅，保留第九轮组合为验收版本，并将 Phase B v2 的三组草甸造型作为正式复用资产。中间轮次页面与重复截图已清理，最终验收和接入证据仍保留。[场景验收](docs/architecture/metrics/MEADOW-SCENE-TRIAL-2026-10-19/round-9/README.md) · [资产记录](docs/architecture/metrics/MEADOW-VEGETATION-B-2026-10-19/v2/approved/README.md)。
+
 2026-10-18 整理：当前功能源与原两款椅子保留；过时制作页、原始 trace、重复发布／源码备份和旧造型回归已转入本地忽略归档。当前角色／工位回归统一使用 `npm run test:authoring`，日常检查不再编译历史证据或构建产物。[整理说明](docs/architecture/WORKSPACE_CLEANUP_2026-10-18.md)。下方记录保留各轮当时的视觉认可范围。
 
 2026-10-18 当前：按用户要求补齐层叠长卷发、偏分低束发、双色蓬松碎发的独立 NW 收腿坐姿。复用已定稿短发坐姿身体和各自定稿 NW 头部，统一头部定位／缩放，不修改短发基准及原四图。查看／复制／下载入口四款均支持坐姿四图＋NW，新增同倍率对照；新增三款组合待视觉审阅。[记录](docs/architecture/metrics/SEATED-NW-HAIRSTYLES-2026-10-18/README.md)。下方为历史。

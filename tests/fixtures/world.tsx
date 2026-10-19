@@ -9,6 +9,15 @@ import '../../src/index.css';
 import type { RoomId, TimeOfDay } from '../../src/types';
 import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
 import type { EntityId } from '../../src/world/scene/sceneTypes';
+import { MeadowVegetationTrial } from './meadow/MeadowVegetationTrial';
+import { MeadowGrassOnlyTrial } from './meadow/MeadowGrassOnlyTrial';
+import { MeadowMicroCommunityTrial } from './meadow/MeadowMicroCommunityTrial';
+import { MeadowSurfaceTrial } from './meadow/MeadowSurfaceTrial';
+import { MeadowCommunityTrialV7 } from './meadow/MeadowCommunityTrialV7';
+import { BeehiveMeadowTrial, CottageVergeMeadowTrial } from './meadow/LocalMeadowSystemTrial';
+import { MeadowCommunityTrialV8 } from './meadow/MeadowCommunityTrialV8';
+import { MeadowCommunityTrialV6 } from './meadow/MeadowCommunityTrialV6';
+import { COUNTRYSIDE_THEMES } from '../../src/world/theme/worldTheme';
 
 const query = new URLSearchParams(location.search);
 const requestedTheme = query.get('theme');
@@ -51,11 +60,34 @@ function Fixture() {
     editor.setActiveGizmoId(query.get('edit') as EditableObjectId);
   },[requestedZoom]);
   return <div style={{ width: '100vw', height: '100vh' }}>
+    {query.get('meadow') === 'bare' && <style>{`
+      #lawn-natural-grass-tufts,#clover-turf-patches,#meadow-field-blossoms,
+      #pasture-chamomile-dots,#pasture-wildflowers,#guardian-tree-root-flora,
+      #homestead-organic-meadow-grounds .animate-sunbeam-breathe {display:none!important}
+    `}</style>}
     {query.has('edit')&&<input aria-label="Fixture camera zoom" data-testid="fixture-zoom" type="number" step="0.01"
       style={{position:'absolute',zIndex:100,left:0,top:0,width:70}}
       onChange={e=>{editor.setIsLayoutInspectorOpen(false);setRequestedZoom(Number(e.target.value));}} />}
     <Profiler id="world" onRender={(_, __, duration) => { if (query.has('profile')) renderSamples.push(duration); }}>
     <ThreeWorld timeOfDay={timeOfDay} people={people} presenceAllocation={resolvePresenceSlots(people)} sceneLayout={sceneLayout}
+      meadowComposition={query.has('vegetationTrial') || query.get('meadow') === 'legacy' ? 'legacy' : 'current'}
+      meadowSurface={['4', '5', '6', '7', '8', '9'].includes(query.get('vegetationTrial') ?? '')
+        ? <MeadowSurfaceTrial sceneLayout={sceneLayout} theme={COUNTRYSIDE_THEMES[timeOfDay]}
+            revision={['8', '9'].includes(query.get('vegetationTrial') ?? '') ? 8 : query.get('vegetationTrial') === '7' ? 7 : query.get('vegetationTrial') === '6' ? 6 : query.get('vegetationTrial') === '5' ? 5 : 4} /> : undefined}
+      beehivePlanting={query.get('vegetationTrial') === '9' ? <BeehiveMeadowTrial theme={COUNTRYSIDE_THEMES[timeOfDay]} /> : undefined}
+      cottageVergeDecoration={query.get('vegetationTrial') === '9' ? <CottageVergeMeadowTrial theme={COUNTRYSIDE_THEMES[timeOfDay]} /> : undefined}
+      groundDecoration={['8', '9'].includes(query.get('vegetationTrial') ?? '')
+        ? <MeadowCommunityTrialV8 sceneLayout={sceneLayout} theme={COUNTRYSIDE_THEMES[timeOfDay]} />
+        : query.get('vegetationTrial') === '7'
+        ? <MeadowCommunityTrialV7 sceneLayout={sceneLayout} theme={COUNTRYSIDE_THEMES[timeOfDay]} />
+        : query.get('vegetationTrial') === '6'
+        ? <MeadowCommunityTrialV6 sceneLayout={sceneLayout} theme={COUNTRYSIDE_THEMES[timeOfDay]} />
+        : ['3', '4', '5'].includes(query.get('vegetationTrial') ?? '')
+        ? <MeadowMicroCommunityTrial sceneLayout={sceneLayout} theme={COUNTRYSIDE_THEMES[timeOfDay]} />
+        : query.get('vegetationTrial') === '2'
+        ? <MeadowGrassOnlyTrial sceneLayout={sceneLayout} theme={COUNTRYSIDE_THEMES[timeOfDay]} />
+        : query.get('vegetationTrial') === '1'
+        ? <MeadowVegetationTrial sceneLayout={sceneLayout} theme={COUNTRYSIDE_THEMES[timeOfDay]} /> : undefined}
       activeRoom={activeRoom} roomLayout={editor.roomLayout} unreadMailCount={2} onSelectPerson={() => {}}
       onSelectMailbox={() => {}} onSelectRoom={setActiveRoom}
       isInspectorOpen={editor.isLayoutInspectorOpen} activeGizmoId={editor.activeGizmoId}

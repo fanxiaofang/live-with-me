@@ -1,0 +1,25 @@
+{
+  "status": "accepted-for-now",
+  "acceptedOn": "2026-10-19",
+  "userQuote": "暂时就这样先验收吧吧",
+  "sceneRevision": 9,
+  "scope": [
+    "round 8 meadow surface and planting",
+    "round 9 hive wildflower and short grass composition",
+    "existing cottage shrubs retained",
+    "four gravel-verge tufts replaced"
+  ],
+  "productionEnabled": true,
+  "vegetationAssetManifest": "docs/architecture/metrics/MEADOW-VEGETATION-B-2026-10-19/v2/approved/manifest.json",
+  "configurationSha256": {
+    "tests/fixtures/meadow/LocalMeadowSystemTrial.tsx": "f4bab96b23f2a4c70817dd64204fe551623c08d29c80ce5e896a1e50c02a77f4",
+    "tests/fixtures/meadow/MeadowCommunityTrialV8.tsx": "6b82737c46caa00af4694c2d29f71def592c5dd4794cbb454e333da426f910d0",
+    "tests/fixtures/meadow/MeadowCommunityTrialV7.tsx": "5547cd0bcb504fdf114bc3d933e76316d00c48f4a5129b194f0b5d287ca57e0c",
+    "tests/fixtures/meadow/MeadowCommunityTrialV6.tsx": "978c91d25fab893702fe26ef346ff1e3e830e06f041e9d62c136ab1fccf342ee",
+    "tests/fixtures/meadow/MeadowMicroCommunityTrial.tsx": "da9e4c44b5aa4705f173631b7135b96b5946846d10c48adbfd58d90a0d08e4c0",
+    "tests/fixtures/meadow/MeadowSurfaceTrial.tsx": "32506e610f3cf2773c2199cf4c6a9c93571c4f9850087e87f3c75ef8306784ae",
+    "tests/fixtures/meadow/meadowSurfacePalette.ts": "59ab672c68cf43008369b7a94da81217049a3ed73c7793091fb00742ca630beb"
+  },
+  "integratedOn": "2026-10-20",
+  "integrationRecord": "../integration/README.md"
+}

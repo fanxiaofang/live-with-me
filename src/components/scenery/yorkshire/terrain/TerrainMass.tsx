@@ -20,7 +20,7 @@ const GROUND_SHADOWS: { entity: EntityId; x: number; y: number; rx: number; ry: 
  * the independent radio-station rise remain shallow, without hard outlines or retaining walls.
  * Building contact shadows follow sceneLayout rather than the authored terrace outline.
  */
-export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneLayout }> = ({ className, sceneLayout = DEFAULT_SCENE_LAYOUT }) => {
+export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneLayout; meadowSurface?: React.ReactNode }> = ({ className, sceneLayout = DEFAULT_SCENE_LAYOUT, meadowSurface }) => {
   const boundary = YORKSHIRE_LAYOUT.drystoneWalls.eastWall;
   const station = sceneLayout.observatory;
   // Matching curve segments keep both feather rings around the entire organic silhouette.
@@ -183,6 +183,7 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
             className="animate-sunbeam-breathe"
             style={{ transformOrigin: '540px 490px' }}
           />
+          {meadowSurface}
         </g>
 
         {/* C. 建筑底部深层接地接触阴影 (Deep Architectural Grounding AO - 仅位于建筑下方，绝不溢出到外缘) */}

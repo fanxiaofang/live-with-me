@@ -1,5 +1,10 @@
 /** Geometry anchors used by the production railway and stone walls. Building placement is owned by world/scene/sceneLayout. */
 export const YORKSHIRE_LAYOUT = {
+  guardianTree: {
+    position: { x: 295, y: 568 },
+    scale: 1.08,
+    root: { x: 0, y: 48 },
+  },
 drystoneWalls: {
     westWall: {
       id: 'wall-west',

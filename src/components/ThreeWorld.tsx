@@ -26,10 +26,23 @@ import { EditableObjectId, RoomLayoutConfig } from './layout-gizmo';
 import { DEFAULT_ROOM_LAYOUT } from './layout-gizmo/layoutStore';
 import { PosterId } from './wall-posters';
 import type { CabinetPartId } from './cabinet/cabinetDetails';
+import { HomesteadMeadowSurface } from './scenery/yorkshire/vegetation/HomesteadMeadowSurface';
+import { HomesteadMeadowPlanting } from './scenery/yorkshire/vegetation/HomesteadMeadowPlanting';
+import { BeehiveMeadowPlanting, CottageVergeMeadowPlanting } from './scenery/yorkshire/vegetation/LocalMeadowPlanting';
 
 const PosterDetailModal = lazy(() => import('./wall-posters/PosterDetailModal').then(module => ({ default: module.PosterDetailModal })));
 
 interface ThreeWorldProps {
+  /** Historical fixtures can opt out of the accepted default composition. */
+  meadowComposition?: 'current' | 'legacy';
+  /** Optional ground decoration, occluded by buildings and the foreground tree. */
+  groundDecoration?: React.ReactNode;
+  /** Optional turf surface, beneath contact shadows and ground decorations. */
+  meadowSurface?: React.ReactNode;
+  /** Optional local planting in the beehive's native ground plane. */
+  beehivePlanting?: React.ReactNode;
+  /** Optional small verge plants in the cottage's local ground plane. */
+  cottageVergeDecoration?: React.ReactNode;
   sceneLayout?: SceneLayout;
   focusRevision?: number;
   onDragGizmoBegin?: () => void;
@@ -63,6 +76,11 @@ interface ThreeWorldProps {
 
 // Anime countryside atmospheric color palettes & lighting
 export const ThreeWorld: React.FC<ThreeWorldProps> = ({
+  meadowComposition = 'current',
+  groundDecoration,
+  meadowSurface,
+  beehivePlanting,
+  cottageVergeDecoration,
   sceneLayout = DEFAULT_SCENE_LAYOUT,
   focusRevision = 0,
   onDragGizmoBegin,
@@ -124,6 +142,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const { hoveredObject, setHoveredObject, alienPulseEffect, alienTransmissionText, setAlienTransmissionText, sofaSquish, sofaThought, stoveColor, setStoveColor, triggerAlienSignal, triggerSofaSquish } = useWorldFeedback();
 
   const theme = COUNTRYSIDE_THEMES[timeOfDay] || COUNTRYSIDE_THEMES.afternoon;
+  const currentMeadow = meadowComposition === 'current';
 
   const interactionTiers = customBookshelfTiers ?? PRESET_COZY_TIERS;
   const dispatchInteraction = useEventCallback(createInteractionDispatcher({
@@ -210,9 +229,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           <HomesteadMeadow
             theme={theme}
             sceneLayout={sceneLayout}
+            meadowSurface={meadowSurface ?? (currentMeadow ? <HomesteadMeadowSurface theme={theme} /> : undefined)}
+            beehivePlanting={beehivePlanting ?? (currentMeadow ? <BeehiveMeadowPlanting theme={theme} /> : undefined)}
             setHoveredObject={setHoveredObject}
             onTriggerToast={onTriggerToast}
           />
+          {groundDecoration ?? (currentMeadow ? <HomesteadMeadowPlanting sceneLayout={sceneLayout} theme={theme} /> : undefined)}
           <g id="hilltop-observatory-haven">
             {/* Radio station on the rear-right meadow, still in the physical stage. */}
             <SceneEntity entityId="observatory" layout={sceneLayout}
@@ -250,6 +272,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/* ======================================================== */}
           <SceneEntity entityId="main_cottage" layout={sceneLayout} id="living-cottage-haven">
 <MainCottageHaven theme={theme} hasMovedRef={hasMovedRef} onSelectRoom={onSelectRoom} setHoveredObject={setHoveredObject} selfPerson={selfPerson} linPerson={linPerson} yuPerson={yuPerson} currentLayout={currentLayout} effectiveGizmoId={effectiveGizmoId} isInspectorOpen={isInspectorOpen} onSelectGizmo={onSelectGizmo} onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd} presenceSlots={presenceSlots} isChairEmptyOverride={isChairEmptyOverride} onOpenChairInspector={onOpenChairInspector} onOpenCabinetInspector={onOpenCabinetInspector} onToggleChairSeated={onToggleChairSeated} stoveColor={stoveColor} setStoveColor={setStoveColor} dispatchInteraction={dispatchInteraction} onSelectPerson={onSelectPerson} bookshelfPreset={bookshelfPreset} customBookshelfTiers={customBookshelfTiers} isLinReading={isLinReading} onBookshelfClick={onBookshelfClick} onBookClick={onBookClick} triggerSofaSquish={triggerSofaSquish} sofaSquish={sofaSquish} sofaThought={sofaThought} onSelectMailbox={onSelectMailbox} unreadMailCount={unreadMailCount} onTriggerToast={onTriggerToast} />
+{cottageVergeDecoration ?? (currentMeadow ? <CottageVergeMeadowPlanting theme={theme} /> : undefined)}
 </SceneEntity>
 
           {/* ======================================================== */}

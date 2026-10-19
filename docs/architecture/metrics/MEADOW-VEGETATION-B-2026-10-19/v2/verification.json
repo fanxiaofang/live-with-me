@@ -1,0 +1,33 @@
+{
+  "errors": [],
+  "stats": [
+    {
+      "name": "短草甸簇，放大细节，平整草地样板",
+      "paths": 9,
+      "clumps": 3,
+      "filters": 0,
+      "patterns": 0
+    },
+    {
+      "name": "禾本科野草簇，放大细节，平整草地样板",
+      "paths": 10,
+      "clumps": 3,
+      "filters": 0,
+      "patterns": 0
+    },
+    {
+      "name": "野花混生簇，放大细节，平整草地样板",
+      "paths": 31,
+      "clumps": 2,
+      "filters": 0,
+      "patterns": 0
+    }
+  ],
+  "checks": [
+    "three display modes",
+    "flower and detail suppression",
+    "390px and 768px without horizontal overflow",
+    "overview SVG stays 300px wide at responsive sizes",
+    "six standalone SVG URLs"
+  ]
+}

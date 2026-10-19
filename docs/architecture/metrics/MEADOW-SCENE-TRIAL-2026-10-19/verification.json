@@ -1,0 +1,40 @@
+{
+  "errors": [],
+  "results": [
+    {
+      "theme": "?theme=afternoon&vegetationTrial=1",
+      "paths": 49,
+      "clumps": 6,
+      "plants": 4,
+      "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+      "unchangedOutsideTrial": true
+    },
+    {
+      "theme": "?theme=night&vegetationTrial=1",
+      "paths": 49,
+      "clumps": 6,
+      "plants": 4,
+      "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+      "unchangedOutsideTrial": true
+    },
+    {
+      "theme": "?theme=rainy&vegetationTrial=1",
+      "paths": 49,
+      "clumps": 6,
+      "plants": 4,
+      "camera": "transform: translate(0px, 135px) scale(0.66); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+      "unchangedOutsideTrial": true
+    }
+  ],
+  "checks": [
+    "house position and scale",
+    "shared tree transform",
+    "pointer-events none",
+    "tree mouse activation",
+    "room keyboard activation",
+    "production default excludes trial",
+    "before/after preserves camera",
+    "two optional location guides",
+    "weather switch"
+  ]
+}

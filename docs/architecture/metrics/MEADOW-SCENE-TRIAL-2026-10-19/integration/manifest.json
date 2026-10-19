@@ -1,0 +1,14 @@
+{
+  "status": "integrated",
+  "integratedOn": "2026-10-20",
+  "acceptedSceneRevision": 9,
+  "productionEnabled": true,
+  "sourceSha256": {
+    "src/components/ThreeWorld.tsx": "9396158140ce72213807d3407f7732ef07ecfbbfb2436c3aff26909dea32dd9d",
+    "src/components/scenery/yorkshire/vegetation/HomesteadMeadowSurface.tsx": "eafcb9056df4936074d0d887da811a352b3cce5cdc01cc431bd00e98f18bf955",
+    "src/components/scenery/yorkshire/vegetation/HomesteadMeadowPlanting.tsx": "7639ec6f17719947963891d5048cb49a0ff503e1fafaf3146b7e9ad196ed8237",
+    "src/components/scenery/yorkshire/vegetation/LocalMeadowPlanting.tsx": "74961d95227b4d7639887e67aa53598e6257c4f8b741af6fd6373fc5636c7441",
+    "src/components/scenery/yorkshire/vegetation/meadowPlantingLayout.ts": "4a2ec954a5f03a14965f50c0472f556701105a51237d8e541d1c48f2791e2347",
+    "src/components/scenery/yorkshire/vegetation/meadowPalette.ts": "faebb7cf8310ad16a3f30e649b51cd59bad23c8dc0c15810a3aaeb7b1361a94e"
+  }
+}

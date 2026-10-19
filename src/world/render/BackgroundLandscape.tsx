@@ -18,6 +18,8 @@ export interface BackgroundLandscapeProps {
 }
 
 export interface HomesteadMeadowProps {
+  meadowSurface?: React.ReactNode;
+  beehivePlanting?: React.ReactNode;
   theme: YorkshireSceneTheme;
   sceneLayout: SceneLayout;
   setHoveredObject: HoverTarget;
@@ -253,11 +255,11 @@ function BackgroundLandscapeAsset({
   );
 }
 
-function HomesteadMeadowAsset({ theme, sceneLayout, setHoveredObject, onTriggerToast }: HomesteadMeadowProps) {
+function HomesteadMeadowAsset({ theme, sceneLayout, meadowSurface, beehivePlanting, setHoveredObject, onTriggerToast }: HomesteadMeadowProps) {
   const cabin = sceneLayout.wooden_cabin;
   return (
     <g id="homestead-meadow-base">
-      <TerrainMass theme={theme} sceneLayout={sceneLayout} />
+      <TerrainMass theme={theme} sceneLayout={sceneLayout} meadowSurface={meadowSurface} />
       <PastureFields theme={theme} onTriggerToast={onTriggerToast} setHoveredObject={setHoveredObject} />
       <DrystoneWalls theme={theme} />
       <SheepPen theme={theme} />
@@ -476,6 +478,7 @@ function HomesteadMeadowAsset({ theme, sceneLayout, setHoveredObject, onTriggerT
         {/* B. 可爱木制小蜜蜂箱 (Cute Storybook Wooden Beehive & Bees) */}
         {/* ======================================================== */}
         {/* 围绕箱体中心水平翻转，入口朝右，原木箱、屋顶、支架和配色保留。 */}
+        {beehivePlanting}
         <g id="storybook-wooden-beehive" transform="translate(50, 2) scale(-1, 1)">
           {/* 1. 地面接触阴影 */}
           <ellipse cx="10" cy="19" rx="14" ry="5.5" fill="#182315" opacity="0.38" />

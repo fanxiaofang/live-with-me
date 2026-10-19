@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>蜂箱花草重组 · 庭院草形统一</title><style>
+*{box-sizing:border-box}body{margin:0;background:#1b231f;color:#edf1e8;font:16px/1.6 system-ui,sans-serif}main{max-width:1440px;margin:auto;padding:20px}h1{font-size:25px;font-weight:600;margin:0}p{color:#bccaba;margin:8px 0 14px;max-width:75ch}.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:12px 0}button,select{font:inherit;border:1px solid #6b7c63;border-radius:5px;background:#263027;color:#edf1e8;padding:7px 12px}button{cursor:pointer}button[aria-pressed=true]{background:#d0dfbb;color:#1b231f}a{color:#d0dfbb;text-underline-offset:4px}:focus-visible{outline:3px solid #d0dfbb;outline-offset:3px}input{accent-color:#d0dfbb}iframe{display:block;width:100%;height:min(75vh,800px);min-height:520px;border:0;background:#78933f}footer{font-size:14px;padding-top:10px}#status{font-size:14px;min-height:23px;margin:8px 0}.controls label{white-space:nowrap}.pair{display:flex;flex-wrap:wrap;gap:16px}figure{margin:12px 0;flex:1 1 450px}img{width:100%;height:auto}@media(max-width:600px){main{padding:12px}h1{font-size:22px}iframe{height:70vh;min-height:500px}}
+</style></head><body><main>
+<h1>蜂箱花草重组 · 庭院草形统一</h1>
+<p>2026-10-19 · 本轮已验收并接入项目 · <a href="/">查看正式场景</a> · <a href="../../MEADOW-VEGETATION-B-2026-10-19/v2/approved/README.md">三组植被资产</a></p>
+<p>蜂箱两侧用低矮野花混生簇衔接少量短草，留出飞行与取用空间。主屋边缘灌木保留，先把四处石缝细线草换成短草甸簇。</p>
+<div class="controls" role="group" aria-label="植被重组对比">
+<button id="before" aria-pressed="false">查看第八轮</button><button id="after" aria-pressed="true">查看花草重组</button>
+<label>天气 <select id="theme"><option value="afternoon">午后</option><option value="night">夜晚</option><option value="rainy">雨天</option></select></label>
+<label>视角 <select id="view"><option value="corn_lounge">木屋与蜂箱</option><option value="overview">世界总览</option><option value="porch_mailbox">主屋前院</option></select></label>
+</div><div class="controls" role="group" aria-label="植被替换开关">
+<label><input id="hive" type="checkbox" checked> 蜂箱混生花草</label><label><input id="verge" type="checkbox" checked> 四处石缝短草</label>
+</div><p id="status" role="status">场景加载中…</p>
+<iframe id="scene" title="蜂箱与庭院植被重组交互预览" src="/tests/fixtures/world.html?vegetationTrial=9&amp;theme=afternoon&amp;focusRoom=corn_lounge"></iframe>
+<footer>
+<p>蜂箱左侧以灰粉紫红三叶草与乳白雏菊贴地混生，右后侧用少量柔黄毛茛和较弱三叶草。两处低短草承接边缘，避免环绕蜂箱一圈。</p>
+<p>主屋原有灌木、绣球、台阶花草与建筑边缘地被保留。第一批只替换四处石缝细线草，不动入口，不向远处牧草地扩散。第八轮的草台颜色、36 个草簇、轻接地和使用痕迹沿用。</p>
+<details><summary>木屋与蜂箱同镜头对照</summary><div class="pair"><figure><img src="afternoon-cabin-before.png" loading="lazy" alt="蜂箱原有独立花点与线草"><figcaption>第八轮</figcaption></figure><figure><img src="afternoon-cabin-trial.png" loading="lazy" alt="蜂箱两处野花混生簇与少量短草"><figcaption>本轮重组</figcaption></figure></div></details>
+<p><a id="direct" href="/tests/fixtures/world.html?vegetationTrial=9&amp;theme=afternoon&amp;focusRoom=corn_lounge" target="_blank" rel="noopener">单独打开场景</a> · <a href="README.md">本轮记录</a></p>
+</footer></main><script>
+const frame=document.getElementById('scene'),theme=document.getElementById('theme'),view=document.getElementById('view'),hive=document.getElementById('hive'),verge=document.getElementById('verge');let fresh=true;
+function apply(){const doc=frame.contentDocument,a=doc?.getElementById('beehive-planting-v9'),b=doc?.getElementById('cottage-verge-v9');if(!a||!b)return false;
+[[a,hive],[b,verge]].forEach(([layer,input])=>{const enabled=fresh&&input.checked;layer.dataset.active=String(enabled);layer.style.display=enabled?'':'none';input.disabled=!fresh});
+document.getElementById('before').setAttribute('aria-pressed',String(!fresh));document.getElementById('after').setAttribute('aria-pressed',String(fresh));
+document.getElementById('status').textContent=fresh?`蜂箱：${hive.checked?'两处混生簇 + 两处短草':'原花草'} · 主屋石缝：${verge.checked?'四处短草甸簇':'原细线草'} · 灌木保留`:'第八轮：原蜂箱花草与原石缝草，镜头和草台保持一致。';return true;
+}
+frame.addEventListener('load',()=>{if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect()});observer.observe(frame.contentDocument,{subtree:true,childList:true})});
+document.getElementById('before').addEventListener('click',()=>{fresh=false;apply()});document.getElementById('after').addEventListener('click',()=>{fresh=true;apply()});[hive,verge].forEach(input=>input.addEventListener('change',apply));
+function reload(){const url='/tests/fixtures/world.html?vegetationTrial=9&theme='+theme.value+(view.value==='overview'?'':'&focusRoom='+view.value);frame.src=url;document.getElementById('direct').href=url;document.getElementById('status').textContent='场景加载中…'}theme.addEventListener('change',reload);view.addEventListener('change',reload);
+</script></body></html>

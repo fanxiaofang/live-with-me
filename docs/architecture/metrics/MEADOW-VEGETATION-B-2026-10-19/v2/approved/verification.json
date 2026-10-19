@@ -1,0 +1,35 @@
+{
+  "errors": [],
+  "assets": [
+    {
+      "asset": "soft",
+      "paths": 9,
+      "backgrounds": 0,
+      "inside": true,
+      "sha256Verified": true
+    },
+    {
+      "asset": "wild",
+      "paths": 10,
+      "backgrounds": 0,
+      "inside": true,
+      "sha256Verified": true
+    },
+    {
+      "asset": "flower",
+      "paths": 31,
+      "backgrounds": 0,
+      "inside": true,
+      "sha256Verified": true
+    }
+  ],
+  "checks": [
+    "retained source and SVG SHA-256",
+    "original reviewed SVG bytes unchanged",
+    "transparent exports have no backgrounds and no clipped geometry",
+    "three download links",
+    "full/silhouette/flowerless controls",
+    "390px no overflow",
+    "round 9 fixture shares retained source without runtime errors"
+  ]
+}
