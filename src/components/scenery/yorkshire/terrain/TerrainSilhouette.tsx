@@ -1,10 +1,34 @@
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
-import { mountainApronPath, rollingWheatPath } from '../../../../world/scene/landscapeGeometry';
+import { mountainApronPath, rollingWheatPath, wheatBackEdgePath, wheatBoundaryFencePosts } from '../../../../world/scene/landscapeGeometry';
 
 interface TerrainSurfaceProps extends YorkshireCommonProps {
   frontExtension?: number;
 }
+
+const WHEAT_TRAMLINES = [
+  { x1: -2600, y1: 215, x2: -2350, y2: 375 },
+  { x1: -1900, y1: 220, x2: -1600, y2: 375 },
+  { x1: -1200, y1: 210, x2: -880, y2: 375 },
+  { x1: -500, y1: 205, x2: -150, y2: 380 },
+  { x1: 200, y1: 200, x2: 580, y2: 370 },
+  { x1: 900, y1: 190, x2: 1320, y2: 375 },
+  { x1: 1600, y1: 192, x2: 2050, y2: 380 },
+  { x1: 2300, y1: 195, x2: 2800, y2: 375 },
+  { x1: 3000, y1: 198, x2: 3550, y2: 380 },
+];
+const tramlinePoint = (index: number, t: number) => {
+  const line = WHEAT_TRAMLINES[index];
+  return { x: line.x1 + (line.x2 - line.x1) * t, y: line.y1 + (line.y2 - line.y1) * t };
+};
+const WHEAT_MARGIN_SECTIONS = [3, 4, 5, 6].map(index => ({
+  index, start: tramlinePoint(index, 0.14), end: tramlinePoint(index, 0.48),
+}));
+const WHEAT_BOUNDARY_POSTS = wheatBoundaryFencePosts();
+const WHEAT_TREE_CLUSTERS = [
+  { line: 4, t: 0.27, trees: [{ t: -0.015, dx: -2, s: 0.68 }, { t: 0.015, dx: 2, s: 0.84 }] },
+  { line: 5, t: 0.29, trees: [{ t: -0.025, dx: -2, s: 0.72 }, { t: 0, dx: 2, s: 1.0 }, { t: 0.035, dx: -1, s: 0.82 }] },
+];
 
 /**
  * 🏔️ MountainSilhouette (Far Low-Poly Distant Mountain Ridges, Pines & Woodlands)
@@ -284,7 +308,7 @@ export const MountainSilhouette: React.FC<TerrainSurfaceProps> = ({ theme, class
 };
 
 /**
- * 🌾 RollingWheatSilhouette (Midground Rolling Pastoral Wheat Hillside)
+ * 🌾 RollingWheatSilhouette (Continuous Midground Wheat Plain)
  * Layer 02: MIDGROUND ROLLING WHEAT FIELDS
  */
 export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouetteAsset({ className, frontExtension = 0 }: TerrainSurfaceProps) {
@@ -319,72 +343,58 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
           opacity="0.08"
         />
 
-        {/* 远端山麓微光天光柔和反照 (Soft Atmospheric Sunlit Glaze across Plain) */}
-        <path
-          d={surfacePath}
-          fill="url(#sunlitWheatCrestGrad)"
-        />
-
-        {/* ================================================================= */}
-        {/* B. 平原自然纵深透视机耕垄痕 (Subtle 2.5D Aerial Tramlines & Furrow Perspective) */}
-        {/*    沿 2.5D 视轴微微延伸，近疏远密，赋予平坦地表逼真的纵深空间而非横向断层 */}
-        {/* ================================================================= */}
-        <g id="flat-wheat-tramlines" opacity="0.14">
-          {[
-            { x1: -2600, y1: 215, x2: -2350, y2: 375 },
-            { x1: -1900, y1: 220, x2: -1600, y2: 375 },
-            { x1: -1200, y1: 210, x2: -880, y2: 375 },
-            { x1: -500, y1: 205, x2: -150, y2: 380 },
-            { x1: 200, y1: 200, x2: 580, y2: 370 },
-            { x1: 900, y1: 190, x2: 1320, y2: 375 },
-            { x1: 1600, y1: 192, x2: 2050, y2: 380 },
-            { x1: 2300, y1: 195, x2: 2800, y2: 375 },
-            { x1: 3000, y1: 198, x2: 3550, y2: 380 },
-          ].map((line, idx) => (
-            <line
-              key={`ftl-${idx}`}
-              x1={line.x1}
-              y1={line.y1}
-              x2={line.x2}
-              y2={line.y2}
-              stroke="#6b4c16"
-              strokeWidth="0.8"
-              strokeDasharray="14 7"
-            />
+        {/* Restore the original faint diagonal tramlines for a little ground depth. */}
+        <g id="flat-wheat-tramlines" opacity="0.14" pointerEvents="none">
+          {WHEAT_TRAMLINES.map((line, idx) => (
+            <line key={`ftl-${idx}`} {...line} stroke="#6b4c16"
+              strokeWidth="0.8" strokeDasharray="14 7" />
           ))}
         </g>
 
-        {/* ================================================================= */}
-        {/* 🌾 C. 舒缓麦浪随风漫射律动 (Gentle Wind Shimmer Waves across Plain)  */}
-        {/* ================================================================= */}
-        <g id="wheat-wind-waves" className="pointer-events-none" opacity="0.22">
-          <path
-            className="animate-wheat-wave"
-            d="M -200,265 C 200,248 600,258 1150,270 C 800,285 400,280 -160,295 Z"
-            fill="#fff9db"
-            style={{ animationDelay: '0s' }}
-          />
-          <path
-            className="animate-wheat-wave"
-            d="M -700,230 C -200,215 300,230 850,218 C 500,235 50,228 -600,242 Z"
-            fill="#fefce8"
-            style={{ animationDelay: '3.6s' }}
-          />
-          <path
-            className="animate-wheat-wave"
-            d="M 1200,240 C 1600,228 2100,242 2600,232 C 2200,252 1700,245 1150,260 Z"
-            fill="#fff9db"
-            style={{ animationDelay: '1.8s' }}
-          />
+        {/* Each short margin lies on an existing tramline, using the same endpoints. */}
+        <g id="flat-wheat-field-margins" fill="none" stroke="#96944f"
+          strokeWidth="2.4" strokeLinecap="round" opacity="0.34" pointerEvents="none">
+          {WHEAT_MARGIN_SECTIONS.map(({ index, start, end }) => (
+            <line key={index} data-tramline={index}
+              x1={start.x} y1={start.y} x2={end.x} y2={end.y} />
+          ))}
         </g>
 
-        {/* ================================================================= */}
-        {/* 🌾 D. 纵深透视阶梯草垛群 (Graduated Perspective Hay Bales · 近大远小)   */}
-        {/*    以自然尺标建立平原向远方的宏阔纵深透视，前大后小，错落有致           */}
-        {/* ================================================================= */}
+        {/* One continuous fence follows the actual crop / foothill boundary. */}
+        <g id="wheat-margin-fences" pointerEvents="none" opacity="0.62">
+          <path d={wheatBackEdgePath()} transform="translate(0, -4)" fill="none"
+            stroke="#776347" strokeWidth="1.2" />
+          <path d={wheatBackEdgePath()} transform="translate(0, 1)" fill="none"
+            stroke="#776347" strokeWidth="1.2" />
+          {WHEAT_BOUNDARY_POSTS.map((post, i) => (
+            <path key={i} d={`M${post.x},${post.y + 5} v-13`}
+              stroke="#68563d" strokeWidth="1.7" strokeLinecap="round" />
+          ))}
+        </g>
+
+        {/* Small, uneven clusters grow beside the same tramlines as the margins. */}
+        <g id="wheat-margin-trees" pointerEvents="none">
+          {WHEAT_TREE_CLUSTERS.map(cluster => (
+            <g key={cluster.line} data-tramline={cluster.line}>
+              {cluster.trees.map((tree, i) => {
+                const point = tramlinePoint(cluster.line, cluster.t + tree.t);
+                return (
+                  <g key={i} transform={`translate(${point.x + tree.dx}, ${point.y}) scale(${tree.s})`}>
+                    <ellipse cx="1" cy="1" rx="12" ry="2.5" fill="#74723f" opacity="0.2" />
+                    <path d="M0,0 V-19 M0,-9 l-5,-5" stroke="#625238" strokeWidth="2.5" fill="none" />
+                    <ellipse cx="-4" cy="-20" rx="9" ry="7" fill="#597447" />
+                    <ellipse cx="5" cy="-19" rx="8" ry="7" fill="#49663e" />
+                    <ellipse cx="-1" cy="-25" rx="8" ry="6" fill="#6c8650" />
+                  </g>
+                );
+              })}
+            </g>
+          ))}
+        </g>
+
         <g id="perspective-hay-bales">
           {[
-            // 1. 远景小草垛 (Distant Tiny Bales · y: 210~224, scale: 0.48~0.56, 随空气透视淡化)
+            // Original far bales: small beside the foothills.
             { x: -1150, y: 214, scale: 0.50, opacity: 0.76 },
             { x: -760,  y: 220, scale: 0.56, opacity: 0.80 },
             { x: 380,   y: 210, scale: 0.52, opacity: 0.80 },
@@ -393,7 +403,7 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
             { x: 1750,  y: 217, scale: 0.52, opacity: 0.80 },
             { x: 2300,  y: 224, scale: 0.48, opacity: 0.75 },
 
-            // 2. 中景中等草垛 (Midground Medium Bales · y: 252~270, scale: 0.78~0.88)
+            // Middle of the field.
             { x: -580,  y: 262, scale: 0.82, opacity: 0.92 },
             { x: -210,  y: 257, scale: 0.85, opacity: 0.95 },
             { x: 190,   y: 252, scale: 0.78, opacity: 0.90 },
@@ -401,11 +411,11 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
             { x: 1220,  y: 260, scale: 0.86, opacity: 0.95 },
             { x: 1580,  y: 270, scale: 0.80, opacity: 0.92 },
 
-            // 3. 近景饱满大草垛 (Foreground Near Bales · y: 312~327, scale: 1.08~1.15, 清晰扎实)
-            { x: -440,  y: 317, scale: 1.15, opacity: 1.0 },
-            { x: 880,   y: 322, scale: 1.10, opacity: 1.0 },
-            { x: 1420,  y: 312, scale: 1.08, opacity: 1.0 },
-            { x: 1960,  y: 327, scale: 1.12, opacity: 1.0 },
+            // Keep the original large sizes; move their full footprints inside the crop edge.
+            { x: -440,  y: 270, scale: 1.15, opacity: 1.0 },
+            { x: 880,   y: 268, scale: 1.10, opacity: 1.0 },
+            { x: 1420,  y: 270, scale: 1.08, opacity: 1.0 },
+            { x: 1960,  y: 274, scale: 1.12, opacity: 1.0 },
           ].map((bale, idx) => (
             <g key={`hb-${idx}`} transform={`translate(${bale.x}, ${bale.y}) scale(${bale.scale})`} opacity={bale.opacity}>
               {/* 接触地面柔和投影 */}

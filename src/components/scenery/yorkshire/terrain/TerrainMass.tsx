@@ -1,6 +1,7 @@
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
+import { meadowGroundPath } from '../../../../world/scene/landscapeGeometry';
 import { DEFAULT_SCENE_LAYOUT } from '../../../../world/scene/sceneLayout';
 import type { EntityId, SceneLayout } from '../../../../world/scene/sceneTypes';
 
@@ -86,48 +87,11 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
         </linearGradient>
       </defs>
 
-      {/* ========================================================================= */}
-      {/* 1. 全景统一宽阔主大地基面 (Continuous Master Pasture Ground - 遵循 2.5D 轴测平面边界) */}
-      {/*    彻底消除麦田与草甸交界处的死硬横切线与高光条，实现 100% 自然羽化交融   */}
-      {/* ========================================================================= */}
+      {/* Crop and lawn share a level surface. Only a narrow vegetation fringe overlaps. */}
       <g id="master-axonometric-ground-plane">
-        {/* A. 麦田与深绿草甸无缝羽化交融过渡裙带 (Seamless Wheat-to-Pasture Apron) */}
-        <path
-          d="M -4000,165 C -3000,150 -2000,168 -1100,150 C -300,135 350,130 1050,140 C 1750,150 2500,160 3300,175 C 4000,190 4800,180 6000,190 L 6000,248 C 4800,245 4000,255 3300,242 C 2500,222 1750,215 1050,202 C 350,190 -300,198 -1100,215 C -2000,236 -3000,218 -4000,232 Z"
-          fill="url(#wheatPastureBlendGrad)"
-          opacity="0.95"
-        />
-
-        {/* B. 具有自然起伏波浪弧度的主草坪大地基面 (Organic Rolling Master Meadow Ground) */}
-        <path
-          d="M -4000,212 C -3000,198 -2000,216 -1100,195 C -300,178 350,170 1050,182 C 1750,195 2500,202 3300,222 C 4000,236 4800,225 6000,235 L 6000,2600 L -4000,2600 Z"
-          fill="url(#isoGroundPastureGrad)"
-        />
-
-        {/* C. 麦田与草甸自然交界处的舒缓地势等高田垄光影 (Soft Organic Swale Ridge & Berm) */}
-        <path
-          d="M -3200,210 C -2200,195 -1200,214 -200,185 C 450,172 1200,188 2200,204 C 3000,218 3800,228 4600,232"
-          fill="none"
-          stroke="#b8bd68"
-          strokeWidth="0.8"
-          opacity="0.32"
-        />
-        <path
-          d="M -3200,212 C -2200,197 -1200,216 -200,187 C 450,174 1200,190 2200,206 C 3000,220 3800,230 4600,234"
-          fill="none"
-          stroke="#556b24"
-          strokeWidth="1.2"
-          opacity="0.25"
-        />
-
-        {/* 远方中景舒缓地势等高线 (Soft Natural Topographic Swale Lines) */}
-        <path
-          d="M-1800,280 Q-400,305 720,295 Q1800,280 3200,270"
-          fill="none"
-          stroke="#88ab43"
-          strokeWidth="1.0"
-          opacity="0.25"
-        />
+        <path d={meadowGroundPath()} transform="translate(0, -2)"
+          fill="#9aa640" opacity="0.28" />
+        <path d={meadowGroundPath()} fill="url(#isoGroundPastureGrad)" />
 
         {/* D. 田界历史矮石墙与野草田埂碎化景致 (Historic Drystone Field Boundary Traces) */}
         {/* 呈现英国约克郡经典的自然田亩分界 */}
