@@ -33,7 +33,7 @@ const ChairInspectionModal = lazy(() => import('./components/desk/ChairInspectio
 const CabinetDetailModal = lazy(() => import('./components/cabinet/CabinetDetailModal').then(module => ({ default: module.CabinetDetailModal })));
 
 export default function App() {
-  const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('afternoon');
+  const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('day');
   const [memories, setMemories] = useState<LivingMemory[]>(INITIAL_MEMORIES);
   const [activeRoom, setRoom] = useState<RoomId | 'overview'>('overview');
   const [focusRevision, setFocusRevision] = useState(0);
@@ -110,12 +110,7 @@ export default function App() {
       {/* 1. Top Atmosphere Bar (Time presets, ambient sound mixer, mailbox icon) */}
       <AtmosphereBar
         timeOfDay={timeOfDay}
-        onChangeTime={(t) => {
-          setTimeOfDay(t);
-          if (t === 'rainy') {
-            ambientAudio.setRainVolume(0.6);
-          }
-        }}
+        onChangeTime={setTimeOfDay}
         activeRoom={activeRoom}
         onSelectRoom={setActiveRoom}
         unreadMailCount={unreadCount}

@@ -3,6 +3,11 @@ import { YorkshireCommonProps } from '../landscapeTypes';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 import { meadowGroundPath } from '../../../../world/scene/landscapeGeometry';
 import { DEFAULT_SCENE_LAYOUT } from '../../../../world/scene/sceneLayout';
+import { FIELD_EDGE_STUDY } from '../../../../world/scene/fieldEdges';
+import { MEADOW_STUDY } from '../vegetation/meadowStudy';
+import { FieldContactFringe } from './FieldContactFringe';
+import { FieldEdgePlanting } from './FieldEdgePlanting';
+import { FieldAccess } from './FieldAccess';
 import type { EntityId, SceneLayout } from '../../../../world/scene/sceneTypes';
 
 const GROUND_SHADOWS: { entity: EntityId; x: number; y: number; rx: number; ry: number; opacity: number }[] = [
@@ -21,7 +26,8 @@ const GROUND_SHADOWS: { entity: EntityId; x: number; y: number; rx: number; ry: 
  * the independent radio-station rise remain shallow, without hard outlines or retaining walls.
  * Building contact shadows follow sceneLayout rather than the authored terrace outline.
  */
-export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneLayout; meadowSurface?: React.ReactNode }> = ({ className, sceneLayout = DEFAULT_SCENE_LAYOUT, meadowSurface }) => {
+export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneLayout; meadowSurface?: React.ReactNode; frontRefined?: boolean; surfaceRefined?: boolean }> = ({ theme, className, sceneLayout = DEFAULT_SCENE_LAYOUT, meadowSurface, frontRefined = false, surfaceRefined = false }) => {
+  const contactGradient = 'field-contact-' + React.useId().replace(/:/g, '');
   const boundary = YORKSHIRE_LAYOUT.drystoneWalls.eastWall;
   const station = sceneLayout.observatory;
   // Matching curve segments keep both feather rings around the entire organic silhouette.
@@ -39,6 +45,10 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
   return (
     <g id="yorkshire-terrain-mass" className={className}>
       <defs>
+        {/* Lock the original pasture colour coordinates while its contact outline changes. */}
+        {(frontRefined || surfaceRefined) && <linearGradient id={contactGradient} href="#isoGroundPastureGrad"
+          gradientUnits="userSpaceOnUse" x1="0" x2="0"
+          y1={FIELD_EDGE_STUDY.pastureGradientY[0]} y2={FIELD_EDGE_STUDY.pastureGradientY[1]} />}
         {/* 庭院微丘向阳面温暖漫射光斑 (Afternoon Sunbeam Dapple across Courtyard) */}
         <radialGradient id="lawnSunDapple" cx="48%" cy="42%" r="52%">
           <stop offset="0%" stopColor="#d3ed7a" stopOpacity="0.25" />
@@ -87,11 +97,14 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
         </linearGradient>
       </defs>
 
-      {/* Crop and lawn share a level surface. Only a narrow vegetation fringe overlaps. */}
+      {/* Keep the planar lawn. Only a narrow fringe and local access bank overlap the crop. */}
       <g id="master-axonometric-ground-plane">
-        <path d={meadowGroundPath()} transform="translate(0, -2)"
-          fill="#9aa640" opacity="0.28" />
-        <path d={meadowGroundPath()} fill="url(#isoGroundPastureGrad)" />
+        <path d={meadowGroundPath(frontRefined)} transform={frontRefined ? undefined : 'translate(0, -2)'}
+          fill={frontRefined ? 'none' : '#9aa640'} opacity="0.28" />
+        <path d={meadowGroundPath(frontRefined)} fill={frontRefined ? 'url(#' + contactGradient + ')' : 'url(#isoGroundPastureGrad)'} />
+        {frontRefined && surfaceRefined && <FieldAccess theme={theme} />}
+        {frontRefined && <FieldContactFringe />}
+        {frontRefined && theme.landscapeEnvironment && <FieldEdgePlanting theme={theme} />}
 
         {/* D. 田界历史矮石墙与野草田埂碎化景致 (Historic Drystone Field Boundary Traces) */}
         {/* 呈现英国约克郡经典的自然田亩分界 */}
@@ -130,12 +143,12 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
       {/* ========================================================================= */}
       <g id="homestead-organic-meadow-grounds">
         {/* A. 外缘两重微渐变消隐层 (Multi-step soft alpha feathering into master pasture) */}
-        <path d={outerFeatherPath} fill="url(#isoTerraceTurfGrad)" opacity="0.22" />
-        <path d={midFeatherPath} fill="url(#isoTerraceTurfGrad)" opacity="0.45" />
+        <path d={outerFeatherPath} fill="url(#isoTerraceTurfGrad)" opacity={surfaceRefined ? MEADOW_STUDY.featherOpacity : .22} />
+        <path d={midFeatherPath} fill="url(#isoTerraceTurfGrad)" opacity={surfaceRefined ? MEADOW_STUDY.featherOpacity : .45} />
 
         {/* B. 羽化草台主体 (Feather-masked core lawn with perfect edge blending) */}
         <g mask="url(#homesteadTerraceBlendMask)">
-          <path d={terracePath} fill="url(#isoTerraceTurfGrad)" opacity="0.88" />
+          <path d={terracePath} fill={surfaceRefined ? 'url(#' + contactGradient + ')' : 'url(#isoTerraceTurfGrad)'} opacity="0.88" />
 
           {/* 阳光在庭院中央的温和漫射光斑 (Warm Dappled Sunlight across Central Lawn · 11s 超长周期呼吸律动) */}
           <ellipse

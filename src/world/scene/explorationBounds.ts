@@ -11,7 +11,7 @@ export interface SceneBounds {
 // Solid architecture envelopes in entity-local space. Steam and thought bubbles
 // are excluded so ambient animation cannot change the camera's travel range.
 const BUILDING_ENVELOPES: Record<EntityId, SceneBounds> = {
-  main_cottage: { minX: -320, maxX: 320, minY: -145, maxY: 310 },
+  main_cottage: { minX: -320, maxX: 320, minY: -243, maxY: 310 },
   capsule_pod: { minX: -70, maxX: 80, minY: -72, maxY: 78 },
   wooden_cabin: { minX: -88, maxX: 98, minY: -62, maxY: 95 },
   observatory: { minX: -78, maxX: 79, minY: -66, maxY: 72 },

@@ -1,5 +1,6 @@
 import type React from 'react';
 import { Camera, OVERVIEW_CAMERA, sceneToViewBox, viewBoxToScene } from './cameraMath';
+import { FIELD_EDGE_STUDY } from '../scene/fieldEdges';
 import { LANDSCAPE_SURFACES } from '../scene/landscapeGeometry';
 import { scenePoint, viewBoxPoint } from '../scene/sceneTypes';
 import { cameraTransformStyle } from './cameraMotion';
@@ -14,6 +15,8 @@ export const PARALLAX_PRESETS = {
   sky: { kTx: 0.08, kTy: 0.05, kSz: 0.15 } as ParallaxDamping,
   mountains: { kTx: 0.28, kTy: 0.20, kSz: 0.40 } as ParallaxDamping,
   wheat: { kTx: 0.65, kTy: 0.55, kSz: 0.70 } as ParallaxDamping,
+  // The midground railway keeps its original response, independent from F2 ridges.
+  railway: { kTx: 0.28, kTy: 0.20, kSz: 0.40 } as ParallaxDamping,
   stage: { kTx: 1.0, kTy: 1.0, kSz: 1.0 } as ParallaxDamping,
 } as const;
 
@@ -38,6 +41,7 @@ export function getParallaxTransformStyle(
   isDragging = false,
   baseCamera: Camera = OVERVIEW_CAMERA
 ): React.CSSProperties {
+  if (damping.kTx === 1 && damping.kTy === 1 && damping.kSz === 1) return cameraTransformStyle(camera, isDragging);
   const resolved = resolveParallaxCamera(camera, damping, baseCamera);
   return cameraTransformStyle(resolved, isDragging);
 }
@@ -48,7 +52,7 @@ export interface LandscapeCoverage {
 }
 
 /** Extend only hidden terrain skirts; landmarks keep their rigid layer projection. */
-export function resolveLandscapeCoverage(camera: Camera): LandscapeCoverage {
+export function resolveLandscapeCoverage(camera: Camera, frontRefined = false): LandscapeCoverage {
   const mountains = resolveParallaxCamera(camera, PARALLAX_PRESETS.mountains);
   const wheat = resolveParallaxCamera(camera, PARALLAX_PRESETS.wheat);
   const { backgroundOffsetY, overlap } = LANDSCAPE_SURFACES;
@@ -62,7 +66,7 @@ export function resolveLandscapeCoverage(camera: Camera): LandscapeCoverage {
       local(project(LANDSCAPE_SURFACES.wheatBackMaxY, wheat) + overlap, mountains)
       - LANDSCAPE_SURFACES.mountainApronFrontMinY),
     wheatFrontExtension: Math.max(0,
-      local(project(LANDSCAPE_SURFACES.meadowBackMaxY, camera, 0) + overlap, wheat)
+      local(project(frontRefined ? FIELD_EDGE_STUDY.frontMaxY : LANDSCAPE_SURFACES.meadowBackMaxY, camera, 0) + overlap, wheat)
       - LANDSCAPE_SURFACES.wheatFrontMinY),
   };
 }

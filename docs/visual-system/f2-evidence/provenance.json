@@ -1,0 +1,52 @@
+{
+  "files": [
+    {
+      "sha256": "86ceeb7eba0a063e18fac71a99c87d4d378558ce7a207d4f0033536e6f3573d5",
+      "target": "src\\world\\render\\f2\\vendor\\backdrop\\WorldViewAdapter.js",
+      "source": "src/backdrop/WorldViewAdapter.js"
+    },
+    {
+      "sha256": "43fd5c3d5ec5ab79ce046c727a1e437ccb92a56aa441911a58dd3382af435dbb",
+      "target": "src\\world\\render\\f2\\vendor\\backdrop\\config.js",
+      "source": "src/backdrop/config.js"
+    },
+    {
+      "sha256": "78323b82a4ebdfa479f42c4b49a23e6f719c6600e1181c6d4623dbabff3ddf9a",
+      "target": "src\\world\\render\\f2\\vendor\\backdrop\\createBackdrop.js",
+      "source": "src/backdrop/createBackdrop.js"
+    },
+    {
+      "sha256": "c2172546c0def37d9066c5ef6605d984fec1575db2b0c19681677a94bd339b5e",
+      "target": "src\\world\\render\\f2\\vendor\\backdrop\\environment.js",
+      "source": "src/backdrop/environment.js"
+    },
+    {
+      "sha256": "dcb3d7011525fc406e2cd0c40d7f766cd20fa1802fd8df35e841f200c008559a",
+      "target": "src\\world\\render\\f2\\vendor\\backdrop\\ridgeGeometry.js",
+      "source": "src/backdrop/ridgeGeometry.js"
+    },
+    {
+      "sha256": "3f69fefcf8976f3c8f573674656640364b55b294f96216b34842e1953c9cf57a",
+      "target": "src\\world\\render\\f2\\vendor\\backdrop\\ridgeMaterial.js",
+      "source": "src/backdrop/ridgeMaterial.js"
+    },
+    {
+      "sha256": "01a655541a5e92da698f3a94a012d1d25e6caa17a3504fc18abd3729a92635d3",
+      "target": "src\\world\\render\\f2\\vendor\\f2\\VirtualReliefModel.js",
+      "source": "src/f2/VirtualReliefModel.js"
+    },
+    {
+      "sha256": "d4ff4dd04827d6937ef1132a9765ba16d77375e50b2b9ad59eabe3c8d5fb0473",
+      "target": "src\\world\\render\\f2\\vendor\\f2\\createF2Backdrop.js",
+      "source": "src/f2/createF2Backdrop.js"
+    },
+    {
+      "sha256": "d654a50e280e58489049952fb07e86524021b410d557b57e32d32f7ff9e854f3",
+      "target": "src\\world\\render\\f2\\vendor\\f2\\reliefMaterial.js",
+      "source": "src/f2/reliefMaterial.js"
+    }
+  ],
+  "sourceCommit": "5810441b749f555a3b54254cc557cb3285403d5f",
+  "mainBaseline": "f264d3fc536c0940e20bdbda1082d2250191d109",
+  "sourceStatus": " M .gitignore\r\n M README.md\r\n M package.json\r\n M vite.config.js\r\n?? F3_DELIVERY.json\r\n?? F3_TERRAIN_DELIVERY.json\r\n?? F3_UNIFIED_DELIVERY.json\r\n?? docs/F3_IMPLEMENTATION.md\r\n?? docs/F3_PLAN.md\r\n?? docs/F3_SHALLOW_TERRAIN_PLAN.md\r\n?? docs/F3_SPATIAL_REVIEW.md\r\n?? docs/F3_TERRAIN_IMPLEMENTATION.md\r\n?? docs/F3_UNIFIED_STUDY.md\r\n?? evidence/f3-terrain/\r\n?? evidence/f3-u/\r\n?? evidence/f3/\r\n?? f3-terrain.html\r\n?? f3.html\r\n?? public/configs/f3-terrain/\r\n?? public/configs/f3/\r\n?? public/configs/unified/\r\n?? public/fixtures/f3/\r\n?? research/f3-spatial-review-20261021/\r\n?? scripts/build-f3-terrain-review.mjs\r\n?? scripts/build-unified-review.mjs\r\n?? scripts/capture-f3-review.mjs\r\n?? scripts/capture-f3-supplement.mjs\r\n?? scripts/check-f3-terrain-stage1.mjs\r\n?? scripts/check-f3-terrain-surface.mjs\r\n?? scripts/finalize-f3.mjs\r\n?? scripts/lib/\r\n?? scripts/postbuild-f3-terrain.mjs\r\n?? scripts/postbuild-f3.mjs\r\n?? scripts/postbuild-unified.mjs\r\n?? scripts/prepare-f3.mjs\r\n?? scripts/preview-f3.mjs\r\n?? scripts/record-f3-terrain-baseline.mjs\r\n?? scripts/verify-f3-release.mjs\r\n?? scripts/verify-f3-terrain.mjs\r\n?? scripts/verify-f3.mjs\r\n?? scripts/verify-unified.mjs\r\n?? snapshots/f3-u-pre-20261022/\r\n?? src/f3-terrain/\r\n?? src/f3/\r\n?? src/unified/\r\n?? tests/f3-terrain.test.mjs\r\n?? tests/unified.test.mjs\r\n?? unified-world.html\r\n"
+}

@@ -66,7 +66,7 @@ async function open() {
   await page.evaluate(() => document.fonts.ready);
   await page.bringToFront();
   await page.getByRole('button', { name: '收起面板（查看完整约克郡风光）', exact: true }).click();
-  await page.getByRole('button', { name: '午后', exact: true }).click();
+  await page.getByRole('button', { name: '白天', exact: true }).click();
   await page.waitForTimeout(2000);
   if (args.inspect === 'true' && !inspected) {
     inspected = true;
@@ -228,19 +228,19 @@ try {
         await page.waitForTimeout(3000);
         measurements.push(await trace(page, session, `${variant}-desk-idle`));
       } else {
-        measurements.push(await measure(page, 'afternoon-overview-idle'));
+        measurements.push(await measure(page, 'day-overview-idle'));
         if (suite === 'baseline') {
-          measurements.push(await measure(page, 'afternoon-overview-pan', () => pan(page)));
-          measurements.push(await measure(page, 'afternoon-overview-wheel', () => wheel(page)));
-          measurements.push(await measure(page, 'afternoon-desk-navigation', () => button(page, '我的阁楼房间')));
+          measurements.push(await measure(page, 'day-overview-pan', () => pan(page)));
+          measurements.push(await measure(page, 'day-overview-wheel', () => wheel(page)));
+          measurements.push(await measure(page, 'day-desk-navigation', () => button(page, '我的阁楼房间')));
         } else { await button(page, '我的阁楼房间'); await page.waitForTimeout(3000); }
-        measurements.push(await measure(page, 'afternoon-desk-idle'));
+        measurements.push(await measure(page, 'day-desk-idle'));
         if (suite === 'baseline') {
-          await button(page, '静雨'); await button(page, '整栋小屋'); await page.waitForTimeout(1600);
-          measurements.push(await measure(page, 'rainy-overview-idle'));
-          measurements.push(await measure(page, 'rainy-desk-navigation', () => button(page, '我的阁楼房间')));
-          measurements.push(await measure(page, 'rainy-desk-idle'));
-          await button(page, '深夜'); await button(page, '整栋小屋'); await page.waitForTimeout(1600);
+          await button(page, '黄昏'); await button(page, '整栋小屋'); await page.waitForTimeout(1600);
+          measurements.push(await measure(page, 'dusk-overview-idle'));
+          measurements.push(await measure(page, 'dusk-desk-navigation', () => button(page, '我的阁楼房间')));
+          measurements.push(await measure(page, 'dusk-desk-idle'));
+          await button(page, '夜晚'); await button(page, '整栋小屋'); await page.waitForTimeout(1600);
           measurements.push(await measure(page, 'night-overview-idle'));
           await page.getByTitle('展开同住人面板', { exact: true }).click();
           measurements.push(await measure(page, 'first-chair-detail', async () => {

@@ -3,6 +3,7 @@ import { useTimerScope } from '../../../../shared/timers/useTimerScope';
 import { svgAction } from '../../../../world/interactions/svgAction';
 import { YorkshireCommonProps } from '../landscapeTypes';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
+import { guardianTreePalette, OsmanthusWood, OsmanthusCanopy, OsmanthusSwing, OsmanthusRootGrass } from '../vegetation/GuardianOsmanthus';
 
 /**
  * 🐑 YorkshireDressing (Swaledale Sheep Flock, Meadow Dressing & The Guardian Heritage Tree)
@@ -12,15 +13,17 @@ import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
  *
  * Features:
  * - 5 interactive Swaledale sheep with quotes, click animations & speech bubbles
- * - 🌳 庄园百年守护树 (The Heritage Guardian Tree): 造型独特、极具故事性与视觉平衡的百年老橡树，带斑驳树荫、铜制风铃、木牌与微风落叶
+ * - 🌳 庄园百年守护树 (The Heritage Guardian Tree): 造型独特、极具故事性与视觉平衡的成年桂花树，带斑驳树荫、铜制风铃、木牌与微风落叶
  */
 export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
+  theme,
   onTriggerToast,
   setHoveredObject,
   className,
 }) => {
   const timers = useTimerScope();
   const tree = YORKSHIRE_LAYOUT.guardianTree;
+  const treePalette = guardianTreePalette(theme);
   const [activeSheepIndex, setActiveSheepIndex] = useState<number | null>(null);
   const [sheepSaying, setSheepSaying] = useState<string | null>(null);
 
@@ -37,7 +40,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
   ];
 
   const treeQuotes = [
-    '🌳 守护古树在微风中沙沙作响，送来阳光、泥土与青草的气息...',
+    '🌳 守护古树在微风中沙沙作响，送来桂花、泥土与青草的气息...',
     '🍃 枝叶轻拂过远山与流云，无论走得多远，这里的绿荫总在静静等候。',
     '✨ 树梢的风铃叮咚作响，每一片落叶都是写给大自然的晚安信。',
     '🌳 百年年轮见证着每一个平凡安宁的午后，愿你也拥有从容与温柔。',
@@ -75,6 +78,14 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
 
   return (
     <g id="yorkshire-sheep-flock-and-dressing" className={className}>
+      <style>{`
+        .guardian-osmanthus-canopy { transform-origin: -10px -45px; transition: transform 700ms ease-out; }
+        .guardian-osmanthus-canopy[data-rustling="true"] { transform: rotate(-1.2deg); transition-duration: 300ms; }
+        @media (prefers-reduced-motion: reduce) {
+          .guardian-osmanthus-canopy { transition: none; transform: none !important; }
+          #guardian-heritage-tree .animate-pulse, #guardian-heritage-tree .animate-bounce { animation: none; }
+        }
+      `}</style>
       <defs>
         {/* 蓬松米白羊毛体 (Cream White Wool) */}
         <linearGradient id="ysSheepWoolGradV2" x1="0" y1="0" x2="0" y2="1">
@@ -83,18 +94,10 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <stop offset="100%" stopColor="#ded5c4" />
         </linearGradient>
 
-        {/* 守护古树粗壮树干皮层渐变 (Weathered Heritage Oak Bark) */}
-        <linearGradient id="guardianTreeBarkGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#2c1a0e" />
-          <stop offset="35%" stopColor="#452c1a" />
-          <stop offset="70%" stopColor="#362012" />
-          <stop offset="100%" stopColor="#1f1208" />
-        </linearGradient>
-
         {/* 树荫斑驳漫反射光晕 */}
         <radialGradient id="guardianCanopyShadowRadial" cx="45%" cy="45%" r="55%">
-          <stop offset="0%" stopColor="#0f1a0e" stopOpacity="0.52" />
-          <stop offset="60%" stopColor="#142413" stopOpacity="0.32" />
+          <stop offset="0%" stopColor="#0f1a0e" stopOpacity="0.27" />
+          <stop offset="60%" stopColor="#142413" stopOpacity="0.12" />
           <stop offset="100%" stopColor="#142413" stopOpacity="0" />
         </radialGradient>
       </defs>
@@ -102,8 +105,9 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       {/* ========================================================================= */}
       {/* 左前方守护树；根部约在 y=613–628，避开全景底栏并承接较低的树下缓坡。 */}
       {/* ========================================================================= */}
-      <g {...svgAction('guardian-heritage-tree')}
+      <g {...svgAction('桂花守护树，轻拂树梢听风')}
         id="guardian-heritage-tree"
+        data-tree-species="osmanthus"
         transform={`translate(${tree.position.x}, ${tree.position.y}) scale(${tree.scale})`}
         className="cursor-pointer group/tree"
         onClick={handleTreeClick}
@@ -112,103 +116,15 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       >
         {/* 1. 树下广袤斑驳树荫 (Dappled Tree Canopy Ground Shadow) */}
         <ellipse cx="6" cy="46" rx="68" ry="20" fill="url(#guardianCanopyShadowRadial)" />
-        <ellipse cx="-12" cy="44" rx="42" ry="14" fill="#132212" opacity="0.38" />
-        {/* 树荫下穿透的金色光斑 (Sunlight Dappling) */}
-        <ellipse cx="22" cy="42" rx="10" ry="4.5" fill="#a8cf58" opacity="0.28" />
-        <ellipse cx="-20" cy="45" rx="7" ry="3.2" fill="#a8cf58" opacity="0.22" />
-        <ellipse cx="8" cy="48" rx="6" ry="2.8" fill="#a8cf58" opacity="0.25" />
-
-        {/* 2. 牢牢扎入沃土的苍劲树根 (Gnarled Root System) */}
-        <g id="guardian-tree-roots">
-          <path d="M-18,42 Q-36,46 -52,48" stroke="#2a180e" strokeWidth="4.2" strokeLinecap="round" fill="none" />
-          <path d="M-12,44 Q-24,50 -38,53" stroke="#362012" strokeWidth="3.2" strokeLinecap="round" fill="none" />
-          <path d="M16,42 Q32,46 48,47" stroke="#2a180e" strokeWidth="4.0" strokeLinecap="round" fill="none" />
-          <path d="M12,44 Q22,50 34,52" stroke="#382214" strokeWidth="3.0" strokeLinecap="round" fill="none" />
-          <path d="M-2,46 Q2,54 8,56" stroke="#24140a" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-
-          {/* 树根旁生机小雏菊与绿苔 (Moss & Daisies at tree base) */}
-          <g id="guardian-tree-root-flora">
-          <ellipse cx="-24" cy="45" rx="8" ry="3.5" fill="#2d4a23" opacity="0.85" />
-          <ellipse cx="26" cy="46" rx="7" ry="3" fill="#2d4a23" opacity="0.8" />
-          <circle cx="-28" cy="44" r="2.2" fill="#ffffff" />
-          <circle cx="-28" cy="44" r="0.8" fill="#facc15" />
-          <circle cx="-21" cy="46" r="1.8" fill="#ffffff" />
-          <circle cx="-21" cy="46" r="0.7" fill="#facc15" />
-          <circle cx="28" cy="45" r="2.0" fill="#fef08a" />
-          <circle cx="28" cy="45" r="0.8" fill="#ca8a04" />
-          </g>
-        </g>
-
-        {/* 3. 苍劲古老主树干与伸展大枝 (Stately Ancient Oak Trunk & Sprawling Limbs) */}
-        <g id="guardian-tree-trunk">
-          {/* 主树干外轮廓 */}
-          <path
-            d="M-18,44 C-16,22 -12,-8 -22,-38 L-6,-38 C-2,-14 6,10 16,44 Z"
-            fill="url(#guardianTreeBarkGrad)"
-            stroke="#1c1007"
-            strokeWidth="1.2"
-          />
-          {/* 右主分枝 (向右上方遒劲舒展，深入主树干扎实连为一体) */}
-          <path
-            d="M-2,-15 Q18,-25 38,-35 L44,-28 Q22,-14 6,7 Q3,10 0,12 C-1,3 -1,-6 -2,-15 Z"
-            fill="#382213"
-            stroke="#1c1007"
-            strokeWidth="0.9"
-          />
-          {/* 左副分枝 (向左上方微垂承托) */}
-          <path
-            d="M-10,-6 Q-26,-16 -42,-22 L-40,-28 Q-22,-20 -8,-18 Z"
-            fill="#321e10"
-            stroke="#1c1007"
-            strokeWidth="0.9"
-          />
-
-          {/* 树皮深邃木纹与自然光影 (Bark Grain Lines & Knots) */}
-          <path d="M-8,38 Q-5,12 -9,-18" stroke="#5a381f" strokeWidth="1.6" fill="none" opacity="0.75" />
-          <path d="M3,36 Q0,14 6,-8" stroke="#5a381f" strokeWidth="1.4" fill="none" opacity="0.75" />
-          <line x1="-12" y1="28" x2="-10" y2="4" stroke="#24140a" strokeWidth="1.2" />
-          <line x1="8" y1="24" x2="10" y2="2" stroke="#24140a" strokeWidth="1.2" />
-
-          {/* 树干天然树洞与树瘤 (Characterful Tree Knot Hollow) */}
-          <ellipse cx="-2" cy="14" rx="3.5" ry="5.5" fill="#140b05" stroke="#482b15" strokeWidth="0.8" />
-          <ellipse cx="-2" cy="14" rx="2.2" ry="3.8" fill="#0a0502" />
-          <ellipse cx="-2" cy="12" rx="1.2" ry="1.8" fill="#2d1c0e" opacity="0.6" />
-        </g>
-
-        {/* 4. 丰茂轻盈、层叠舒展的古树叶冠 (Multi-Tiered Layered Foliage Canopy) */}
-        {/*    采用吉卜力与万物生灵经典饱满云团风格，点击时伴随微风自然摇曳 */}
-        <g
-          id="guardian-tree-canopy"
-          className={isTreeRustling ? 'transition-transform duration-300 scale-[1.03] origin-bottom' : 'transition-transform duration-700 scale-100 origin-bottom'}
-        >
-          {/* --- 底层深邃阴影层 (Deep Under-canopy) --- */}
-          <ellipse cx="-34" cy="-42" rx="32" ry="24" fill="#182e1d" />
-          <ellipse cx="36" cy="-40" rx="34" ry="25" fill="#182e1d" />
-          <ellipse cx="0" cy="-62" rx="38" ry="28" fill="#1b3320" />
-
-          {/* --- 中层饱满苍翠冠体 (Rich Midtone Foliage Masses) --- */}
-          <ellipse cx="-42" cy="-56" rx="34" ry="25" fill="#274b2f" />
-          <ellipse cx="38" cy="-54" rx="36" ry="26" fill="#2e5737" />
-          <ellipse cx="-16" cy="-76" rx="36" ry="26" fill="#35633e" />
-          <ellipse cx="22" cy="-74" rx="36" ry="26" fill="#3b6e45" />
-          <ellipse cx="0" cy="-90" rx="38" ry="28" fill="#427a4e" />
-
-          {/* --- 前景向阳暖金绿微光云团 (Sunlit Foliage Crests & Golden Edge Highlights) --- */}
-          <ellipse cx="-28" cy="-86" rx="28" ry="20" fill="#4d8c5a" />
-          <ellipse cx="26" cy="-82" rx="28" ry="20" fill="#559963" />
-          <ellipse cx="-8" cy="-104" rx="28" ry="19" fill="#5ea86e" />
-          <ellipse cx="14" cy="-100" rx="26" ry="18" fill="#67b779" />
-          <ellipse cx="2" cy="-114" rx="22" ry="15" fill="#78c98b" />
-
-          {/* 树冠向阳顶端亮金微反光 (Sun-drenched Leaf Shimmer) */}
-          <ellipse cx="-4" cy="-118" rx="14" ry="8" fill="#93e0a5" opacity="0.7" />
-          <circle cx="8" cy="-112" r="7" fill="#88d89a" opacity="0.65" />
-          <circle cx="-16" cy="-98" r="6" fill="#75c587" opacity="0.6" />
-        </g>
+        <path id="guardian-root-contact" d="M-23,46 Q-15,41 -7,44 Q2,42 14,47 L19,49 Q6,53 -6,51 Q-18,53 -28,49Z" fill={treePalette.deep} opacity=".28" />
+        <OsmanthusWood palette={treePalette} />
+        <OsmanthusRootGrass theme={theme} />
+        <OsmanthusSwing palette={treePalette} />
+        <OsmanthusCanopy palette={treePalette} rustling={isTreeRustling} />
 
         {/* 5. 守护树的诗意小信物 (The Tree's Storytelling Trinkets) */}
         {/* A. 挂在分枝上的复古黄铜微风小风铃 (Brass Wind Chime) */}
-        <g id="guardian-tree-chime" transform="translate(-28, -20)">
+        <g id="guardian-tree-chime" transform="translate(-48, -50)">
           <line x1="0" y1="0" x2="0" y2="8" stroke="#8c6d3b" strokeWidth="0.8" />
           <circle cx="0" cy="8" r="1.8" fill="#d97706" />
           <line x1="-2" y1="8" x2="-2" y2="16" stroke="#fcd34d" strokeWidth="0.9" />
@@ -218,7 +134,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         </g>
 
         {/* B. 树干上系着的精致手作木牌: "守护之树 · 1892" (Weathered Heritage Plaque) */}
-        <g id="guardian-tree-sign" transform="translate(18, -12) rotate(6)">
+        <g id="guardian-tree-sign" transform="translate(-16, -7) rotate(-6)">
           <line x1="-10" y1="-4" x2="-6" y2="0" stroke="#785532" strokeWidth="0.8" />
           <line x1="10" y1="-4" x2="6" y2="0" stroke="#785532" strokeWidth="0.8" />
           <rect x="-14" y="0" width="28" height="13" rx="2" fill="#eedcc5" stroke="#6b4624" strokeWidth="0.9" />
@@ -228,7 +144,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         </g>
 
         {/* C. 树梢歇脚的英伦小知更鸟 (Little Perched Songbird) */}
-        <g id="guardian-tree-bird" transform="translate(36, -38)">
+        <g id="guardian-tree-bird" transform="translate(68, -54)">
           <ellipse cx="0" cy="0" rx="3.5" ry="2.5" fill="#784b28" />
           <circle cx="2.5" cy="-1.5" r="2.0" fill="#a05d32" />
           <ellipse cx="2.5" cy="0.5" rx="1.8" ry="1.5" fill="#e05a38" /> {/* 暖橙胸脯 */}
@@ -240,15 +156,15 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
 
         {/* D. 微风中从树冠飘散的金色小落叶 (Drifting Leaves) */}
         <g id="guardian-drifting-leaves" opacity="0.85">
-          <ellipse cx="-48" cy="-12" rx="2.5" ry="1.4" fill="#86efac" transform="rotate(25 -48 -12)" className="animate-pulse" />
-          <ellipse cx="54" cy="-18" rx="2.8" ry="1.5" fill="#facc15" transform="rotate(-35 54 -18)" className="animate-bounce" />
-          <ellipse cx="38" cy="18" rx="2.2" ry="1.2" fill="#86efac" transform="rotate(15 38 18)" />
-          <ellipse cx="-32" cy="24" rx="2.4" ry="1.3" fill="#facc15" transform="rotate(-20 -32 24)" />
+          <ellipse cx="-48" cy="-12" rx="2.5" ry="1.4" fill={treePalette.tip} transform="rotate(25 -48 -12)" className="animate-pulse" />
+          <ellipse cx="54" cy="-18" rx="2.8" ry="1.5" fill={treePalette.flowerLight} transform="rotate(-35 54 -18)" className="animate-bounce" />
+          <ellipse cx="38" cy="18" rx="2.2" ry="1.2" fill={treePalette.tip} transform="rotate(15 38 18)" />
+          <ellipse cx="-32" cy="24" rx="2.4" ry="1.3" fill={treePalette.flowerLight} transform="rotate(-20 -32 24)" />
         </g>
 
         {/* 6. 点击树木时弹出的温情故事气泡 (Guardian Tree Speech/Story Bubble) */}
         {guardianTreeSaying && (
-          <g transform="translate(0, -145)"><g  className="animate-bounce pointer-events-none">
+          <g transform="translate(0, -163)"><g  className="animate-bounce pointer-events-none">
             <rect
               x="-90"
               y="-14"

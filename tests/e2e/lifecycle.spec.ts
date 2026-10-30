@@ -25,9 +25,9 @@ test('repeated feedback owns its full duration and unmount clears every applicat
   await page.getByRole('button', { name: '切换挂载' }).click();
   await expect(page.getByTestId('toast')).toHaveText(''); await expect(page.getByTestId('pulse')).toHaveText('false');
 });
-test('all five themes render and CSS animation keeps translated feedback in its parent space', async ({ page }) => {
+test('all three periods render and CSS animation keeps translated feedback in its parent space', async ({ page }) => {
   await stableScene(page);
-  for (const label of ['清晨', '午后', '黄昏', '深夜', '静雨']) {
+  for (const label of ['白天', '黄昏', '夜晚']) {
     await page.getByRole('button', { name: label, exact: true }).click();
     await expect(page.locator('#skyFillGrad stop').first()).toHaveAttribute('stop-color', /#[a-f0-9]{6}/);
   }

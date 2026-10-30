@@ -181,7 +181,7 @@ fs.writeFileSync(path.join(directory, 'character-shorthair-standing-ground-4view
 // Material inspection only: reuse the real timber component and extract only
 // the meadow's referenced gradient, keeping unrelated world filters out of this SVG.
 const timberMarkup = svgMarkup(<TimberFlooring />);
-const meadowGradient = svgMarkup(<YorkshireDefs theme={COUNTRYSIDE_THEMES.afternoon} />)
+const meadowGradient = svgMarkup(<YorkshireDefs theme={COUNTRYSIDE_THEMES.day} />)
   .match(/<linearGradient id="isoGroundPastureGrad"[\s\S]*?<\/linearGradient>/)?.[0];
 if (!meadowGradient) throw new Error('Missing the project meadow gradient');
 const surfaceRows = (['wood', 'grass'] as const).map((surface, row) => {

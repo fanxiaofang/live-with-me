@@ -4,6 +4,15 @@ import type { InteractionTarget } from '../../../world/interactions/interactionT
  * 🎨 Yorkshire Countryside Theme tokens
  */
 export interface YorkshireSceneTheme {
+  timeOfDay?: 'day' | 'dusk' | 'night';
+  railwayAtmosphere?: { air: string; strength: number; nearestMountainStrength: number };
+  landscapeEnvironment?: {
+    grassTop: string; grassMid: string; grassDeep: string;
+    wheatTop: string; wheatMid: string; wheatDeep: string;
+    foothillBack: string; foothillFront: string; woodland: string;
+    woodlandShade: string; woodlandLight: string; birchTrunk: string;
+    farmWall: string; farmRoof: string; objectTint: string;
+  };
   skyTop: string;
   skyMid?: string;
   skyWarm?: string;

@@ -1,0 +1,38 @@
+{
+  "before": {
+    "#f2-nearest-landmarks": {
+      "attribute": "matrix(0.6437724586700357 0 0 0.6437724586700357 213.73652479797857 272.21706559974734)",
+      "css": "matrix(0.643773, 0, 0, 0.643773, 213.737, 272.217)"
+    },
+    "#panoramic-world-stage": {
+      "attribute": null,
+      "css": "matrix(0.45, 0, 0, 0.45, 0, 135)"
+    },
+    "#parallax-railway-layer": {
+      "attribute": null,
+      "css": "matrix(0.576, 0, 0, 0.576, 0, 135)"
+    },
+    "#parallax-wheat-layer": {
+      "attribute": null,
+      "css": "matrix(0.513, 0, 0, 0.513, 0, 135)"
+    }
+  },
+  "after": {
+    "#f2-nearest-landmarks": {
+      "attribute": "matrix(0.6437724586700357 0 0 0.6437724586700357 217.11152479797857 272.50056559974735)",
+      "css": "matrix(0.643773, 0, 0, 0.643773, 217.112, 272.501)"
+    },
+    "#panoramic-world-stage": {
+      "attribute": null,
+      "css": "matrix(0.45, 0, 0, 0.45, 140.625, 143.1)"
+    },
+    "#parallax-railway-layer": {
+      "attribute": null,
+      "css": "matrix(0.576, 0, 0, 0.576, 39.375, 136.62)"
+    },
+    "#parallax-wheat-layer": {
+      "attribute": null,
+      "css": "matrix(0.513, 0, 0, 0.513, 91.4062, 139.455)"
+    }
+  }
+}

@@ -60,10 +60,10 @@ test('record the production scene with normal motion enabled', async ({ page, br
   await page.locator('#panoramic-world-stage').waitFor();
   await page.evaluate(async () => { await document.fonts.ready; });
   await page.getByRole('button', { name: '收起面板（查看完整约克郡风光）', exact: true }).click();
-  await page.getByRole('button', { name: '午后', exact: true }).click();
+  await page.getByRole('button', { name: '白天', exact: true }).click();
   await page.waitForTimeout(2000);
-  const measurements = [await measure(page, 'afternoon-overview-idle')];
-  measurements.push(await measure(page, 'afternoon-overview-pan', async () => {
+  const measurements = [await measure(page, 'day-overview-idle')];
+  measurements.push(await measure(page, 'day-overview-pan', async () => {
     await page.mouse.move(600, 170); await page.mouse.down();
     for (let i = 1; i <= 30; i++) {
       const step = i <= 15 ? i : 30 - i;
@@ -72,18 +72,18 @@ test('record the production scene with normal motion enabled', async ({ page, br
     }
     await page.mouse.up();
   }));
-  measurements.push(await measure(page, 'afternoon-overview-wheel', async () => {
+  measurements.push(await measure(page, 'day-overview-wheel', async () => {
     await page.mouse.move(600, 170);
     for (let i = 0; i < 12; i++) { await page.mouse.wheel(0, i < 6 ? -60 : 60); await page.waitForTimeout(80); }
   }));
-  measurements.push(await measure(page, 'afternoon-desk-navigation', async () => {
+  measurements.push(await measure(page, 'day-desk-navigation', async () => {
     await page.getByRole('button', { name: '我的阁楼房间', exact: true }).click();
   }));
-  measurements.push(await measure(page, 'afternoon-desk-idle'));
-  await page.getByRole('button', { name: '静雨', exact: true }).click();
+  measurements.push(await measure(page, 'day-desk-idle'));
+  await page.getByRole('button', { name: '夜晚', exact: true }).click();
   await page.getByRole('button', { name: '整栋小屋', exact: true }).click();
   await page.waitForTimeout(1500);
-  measurements.push(await measure(page, 'rainy-overview-idle'));
+  measurements.push(await measure(page, 'night-overview-idle'));
   const scene = await page.evaluate(() => ({ dpr: devicePixelRatio, userAgent: navigator.userAgent,
     visibility: document.visibilityState, svgElements: document.querySelectorAll('svg *').length,
     cssAnimations: document.getAnimations().filter(animation => animation.playState === 'running').length,

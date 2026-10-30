@@ -28,6 +28,9 @@ import { CottageFoundation, CottageGroundPlanting } from './CottageFoundation';
 import { CottageRoofFraming } from './CottageRoofFraming';
 import { CottageWallProfiles } from './CottageWallProfiles';
 import { TimberFlooring } from './TimberFlooring';
+import { resolveSceneOptions } from '../../world/scene/currentScene';
+import { CottageWindow } from './CottageWindow';
+import { SeedpodCottageShell, SeedpodReadingLoft, SeedpodGalleryLadder, SeedpodRoofCover } from './SeedpodCottage';
 export interface MainCottageHavenProps {
   theme: YorkshireSceneTheme;
   hasMovedRef: React.RefObject<boolean>;
@@ -64,14 +67,17 @@ export interface MainCottageHavenProps {
   onTriggerToast?: (msg: string) => void;
 }
 function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObject, selfPerson, linPerson, yuPerson, currentLayout, effectiveGizmoId, isInspectorOpen, onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, presenceSlots, isChairEmptyOverride, onOpenChairInspector, onOpenCabinetInspector, onToggleChairSeated, stoveColor, setStoveColor, dispatchInteraction, onSelectPerson, bookshelfPreset, customBookshelfTiers, isLinReading, onBookshelfClick, onBookClick, triggerSofaSquish, sofaSquish, sofaThought, onSelectMailbox, unreadMailCount, onTriggerToast }: MainCottageHavenProps) {
+  // The approved cottage shares the F2 default used by fixtures and captures.
+  const seedpod = resolveSceneOptions(typeof window === 'undefined' ? '' : window.location.search).cottage === 'seedpod';
   return <>
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
             <CottageFoundation theme={theme} />
 
             {/* 2.5D Artisan Hardwood Timber Flooring (工匠级实木企口地板与收边地袱大梁) */}
-            <TimberFlooring />
+            <TimberFlooring time={theme.isNight ? 'night' : theme.timeOfDay ?? 'day'} />
             <CottageGroundPlanting />
 
+            {seedpod ? <SeedpodCottageShell theme={theme} /> : <>
             {/* Back Walls & Timber Frames (温润燕麦奶油暖灰泥墙，消除冷白暴晒灯箱感) */}
             <polygon points="-270,135 -270,-10 0,-90 0,58" fill="#d6c5ae" stroke="#5e412c" strokeWidth="2.2" />
             <polygon points="0,58 0,-90 270,-10 270,135" fill="#c9b79e" stroke="#5e412c" strokeWidth="2.2" />
@@ -125,6 +131,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
 
             {/* 2.5D Heavy Timber Corner King Posts & Siding Cutaway Wall Profiles */}
             <CottageWallProfiles />
+            </>}
 
             {/* --- ROOM 1: MY ROOM (LEFT WING) - 我的阁楼书屋 (2.5D 重构) --- */}
             <g {...svgAction('我的田园阁楼书屋')}
@@ -139,104 +146,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               {/* Invisible room floor hit area */}
               <RoomHitArea room="my_room" points="-270,135 -100,85 -40,130 -210,180" />
 
-              {/* 1.1 2.5D ISOMETRIC WINDOW ON LEFT WALL (精致紧凑双拼木窗：收窄16%更具人文尺度，窗外地貌层次由近及远校正) */}
-              <g id="isometric-bay-window">
-                {/* 墙体窗洞阴影与外实木窗框 (严格顺应左墙等轴测坡度 k = -77/270 ≈ -0.2852，尺寸收敛至精致 72x52px) */}
-                <polygon
-                  points="-225,29.3 -155,9.3 -155,61.3 -225,81.3"
-                  fill="#452f1e"
-                  stroke="#2c1d12"
-                  strokeWidth="1.5"
-                />
-
-                {/* 窗洞内凹暗部与右侧厚度壁 (向内凹陷 3px 进深) */}
-                <polygon
-                  points="-222,31.0 -158,12.7 -158,59.7 -222,78.0"
-                  fill="#23170e"
-                />
-                {/* 窗洞上内壁阴影面 */}
-                <polygon
-                  points="-222,31.0 -158,12.7 -158,15.7 -222,34.0"
-                  fill="#180f08"
-                />
-
-                {/* Sunlit Glass Pane with Translucent Vista (通透半透明采光观景窗：天光渐变) */}
-                <defs>
-                  <linearGradient id="cottageWindowVistaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#bfdbfe" stopOpacity="0.88" />
-                    <stop offset="30%" stopColor="#dbeafe" stopOpacity="0.82" />
-                    <stop offset="60%" stopColor="#fef08a" stopOpacity="0.75" />
-                    <stop offset="100%" stopColor="#a3e635" stopOpacity="0.72" />
-                  </linearGradient>
-                </defs>
-                <polygon
-                  points="-219,34.5 -160,17.7 -160,58.5 -219,75.3"
-                  fill="url(#cottageWindowVistaGrad)"
-                />
-
-                {/* 正确的约克郡风光地貌纵深层次： */}
-                {/* 1. 远景：连绵起伏的黛青紫蓝群山微景 (Distant Yorkshire Dales) */}
-                <path
-                  d="M-219,45 Q-190,32 -160,38 L-160,46 Q-190,40 -219,47 Z"
-                  fill="#7c92b8"
-                  opacity="0.45"
-                />
-                {/* 2. 中景：层叠起伏的金黄麦浪丘陵与微缩石墙 (Rolling Wheat Fields) */}
-                <path
-                  d="M-219,47 Q-185,38 -160,44 L-160,52 Q-185,47 -219,53 Z"
-                  fill="#eab308"
-                  opacity="0.65"
-                />
-                {/* 约克郡干石墙微小暗色轮廓 (Drystone Wall silhouette) */}
-                <path
-                  d="M-219,52 Q-185,46 -160,51"
-                  stroke="#574635"
-                  strokeWidth="0.8"
-                  fill="none"
-                  opacity="0.5"
-                />
-                {/* 3. 近景（窗根下方）：温润丰美的生机草甸坡地与野花点缀 (Near Green Pasture Meadow) */}
-                <path
-                  d="M-219,53 Q-188,48 -160,52 L-160,58.5 L-219,75.3 Z"
-                  fill="#65a30d"
-                  opacity="0.75"
-                />
-                {/* 草地野花小碎点 */}
-                <circle cx="-195" cy="58" r="0.9" fill="#fef08a" opacity="0.8" />
-                <circle cx="-175" cy="54" r="0.8" fill="#ffffff" opacity="0.8" />
-                <circle cx="-205" cy="64" r="0.9" fill="#fef08a" opacity="0.8" />
-
-
-                {/* Soft diagonal sunbeams on glass (通透玻璃高光与斜射晨光) */}
-                <polygon points="-215,35 -202,31 -182,68 -195,72" fill="#ffffff" opacity="0.12" />
-                <polygon points="-192,27 -181,24 -165,56 -176,59" fill="#ffffff" opacity="0.08" />
-
-                {/* 2.5D Window Mullions (田字格实木窗棂：竖棂严格垂直向下，横棂严格沿左墙轴倾斜 k = -0.2852) */}
-                <line x1="-189.5" y1="26.0" x2="-189.5" y2="67.0" stroke="#4a3321" strokeWidth="2.0" />
-                <line x1="-219" y1="54.8" x2="-160" y2="38.0" stroke="#4a3321" strokeWidth="2.0" />
-
-                {/* Curtain Rod above Window (窗帘挂杆：严格沿左墙轴倾斜 k = -0.2852) */}
-                <line x1="-229" y1="28.0" x2="-151" y2="5.8" stroke="#382415" strokeWidth="2.0" strokeLinecap="round" />
-                <circle cx="-229" cy="28.0" r="2.2" fill="#523924" />
-                <circle cx="-151" cy="5.8" r="2.2" fill="#523924" />
-
-                {/* Cozy Linen Curtain on Left side (微卷亚麻米白窗帘与红陶扎带) */}
-                <path
-                  d="M-227,29 Q-222,46 -225,64 Q-228,74 -224,82 L-219,84 Q-223,74 -220,64 Q-217,46 -222,30 Z"
-                  fill="#f5ede0"
-                  stroke="#d5c8b5"
-                  strokeWidth="0.8"
-                />
-                <ellipse cx="-222" cy="64" rx="3.2" ry="1.8" fill="#c47a4f" />
-
-                {/* Sunlight Cast onto Timber Floor (从调整后的窗户自然倾泻在桌面与地面的暖金光斑) */}
-                <polygon
-                  points="-222,78.0 -158,59.7 -122,86.0 -192,106.0"
-                  fill={theme.cottageGlow}
-                  opacity="0.16"
-                  className="pointer-events-none"
-                />
-              </g>
+              <CottageWindow theme={theme} />
 
               {/* 1.12 墙面干花挂件：由暖炉移至左墙空白木板处 (x: -115, y: 32)，配原木挂钩，安全温馨 */}
               <g
@@ -308,6 +218,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 }}
               >
                 <AtticDesk
+                  time={theme.isNight ? 'night' : theme.timeOfDay ?? 'day'}
                   layout={currentLayout}
                   isInspectorOpen={isInspectorOpen}
                   activeGizmoId={effectiveGizmoId}
@@ -416,6 +327,8 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                   }
                   scale={1.38}
                   showSwitchUI={!isInspectorOpen}
+                  showCeilingTrim={!seedpod}
+                  flueTopY={seedpod ? -191 : undefined}
                 />
 
                 {/* 2.5D 暖炉交互把手 */}
@@ -1144,6 +1057,8 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 )}
               </g>
 
+              {seedpod && <SeedpodGalleryLadder theme={theme} />}
+
               {/* 3.1 2.5D RUSTIC HANDCRAFTED 5-TIER LOG BOOKSHELF (纯净架体 + 参数化插槽解耦资产，支持整体与槽位独立校准) */}
               <g {...svgAction('校准书架整体')}
                 id="isometric-bookshelf-container"
@@ -1536,6 +1451,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               </g>
             </g>
           
+            {seedpod && <><SeedpodReadingLoft theme={theme} /><SeedpodRoofCover theme={theme} /></>}
   </>;
 }
 

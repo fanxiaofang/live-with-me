@@ -1,11 +1,9 @@
 import {
-CloudRain,
 Home,
 Moon,
 Sliders,
 Sparkles,
 Sun,
-Sunrise,
 Sunset,
 Volume2,
 VolumeX,
@@ -51,11 +49,9 @@ export const AtmosphereBar: React.FC<AtmosphereBarProps> = ({
   };
 
   const timeOptions: { id: TimeOfDay; label: string; icon: React.ReactNode }[] = [
-    { id: 'morning', label: '清晨', icon: <Sunrise className="w-3.5 h-3.5 text-[#9ac5d4]" /> },
-    { id: 'afternoon', label: '午后', icon: <Sun className="w-3.5 h-3.5 text-[#e8c07a]" /> },
+    { id: 'day', label: '白天', icon: <Sun className="w-3.5 h-3.5 text-[#e8c07a]" /> },
     { id: 'dusk', label: '黄昏', icon: <Sunset className="w-3.5 h-3.5 text-[#e88758]" /> },
-    { id: 'night', label: '深夜', icon: <Moon className="w-3.5 h-3.5 text-[#8b9ecc]" /> },
-    { id: 'rainy', label: '静雨', icon: <CloudRain className="w-3.5 h-3.5 text-[#7aa7ba]" /> },
+    { id: 'night', label: '夜晚', icon: <Moon className="w-3.5 h-3.5 text-[#8b9ecc]" /> },
   ];
 
   return (

@@ -1,4 +1,10 @@
 import React, { lazy, Suspense, useMemo, useRef, useState } from 'react';
+import { F2Sky } from '../world/render/f2/F2Sky';
+import { createF2SceneTheme } from '../world/render/f2/F2Environment';
+import { resolveSceneOptions } from '../world/scene/currentScene';
+import { hasNearPlants } from './scenery/yorkshire/vegetation/meadowStudy';
+import { NearMeadowPlants } from './scenery/yorkshire/vegetation/NearMeadowPlants';
+import { MeadowForegroundRegions } from './scenery/yorkshire/vegetation/MeadowForegroundRegions';
 import { LayoutGestureContext } from '../features/layout-editor/LayoutGestureContext';
 import { PresenceAllocation } from '../features/presence/presenceAllocation';
 import { useEventCallback } from '../shared/hooks/useEventCallback';
@@ -30,6 +36,7 @@ import { HomesteadMeadowSurface } from './scenery/yorkshire/vegetation/Homestead
 import { HomesteadMeadowPlanting } from './scenery/yorkshire/vegetation/HomesteadMeadowPlanting';
 import { BeehiveMeadowPlanting, CottageVergeMeadowPlanting } from './scenery/yorkshire/vegetation/LocalMeadowPlanting';
 
+const F2DistantHills = lazy(() => import('../world/render/f2/F2DistantHills'));
 const PosterDetailModal = lazy(() => import('./wall-posters/PosterDetailModal').then(module => ({ default: module.PosterDetailModal })));
 
 interface ThreeWorldProps {
@@ -131,6 +138,19 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const [selectedPosterId, setSelectedPosterId] = useState<PosterId | null>(null);
 
   const { camera, isDragging, svgRef, hasMovedRef, pointerHandlers, zoomBy, restoreFocus } = useWorldCamera(activeRoom, sceneLayout, focusRevision, isInspectorOpen);
+  const [sceneOptions] = useState(() => resolveSceneOptions(window.location.search));
+  const { hills: hillsMode, fieldEdges: requestedEdges, meadowStudy: requestedMeadow,
+    meadowForeground: requestedForeground } = sceneOptions;
+  const [f2Ready, setF2Ready] = useState(false);
+  const [f2Failure, setF2Failure] = useState('');
+  const f2Active = hillsMode === 'f2' && f2Ready && !f2Failure;
+  // Integrated SVG ground does not depend on WebGL readiness. Loading or losing
+  // the mountain renderer must not flash the superseded terrace back into view.
+  const fieldEdges = hillsMode === 'f2' ? requestedEdges : 'original';
+  const meadowStudy = hillsMode === 'f2' && meadowComposition === 'current' ? requestedMeadow : 'original';
+  const meadowForeground = meadowStudy === 'complete' ? requestedForeground : 'points';
+  const hillsReady = useEventCallback(() => setF2Ready(true));
+  const hillsFailure = useEventCallback((reason: string) => setF2Failure(reason));
   useIntermittentBreeze(svgRef);
   const beginGesture = useEventCallback(() => { hasMovedRef.current = false; onDragGizmoBegin?.(); });
   const cancelGesture = useEventCallback(() => onDragGizmoCancel?.());
@@ -141,7 +161,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
   const { hoveredObject, setHoveredObject, alienPulseEffect, alienTransmissionText, setAlienTransmissionText, sofaSquish, sofaThought, stoveColor, setStoveColor, triggerAlienSignal, triggerSofaSquish } = useWorldFeedback();
 
-  const theme = COUNTRYSIDE_THEMES[timeOfDay] || COUNTRYSIDE_THEMES.afternoon;
+  const theme = useMemo(() => {
+    const host = COUNTRYSIDE_THEMES[timeOfDay] || COUNTRYSIDE_THEMES.day;
+    return hillsMode === 'f2' ? createF2SceneTheme(host, timeOfDay) : host;
+  }, [hillsMode, timeOfDay]);
   const currentMeadow = meadowComposition === 'current';
 
   const interactionTiers = customBookshelfTiers ?? PRESET_COZY_TIERS;
@@ -174,6 +197,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     <LayoutGestureContext.Provider value={gestureOwner}>
     <div
       ref={containerRef}
+      data-meadow-study={meadowStudy}
+      data-meadow-foreground={meadowForeground}
+      data-field-edges={fieldEdges}
+      data-hills-requested={hillsMode}
+      data-hills-mode={f2Active ? 'f2' : 'legacy'}
+      data-hills-failure={f2Failure || undefined}
       {...pointerHandlers}
       onKeyDownCapture={event => { if (event.key === 'Enter' || event.key === ' ') hasMovedRef.current = false; }}
       className="relative w-full h-full overflow-hidden select-none cursor-grab active:cursor-grabbing"
@@ -184,7 +213,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       }}
     >
       {/* Night Sky Stars */}
-<AtmosphereOverlay theme={theme} />
+<AtmosphereOverlay theme={theme} showCelestials={hillsMode !== 'f2'} />
+      {hillsMode === 'f2' && !f2Active && <F2Sky theme={theme} />}
+      {hillsMode === 'f2' && !f2Failure && <Suspense fallback={null}>
+        <F2DistantHills svgRef={svgRef} camera={camera} isDragging={isDragging}
+          timeOfDay={timeOfDay} theme={theme} onReady={hillsReady} onFailure={hillsFailure} />
+      </Suspense>}
       {/* 2.5D ANIME COUNTRYSIDE FULL-BLEED STAGE CONTAINER */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
         {/* Main 2.5D Anime Landscape SVG (Full-bleed panoramic canvas permanently locked to viewport) */}
@@ -199,7 +233,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           <WorldDefs theme={theme} />
 
           {/* Panoramic Seamless Sky Background Fill (全景天空底层底色，消除任何边缘露白与悬浮卡片感) */}
-          <rect x="-4000" y="-3000" width="10000" height="7000" fill="url(#skyFillGrad)" />
+          <rect x="-4000" y="-3000" width="10000" height="7000" fill={f2Active ? 'transparent' : 'url(#skyFillGrad)'} />
 
           {/* ======================================================== */}
           {/* 1. PARALLAX MULTIPLANE BACKGROUND LAYERS                 */}
@@ -207,7 +241,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/*    Layer 1: Far Mountain Ridges & Viaduct Railway (0.28x) */}
           {/*    Layer 2: Midground Rolling Wheat & Tractor (0.65x)   */}
           {/* ======================================================== */}
-          <BackgroundLandscape
+          <BackgroundLandscape hillsMode={f2Active ? 'f2' : 'legacy'} integratedGround={hillsMode === 'f2'} fieldEdges={fieldEdges}
             camera={camera}
             isDragging={isDragging}
             theme={theme}
@@ -226,7 +260,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           >
 
           {/* Master Meadow Ground, Drystone Walls, Garden Flora, Pumpkin Patch */}
-          <HomesteadMeadow
+          <HomesteadMeadow fieldEdges={fieldEdges} surfaceRefined={meadowStudy !== 'original'}
             theme={theme}
             sceneLayout={sceneLayout}
             meadowSurface={meadowSurface ?? (currentMeadow ? <HomesteadMeadowSurface theme={theme} /> : undefined)}
@@ -234,7 +268,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             setHoveredObject={setHoveredObject}
             onTriggerToast={onTriggerToast}
           />
-          {groundDecoration ?? (currentMeadow ? <HomesteadMeadowPlanting sceneLayout={sceneLayout} theme={theme} /> : undefined)}
+          {groundDecoration ?? (currentMeadow ? <HomesteadMeadowPlanting sceneLayout={sceneLayout} theme={theme} treeRefined={meadowStudy === 'complete'} /> : undefined)}
           <g id="hilltop-observatory-haven">
             {/* Radio station on the rear-right meadow, still in the physical stage. */}
             <SceneEntity entityId="observatory" layout={sceneLayout}
@@ -295,6 +329,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/*    (前景大面积纯净留白负空间与点缀长椅，彻底解决杂乱与拥挤) */}
           {/* ======================================================== */}
           <ForegroundLandscape theme={theme} setHoveredObject={setHoveredObject} onTriggerToast={onTriggerToast} />
+          {hasNearPlants(meadowStudy) && (meadowForeground === 'points'
+            ? <NearMeadowPlants theme={theme} />
+            : <MeadowForegroundRegions theme={theme} entrance={meadowForeground === 'entrance'} />)}
         </g>
 
         {/* ======================================================== */}

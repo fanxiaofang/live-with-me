@@ -1,0 +1,19 @@
+{
+  "baselineCommit": "15d1c28",
+  "renderedParity": {
+    "farms": true,
+    "mill": true,
+    "path": true,
+    "stops": true,
+    "trees": true
+  },
+  "materialSamplesPerPeriod": 6120,
+  "materialHashesBeforeAndAfter": {
+    "day": "129c7fe769334135818fa421798c12055f1331c1b6729637dd8f6ba49ee323c4",
+    "dusk": "b9fbb5c29620d3ef6af9fb19c1a6c0cf79ba8fa460e5698cbe10ce84524bfef5",
+    "night": "747cc8e20762401bbf9f298815e9594bcfa1894208f78bc89f5206b9b52edd18"
+  },
+  "generatedFilesRemoved": 139,
+  "bytesRemoved": 30351922,
+  "browserErrors": []
+}

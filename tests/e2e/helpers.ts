@@ -8,6 +8,9 @@ export async function stableScene(page: Page, path = '/') {
     document.querySelectorAll('svg').forEach(svg => { svg.pauseAnimations(); svg.setCurrentTime(0); });
   });
   await page.locator('#panoramic-world-stage').waitFor();
+  if (await page.locator('[data-hills-requested]').getAttribute('data-hills-requested') === 'f2') {
+    await page.locator('[data-hills-mode="f2"], [data-hills-failure]').waitFor();
+  }
 }
 
 export const ROOM_VIEWS = [

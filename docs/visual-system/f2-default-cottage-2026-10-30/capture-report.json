@@ -1,0 +1,65 @@
+{
+  "errors": [],
+  "captures": [
+    {
+      "name": "homepage",
+      "path": "/",
+      "hills": "f2",
+      "seedpod": true,
+      "loft": true,
+      "ladder": true,
+      "pumpkin": true,
+      "removedLamps": false,
+      "windowTime": "day",
+      "deskTime": "day"
+    },
+    {
+      "name": "day",
+      "path": "/tests/fixtures/world.html?focusRoom=living_nook",
+      "hills": "f2",
+      "seedpod": true,
+      "loft": true,
+      "ladder": true,
+      "pumpkin": true,
+      "removedLamps": false,
+      "windowTime": "day",
+      "deskTime": "day"
+    },
+    {
+      "name": "dusk",
+      "path": "/tests/fixtures/world.html?focusRoom=living_nook&theme=dusk",
+      "hills": "f2",
+      "seedpod": true,
+      "loft": true,
+      "ladder": true,
+      "pumpkin": true,
+      "removedLamps": false,
+      "windowTime": "dusk",
+      "deskTime": "dusk"
+    },
+    {
+      "name": "night",
+      "path": "/tests/fixtures/world.html?focusRoom=living_nook&theme=night",
+      "hills": "f2",
+      "seedpod": true,
+      "loft": true,
+      "ladder": true,
+      "pumpkin": true,
+      "removedLamps": false,
+      "windowTime": "night",
+      "deskTime": "night"
+    },
+    {
+      "name": "classic-comparison",
+      "path": "/tests/fixtures/world.html?cottage=classic",
+      "hills": "f2",
+      "seedpod": false,
+      "loft": false,
+      "ladder": false,
+      "pumpkin": false,
+      "removedLamps": false,
+      "windowTime": "day",
+      "deskTime": "day"
+    }
+  ]
+}

@@ -20,9 +20,10 @@ const focus = (entity: EntityId, x: number, y: number, zoom: number,
   contextSize: { width, height }, compositionPoint: viewBoxPoint(600, compositionY),
 });
 export const ROOM_FOCUS: Record<RoomId, RoomFocus> = {
-  my_room: focus('main_cottage', -145, 70, 1.2, 420, 380),
-  living_nook: focus('main_cottage', 0, 105, 1.18, 460, 380),
-  friend_room: focus('main_cottage', 140, 90, 1.2, 420, 380),
+  // Include the seedpod crown and reading loft above the ground-floor activities.
+  my_room: focus('main_cottage', -120, 15, 1.2, 500, 530),
+  living_nook: focus('main_cottage', 0, 15, 1.18, 640, 530),
+  friend_room: focus('main_cottage', 125, 25, 1.2, 500, 530),
   porch_mailbox: focus('main_cottage', 52, 218, 1.08, 440, 400, 450),
   capsule_pod: focus('capsule_pod', 0, 8, 1.45, 260, 250),
   corn_lounge: focus('wooden_cabin', 9, 18, 1.4, 280, 260),
