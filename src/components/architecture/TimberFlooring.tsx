@@ -1,4 +1,6 @@
 import React from 'react';
+import type { TimeOfDay } from '../../types';
+import { timberColor, timberPlankTones, timberSeam, timberJoint, TimberFinishGradient, SparseTimberGrain } from './TimberFloorMaterial';
 
 /**
  * 2.5D 工匠级实木企口地板 (Artisan Tongue-and-Groove Hardwood Timber Flooring)
@@ -11,39 +13,24 @@ import React from 'react';
  *   1. 柔和木蜡油温润渐变基底 (Honey Teak & Amber Oak Wood-Wax Patina)
  *   2. 16条等轴测细密木板分幅与板材微色差 (Plank Cadence & Micro-tone Variation)
  *   3. 定长交错拼缝 (Staggered Butt Joints / 企口暗榫接缝)
- *   4. 双线V-Groove微倒角阴影与迎光微高光 (Double-line V-Groove Milling)
+ *   4. 低对比企口暗缝，无逐板亮边 (Quiet Dark Plank Seams)
  *   5. 前缘实木挑檐与收边地袱框梁 (Perimeter Sill Beam & Rim Joist Fascia)
  */
 
 interface TimberFlooringProps {
   className?: string;
+  time?: TimeOfDay;
 }
 
-export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => {
+export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className, time = 'day' }) => {
+  const c = (hex: string) => timberColor(hex, time);
   // 总计 16 块等距实木板，跨越 Y=58 到 Y=212 (跨度 154px)
   const TOTAL_PLANKS = 16;
   const Y_SPAN = 154;
   const PLANK_STEP = Y_SPAN / TOTAL_PLANKS; // ~9.625px
 
   // 单板微色差池（温润熟成焦糖胡桃木与琥珀柚木自然木色差，彻底消除泛白与刺眼感）
-  const plankTones = [
-    { fill: '#784a27', opacity: 0.16 },
-    { fill: '#6c3f1e', opacity: 0.20 },
-    { fill: '#83512c', opacity: 0.14 },
-    { fill: '#663b1a', opacity: 0.22 },
-    { fill: '#7b4c28', opacity: 0.16 },
-    { fill: '#86542f', opacity: 0.12 },
-    { fill: '#6a3e1d', opacity: 0.19 },
-    { fill: '#744624', opacity: 0.15 },
-    { fill: '#804f2a', opacity: 0.14 },
-    { fill: '#633818', opacity: 0.24 },
-    { fill: '#794a26', opacity: 0.16 },
-    { fill: '#84522d', opacity: 0.13 },
-    { fill: '#6d401f', opacity: 0.18 },
-    { fill: '#774725', opacity: 0.15 },
-    { fill: '#653a19', opacity: 0.21 },
-    { fill: '#7e4d28', opacity: 0.14 },
-  ];
+  const plankTones = timberPlankTones;
 
   // 定长错缝接缝（Staggered Joints）沿板纵向的切割位置定义
   // 沿 Axis A (Slope +0.2831)，每块板在不同 X 位置具有微小交错接缝
@@ -81,7 +68,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
   ];
 
   return (
-    <g id="artisan-timber-flooring" className={className}>
+    <g id="artisan-timber-flooring" data-timber-time={time} className={className}>
       <defs>
         {/* 1. 地板主裁切路径 (Strict Rhombus Clipping) */}
         <clipPath id="flooringPlankClip">
@@ -89,29 +76,18 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
         </clipPath>
 
         {/* 2. 木蜡油熟成实木基底渐变 (Honey Amber Teak to Mature Walnut) */}
-        <linearGradient id="hardwoodBaseWaxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#8c582f" />
-          <stop offset="35%" stopColor="#7b4b26" />
-          <stop offset="70%" stopColor="#693d1d" />
-          <stop offset="100%" stopColor="#552f14" />
-        </linearGradient>
+        <TimberFinishGradient time={time} id="hardwoodBaseWaxGrad" face="surface" />
 
         {/* 3. 前左收边地袱梁渐变 (Front-Left Sill Rim Joist) */}
-        <linearGradient id="rimBeamLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#673d1c" />
-          <stop offset="100%" stopColor="#482711" />
-        </linearGradient>
+        <TimberFinishGradient time={time} id="rimBeamLeftGrad" face="left" />
 
         {/* 4. 前右收边地袱梁渐变 (Front-Right Sill Rim Joist - Shadow Side) */}
-        <linearGradient id="rimBeamRightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#543015" />
-          <stop offset="100%" stopColor="#361c0a" />
-        </linearGradient>
+        <TimberFinishGradient time={time} id="rimBeamRightGrad" face="right" />
 
         {/* 5. 前缘挑檐柔和投影渐变 */}
         <linearGradient id="rimNosingShadowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#1a0c05" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#1a0c05" stopOpacity="0" />
+          <stop offset="0%" stopColor={c("#1a0c05")} stopOpacity="0.55" />
+          <stop offset="100%" stopColor={c("#1a0c05")} stopOpacity="0" />
         </linearGradient>
       </defs>
 
@@ -146,7 +122,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
             <polygon
               key={`plank-tone-${idx}`}
               points={`${xL},${yLTop} ${xR},${yRTop} ${xR},${yRBot} ${xL},${yLBot}`}
-              fill={tone.fill}
+              fill={c(tone.fill)}
               opacity={tone.opacity}
             />
           );
@@ -169,9 +145,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="#2a1609"
-                strokeWidth="0.75"
-                opacity="0.45"
+                {...timberSeam} stroke={c(timberSeam.stroke)}
               />
             </g>
           );
@@ -195,31 +169,14 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
                 y1={y + halfH}
                 x2={bj.x + halfW}
                 y2={y - halfH}
-                stroke="#241207"
-                strokeWidth="0.8"
-                opacity="0.45"
+                {...timberJoint} stroke={c(timberJoint.stroke)}
               />
             </g>
           );
         })}
 
         {/* 自然原木微纹理 (Subtle Organic Wood Grain Waves: 柔和暖色) */}
-        <path
-          d="M-200,80 Q-100,105 0,135 T200,195"
-          stroke="#3d210f"
-          strokeWidth="0.6"
-          strokeDasharray="40 18 60 25"
-          opacity="0.12"
-          fill="none"
-        />
-        <path
-          d="M-150,60 Q-50,86 50,116 T220,165"
-          stroke="#2d160a"
-          strokeWidth="0.5"
-          strokeDasharray="50 30 70 20"
-          opacity="0.1"
-          fill="none"
-        />
+        <SparseTimberGrain time={time} paths={['M-200,80 Q-100,105 0,135 T200,195', 'M-150,60 Q-50,86 50,116 T220,165']} />
       </g>
 
       {/* ======================================================== */}
@@ -231,7 +188,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
         <polygon
           points="-272,135 0,212 0,219 -272,142"
           fill="url(#rimBeamLeftGrad)"
-          stroke="#381f0d"
+          stroke={c("#381f0d")}
           strokeWidth="0.7"
         />
         {/* 梁顶温润原木倒角 (Top Chamfer: 柔和柚木色微光，消除刺眼荧光白) */}
@@ -240,7 +197,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           y1="135"
           x2="0"
           y2="212"
-          stroke="#9e693b"
+          stroke={c("#9e693b")}
           strokeWidth="0.75"
           opacity="0.65"
         />
@@ -250,7 +207,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           y1="142"
           x2="0"
           y2="219"
-          stroke="#200e05"
+          stroke={c("#200e05")}
           strokeWidth="0.8"
         />
 
@@ -258,7 +215,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
         <polygon
           points="0,212 272,135 272,142 0,219"
           fill="url(#rimBeamRightGrad)"
-          stroke="#2d1609"
+          stroke={c("#2d1609")}
           strokeWidth="0.7"
         />
         {/* 右侧梁顶微光 */}
@@ -267,7 +224,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           y1="212"
           x2="272"
           y2="135"
-          stroke="#82522a"
+          stroke={c("#82522a")}
           strokeWidth="0.7"
           opacity="0.55"
         />
@@ -277,7 +234,7 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           y1="219"
           x2="272"
           y2="142"
-          stroke="#200e05"
+          stroke={c("#200e05")}
           strokeWidth="0.8"
         />
 
@@ -288,9 +245,9 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
           return (
             <g key={`beam-peg-${px}`}>
               {/* 沉孔阴影 */}
-              <circle cx={px} cy={py} r="1.4" fill="#241308" opacity="0.8" />
+              <circle cx={px} cy={py} r="1.4" fill={c("#241308")} opacity="0.8" />
               {/* 黄铜/硬木楔钉头 */}
-              <circle cx={px - 0.2} cy={py - 0.2} r="0.9" fill="#946b3f" />
+              <circle cx={px - 0.2} cy={py - 0.2} r="0.9" fill={c("#946b3f")} />
             </g>
           );
         })}
@@ -298,8 +255,8 @@ export const TimberFlooring: React.FC<TimberFlooringProps> = ({ className }) => 
         {/* 门廊中央榫接咬合块 (Center Threshold Joint) */}
         <polygon
           points="-6,210.3 0,212 6,210.3 6,217.3 0,219 -6,217.3"
-          fill="#523118"
-          stroke="#38200e"
+          fill={c("#523118")}
+          stroke={c("#38200e")}
           strokeWidth="0.6"
         />
       </g>

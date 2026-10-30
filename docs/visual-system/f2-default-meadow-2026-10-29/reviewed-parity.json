@@ -1,0 +1,7 @@
+{
+  "farms": true,
+  "mill": true,
+  "path": true,
+  "stops": true,
+  "trees": true
+}

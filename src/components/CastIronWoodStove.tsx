@@ -9,6 +9,9 @@ export interface CastIronWoodStoveProps {
   onSelectColor?: (color: StoveColorVariant) => void;
   scale?: number;
   showSwitchUI?: boolean;
+  /** The seedpod roof continues the pipe above the old ceiling height. */
+  showCeilingTrim?: boolean;
+  flueTopY?: number;
   onClick?: (e: React.MouseEvent) => void;
 }
 
@@ -451,6 +454,8 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
   onSelectColor,
   scale = 1.38,
   showSwitchUI = true,
+  showCeilingTrim = true,
+  flueTopY = -86.6,
   onClick,
 }) => {
   const p = STOVE_PALETTES[color] || STOVE_PALETTES.terracotta;
@@ -913,12 +918,12 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
       {/* --- 4. CYLINDRICAL CHIMNEY FLUE (轻盈排烟管: 直通天花板屋脊, 消除大黑粗铁柱压迫感) --- */}
       <g id="cast-iron-cylindrical-chimney">
         {/* 墙面微弱漫反射柔光阴影 (消除硬边缘切墙感) */}
-        <SoftSurfaceShadow bounds={{ x: pipeX + 0.6, y: -86.6, width: pipeWidth + 0.8, height: topCollarY + 86.6 }} blur={0.8}>
+        <SoftSurfaceShadow bounds={{ x: pipeX + 0.6, y: flueTopY, width: pipeWidth + 0.8, height: topCollarY - flueTopY }} blur={0.8}>
           <rect
             x={pipeX + 0.6}
-            y="-86.6"
+            y={flueTopY}
             width={pipeWidth + 0.8}
-            height={topCollarY - (-86.6)}
+            height={topCollarY - flueTopY}
             fill="#2b1f17"
             opacity="0.18"
           />
@@ -926,9 +931,9 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
 
         <rect
           x={pipeX}
-          y="-86.6"
+          y={flueTopY}
           width={pipeWidth}
-          height={topCollarY - (-86.6)}
+          height={topCollarY - flueTopY}
           fill={`url(#${p.pipeGradId})`}
           stroke="#2d221c"
           strokeWidth="0.3"
@@ -937,7 +942,7 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
         {/* 柔和哑光高光线 (温暖漫光) */}
         <line
           x1={pipeX + 0.8}
-          y1="-86.6"
+          y1={flueTopY}
           x2={pipeX + 0.8}
           y2={topCollarY}
           stroke="#c2ab95"
@@ -952,7 +957,7 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
         </g>
 
         {/* 建筑级金属法兰盘衬垫与原木受力套环 (Cast-Iron Flange Ring Collar & Ceiling Oak Trim) */}
-        <g id="ceiling-trim-ring" transform="translate(0, -90)">
+        {showCeilingTrim && <g id="ceiling-trim-ring" transform="translate(0, -90)">
           {/* 原木承重衬板 (Recessed Oak Mounting Pad) */}
           <rect x="-8" y="-1" width="16" height="5.5" rx="1.2" fill="#4d321c" stroke="#332011" strokeWidth="0.6" />
           <line x1="-7" y1="1.8" x2="7" y2="1.8" stroke="#7a4f2c" strokeWidth="0.5" strokeLinecap="round" />
@@ -970,7 +975,7 @@ export const CastIronWoodStove: React.FC<CastIronWoodStoveProps> = ({
           {/* 下口紧固密封垫圈环 (Collar Seal Gasket) */}
           <ellipse cx="0" cy="7.2" rx={pipeWidth / 2 + 0.9} ry="1.2" fill="#1b140f" stroke="#0f0b08" strokeWidth="0.4" />
           <ellipse cx="0" cy="6.8" rx={pipeWidth / 2 + 0.6} ry="0.9" fill="#382a20" />
-        </g>
+        </g>}
       </g>
 
       {/* --- 5. INTERACTIVE HARMONIOUS COLOR PALETTE SELECTOR (低调优雅的微型温润原木悬浮色卡：默认隐匿，仅在暖炉区域鼠标悬停时柔和渐显) --- */}

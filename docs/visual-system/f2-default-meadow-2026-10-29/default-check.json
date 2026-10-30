@@ -1,0 +1,12 @@
+{
+  "canvas": 1,
+  "columns": 360,
+  "material": "blended-vegetation",
+  "patches": 0,
+  "rear": 0,
+  "species": 22,
+  "status": "accepted",
+  "transition": "meadow-hill",
+  "trees": 31,
+  "windmills": 1
+}

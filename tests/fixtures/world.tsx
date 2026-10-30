@@ -21,8 +21,7 @@ import { COUNTRYSIDE_THEMES } from '../../src/world/theme/worldTheme';
 
 const query = new URLSearchParams(location.search);
 const requestedTheme = query.get('theme');
-const timeOfDay: TimeOfDay = requestedTheme === 'morning' || requestedTheme === 'dusk'
-  || requestedTheme === 'night' || requestedTheme === 'rainy' ? requestedTheme : 'afternoon';
+const timeOfDay: TimeOfDay = requestedTheme === 'dusk' || requestedTheme === 'night' ? requestedTheme : 'day';
 const renderSamples: number[] = [];
 if (query.has('profile')) (window as unknown as { renderSamples: number[] }).renderSamples = renderSamples;
 const stationX = Number(query.get('stationX') ?? DEFAULT_SCENE_LAYOUT.observatory.position.x);

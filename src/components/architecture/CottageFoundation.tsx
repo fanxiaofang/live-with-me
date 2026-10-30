@@ -59,20 +59,6 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, cla
           <stop offset="0%" stopColor="#966a41" />
           <stop offset="100%" stopColor="#7a4f29" />
         </linearGradient>
-
-        {/* 绘本风治愈绣球花瓣渐变 (Storybook Pastel Hydrangea Petal Gradient) */}
-        <linearGradient id="hydrangeaBlossomGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#c4b5fd" />
-          <stop offset="45%" stopColor="#a5b4fc" />
-          <stop offset="100%" stopColor="#818cf8" />
-        </linearGradient>
-
-        {/* 绘本风柔和蓝调绣球花瓣渐变 (Storybook Soft Periwinkle Hydrangea Gradient) */}
-        <linearGradient id="hydrangeaSoftBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#bfdbfe" />
-          <stop offset="50%" stopColor="#93c5fd" />
-          <stop offset="100%" stopColor="#60a5fa" />
-        </linearGradient>
       </defs>
 
       {/* Entrance wear stays in the foundation's local space, under the stone and steps. */}
@@ -365,36 +351,6 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, cla
       {/* 5. 基座收边生态植被 (Softening Shrubs, Wildflowers & Grass)*/}
       {/* ======================================================== */}
       <g id="foundation-greenery">
-        {/* 左转角田园生态舒展灌木 (Storybook Cottage Corner Greenery Bush - 纯净自然植被，无胡萝卜) */}
-        <g id="cottage-corner-greenery-bush" transform="translate(-274, 156)">
-          {/* 1. 落地漫反射深层投影 (Ground Contact Shadow - 严谨落地) */}
-          <ellipse cx="0" cy="6" rx="17" ry="7.5" fill="#182316" opacity="0.45" />
-
-          {/* 2. 层叠舒展的田园灌木绿叶 (Layered Storybook Meadow Shrub Foliage) */}
-          <ellipse cx="-2" cy="1" rx="15" ry="9" fill="#234224" />
-          <ellipse cx="3" cy="-2" rx="13" ry="8" fill="#326033" />
-          <ellipse cx="-1" cy="-4" rx="11" ry="7" fill="#467c48" />
-          <ellipse cx="2" cy="-1" rx="8" ry="5.5" fill="#5f9e61" opacity="0.9" />
-
-          {/* 3. 伴生微生雏菊小野花 (Subtle Storybook Daisy Accents - 与右侧台阶花草相呼应) */}
-          <g transform="translate(-4, -6)">
-            <circle cx="0" cy="0" r="2.2" fill="#ffffff" opacity="0.95" />
-            <circle cx="0" cy="0" r="0.9" fill="#eab308" />
-          </g>
-          <g transform="translate(6, -3)">
-            <circle cx="0" cy="0" r="1.8" fill="#ffffff" opacity="0.9" />
-            <circle cx="0" cy="0" r="0.8" fill="#facc15" />
-          </g>
-          <g transform="translate(1, 2)">
-            <circle cx="0" cy="0" r="1.5" fill="#ffffff" opacity="0.85" />
-            <circle cx="0" cy="0" r="0.7" fill="#facc15" />
-          </g>
-
-          {/* 4. 微风草丝与嫩叶 (Soft Verge Grass Tufts) */}
-          <path d="M-10,3 Q-13,-1 -15,-5 M-8,4 Q-10,-1 -11,-4" stroke="#486d26" strokeWidth="0.8" fill="none" strokeLinecap="round" />
-          <path d="M10,4 Q13,0 15,-3" stroke="#527a2c" strokeWidth="0.75" fill="none" strokeLinecap="round" />
-        </g>
-
         {/* 🌿 前廊踏步石阶两侧微生雏菊草簇 (Stepping Stone Verge Accents) */}
         <g id="step-verge-accents">
           <g transform="translate(-36, 240)">
@@ -426,71 +382,6 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, cla
             <g className="animate-wind-grass" style={{ animationDelay: '1.25s', transformOrigin: '0px 0px' }}>
               <path d="M-3,0 Q-4,-5 -4,-8 M0,0 Q1,-6 2,-9 M3,0 Q5,-4 6,-7" stroke="#4e722a" strokeWidth="0.85" fill="none" strokeLinecap="round" />
             </g>
-          </g>
-        </g>
-
-        {/* 右转角绣球花丛 (Right Storybook Hydrangea Cluster - 治愈绘本风，松弛可爱不写实) */}
-        <g id="cottage-corner-hydrangea" transform="translate(272, 158)">
-          {/* 1. 落地漫反射深层投影 (Ground Contact Shadow - 严谨落地) */}
-          <ellipse cx="2" cy="6" rx="18" ry="8" fill="#182316" opacity="0.45" />
-
-          {/* 2. 绣球阔叶承托 (Broad Storybook Hydrangea Supporting Leaves) */}
-          <path d="M-10,2 Q-14,-5 -6,-8 Q0,-5 -2,2 Z" fill="#294d2c" />
-          <path d="M-6,3 Q-12,0 -11,-6 Q-5,-6 0,0 Z" fill="#386b3b" />
-          <path d="M-1,1 Q-5,-2 -9,-4" stroke="#224224" strokeWidth="0.7" fill="none" />
-          <path d="M4,4 Q12,5 14,-2 Q8,-4 2,2 Z" fill="#356638" />
-          <path d="M3,3 Q8,1 12,-1" stroke="#204022" strokeWidth="0.7" fill="none" />
-          <path d="M-2,6 Q2,10 8,6 Q6,2 0,4 Z" fill="#4a874d" />
-
-          {/* 3. 伴生微风草叶丝 */}
-          <path d="M14,4 Q17,0 19,-4 M12,5 Q14,1 15,-2" stroke="#486d26" strokeWidth="0.75" fill="none" strokeLinecap="round" />
-
-          {/* 4. 绘本风蓬松绣球花球 (Puffy Cloud-like Storybook Pom-pom Blooms) */}
-          {/* --- A. 主花球 (Main Blossom Pom-pom, 柔和蓝紫渐变云朵花团) --- */}
-          <circle cx="0" cy="-3" r="10.5" fill="#6366f1" opacity="0.6" />
-          {/* 蓬松圆润的花瓣外轮廓云团瓣 */}
-          <circle cx="-5" cy="-6" r="5.2" fill="url(#hydrangeaBlossomGrad)" />
-          <circle cx="2" cy="-8" r="5" fill="url(#hydrangeaSoftBlueGrad)" />
-          <circle cx="6" cy="-4" r="5.2" fill="url(#hydrangeaBlossomGrad)" />
-          <circle cx="-5" cy="0" r="5" fill="url(#hydrangeaSoftBlueGrad)" />
-          <circle cx="2" cy="1" r="5.2" fill="url(#hydrangeaBlossomGrad)" />
-          <circle cx="0" cy="-3" r="6" fill="#c7d2fe" opacity="0.95" />
-
-          {/* 绘本风四瓣十字小花点缀 (简洁可爱的童话感，绝不过度写实) */}
-          <g transform="translate(1, -7)">
-            <circle cx="-1.5" cy="0" r="1.3" fill="#ffffff" opacity="0.9" />
-            <circle cx="1.5" cy="0" r="1.3" fill="#ffffff" opacity="0.9" />
-            <circle cx="0" cy="-1.5" r="1.3" fill="#ffffff" opacity="0.9" />
-            <circle cx="0" cy="1.5" r="1.3" fill="#ffffff" opacity="0.9" />
-            <circle cx="0" cy="0" r="0.75" fill="#fef08a" />
-          </g>
-          <g transform="translate(-4, -2)">
-            <circle cx="-1.4" cy="0" r="1.2" fill="#e0e7ff" opacity="0.9" />
-            <circle cx="1.4" cy="0" r="1.2" fill="#e0e7ff" opacity="0.9" />
-            <circle cx="0" cy="-1.4" r="1.2" fill="#e0e7ff" opacity="0.9" />
-            <circle cx="0" cy="1.4" r="1.2" fill="#e0e7ff" opacity="0.9" />
-            <circle cx="0" cy="0" r="0.7" fill="#fde047" />
-          </g>
-          <g transform="translate(3, -1)">
-            <circle cx="-1.3" cy="0" r="1.1" fill="#f5d0fe" opacity="0.9" />
-            <circle cx="1.3" cy="0" r="1.1" fill="#f5d0fe" opacity="0.9" />
-            <circle cx="0" cy="-1.3" r="1.1" fill="#f5d0fe" opacity="0.9" />
-            <circle cx="0" cy="1.3" r="1.1" fill="#f5d0fe" opacity="0.9" />
-            <circle cx="0" cy="0" r="0.65" fill="#fde047" />
-          </g>
-
-          {/* --- B. 依偎侧花球 (Sweet Companion Baby Pom-pom) --- */}
-          <circle cx="8" cy="0" r="7.5" fill="#4f46e5" opacity="0.5" />
-          <circle cx="6" cy="-3" r="4" fill="url(#hydrangeaSoftBlueGrad)" />
-          <circle cx="11" cy="-1" r="4.2" fill="url(#hydrangeaBlossomGrad)" />
-          <circle cx="9" cy="3" r="4" fill="url(#hydrangeaSoftBlueGrad)" />
-          <circle cx="8" cy="0" r="4.5" fill="#dbeafe" opacity="0.9" />
-          <g transform="translate(9, 0)">
-            <circle cx="-1.2" cy="0" r="1" fill="#ffffff" opacity="0.9" />
-            <circle cx="1.2" cy="0" r="1" fill="#ffffff" opacity="0.9" />
-            <circle cx="0" cy="-1.2" r="1" fill="#ffffff" opacity="0.9" />
-            <circle cx="0" cy="1.2" r="1" fill="#ffffff" opacity="0.9" />
-            <circle cx="0" cy="0" r="0.6" fill="#fef08a" />
           </g>
         </g>
       </g>

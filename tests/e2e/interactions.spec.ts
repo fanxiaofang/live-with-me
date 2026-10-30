@@ -5,7 +5,7 @@ test('SVG room, mailbox, book, poster, stove, person and station entries activat
   const activate = async (selector: string, key = 'Enter') => { await page.locator(selector).focus(); await page.locator(selector).press(key); };
   await activate('#room-my_room');
   await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('data-room', 'my_room');
-  await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('data-zoom', '1.2');
+  await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('data-zoom', '1.1472');
   await activate('#room-friend_room', 'Space');
   const person = page.locator('#room-living_nook g[aria-label="查看人物状态"]').first();
   await person.focus(); await person.press('Enter');
@@ -29,4 +29,18 @@ test('SVG room, mailbox, book, poster, stove, person and station entries activat
   await expect(page.getByText(/SETI 频率/)).toBeVisible();
   await activate('#mailbox-group');
   await expect(page.getByRole('heading', { name: '前廊木信箱', exact: true })).toBeVisible();
+});
+
+test('seedpod roof and loft leave existing furniture and people reachable by pointer', async ({ page }) => {
+  await stableScene(page);
+  await expect(page.locator('#seedpod-cottage-shell')).toBeVisible();
+  await expect(page.locator('#seedpod-reading-loft')).toBeVisible();
+  await page.locator('#room-living_nook g[aria-label="查看人物状态"]').first().click();
+  await expect(page.locator('#friend-card-modal')).toBeVisible();
+  await page.getByRole('button', { name: '关闭人物状态', exact: true }).click();
+  await page.getByRole('button', { name: '查看咖啡黑胶柜', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '咖啡与黑胶角', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '关闭咖啡黑胶柜', exact: true }).click();
+  await page.locator('#isometric-bookshelf').click();
+  await expect(page.getByText('手作做旧粗原木书架 · 藏书插槽', { exact: true })).toBeVisible();
 });

@@ -1,4 +1,10 @@
 import React from 'react';
+import { DistantFarmsteads } from '../../components/scenery/yorkshire/terrain/TerrainSilhouette';
+import type { HillsMode } from './f2/f2Config';
+import { F2FoothillLandform } from './f2/F2FoothillLandform';
+import { requestedFoothillTransition } from './f2/foothillConfig';
+import { F2FoothillWoodland } from './f2/F2FoothillWoodland';
+import { requestedFoothillTrees } from './f2/foothillTreeConfig';
 import { DrystoneWalls, MountainSilhouette, PastureFields, RailwayLandscape, RollingWheatSilhouette, SheepPen, TerrainMass } from '../../components/scenery/yorkshire';
 import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import { Camera, OVERVIEW_CAMERA } from '../camera/cameraMath';
@@ -7,9 +13,17 @@ import type { HoverTarget } from '../interactions/interactionTypes';
 import { LANDSCAPE_SURFACES } from '../scene/landscapeGeometry';
 import type { SceneLayout } from '../scene/sceneTypes';
 import { MeadowWearPatch } from '../../components/scenery/yorkshire/dressing/MeadowWearPatch';
+import { MeadowPerimeterPlanting } from '../../components/scenery/yorkshire/vegetation/MeadowPerimeterPlanting';
 import { useLandscapeCoverage } from './useLandscapeCoverage';
+import { hasFrontEdge, hasRearEdge, type FieldEdgeMode } from '../scene/fieldEdges';
+
+// Shrink the vehicle around its wheel contact line; field dressing keeps its anchors.
+const TRACTOR_BODY_TRANSFORM = 'translate(46 49) scale(0.84) translate(-46 -49)';
 
 export interface BackgroundLandscapeProps {
+  hillsMode?: HillsMode;
+  integratedGround?: boolean;
+  fieldEdges?: FieldEdgeMode;
   theme: YorkshireSceneTheme;
   camera?: Camera;
   isDragging?: boolean;
@@ -18,6 +32,8 @@ export interface BackgroundLandscapeProps {
 }
 
 export interface HomesteadMeadowProps {
+  surfaceRefined?: boolean;
+  fieldEdges?: FieldEdgeMode;
   meadowSurface?: React.ReactNode;
   beehivePlanting?: React.ReactNode;
   theme: YorkshireSceneTheme;
@@ -30,6 +46,9 @@ export interface HomesteadMeadowProps {
  * 🌾 BackgroundLandscape (Multiplane Parallax Far & Midground Layers - Minimalist & Clean)
  */
 function BackgroundLandscapeAsset({
+  hillsMode = 'legacy',
+  integratedGround = hillsMode === 'f2',
+  fieldEdges = 'original',
   theme,
   camera = OVERVIEW_CAMERA,
   isDragging = false,
@@ -38,56 +57,14 @@ function BackgroundLandscapeAsset({
   const skyStyle = getParallaxTransformStyle(camera, PARALLAX_PRESETS.sky, isDragging);
   const mountainStyle = getParallaxTransformStyle(camera, PARALLAX_PRESETS.mountains, isDragging);
   const wheatStyle = getParallaxTransformStyle(camera, PARALLAX_PRESETS.wheat, isDragging);
-  const coverage = useLandscapeCoverage(camera, isDragging);
+  const railwayStyle = integratedGround ? getParallaxTransformStyle(camera, PARALLAX_PRESETS.railway, isDragging) : mountainStyle;
+  const rearRefined = hasRearEdge(fieldEdges);
+  const coverage = useLandscapeCoverage(camera, isDragging, hasFrontEdge(fieldEdges));
 
-  // 极简干净的天空层：仅保留一组错落有致、无任何多余模糊脏斑的吉卜力硬切积云
+  // 保留天空视差容器；鲸鱼形状的云按本轮要求移除。
   const sky = React.useMemo(() => (
-    <g id="sky-and-clouds" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
-      {!theme.isNight && !theme.isRainy && (
-        <g id="sky-billowing-cumulus" className="cloud-drift-cumulus">
-          {/* 左侧远方山脊上空：严格参考图造型的流线型鲸鱼云（头部在右、分叉尾鳍在左、腹部下垂鳍） */}
-          <g id="cumulus-whale-west" transform="translate(35, 22)">
-            {/* 鲸鱼云下层基底阴影 */}
-            <path
-              d="M 50,38 
-                 C 38,28 25,16 15,8 
-                 C 18,22 28,35 42,42 
-                 C 30,45 20,52 10,60 
-                 C 25,58 40,50 52,45 
-                 C 100,32 170,24 250,28 
-                 C 320,32 370,45 395,58 
-                 C 370,70 310,78 240,74 
-                 C 160,70 100,58 52,48 
-                 Z"
-              fill={theme.cloudShadow || '#9db6cb'}
-              opacity="0.65"
-            />
-            {/* 鲸鱼云主体高光受光面 */}
-            <path
-              d="M 52,36 
-                 C 40,26 27,14 17,6 
-                 C 20,20 30,33 44,40 
-                 C 32,43 22,50 12,58 
-                 C 27,56 42,48 54,43 
-                 C 102,30 172,22 252,26 
-                 C 322,30 372,43 397,56 
-                 C 372,68 312,76 242,72 
-                 C 162,68 102,56 54,46 
-                 Z"
-              fill={theme.cloudHighlight || '#ffffff'}
-              opacity="0.98"
-            />
-            {/* 腹部下垂特征鳍 */}
-            <path
-              d="M 230,55 Q 220,78 205,85 Q 215,70 235,55 Z"
-              fill={theme.cloudHighlight || '#ffffff'}
-              opacity="0.95"
-            />
-          </g>
-        </g>
-      )}
-    </g>
-  ), [theme]);
+    <g id="sky-and-clouds" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`} />
+  ), []);
 
   const tractor = React.useMemo(() => (
     <g
@@ -123,7 +100,9 @@ function BackgroundLandscapeAsset({
       </g>
 
       {/* Packed earth & fine gravel parking pad under tractor */}
-      <ellipse cx="46" cy="46" rx="58" ry="14" fill="#4d3e30" opacity="0.38" />
+      <g data-tractor-ground="" transform={TRACTOR_BODY_TRANSFORM}>
+        <ellipse cx="46" cy="46" rx="58" ry="14" fill="#4d3e30" opacity="0.38" />
+      </g>
 
       {/* Supplies stand beside the rear of the tractor, clear of its path. */}
       <g id="tractor-farm-supplies" transform="translate(-32, 18)">
@@ -138,6 +117,7 @@ function BackgroundLandscapeAsset({
       </g>
 
       {/* 🚜 Red Countryside Farm Tractor */}
+      <g data-tractor-body="" transform={TRACTOR_BODY_TRANSFORM}>
       <ellipse cx="22" cy="46" rx="16" ry="5" fill="#18191c" opacity="0.45" />
       <ellipse cx="76" cy="46" rx="10" ry="3.5" fill="#18191c" opacity="0.45" />
 
@@ -229,6 +209,7 @@ function BackgroundLandscapeAsset({
         <line x1="13" y1="10" x2="19" y2="-4" stroke="#9a714c" strokeWidth="1.1" strokeLinecap="round" />
         <path d="M19,-4 L20,-8 M19,-4 L18,-8 M19,-4 L21,-7" stroke="#64748b" strokeWidth="0.8" />
       </g>
+      </g>
     </g>
   ), [theme.tractorLightGlow, setHoveredObject]);
 
@@ -237,9 +218,34 @@ function BackgroundLandscapeAsset({
       <g id="parallax-sky-layer" style={skyStyle}>
         {sky}
       </g>
+      {/* Legacy keeps its original projection; F2 samples the actual foreground camera. */}
       <g id="parallax-mountains-layer" style={mountainStyle}>
-        <g id="distant-mountain-railway-depth" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
-          <MountainSilhouette theme={theme} frontExtension={coverage.mountainFrontExtension} />
+        <g id="distant-mountain-depth" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
+          {hillsMode === 'legacy' && <MountainSilhouette theme={theme} frontExtension={coverage.mountainFrontExtension} ridgesOnly={integratedGround} />}
+        </g>
+      </g>
+      {/* The renderer writes one absolute projection for F2 roots. During loading
+          or failure, the original declarative style takes precedence instead. */}
+      <g id="f2-nearest-landmarks" pointerEvents="none" aria-hidden="true"
+        style={hillsMode === 'legacy' ? mountainStyle : undefined}>
+        <g id="parallax-foothill-layer" pointerEvents="none" aria-hidden="true">
+          {integratedGround && (
+            <g transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
+              {requestedFoothillTransition() && <F2FoothillLandform theme={theme} />}
+              <DistantFarmsteads theme={theme} landform={requestedFoothillTransition()} />
+            </g>
+          )}
+        </g>
+        <g id="parallax-foothill-trees-layer" pointerEvents="none" aria-hidden="true">
+          {integratedGround && requestedFoothillTransition() && requestedFoothillTrees() && (
+            <g transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
+              <F2FoothillWoodland theme={theme} />
+            </g>
+          )}
+        </g>
+      </g>
+      <g id="parallax-railway-layer" style={railwayStyle}>
+        <g transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
           <g id="railway-valley-placement" transform="translate(0, -28)">
             <RailwayLandscape theme={theme} />
           </g>
@@ -247,20 +253,23 @@ function BackgroundLandscapeAsset({
       </g>
       <g id="parallax-wheat-layer" style={wheatStyle}>
         <g id="distant-wheat-tractor-depth" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
-          <RollingWheatSilhouette theme={theme} frontExtension={coverage.wheatFrontExtension} />
-          {tractor}
+          <RollingWheatSilhouette theme={theme} frontExtension={coverage.wheatFrontExtension} rearRefined={rearRefined} />
+          <g data-field-dressing="" style={theme.landscapeEnvironment ? { filter: `url(#field-environment-tone)` } : undefined}>
+            {tractor}
+          </g>
         </g>
       </g>
     </>
   );
 }
 
-function HomesteadMeadowAsset({ theme, sceneLayout, meadowSurface, beehivePlanting, setHoveredObject, onTriggerToast }: HomesteadMeadowProps) {
+function HomesteadMeadowAsset({ surfaceRefined = false, fieldEdges = 'original', theme, sceneLayout, meadowSurface, beehivePlanting, setHoveredObject, onTriggerToast }: HomesteadMeadowProps) {
   const cabin = sceneLayout.wooden_cabin;
   return (
     <g id="homestead-meadow-base">
-      <TerrainMass theme={theme} sceneLayout={sceneLayout} meadowSurface={meadowSurface} />
+      <TerrainMass theme={theme} sceneLayout={sceneLayout} meadowSurface={meadowSurface} frontRefined={hasFrontEdge(fieldEdges)} surfaceRefined={surfaceRefined} />
       <PastureFields theme={theme} onTriggerToast={onTriggerToast} setHoveredObject={setHoveredObject} />
+      {surfaceRefined && <MeadowPerimeterPlanting theme={theme} layout={sceneLayout} />}
       <DrystoneWalls theme={theme} />
       <SheepPen theme={theme} />
 

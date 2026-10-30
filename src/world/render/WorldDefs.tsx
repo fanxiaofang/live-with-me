@@ -7,6 +7,14 @@ export interface WorldDefsProps {
 }
 function WorldDefsAsset({ theme }: WorldDefsProps) {
   return <><defs>
+            {theme.landscapeEnvironment && <filter id="field-environment-tone" colorInterpolationFilters="sRGB">
+              <feComponentTransfer>
+                {theme.landscapeEnvironment.objectTint.split(' ').map((value, i) => {
+                  const Channel = (['feFuncR', 'feFuncG', 'feFuncB'] as const)[i];
+                  return <Channel key={i} type="linear" slope={Number(value)} />;
+                })}
+              </feComponentTransfer>
+            </filter>}
             {/* Unified Low-Poly Theme Defs, Gradients & Patterns */}
             <YorkshireDefs theme={theme} />
 

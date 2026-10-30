@@ -2,9 +2,10 @@ import React from 'react';
 import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 export interface AtmosphereOverlayProps {
   theme: YorkshireSceneTheme;
+  showCelestials?: boolean;
 }
-export function AtmosphereOverlay({ theme }: AtmosphereOverlayProps) {
-  return <>      {theme.isNight && (
+export function AtmosphereOverlay({ theme, showCelestials = true }: AtmosphereOverlayProps) {
+  return <>      {showCelestials && theme.isNight && (
         <div className="absolute inset-0 pointer-events-none opacity-85">
           <div className="absolute top-[8%] left-[20%] w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_8px_white] animate-pulse" />
           <div className="absolute top-[14%] left-[35%] w-1 h-1 bg-[#fffbe6] rounded-full" />

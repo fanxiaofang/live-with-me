@@ -75,7 +75,7 @@ export interface Person {
   mailCount: number;
 }
 
-export type TimeOfDay = 'morning' | 'afternoon' | 'dusk' | 'night' | 'rainy';
+export type TimeOfDay = 'day' | 'dusk' | 'night';
 
 export interface TimePreset {
   id: TimeOfDay;

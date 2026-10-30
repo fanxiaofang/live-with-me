@@ -1,0 +1,28 @@
+{
+  "sourceCommit": "49a45e310579fb15c528ca694546ba6367908595",
+  "codeParity": true,
+  "typescript": "passed",
+  "unit": {
+    "passed": 66,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 7,
+    "failed": 0,
+    "durationSeconds": 51.8,
+    "baseURL": "http://127.0.0.1:3016",
+    "trace": "off",
+    "coverage": [
+      "desktop default homepage",
+      "390px default homepage",
+      "implicit/explicit defaults",
+      "explicit alternatives",
+      "loading and WebGL context loss fallback",
+      "keyboard interactions",
+      "furniture/person pointer interactions"
+    ]
+  },
+  "build": "passed",
+  "buildWarning": "existing bundle larger than 500 kB",
+  "evidenceBinaryBytes": 6823078
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "baselineId": "v2-ec16dc5",
+  "mode": "B",
+  "view": "beauty",
+  "model": {
+    "heightScale": 1,
+    "depth": 1.6,
+    "screenDrop": 0.68,
+    "main": {
+      "height": 0.4,
+      "ridgeGain": 1.7,
+      "length": 1.25
+    },
+    "shoulder": {
+      "anchor": 5,
+      "offset": 0,
+      "z": 0.65,
+      "width": 1.15,
+      "length": 1.25,
+      "height": 0.23,
+      "lean": 0.38
+    },
+    "valley": {
+      "anchor": 7,
+      "offset": 0.05,
+      "z": 0.85,
+      "width": 0.95,
+      "length": 1.35,
+      "depth": 0.14,
+      "lean": -0.18
+    }
+  },
+  "lighting": {
+    "sunAzimuth": -65,
+    "sunElevation": 35,
+    "sunIntensity": 0.85,
+    "ambientIntensity": 0.48,
+    "reliefStrength": 1
+  },
+  "manualMix": 0.16,
+  "camera": {
+    "x": 0,
+    "y": 135,
+    "zoom": 0.66
+  },
+  "foreground": "none",
+  "roof": 60,
+  "tree": true,
+  "treeScale": 1,
+  "cabinScale": 1
+}

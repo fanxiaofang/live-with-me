@@ -1,7 +1,8 @@
 import type { YorkshireSceneTheme } from '../../components/scenery/yorkshire/landscapeTypes';
 import type { TimeOfDay } from '../../types';
 export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
-  afternoon: {
+  day: {
+    timeOfDay: 'day',
     // 经典英伦夏日晴空：纯净蔚蓝天顶 -> 清爽透亮天光 -> 干净奶油地平线
     skyTop: '#31739c',
     skyMid: '#69a1c2',
@@ -25,31 +26,8 @@ export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
     isNight: false,
     isRainy: false,
   },
-  morning: {
-    // 约克郡清晨：清透银蓝天顶 -> 晨曦薄雾天光 -> 柔和晨光白金地平线
-    skyTop: '#366d8f',
-    skyMid: '#6b9bb8',
-    skyWarm: '#d4e5ee',
-    skyBottom: '#f9f3e6',
-    cloudHighlight: '#ffffff',
-    cloudShadow: '#adbcca',
-    hillGreenFar: '#6d8367',
-    hillGreenMid: '#869b40',
-    hillGreenNear: '#445926',
-    wheatFar: '#d4b150',
-    wheatNear: '#b88f30',
-    roadColor: '#9e8972',
-    riverColor: '#387e7e',
-    riverReflect: '#74b4b2',
-    riverRipples: '#b8e4e2',
-    ambientTint: 'rgba(255, 248, 235, 0.06)',
-    cottageGlow: 'rgba(255, 230, 160, 0.35)',
-    tractorLightGlow: 'rgba(255, 242, 170, 0.18)',
-    roofColor: '#a4472c',
-    isNight: false,
-    isRainy: false,
-  },
   dusk: {
+    timeOfDay: 'dusk',
     // 约克郡黄金时刻：深邃暮紫天顶 -> 绚丽绯红晚霞 -> 纯净落日金橙地平线
     skyTop: '#3a2754',
     skyMid: '#8a4263',
@@ -74,6 +52,7 @@ export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
     isRainy: false,
   },
   night: {
+    timeOfDay: 'night',
     // 约克郡旷野深夜：纯净深靛青天顶 -> 幽蓝星空漫射 -> 宁静深蓝地平线
     skyTop: '#08101d',
     skyMid: '#122035',
@@ -96,30 +75,6 @@ export const COUNTRYSIDE_THEMES: Record<TimeOfDay, YorkshireSceneTheme> = {
     roofColor: '#2e1b19',
     isNight: true,
     isRainy: false,
-  },
-  rainy: {
-    // 约克郡微雨连绵：铅灰雨幕天顶 -> 湿润青灰天光 -> 水汽石灰石地平线
-    skyTop: '#313e48',
-    skyMid: '#4a5b6a',
-    skyWarm: '#687b8d',
-    skyBottom: '#7b8e9f',
-    cloudHighlight: '#9eb0c2',
-    cloudShadow: '#3b4a56',
-    hillGreenFar: '#465c50',
-    hillGreenMid: '#364a3b',
-    hillGreenNear: '#26372b',
-    wheatFar: '#7a7050',
-    wheatNear: '#63583c',
-    roadColor: '#42474e',
-    riverColor: '#254354',
-    riverReflect: '#48677a',
-    riverRipples: '#8bb1c4',
-    ambientTint: 'rgba(40, 58, 70, 0.2)',
-    cottageGlow: 'rgba(255, 210, 130, 0.65)',
-    tractorLightGlow: 'rgba(255, 215, 125, 0.5)',
-    roofColor: '#63392d',
-    isNight: false,
-    isRainy: true,
   },
 };
 

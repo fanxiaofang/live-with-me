@@ -6,6 +6,7 @@ import { YorkshireSceneTheme } from './landscapeTypes';
  * Can be rendered at the root of any Yorkshire SVG container or layer
  */
 export const YorkshireDefs: React.FC<{ theme: YorkshireSceneTheme }> = ({ theme }) => {
+  const environment = theme.landscapeEnvironment;
   return (
     <defs>
       {/* 🌿 纯净无胡茬草坪底纹 (Empty pattern - completely removes stiff stubble lines) */}
@@ -13,10 +14,10 @@ export const YorkshireDefs: React.FC<{ theme: YorkshireSceneTheme }> = ({ theme 
 
       {/* 🔷 全景统一轴测大地渐变 (Seamless Master Axonometric Ground Gradient) */}
       <linearGradient id="isoGroundPastureGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#9aa640" />
-        <stop offset="12%" stopColor="#849f42" />
+        <stop offset="0%" stopColor={environment?.grassTop || '#9aa640'} />
+        <stop offset="12%" stopColor={environment?.grassMid || '#849f42'} />
         <stop offset="35%" stopColor={theme.hillGreenMid} />
-        <stop offset="70%" stopColor="#5e7b2d" />
+        <stop offset="70%" stopColor={environment?.grassDeep || '#5e7b2d'} />
         <stop offset="100%" stopColor={theme.hillGreenNear} />
       </linearGradient>
 
@@ -37,22 +38,11 @@ export const YorkshireDefs: React.FC<{ theme: YorkshireSceneTheme }> = ({ theme 
         <stop offset="100%" stopColor="#63802e" />
       </linearGradient>
 
-      {/* 🔷 宏阔连贯的自然平原麦田渐变 (Continuous Vast Flat Wheat Plain Gradient) */}
-      <linearGradient id="pastoralRollingWheatGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#c5ad66" />
-        <stop offset="25%" stopColor="#dfc776" />
-        <stop offset="55%" stopColor="#d6bc68" />
-        <stop offset="85%" stopColor="#c5a752" />
-        <stop offset="100%" stopColor="#ae8f3e" />
-      </linearGradient>
-
-      {/* 🔷 中景平原麦田与前景深绿草地无缝过渡渐变 (Seamless Wheat to Deep-Green Pasture Blend Gradient) */}
-      <linearGradient id="wheatPastureBlendGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#ae8f3e" stopOpacity="0" />
-        <stop offset="30%" stopColor="#a3963a" stopOpacity="0.45" />
-        <stop offset="65%" stopColor="#8b9f36" stopOpacity="0.75" />
-        <stop offset="85%" stopColor="#718d2f" stopOpacity="0.92" />
-        <stop offset="100%" stopColor="#5e7b2d" stopOpacity="1" />
+      {/* Stable crop colour: hidden coverage extensions must not stretch the lighting. */}
+      <linearGradient id="pastoralRollingWheatGrad" gradientUnits="userSpaceOnUse" x1="0" y1="190" x2="0" y2="385">
+        <stop offset="0%" stopColor={environment?.wheatTop || '#d9c277'} />
+        <stop offset="55%" stopColor={environment?.wheatMid || '#d8bf70'} />
+        <stop offset="100%" stopColor={environment?.wheatDeep || '#d0b665'} />
       </linearGradient>
 
       {/* 🔷 麦田向阳坡顶柔和微光渐变 (Soft Sunlit Plain Glaze Gradient) */}

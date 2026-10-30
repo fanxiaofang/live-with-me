@@ -31,6 +31,9 @@
 @media (prefers-reduced-motion: reduce) {
   #parallax-sky-layer,
   #parallax-mountains-layer,
+  #parallax-railway-layer,
+  #parallax-foothill-layer,
+  #parallax-foothill-trees-layer,
   #parallax-wheat-layer,
   #panoramic-world-stage {
     transition: none !important;
@@ -50,3 +53,26 @@
   }
 }
 
+
+[data-f2-hills] > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Same duration as the source sky/ridge uniform transition. SVG stays declarative. */
+[data-hills-requested="f2"] svg stop {
+  transition: stop-color 1400ms linear;
+}
+[data-hills-requested="f2"] [data-farmstead-root] polygon,
+[data-hills-requested="f2"] [data-tree-species] ellipse,
+[data-hills-requested="f2"] [data-tree-species] path {
+  transition: fill 1400ms linear, stroke 1400ms linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-hills-requested="f2"] svg stop,
+  [data-hills-requested="f2"] [data-farmstead-root] polygon,
+  [data-hills-requested="f2"] [data-tree-species] ellipse,
+  [data-hills-requested="f2"] [data-tree-species] path { transition: none; }
+}

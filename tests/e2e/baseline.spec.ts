@@ -24,7 +24,7 @@ test('all eight navigation entries and the v6 editor remain usable', async ({ pa
 });
 
 for (const [id, label] of ROOM_VIEWS) {
-  test(`@visual afternoon ${id}`, async ({ page }) => {
+  test(`@visual day ${id}`, async ({ page }) => {
     test.skip(process.platform !== 'win32', 'Visual baselines use Windows/Chromium/DPR=1');
     await stableScene(page);
     await page.getByRole('button', { name: label, exact: true }).click();
@@ -35,7 +35,7 @@ for (const [id, label] of ROOM_VIEWS) {
   });
 }
 
-for (const [theme, label] of [['night', '深夜'], ['rainy', '静雨']] as const) {
+for (const [theme, label] of [['night', '夜晚'], ['dusk', '黄昏']] as const) {
   test(`@visual overview ${theme}`, async ({ page }) => {
     test.skip(process.platform !== 'win32', 'Visual baselines use Windows/Chromium/DPR=1');
     await stableScene(page);

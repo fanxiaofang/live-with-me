@@ -8,8 +8,8 @@ const union = (a: LandscapeCoverage, b: LandscapeCoverage): LandscapeCoverage =>
   wheatFrontExtension: Math.max(a.wheatFrontExtension, b.wheatFrontExtension),
 });
 
-export function useLandscapeCoverage(camera: Camera, isDragging: boolean) {
-  const desired = resolveLandscapeCoverage(camera);
+export function useLandscapeCoverage(camera: Camera, isDragging: boolean, frontRefined = false) {
+  const desired = resolveLandscapeCoverage(camera, frontRefined);
   const retained = useRef(desired);
   const [, refresh] = useState(0);
 

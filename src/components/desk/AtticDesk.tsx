@@ -1,4 +1,5 @@
 import React from 'react';
+import type { TimeOfDay } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
@@ -10,6 +11,7 @@ import { deskStudyRise } from './deskStudyModel';
 import { DeskSurfaceGuide } from './DeskContactGuides';
 
 export interface AtticDeskProps {
+  time?: TimeOfDay;
   layout?: RoomLayoutConfig;
   activeGizmoId?: EditableObjectId | null;
   isInspectorOpen?: boolean;
@@ -21,13 +23,13 @@ export interface AtticDeskProps {
 
 /** One desk, with two independent computer/cup slots and a shared banker lamp. */
 export const AtticDesk: React.FC<AtticDeskProps> = ({
-  layout = DEFAULT_ROOM_LAYOUT, activeGizmoId, isInspectorOpen = false,
+  time = 'day', layout = DEFAULT_ROOM_LAYOUT, activeGizmoId, isInspectorOpen = false,
   onSelectGizmo, onDragGizmoDelta, onDragGizmoEnd, onHoverObject,
 }) => {
   const study = useDeskStudy();
   const rise = deskStudyRise(study?.surface);
   const items = [
-    { id: 'desk-lamp', domId: 'desk-slot-banker-lamp', element: <BankerLampDisplay /> },
+    { id: 'desk-lamp', domId: 'desk-slot-banker-lamp', element: <BankerLampDisplay time={time} /> },
     { id: 'desk-laptop', domId: 'desk-slot-laptop', element: <LaptopDisplay /> },
     { id: 'desk-laptop-secondary', domId: 'desk-slot-laptop-secondary', element: <LaptopDisplay instance="-secondary" /> },
     { id: 'desk-cup', domId: 'desk-slot-coffee-mug', element: <CoffeeMugDisplay /> },

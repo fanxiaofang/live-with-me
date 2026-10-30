@@ -76,8 +76,8 @@ function expectContinuous(terrain: Awaited<ReturnType<typeof sampleTerrain>>) {
   }
 }
 
-test('default panorama exposes the tractor wheels and the viaduct arches', async ({ page }) => {
-  await stableScene(page, '/tests/fixtures/world.html');
+test('legacy panorama exposes the tractor wheels and the viaduct arches', async ({ page }) => {
+  await stableScene(page, '/tests/fixtures/world.html?hills=legacy');
   const terrain = await sampleTerrain(page);
   expect(terrain.tractorClearance).toBeGreaterThan(5);
   expect(terrain.archClearance).toBeGreaterThan(7);
@@ -88,7 +88,7 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1600, height: 900
   test(`terrain joins cover every pan corner at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     test.setTimeout(60000);
     await page.setViewportSize(viewport);
-    await stableScene(page, '/tests/fixtures/world.html');
+    await stableScene(page, '/tests/fixtures/world.html?hills=legacy');
     for (const zoom of [0.45, 0.66, 1.6, 2.5]) {
       await zoomTo(page, zoom);
       for (const [x, y] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
@@ -102,9 +102,9 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1600, height: 900
   });
 }
 
-for (const theme of ['morning', 'afternoon', 'dusk', 'night', 'rainy']) {
+for (const theme of ['day', 'dusk', 'night']) {
   test(`minimum zoom keeps the terrain continuous in ${theme}`, async ({ page }) => {
-    await stableScene(page, `/tests/fixtures/world.html?theme=${theme}`);
+    await stableScene(page, `/tests/fixtures/world.html?hills=legacy&theme=${theme}`);
     await zoomTo(page, 0.45);
     await panToCorner(page, -1, 1);
     expectContinuous(await sampleTerrain(page));
@@ -113,7 +113,7 @@ for (const theme of ['morning', 'afternoon', 'dusk', 'night', 'rainy']) {
 }
 
 test('wheel and zoom buttons reapply boundaries, including after a viewport resize', async ({ page }) => {
-  await stableScene(page, '/tests/fixtures/world.html?focusRoom=observatory&stationX=1200');
+  await stableScene(page, '/tests/fixtures/world.html?hills=legacy&focusRoom=observatory&stationX=1200');
   await panToCorner(page, -1, 1);
   await zoomTo(page, 0.45);
   expectContinuous(await sampleTerrain(page));
@@ -131,7 +131,7 @@ test('wheel and zoom buttons reapply boundaries, including after a viewport resi
 });
 
 test('terrain coverage also survives animated zoom reversals and reduced motion', async ({ page }) => {
-  await page.goto('/tests/fixtures/world.html');
+  await page.goto('/tests/fixtures/world.html?hills=legacy');
   await page.locator('#panoramic-world-stage').waitFor();
   await panToCorner(page, 1, 1);
   await zoomTo(page, 0.45);

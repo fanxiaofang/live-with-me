@@ -320,22 +320,9 @@ export const INITIAL_LETTERS: MailLetter[] = [
 ];
 
 export const TIME_PRESETS: Record<TimeOfDay, TimePreset> = {
-  morning: {
-    id: 'morning',
-    label: '清晨薄雾',
-    subLabel: '淡蓝柔光 · 微凉空气',
-    skyColor: '#9bb4b6',
-    ambientLight: '#d2e4e8',
-    ambientIntensity: 0.85,
-    sunLight: '#fff2db',
-    sunIntensity: 1.1,
-    lampIntensity: 0.35,
-    windowGlow: '#c6e2eb',
-    weather: 'clear',
-  },
-  afternoon: {
-    id: 'afternoon',
-    label: '午后明暖',
+  day: {
+    id: 'day',
+    label: '白天',
     subLabel: '木质柔和 · 树影斑驳',
     skyColor: '#cbd3c8',
     ambientLight: '#e6ded0',
@@ -348,7 +335,7 @@ export const TIME_PRESETS: Record<TimeOfDay, TimePreset> = {
   },
   dusk: {
     id: 'dusk',
-    label: '黄昏暖橙',
+    label: '黄昏',
     subLabel: '晚霞金光 · 归家静谧',
     skyColor: '#b07865',
     ambientLight: '#f3b89b',
@@ -361,7 +348,7 @@ export const TIME_PRESETS: Record<TimeOfDay, TimePreset> = {
   },
   night: {
     id: 'night',
-    label: '深夜壁炉',
+    label: '夜晚',
     subLabel: '暖灯低语 · 星夜陪伴',
     skyColor: '#171720',
     ambientLight: '#2c2b3d',
@@ -371,19 +358,6 @@ export const TIME_PRESETS: Record<TimeOfDay, TimePreset> = {
     lampIntensity: 1.5,
     windowGlow: '#f7b05b',
     weather: 'clear',
-  },
-  rainy: {
-    id: 'rainy',
-    label: '静雨檐下',
-    subLabel: '雨打窗棂 · 炉火融融',
-    skyColor: '#364048',
-    ambientLight: '#4d5b66',
-    ambientIntensity: 0.55,
-    sunLight: '#8090a0',
-    sunIntensity: 0.4,
-    lampIntensity: 1.3,
-    windowGlow: '#e8b87d',
-    weather: 'rain',
   },
 };
 

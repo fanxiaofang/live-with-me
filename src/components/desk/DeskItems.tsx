@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useId } from 'react';
+import type { TimeOfDay } from '../../types';
 import { SoftSurfaceShadow } from '../../world/render/GroundShadow';
 
 /**
@@ -67,11 +68,17 @@ export const LaptopDisplay: React.FC<{ instance?: string }> = ({ instance = '' }
  * 2.5D 复古墨绿银行家台灯
  * 包含重质黄铜铸造底座、微弯黄铜灯颈、墨绿透光玻璃灯罩与桌面暖光光晕
  */
-export const BankerLampDisplay: React.FC = () => {
+export const BankerLampDisplay: React.FC<{ time?: TimeOfDay }> = ({ time = 'day' }) => {
+  const id = 'desk-light-' + useId().replace(/:/g, '');
+  const strength = time === 'night' ? .38 : time === 'dusk' ? .22 : .04;
   return (
-    <g id="component-banker-lamp" className="select-none">
+    <g id="component-banker-lamp" data-lamp-time={time} className="select-none">
+      <defs><radialGradient id={id}>
+        <stop stopColor="#ffdc81" stopOpacity={strength} />
+        <stop offset="1" stopColor="#f2b644" stopOpacity="0" />
+      </radialGradient></defs>
       {/* 桌面暖黄光晕 (Soft Light Pool on Desk) */}
-      <ellipse cx="6" cy="-1" rx="13" ry="6.5" fill="#fef08a" opacity="0.24" className="pointer-events-none" />
+      <ellipse cx="6" cy="-1" rx="17" ry="7.5" fill={`url(#${id})`} className="pointer-events-none" />
 
       {/* 底座投影 */}
       <ellipse cx="0" cy="1" rx="4" ry="1.8" fill="#24160d" opacity="0.3" />
@@ -93,6 +100,8 @@ export const BankerLampDisplay: React.FC = () => {
         strokeWidth="0.7"
         transform="rotate(15 5 -15)"
       />
+      {/* Warm underside, strongest at night; the green glass retains its colour. */}
+      <path d="M.2,-14.3 Q5,-11.8 10.1,-12.7" fill="none" stroke="#ffe5a0" strokeWidth="1.2" opacity={time === 'night' ? .95 : time === 'dusk' ? .65 : .18} />
       {/* 灯罩顶部微光 */}
       <ellipse
         cx="4"

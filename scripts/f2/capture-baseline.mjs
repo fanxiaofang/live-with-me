@@ -1,0 +1,11 @@
+import { historicalSceneUrl } from './historicalScene.mjs';
+import { chromium } from '@playwright/test';
+import path from 'node:path';
+const browser=await chromium.launch({channel:'msedge',headless:true});
+const page=await browser.newPage({viewport:{width:1600,height:900},deviceScaleFactor:1});
+await page.goto(historicalSceneUrl('http://127.0.0.1:3011/tests/fixtures/world.html'));
+await page.locator('#panoramic-world-stage').waitFor();
+await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important}'});
+await page.evaluate(async()=>{await document.fonts.ready;document.querySelectorAll('svg').forEach(svg=>{svg.pauseAnimations();svg.setCurrentTime(0);});});
+await page.screenshot({path:path.resolve('docs/visual-system/f2-evidence/baseline-overview.png')});
+await browser.close();
