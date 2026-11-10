@@ -34,6 +34,7 @@ import { DEFAULT_SCENE_LAYOUT } from '../world/scene/sceneLayout';
 import type { SceneLayout } from '../world/scene/sceneTypes';
 import { COUNTRYSIDE_THEMES } from '../world/theme/worldTheme';
 import { CapsulePodHaven, WoodenCabinHaven } from './architecture';
+import { CapsulePodVariant, type CapsulePodDesign } from './architecture/CapsulePodVariants';
 import { MainCottageHaven } from './architecture/MainCottageHaven';
 import { CottageVenusFloorWard } from './architecture/CottageVenusFloorWard';
 import { ObservatoryHaven } from './architecture/ObservatoryHaven';
@@ -47,6 +48,9 @@ import { HomesteadMeadowPlanting } from './scenery/yorkshire/vegetation/Homestea
 import { BeehiveMeadowPlanting, CottageVergeMeadowPlanting } from './scenery/yorkshire/vegetation/LocalMeadowPlanting';
 
 const F2DistantHills = lazy(() => import('../world/render/f2/F2DistantHills'));
+const CapsulePodComparison = import.meta.env.DEV
+  ? lazy(() => import('./architecture/CapsulePodComparison').then(module => ({ default: module.CapsulePodComparison })))
+  : null;
 const PosterDetailModal = lazy(() => import('./wall-posters/PosterDetailModal').then(module => ({ default: module.PosterDetailModal })));
 
 interface ThreeWorldProps {
@@ -209,6 +213,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const linPerson = people.find((p) => p.id === 'lin');
   const yuPerson = people.find((p) => p.id === 'yu');
   const isLinReading = presenceSlots.sofa_lounge?.occupant?.id === 'lin';
+  const [capsuleDesign, setCapsuleDesign] = useState<CapsulePodDesign>('original');
+  const capsuleStudy = import.meta.env.DEV && new URLSearchParams(window.location.search).get('capsuleStudy') === 'compare';
   const capsuleProps = { onSelectRoom, presenceSlots, onSelectPerson, setHoveredObject, hasMovedRef, theme };
 
   return (
@@ -337,7 +343,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/*     东侧独立休息区，与主屋之间留出草地间隔                */}
           {/* ======================================================== */}
           <YardObject id="capsule_pod" positioned><SceneEntity entityId="capsule_pod" layout={sceneLayout} id="capsule-pod-cluster">
-            <CapsulePodHaven {...capsuleProps} />
+            {capsuleDesign === 'original' ? <CapsulePodHaven {...capsuleProps} /> : <CapsulePodVariant {...capsuleProps} design={capsuleDesign} />}
           </SceneEntity></YardObject>
 
           {/* ======================================================== */}
@@ -382,6 +388,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
         }}
       /></Suspense>)}
     </div>
+    {capsuleStudy && CapsulePodComparison && <Suspense fallback={null}><CapsulePodComparison podProps={capsuleProps} design={capsuleDesign} onPreview={setCapsuleDesign} /></Suspense>}
     </LayoutGestureContext.Provider>
   );
 };
