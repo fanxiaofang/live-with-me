@@ -1,3 +1,5 @@
+import { StorybookSheep } from './StorybookSheep';
+import { YardObject } from '../../../../features/yard-editor/YardWorld';
 import React, { useState } from 'react';
 import { useTimerScope } from '../../../../shared/timers/useTimerScope';
 import { svgAction } from '../../../../world/interactions/svgAction';
@@ -88,11 +90,6 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       `}</style>
       <defs>
         {/* 蓬松米白羊毛体 (Cream White Wool) */}
-        <linearGradient id="ysSheepWoolGradV2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fffdfa" />
-          <stop offset="55%" stopColor="#f3ede2" />
-          <stop offset="100%" stopColor="#ded5c4" />
-        </linearGradient>
 
         {/* 树荫斑驳漫反射光晕 */}
         <radialGradient id="guardianCanopyShadowRadial" cx="45%" cy="45%" r="55%">
@@ -105,7 +102,7 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
       {/* ========================================================================= */}
       {/* 左前方守护树；根部约在 y=613–628，避开全景底栏并承接较低的树下缓坡。 */}
       {/* ========================================================================= */}
-      <g {...svgAction('桂花守护树，轻拂树梢听风')}
+      <YardObject id="osmanthus"><g {...svgAction('桂花守护树，轻拂树梢听风')}
         id="guardian-heritage-tree"
         data-tree-species="osmanthus"
         transform={`translate(${tree.position.x}, ${tree.position.y}) scale(${tree.scale})`}
@@ -182,11 +179,11 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
             </text>
           </g></g>
         )}
-      </g>
+      </g></YardObject>
 
 
       {/* 🐑 Sheep 1: 西侧河畔开阔草场啃草羊 (x: -420, y: 460) */}
-      <g {...svgAction('sheep-1')}
+      <YardObject id="sheep_1"><g {...svgAction('sheep-1')}
         id="sheep-1"
         transform="translate(-420, 460) scale(0.95)"
         className="cursor-pointer group/sheep"
@@ -194,30 +191,17 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-0' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
-        <ellipse cx="0" cy="14" rx="16" ry="5.5" fill="#182315" opacity="0.35" />
-        <line x1="-8" y1="8" x2="-9" y2="16" stroke="#241e1a" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="-3" y1="8" x2="-3" y2="17" stroke="#1d1714" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="5" y1="8" x2="6" y2="16" stroke="#241e1a" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="10" y1="8" x2="11" y2="17" stroke="#1d1714" strokeWidth="2.2" strokeLinecap="round" />
-        <ellipse cx="0" cy="2" rx="17" ry="12" fill="url(#ysSheepWoolGradV2)" stroke="#d4cab7" strokeWidth="0.8" />
-        <ellipse cx="-4" cy="-2" rx="14" ry="10" fill="#fffdfa" />
-        <g transform="translate(-16, 6) rotate(15)">
-          <ellipse cx="0" cy="0" rx="6" ry="4.5" fill="#2d2621" />
-          <ellipse cx="-2" cy="0" rx="4.5" ry="3.5" fill="#1b1511" />
-          <ellipse cx="-4" cy="0" rx="1.8" ry="1.2" fill="#ded5c4" />
-          <ellipse cx="2" cy="-4" rx="2.5" ry="1.2" fill="#241d18" transform="rotate(-30 2 -4)" />
-          <ellipse cx="2" cy="4" rx="2.5" ry="1.2" fill="#241d18" transform="rotate(30 2 4)" />
-        </g>
+        <g transform="scale(.85)"><StorybookSheep pose="grazing" facing="left" /></g>
         {activeSheepIndex === 0 && sheepSaying && (
           <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">
             <rect x="-65" y="-12" width="130" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
             <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
           </g></g>
         )}
-      </g>
+      </g></YardObject>
 
       {/* 🐑 Sheep 2: 主屋台地前方中景草场安睡羊 (x: -50, y: 610) */}
-      <g {...svgAction('sheep-2')}
+      <YardObject id="sheep_2"><g {...svgAction('sheep-2')}
         id="sheep-2"
         transform="translate(-50, 610) scale(1.0)"
         className="cursor-pointer group/sheep"
@@ -225,17 +209,8 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-1' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
-        <ellipse cx="0" cy="10" rx="20" ry="7" fill="#182315" opacity="0.38" />
-        <ellipse cx="-12" cy="11" rx="3" ry="1.5" fill="#241d18" />
-        <ellipse cx="12" cy="11" rx="3" ry="1.5" fill="#241d18" />
-        <ellipse cx="0" cy="2" rx="20" ry="11" fill="url(#ysSheepWoolGradV2)" stroke="#d4cab7" strokeWidth="0.8" />
-        <ellipse cx="2" cy="0" rx="17" ry="9" fill="#fffdfa" />
-        <g transform="translate(-16, 1)">
-          <ellipse cx="0" cy="0" rx="6" ry="4.5" fill="#2b231e" />
-          <ellipse cx="-2" cy="0" rx="4.5" ry="3.5" fill="#1c1612" />
-          <path d="M-1,-1 Q0,-0.2 1,-1" stroke="#fef08a" strokeWidth="0.8" fill="none" />
-          <ellipse cx="2" cy="-4" rx="3" ry="1.2" fill="#221a15" transform="rotate(-10 2 -4)" />
-          {/* Tranquil Slumber Bubbles (静谧睡眠气泡) */}
+        <StorybookSheep pose="resting" facing="left" />
+        <g transform="translate(-16 1)">
           <g className="pointer-events-none" id="sheep-slumber-bubbles">
             <g className="animate-sleep-bubble-1">
               <circle cx="-6" cy="-6" r="1.8" fill="#fef08a" opacity="0.75" />
@@ -257,11 +232,11 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
             <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
           </g></g>
         )}
-      </g>
+      </g></YardObject>
 
       {/* 母子羊移至右前方开阔草地，避开左前方树冠并留出中央前院。 */}
       <g id="sheep-mother-and-lamb-group">
-        <g {...svgAction('sheep-3')}
+        <YardObject id="sheep_3"><g {...svgAction('sheep-3')}
           id="sheep-3"
           transform="translate(735, 575) scale(1.0)"
           className="cursor-pointer group/sheep"
@@ -269,31 +244,17 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-2' })}
           onMouseLeave={() => setHoveredObject?.(null)}
         >
-          <ellipse cx="0" cy="16" rx="18" ry="6" fill="#182315" opacity="0.35" />
-          <line x1="-9" y1="9" x2="-9" y2="18" stroke="#241e1a" strokeWidth="2.2" strokeLinecap="round" />
-          <line x1="-3" y1="9" x2="-3" y2="19" stroke="#1d1714" strokeWidth="2.2" strokeLinecap="round" />
-          <line x1="6" y1="9" x2="6" y2="18" stroke="#241e1a" strokeWidth="2.2" strokeLinecap="round" />
-          <line x1="12" y1="9" x2="13" y2="19" stroke="#1d1714" strokeWidth="2.2" strokeLinecap="round" />
-          <ellipse cx="0" cy="2" rx="19" ry="13" fill="url(#ysSheepWoolGradV2)" stroke="#d4cab7" strokeWidth="0.8" />
-          <ellipse cx="-3" cy="-1" rx="16" ry="10" fill="#fffdfa" />
-          <g transform="translate(16, 4) rotate(20)">
-            <ellipse cx="0" cy="0" rx="6.5" ry="5" fill="#2d2621" />
-            <ellipse cx="2" cy="0" rx="4.5" ry="3.5" fill="#1b1511" />
-            <ellipse cx="4" cy="0.5" rx="1.8" ry="1.2" fill="#ded5c4" />
-            <circle cx="1" cy="-2" r="0.9" fill="#fef08a" />
-            <circle cx="1" cy="-2" r="0.5" fill="#000000" />
-            <ellipse cx="-1" cy="-4" rx="3" ry="1.4" fill="#241d18" transform="rotate(-20 -1 -4)" />
-          </g>
+          <StorybookSheep />
           {activeSheepIndex === 2 && sheepSaying && (
             <g transform="translate(0, -34)"><g  className="animate-bounce pointer-events-none">
               <rect x="-70" y="-12" width="140" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
               <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
             </g></g>
           )}
-        </g>
+        </g></YardObject>
 
         {/* 欢脱小羊羔 */}
-        <g {...svgAction('sheep-4')}
+        <YardObject id="sheep_4"><g {...svgAction('sheep-4')}
           id="sheep-4"
           transform="translate(790, 595) scale(0.68)"
           className="cursor-pointer group/sheep"
@@ -301,30 +262,18 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-3' })}
           onMouseLeave={() => setHoveredObject?.(null)}
         >
-          <ellipse cx="0" cy="14" rx="12" ry="4.5" fill="#182315" opacity="0.32" />
-          <line x1="-7" y1="6" x2="-10" y2="15" stroke="#241e1a" strokeWidth="1.8" strokeLinecap="round" />
-          <line x1="-2" y1="6" x2="-3" y2="16" stroke="#1d1714" strokeWidth="1.8" strokeLinecap="round" />
-          <line x1="5" y1="6" x2="8" y2="14" stroke="#241e1a" strokeWidth="1.8" strokeLinecap="round" />
-          <line x1="9" y1="6" x2="13" y2="15" stroke="#1d1714" strokeWidth="1.8" strokeLinecap="round" />
-          <ellipse cx="0" cy="0" rx="13" ry="9" fill="url(#ysSheepWoolGradV2)" stroke="#d4cab7" strokeWidth="0.7" />
-          <ellipse cx="-1" cy="-2" rx="11" ry="7" fill="#fffdfa" />
-          <g transform="translate(10, -4)">
-            <ellipse cx="0" cy="0" rx="4.8" ry="3.8" fill="#2d2621" />
-            <circle cx="1" cy="-1.5" r="0.8" fill="#fef08a" />
-            <circle cx="1" cy="-1.5" r="0.45" fill="#000000" />
-            <ellipse cx="-1" cy="-3.5" rx="2.2" ry="1" fill="#221a15" />
-          </g>
+          <StorybookSheep lamb />
           {activeSheepIndex === 3 && sheepSaying && (
             <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">
               <rect x="-65" y="-12" width="130" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
               <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
             </g></g>
           )}
-        </g>
+        </g></YardObject>
       </g>
 
       {/* 🐑 Sheep 5: 右上山麓石墙边探头小羊 (x: 640, y: 420) */}
-      <g {...svgAction('sheep-5')}
+      <YardObject id="sheep_5"><g {...svgAction('sheep-5')}
         id="sheep-5"
         transform="translate(640, 420) scale(0.75)"
         className="cursor-pointer group/sheep"
@@ -332,25 +281,14 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-4' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
-        <ellipse cx="0" cy="14" rx="14" ry="5" fill="#182315" opacity="0.3" />
-        <line x1="-7" y1="7" x2="-7" y2="15" stroke="#241e1a" strokeWidth="1.8" strokeLinecap="round" />
-        <line x1="-2" y1="7" x2="-2" y2="16" stroke="#1d1714" strokeWidth="1.8" strokeLinecap="round" />
-        <line x1="5" y1="7" x2="5" y2="15" stroke="#241e1a" strokeWidth="1.8" strokeLinecap="round" />
-        <line x1="9" y1="7" x2="10" y2="16" stroke="#1d1714" strokeWidth="1.8" strokeLinecap="round" />
-        <ellipse cx="0" cy="1" rx="15" ry="10" fill="url(#ysSheepWoolGradV2)" stroke="#d4cab7" strokeWidth="0.7" />
-        <ellipse cx="2" cy="-1" rx="12" ry="8" fill="#fffdfa" />
-        <g transform="translate(12, -4)">
-          <ellipse cx="0" cy="0" rx="5" ry="4" fill="#2d2621" />
-          <ellipse cx="2" cy="0" rx="3.5" ry="2.8" fill="#1e1814" />
-          <ellipse cx="-1" cy="-3.5" rx="2.5" ry="1.2" fill="#241d18" transform="rotate(-20 -1 -3.5)" />
-        </g>
+        <StorybookSheep lamb />
         {activeSheepIndex === 4 && sheepSaying && (
           <g transform="translate(0, -32)"><g  className="animate-bounce pointer-events-none">
             <rect x="-65" y="-12" width="130" height="24" rx="12" fill="#1c1917" opacity="0.95" stroke="#f59e0b" strokeWidth="0.8" />
             <text x="0" y="4" fill="#fef3c7" fontSize="8.5" fontWeight="bold" textAnchor="middle">{sheepSaying}</text>
           </g></g>
         )}
-      </g>
+      </g></YardObject>
     </g>
   );
 };

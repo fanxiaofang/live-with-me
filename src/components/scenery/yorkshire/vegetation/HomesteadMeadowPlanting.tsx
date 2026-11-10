@@ -1,3 +1,6 @@
+import { YardObject, useYardPlacement } from '../../../../features/yard-editor/YardWorld';
+import { DETACHED_MEADOW_GROUPS } from '../../../../features/yard-editor/yardGrassObjects';
+import { DEFAULT_SCENE_LAYOUT } from '../../../../world/scene/sceneLayout';
 import type { SceneLayout } from '../../../../world/scene/sceneTypes';
 import type { YorkshireSceneTheme } from '../landscapeTypes';
 import { Grass } from './MeadowVegetationAssets';
@@ -15,8 +18,10 @@ const WEAR = [
 ] as const;
 
 export function HomesteadMeadowPlanting({ sceneLayout, theme, treeRefined = false }: { sceneLayout: SceneLayout; theme: YorkshireSceneTheme; treeRefined?: boolean }) {
+  const treeOffset = useYardPlacement('osmanthus');
   const wear = theme.isNight ? '#777650' : theme.isRainy ? '#858554' : '#a69b63';
   const strength = theme.isNight ? .7 : theme.isRainy ? .85 : 1;
+  const plants = treeRefined ? REFINED_MEADOW_PLANTS : HOMESTEAD_MEADOW_PLANTS;
   return <>
     <g id="homestead-meadow-wear" pointerEvents="none" aria-hidden="true" fill={wear} opacity={.12 * strength}>
       {WEAR.map(patch => <g key={patch.id} data-use-wear={patch.id} data-wear-anchor={patch.anchor}
@@ -31,10 +36,21 @@ export function HomesteadMeadowPlanting({ sceneLayout, theme, treeRefined = fals
           #pasture-wildflowers,#pasture-chamomile-dots,#guardian-tree-root-flora){display:none}
         ${meadowPlantPaletteCss(theme, '#homestead-meadow-plants')}
       `}</style>
-      {(treeRefined ? REFINED_MEADOW_PLANTS : HOMESTEAD_MEADOW_PLANTS).map((plant, i) => <g key={i} data-meadow-zone={plant.zone} data-meadow-anchor={plant.anchor}
-        transform={meadowAnchorTransform(plant.anchor, sceneLayout)} opacity={meadowGrassOpacity(theme, plant.opacity, plant.scale)}>
+      {plants.filter(plant => !DETACHED_MEADOW_GROUPS.some(group => group.zone === plant.zone)).map((plant, i) => <g key={i} data-meadow-zone={plant.zone} data-meadow-anchor={plant.anchor}
+        transform={`${plant.anchor === 'guardian-tree' ? `translate(${treeOffset.dx} ${treeOffset.dy}) ` : ''}${meadowAnchorTransform(plant.anchor, sceneLayout)}`} opacity={meadowGrassOpacity(theme, plant.opacity, plant.scale)}>
         <Grass type={plant.type} x={plant.x} y={plant.y} scale={plant.scale} flip={plant.flip} />
       </g>)}
+      {DETACHED_MEADOW_GROUPS.map(group => <YardObject key={group.id} id={group.id}>
+        <g id={group.id}>
+          <style>{meadowPlantPaletteCss(theme, '#' + group.id)}</style>
+          {plants.filter(plant => plant.zone === group.zone).map((plant, i) => <g key={i}
+            data-meadow-zone={plant.zone} data-meadow-anchor={plant.anchor}
+            transform={meadowAnchorTransform(plant.anchor, DEFAULT_SCENE_LAYOUT)}
+            opacity={meadowGrassOpacity(theme, plant.opacity, plant.scale)}>
+            <Grass type={plant.type} x={plant.x} y={plant.y} scale={plant.scale} flip={plant.flip} />
+          </g>)}
+        </g>
+      </YardObject>)}
     </g>
   </>;
 }

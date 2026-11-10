@@ -8,7 +8,7 @@ type Audit = { snapshot: () => Sample; frames: Sample[]; active: boolean };
 const output = path.resolve('docs/visual-system/f2-baseline-audit-2026-10-24');
 test.use({ viewport: { width: 1600, height: 900 }, video: { mode: 'on', size: { width: 960, height: 540 } } });
 
-test('the real grass contour and field tractor move independently without reviving legacy planting', async ({ page }) => {
+test('the grass contour and meadow tractor share the physical camera without reviving legacy planting', async ({ page }) => {
   test.setTimeout(90000);
   const errors: string[] = [];
   page.on('pageerror', e => errors.push(e.message));
@@ -26,7 +26,7 @@ test('the real grass contour and field tractor move independently without revivi
       const grass = $('#master-axonometric-ground-plane > path:nth-of-type(2)');
       const m = grass.getScreenCTM()!, stage = $('#panoramic-world-stage').getScreenCTM()!;
       const edge = new DOMPoint(200, y).matrixTransform(m);
-      const tractor = new DOMPoint(22, 46).matrixTransform($('#tractor-in-field').getScreenCTM()!);
+      const tractor = new DOMPoint(22, 46).matrixTransform($('[data-tractor-body]').getScreenCTM()!);
       return {
         grass: [edge.x, edge.y], tractor: [tractor.x, tractor.y],
         grassUsesStage: ['a', 'b', 'c', 'd', 'e', 'f'].every(k => Math.abs(m[k as keyof SVGMatrix] as number - (stage[k as keyof SVGMatrix] as number)) < 1e-6),
@@ -65,7 +65,7 @@ test('the real grass contour and field tractor move independently without revivi
   const grassDelta = after.grass.map((v, i) => v - panStart.grass[i]);
   const tractorDelta = after.tractor.map((v, i) => v - panStart.tractor[i]);
   expect(grassDelta[0], JSON.stringify({panStart,after})).toBeCloseTo(120, 1); expect(grassDelta[1]).toBeCloseTo(60, 1);
-  expect(tractorDelta[0]).toBeCloseTo(78, 1); expect(tractorDelta[1]).toBeCloseTo(33, 1);
+  expect(tractorDelta[0]).toBeCloseTo(120, 1); expect(tractorDelta[1]).toBeCloseTo(60, 1);
   await page.screenshot({ path: path.join(output, 'main-panned.png') });
   const actions: { name: string; frames: number; grassTravel: number; tractorTravel: number }[] = [];
   for (const action of ['focus', 'reverse', 'reset']) {

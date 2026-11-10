@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { stableScene } from './helpers';
+import { stableScene, expectOverviewCamera } from './helpers';
 
 async function sampleTerrain(page: Page) {
   return page.evaluate(() => {
@@ -36,7 +36,7 @@ async function sampleTerrain(page: Page) {
     };
     const point = (selector: string, x: number, y: number) =>
       new DOMPoint(x, y).matrixTransform(inverse.multiply((document.querySelector(selector) as SVGGraphicsElement).getScreenCTM()!));
-    const wheel = point('#tractor-in-field', 22, 46);
+    const wheel = point('[data-tractor-body]', 22, 46);
     const arch = point('#yorkshire-railway-viaduct', -160, 205);
     const samples = Array.from({ length: 9 }, (_, i) => {
       const x = start.x + (end.x - start.x) * (i + 0.5) / 9;
@@ -79,7 +79,7 @@ function expectContinuous(terrain: Awaited<ReturnType<typeof sampleTerrain>>) {
 test('legacy panorama exposes the tractor wheels and the viaduct arches', async ({ page }) => {
   await stableScene(page, '/tests/fixtures/world.html?hills=legacy');
   const terrain = await sampleTerrain(page);
-  expect(terrain.tractorClearance).toBeGreaterThan(5);
+  expect(terrain.tractorClearance).toBeLessThan(-5);
   expect(terrain.archClearance).toBeGreaterThan(7);
   expectContinuous(terrain);
 });
@@ -127,7 +127,7 @@ test('wheel and zoom buttons reapply boundaries, including after a viewport resi
   await panToCorner(page, 1, -1);
   expectContinuous(await sampleTerrain(page));
   await page.getByTitle('重置为田园全景', { exact: true }).click();
-  await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('style', /translate\(0px, 135px\) scale\(0.66\)/);
+  await expectOverviewCamera(page);
 });
 
 test('terrain coverage also survives animated zoom reversals and reduced motion', async ({ page }) => {

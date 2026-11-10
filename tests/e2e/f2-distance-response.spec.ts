@@ -38,7 +38,7 @@ function installProbe(edgeY: number) {
       camera:matrix('#panoramic-world-stage'), clock:matrix('#parallax-mountains-layer'),
       field:matrix('#parallax-wheat-layer'), railway:matrix('#parallax-railway-layer'), roots,
       grass:point('#master-axonometric-ground-plane > path:nth-of-type(2)',200,edgeY),
-      tractor:point('#tractor-in-field',22,46),
+      tractor:point('[data-tractor-body]',22,46),
       railPoint:point('#parallax-railway-layer',600,100),
       grassUsesStage:['a','b','c','d','e','f'].every(k=>Math.abs(grassMatrix[k as keyof SVGMatrix] as number-(stageMatrix[k as keyof SVGMatrix] as number))<1e-6),
       legacyHidden:['lawn-natural-grass-tufts','clover-turf-patches','meadow-field-blossoms','beehive-meadow-grass','beehive-meadow-wildflowers','beehive-lavender-flowers']
@@ -99,7 +99,8 @@ function assertSample(s:Sample) {
   expect(e.meshError,JSON.stringify(e)).toBeLessThan(.15);
   expect(e.rootError,JSON.stringify(e)).toBeLessThan(.01);
   expect(e.groundError,JSON.stringify(e)).toBeLessThan(.15);
-  expect(s.roots).toHaveLength(27);
+  // The current scene has 31 trees, two farms and the accepted windmill.
+  expect(s.roots).toHaveLength(34);
   expect(s.grassUsesStage && s.legacyHidden && s.noCropClip && s.rootsOutsideClock).toBe(true);
   expect(s.stats.responseOwner).toBe('source-v2');
 }
@@ -128,7 +129,7 @@ for(const [width,height] of [[1600,900],[390,844]]) {
     const after=await read(page);assertSample(after);
     const delta=after.grass.x-before.grass.x;
     expect(Math.abs(delta)).toBeGreaterThan(10);
-    expect(after.tractor.x-before.tractor.x).toBeCloseTo(delta*.65,1);
+    expect(after.tractor.x-before.tractor.x).toBeCloseTo(delta,1);
     expect(after.railPoint.x-before.railPoint.x).toBeCloseTo(delta*.28,1);
     const ridges=after.stats.transforms.map((p:any,i:number)=>(p.x-before.stats.transforms[i].x)*height/2);
     for(const [i,response] of [0,.015,.035].entries()) expect(ridges[i]).toBeCloseTo(delta*response,1);
@@ -169,9 +170,9 @@ test('actual homepage keeps distance, grounding and independent field/grass moti
   await page.waitForTimeout(500);await settled(page);
   const after=await read(page);
   expect(after.grass.x-before.grass.x).toBeCloseTo(120,1);
-  expect(after.tractor.x-before.tractor.x).toBeCloseTo(78,1);
+  expect(after.tractor.x-before.tractor.x).toBeCloseTo(120,1);
   expect(after.grass.y-before.grass.y).toBeCloseTo(60,1);
-  expect(after.tractor.y-before.tractor.y).toBeCloseTo(33,1);
+  expect(after.tractor.y-before.tractor.y).toBeCloseTo(60,1);
   await page.getByRole('button',{name:'整栋小屋',exact:true}).click();
   await page.waitForTimeout(550);await settled(page);
   const frames=await page.evaluate(()=>{const p=(window as unknown as {distanceProbe:Probe}).distanceProbe;p.active=false;return p.frames;});

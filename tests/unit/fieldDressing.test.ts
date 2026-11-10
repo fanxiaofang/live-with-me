@@ -19,14 +19,19 @@ test('field depth keeps scale and ground roots in the same order, with separate 
   }
 });
 
-test('field footprints stay inside the crop and clear of the meadow in the overview', () => {
+test('existing rear footprints stay visible while permanent front bales can be occluded by the meadow', () => {
   // Overview wheat and meadow transforms coincide; only the crop Y offset differs.
   // This does not assert that foreground occlusion disappears in room closeups.
   for (const item of [...FIELD_HAY_BALES, ...FIELD_SCARECROWS]) {
     const { y, scale } = fieldDressingDepth(item.depth);
     for (const dx of [-19 * scale, 0, 19 * scale]) {
       assert.ok(y > wheatRearY(item.x + dx, true) + 7, `${item.id} is beyond the rear fence`);
-      assert.ok(y + LANDSCAPE_SURFACES.backgroundOffsetY < frontEdgeY(item.x + dx) - 5, `${item.id} is swallowed by the meadow`);
+      if (item.depth <= 1) {
+        assert.ok(y + LANDSCAPE_SURFACES.backgroundOffsetY < frontEdgeY(item.x + dx) - 5, `${item.id} is swallowed by the meadow`);
+      } else {
+        assert.ok(y + LANDSCAPE_SURFACES.backgroundOffsetY > frontEdgeY(item.x + dx), `${item.id} must live behind foreground occlusion`);
+        assert.ok(y <= 510 && fieldDressingDepth(item.depth).opacity <= 1);
+      }
     }
   }
   for (let i = 0; i < FIELD_HAY_BALES.length; i++) for (let j = i + 1; j < FIELD_HAY_BALES.length; j++) {

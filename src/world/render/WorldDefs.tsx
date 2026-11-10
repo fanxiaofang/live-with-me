@@ -514,7 +514,7 @@ function WorldDefsAsset({ theme }: WorldDefsProps) {
 
             {/* ========================================================================= */}
             {/* PRESERVED ASSET: COUNTRYSIDE GINGHAM PICNIC SCENE & GNARLED APPLE TREE    */}
-            {/* (用户要求保留野餐垫及全套组件作为项目资产保留，不在场景中强塞，安全收录于此处) */}
+            {/* 保留原始素材定义；CountryPicnic 按用户要求通过 use 复用野餐场景。 */}
             {/* ========================================================================= */}
             <g id="asset-country-picnic-scene">
               <polygon points="162,652 278,630 306,686 188,708" fill="#152113" opacity="0.4" filter="url(#softShadow)" />

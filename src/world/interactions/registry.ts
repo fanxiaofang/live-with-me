@@ -5,7 +5,7 @@ import type { Person } from '../../types';
 import type { InteractionTarget } from './interactionTypes';
 
 export const ENTITY_REGISTRY: Readonly<Record<string, string>> = {
-  tractor: '🚜 麦浪拖拉机 · 梯田里的丰收耕耘与南瓜丰收',
+  tractor: '🚜 田边拖拉机 · 停靠菜园旁，木桶与农场物资放在车尾',
   mailbox: '📪 前廊木信箱 · 点击查看信件或留言',
   'alien-receiver': '📡 外星信号接收装置 · 频率 1420.405 MHz 监听深空（点击捕获电波）',
   'pasture-gate': '🚪 英伦传统五木杠栅栏门 · 羊圈与牧场的手工斜撑原木大门（点击可微启/微闭）',

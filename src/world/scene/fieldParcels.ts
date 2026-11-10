@@ -1,4 +1,8 @@
 // Shared ground directions for tramlines, parcel margins and their existing trees.
+// Covers the entire crop area exposed by the allowed camera range. Marks remain
+// fixed here; the meadow, rather than the camera, decides which parts are seen.
+export const FIELD_DETAIL_FRONT_Y = 560;
+
 export const WHEAT_TRAMLINES = [
   { x1: -2600, y1: 215, x2: -2350, y2: 375 },
   { x1: -1900, y1: 220, x2: -1600, y2: 375 },

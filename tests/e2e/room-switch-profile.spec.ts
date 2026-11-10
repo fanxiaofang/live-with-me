@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import fs from 'node:fs';
-import { ROOM_VIEWS } from './helpers';
+import { ROOM_VIEWS, selectView } from './helpers';
 
 test('measure native room navigation from click through the first moving frame and settling', async ({ page }) => {
   test.setTimeout(60000);
@@ -54,7 +54,7 @@ test('measure native room navigation from click through the first moving frame a
         }, { capture: true, once: true });
       });
     });
-    await page.getByRole('button', { name: label, exact: true }).click();
+    await selectView(page, label);
     const sample = await page.evaluate(() => (window as unknown as { roomSwitchDone: Promise<Record<string, unknown>> }).roomSwitchDone);
     expect(sample.clickToFirstFrameMs).toBeGreaterThan(0);
     measurements.push({ room: id, ...sample });

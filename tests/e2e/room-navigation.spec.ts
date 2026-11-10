@@ -1,10 +1,11 @@
 import { expect, test } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOM_VIEWS, stableScene } from './helpers';
+import { ROOM_VIEWS, stableScene, expectOverviewCamera, selectView } from './helpers';
+import { resolveRoomCamera } from '../../src/world/scene/roomTargets';
 
 const subjects = {
-  my_room: '#isometric-desk-container', living_nook: '#isometric-tea-table',
+  loft: '#seedpod-reading-loft', my_room: '#isometric-desk-container', living_nook: '#isometric-tea-table',
   friend_room: '#isometric-bookshelf-container', capsule_pod: '#capsule-pod-haven',
   corn_lounge: '#wooden-cabin-haven', observatory: '#alien-receiver-assembly',
   porch_mailbox: '#mailbox-group',
@@ -21,10 +22,11 @@ test('room selection commits its camera immediately and rapid navigation settles
     new MutationObserver(() => samples.push({ room: stage.getAttribute('data-room'), transform: stage.style.transform }))
       .observe(stage, { attributes: true, attributeFilter: ['data-room', 'style'] });
   });
-  await page.getByRole('button', { name: '我的阁楼房间', exact: true }).click();
+  await page.locator('#room-my_room').press('Enter');
   const commits = await page.evaluate(() => (window as unknown as { roomCommits: {room:string;transform:string}[] }).roomCommits);
   const selection = commits.find(sample => sample.room === 'my_room')!;
-  expect(selection.transform).toBe('translate(246px, 144px) scale(1.2)');
+  const myRoom = resolveRoomCamera('my_room');
+  expect(selection.transform).toBe(`translate(${myRoom.x}px, ${myRoom.y}px) scale(${myRoom.zoom})`);
   const timing = await page.locator('#parallax-sky-layer, #parallax-mountains-layer, #parallax-wheat-layer, #panoramic-world-stage')
     .evaluateAll(elements => elements.map(e => getComputedStyle(e).transitionDuration));
   expect(timing).toEqual(['0.4s', '0.4s', '0.4s', '0.4s']);
@@ -34,19 +36,20 @@ test('room selection commits its camera immediately and rapid navigation settles
     const buttons = [...document.querySelectorAll<HTMLButtonElement>('nav[aria-label="房间视角"] button')];
     buttons.find(button => button.textContent?.trim() === '公共起居角')!.click();
     await Promise.resolve();
-    buttons.find(button => button.textContent?.trim() === '林木的书房')!.click();
+    buttons.find(button => button.textContent?.trim() === '阁楼')!.click();
   });
-  await expect(stage).toHaveAttribute('data-room', 'friend_room');
-  await expect(stage).toHaveAttribute('style', /translate\(-96px, 120px\) scale\(1.2\)/);
+  await expect(stage).toHaveAttribute('data-room', 'loft');
+  const friendRoom = resolveRoomCamera('loft');
+  await expect(stage).toHaveAttribute('data-zoom', String(friendRoom.zoom));
   await expect(page.locator('[data-room-hit-area="friend_room"]')).toHaveAttribute('fill', 'transparent');
-  await expect(page.getByRole('button', { name: '林木的书房', exact: true })).toHaveAttribute('aria-current', 'page');
-  await expect.poll(() => stage.evaluate(e => new DOMMatrix(getComputedStyle(e).transform).a)).toBeCloseTo(1.2, 4);
+  await expect(page.getByRole('button', { name: '阁楼', exact: true })).toHaveAttribute('aria-current', 'page');
+  await expect.poll(() => stage.evaluate(e => new DOMMatrix(getComputedStyle(e).transform).a)).toBeCloseTo(friendRoom.zoom, 4);
   await page.waitForTimeout(500);
-  await expect(stage).toHaveAttribute('data-room', 'friend_room');
+  await expect(stage).toHaveAttribute('data-room', 'loft');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.getByRole('button', { name: '整栋小屋', exact: true }).click();
   expect(await stage.evaluate(e => getComputedStyle(e).transitionDuration)).toBe('0s');
-  await expect(stage).toHaveAttribute('style', /translate\(0px, 135px\) scale\(0.66\)/);
+  await expectOverviewCamera(page);
 });
 
 for (const viewport of [{width:1200,height:800},{width:1600,height:900},{width:390,height:844}]) {
@@ -54,9 +57,9 @@ for (const viewport of [{width:1200,height:800},{width:1600,height:900},{width:3
     test.setTimeout(90000);
     await page.setViewportSize(viewport);
     await stableScene(page);
-    await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).click();
+    if (await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).isVisible()) await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).click();
     for (const [id, label] of ROOM_VIEWS.slice(1)) {
-      await page.getByRole('button', { name: label, exact: true }).click();
+      await selectView(page, label);
       const box = (await page.locator(subjects[id as keyof typeof subjects]).boundingBox())!;
       expect(box.x, id).toBeGreaterThanOrEqual(0);
       expect(box.x + box.width, id).toBeLessThanOrEqual(viewport.width);
@@ -70,14 +73,14 @@ for (const viewport of [{width:1200,height:800},{width:1600,height:900},{width:3
       }
     }
     await page.getByRole('button', { name: '整栋小屋', exact: true }).click();
-    await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('style', /translate\(0px, 135px\) scale\(0.66\)/);
+    await expectOverviewCamera(page);
   });
 }
 
 test('focused room adapts to resize and a subsequent manual pan starts at the displayed camera', async ({ page }) => {
   await stableScene(page);
   await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).click();
-  await page.getByRole('button', { name: '我的阁楼房间', exact: true }).click();
+  await page.locator('#room-my_room').press('Enter');
   await page.setViewportSize({width:390,height:844});
   const stage = page.locator('#panoramic-world-stage');
   await expect.poll(async () => Number(await stage.getAttribute('data-zoom'))).toBeLessThan(0.8);
@@ -88,6 +91,6 @@ test('focused room adapts to resize and a subsequent manual pan starts at the di
   const after = await stage.evaluate(e => { const m=new DOMMatrix(getComputedStyle(e).transform); return {x:m.e,y:m.f}; });
   expect(after.x-before.x).toBeCloseTo(20*800/844,3);
   expect(after.y-before.y).toBeCloseTo(15*800/844,3);
-  await page.getByRole('button', {name:'我的阁楼房间',exact:true}).click();
+  await page.locator('#room-my_room').press('Enter');
   expect(await stage.getAttribute('style')).toBe(original);
 });

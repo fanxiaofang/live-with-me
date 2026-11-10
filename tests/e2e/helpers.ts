@@ -1,4 +1,31 @@
 import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { resolveRoomCamera } from '../../src/world/scene/roomTargets';
+import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
+import { visibleViewBox } from '../../src/world/coordinates/viewport';
+
+export async function selectView(page: Page, label: string) {
+  const navigation = page.getByRole('navigation', { name: '房间视角' });
+  if (await navigation.getByRole('button', { name: '展开视角工具栏', exact: true }).isVisible()) {
+    await navigation.getByRole('button', { name: '展开视角工具栏', exact: true }).click();
+  }
+  const button = navigation.getByRole('button', { name: label, exact: true });
+  if (!(await button.isVisible())) await navigation.getByText('更多去处', { exact: true }).click();
+  await button.click();
+}
+
+export async function expectOverviewCamera(page: Page) {
+  const stage = page.locator('#panoramic-world-stage');
+  const size = await stage.evaluate(e => {
+    const { width, height } = e.closest('svg')!.getBoundingClientRect();
+    return { width, height };
+  });
+  const expected = resolveRoomCamera('overview', DEFAULT_SCENE_LAYOUT, visibleViewBox(size.width, size.height));
+  await expect.poll(() => stage.evaluate((e, target) => {
+    const m = new DOMMatrix((e as SVGElement).style.transform);
+    return Math.max(Math.abs(m.e - target.x), Math.abs(m.f - target.y), Math.abs(m.a - target.zoom));
+  }, expected)).toBeLessThan(.001);
+}
 
 export async function stableScene(page: Page, path = '/') {
   await page.goto(path);
@@ -14,8 +41,8 @@ export async function stableScene(page: Page, path = '/') {
 }
 
 export const ROOM_VIEWS = [
-  ['overview', '整栋小屋'], ['my_room', '我的阁楼房间'],
-  ['living_nook', '公共起居角'], ['friend_room', '林木的书房'],
+  ['overview', '整栋小屋'], ['loft', '阁楼'],
+  ['living_nook', '公共起居角'],
   ['capsule_pod', '旧胶囊仓'], ['corn_lounge', '林间小木屋'],
-  ['observatory', '山巅外星电波监听站'], ['porch_mailbox', '前廊'],
+  ['observatory', '外星电波观测台'],
 ] as const;

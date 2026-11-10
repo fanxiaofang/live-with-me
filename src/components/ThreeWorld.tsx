@@ -1,3 +1,11 @@
+import { YardWorld, YardObject } from '../features/yard-editor/YardWorld';
+import { MeadowTractor } from './scenery/yorkshire/dressing/MeadowTractor';
+import { CountryPicnic } from './scenery/yorkshire/dressing/CountryPicnic';
+import { TilledGardenPlot } from './scenery/yorkshire/dressing/TilledGardenPlot';
+import { KitchenHerbNursery } from './scenery/yorkshire/dressing/KitchenHerbNursery';
+import { YardPaving } from './scenery/yorkshire/dressing/YardPaving';
+import { YardWearPaint } from './scenery/yorkshire/dressing/YardWearPaint';
+import type { YardEditor } from '../features/yard-editor/useYardEditor';
 import type { WorldViewId } from '../types';
 import React, { lazy, Suspense, useMemo, useRef, useState } from 'react';
 import { F2Sky } from '../world/render/f2/F2Sky';
@@ -27,6 +35,7 @@ import type { SceneLayout } from '../world/scene/sceneTypes';
 import { COUNTRYSIDE_THEMES } from '../world/theme/worldTheme';
 import { CapsulePodHaven, WoodenCabinHaven } from './architecture';
 import { MainCottageHaven } from './architecture/MainCottageHaven';
+import { CottageVenusFloorWard } from './architecture/CottageVenusFloorWard';
 import { ObservatoryHaven } from './architecture/ObservatoryHaven';
 import { BookItemConfig, BookshelfPreset, PRESET_COZY_TIERS, TierConfig } from './bookshelf';
 import { EditableObjectId, RoomLayoutConfig } from './layout-gizmo';
@@ -41,6 +50,7 @@ const F2DistantHills = lazy(() => import('../world/render/f2/F2DistantHills'));
 const PosterDetailModal = lazy(() => import('./wall-posters/PosterDetailModal').then(module => ({ default: module.PosterDetailModal })));
 
 interface ThreeWorldProps {
+  yardEditor?: YardEditor;
   /** Historical fixtures can opt out of the accepted default composition. */
   meadowComposition?: 'current' | 'legacy';
   /** Optional ground decoration, occluded by buildings and the foreground tree. */
@@ -84,6 +94,7 @@ interface ThreeWorldProps {
 
 // Anime countryside atmospheric color palettes & lighting
 export const ThreeWorld: React.FC<ThreeWorldProps> = ({
+  yardEditor,
   meadowComposition = 'current',
   groundDecoration,
   meadowSurface,
@@ -138,7 +149,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   // Active Wall Poster Modal State (右墙电影海报高清艺术展陈卡片)
   const [selectedPosterId, setSelectedPosterId] = useState<PosterId | null>(null);
 
-  const { camera, isDragging, svgRef, hasMovedRef, pointerHandlers, zoomBy, restoreFocus } = useWorldCamera(activeRoom, sceneLayout, focusRevision, isInspectorOpen);
+  // Keep the view steady while arranging buildings; navigation uses the new layout on exit.
+  const cameraLayout = useRef(sceneLayout);
+  const cameraBounds = useRef(yardEditor?.bounds);
+  if (!yardEditor?.active) cameraLayout.current = sceneLayout;
+  if (!yardEditor?.active) cameraBounds.current = yardEditor?.bounds;
+  const { camera, isDragging, svgRef, hasMovedRef, pointerHandlers, zoomBy, restoreFocus } = useWorldCamera(activeRoom, yardEditor?.active ? cameraLayout.current : sceneLayout, focusRevision, isInspectorOpen || !!yardEditor?.dragging, yardEditor?.active ? cameraBounds.current : yardEditor?.bounds);
   const [sceneOptions] = useState(() => resolveSceneOptions(window.location.search));
   const { hills: hillsMode, fieldEdges: requestedEdges, meadowStudy: requestedMeadow,
     meadowForeground: requestedForeground } = sceneOptions;
@@ -193,6 +209,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const linPerson = people.find((p) => p.id === 'lin');
   const yuPerson = people.find((p) => p.id === 'yu');
   const isLinReading = presenceSlots.sofa_lounge?.occupant?.id === 'lin';
+  const capsuleProps = { onSelectRoom, presenceSlots, onSelectPerson, setHoveredObject, hasMovedRef, theme };
 
   return (
     <LayoutGestureContext.Provider value={gestureOwner}>
@@ -205,6 +222,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       data-hills-mode={f2Active ? 'f2' : 'legacy'}
       data-hills-failure={f2Failure || undefined}
       {...pointerHandlers}
+      onClickCapture={event => { if (yardEditor?.active) { event.preventDefault(); event.stopPropagation(); } else pointerHandlers.onClickCapture(event); }}
       onKeyDownCapture={event => { if (event.key === 'Enter' || event.key === ' ') hasMovedRef.current = false; }}
       className="relative w-full h-full overflow-hidden select-none cursor-grab active:cursor-grabbing"
       style={{
@@ -240,7 +258,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/* 1. PARALLAX MULTIPLANE BACKGROUND LAYERS                 */}
           {/*    Layer 0: Infinite Sky & Horizon Clouds (0.08x)       */}
           {/*    Layer 1: Far Mountain Ridges & Viaduct Railway (0.28x) */}
-          {/*    Layer 2: Midground Rolling Wheat & Tractor (0.65x)   */}
+          {/*    Layer 2: Midground Rolling Wheat (0.65x)             */}
           {/* ======================================================== */}
           <BackgroundLandscape hillsMode={f2Active ? 'f2' : 'legacy'} integratedGround={hillsMode === 'f2'} fieldEdges={fieldEdges}
             camera={camera}
@@ -257,9 +275,10 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             id="panoramic-world-stage"
             data-room={activeRoom}
             data-zoom={camera.zoom}
-            style={cameraTransformStyle(camera, isDragging)}
+            style={cameraTransformStyle(camera, isDragging || !!yardEditor?.active)}
           >
 
+          <YardWorld editor={yardEditor}>
           {/* Master Meadow Ground, Drystone Walls, Garden Flora, Pumpkin Patch */}
           <HomesteadMeadow fieldEdges={fieldEdges} surfaceRefined={meadowStudy !== 'original'}
             theme={theme}
@@ -270,7 +289,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             onTriggerToast={onTriggerToast}
           />
           {groundDecoration ?? (currentMeadow ? <HomesteadMeadowPlanting sceneLayout={sceneLayout} theme={theme} treeRefined={meadowStudy === 'complete'} /> : undefined)}
-          <g id="hilltop-observatory-haven">
+          <YardObject id="observatory" positioned><g id="hilltop-observatory-haven">
             {/* Radio station on the rear-right meadow, still in the physical stage. */}
             <SceneEntity entityId="observatory" layout={sceneLayout}
               id="room-observatory"
@@ -285,12 +304,12 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   <ObservatoryHaven theme={theme} characterParentScale={sceneLayout.observatory.scale} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
     triggerAlienSignal={captureSignal} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
 </SceneEntity>
-          </g>
+          </g></YardObject>
 
           {/* ======================================================== */}
           {/* 左后侧休息小木屋先绘制，交界处由前方主屋自然遮挡。 */}
           {/* ======================================================== */}
-          <SceneEntity entityId="wooden_cabin" layout={sceneLayout} id="wooden-cabin-cluster">
+          <YardObject id="wooden_cabin" positioned><SceneEntity entityId="wooden_cabin" layout={sceneLayout} id="wooden-cabin-cluster">
             <WoodenCabinHaven
               onSelectRoom={onSelectRoom}
               presenceSlots={presenceSlots}
@@ -299,40 +318,43 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               hasMovedRef={hasMovedRef}
               theme={theme}
             />
-          </SceneEntity>
+          </SceneEntity></YardObject>
 
           {/* ======================================================== */}
           {/* 2. THE COTTAGE HAVEN (NOW SITUATED ACROSS THE ROAD)       */}
           {/*    Surrounded by lawn, stone path & garden               */}
           {/* ======================================================== */}
-          <SceneEntity entityId="main_cottage" layout={sceneLayout} id="living-cottage-haven">
+          <YardObject id="main_cottage" positioned><SceneEntity entityId="main_cottage" layout={sceneLayout} id="living-cottage-haven">
 <MainCottageHaven theme={theme} hasMovedRef={hasMovedRef} onSelectRoom={onSelectRoom} setHoveredObject={setHoveredObject} selfPerson={selfPerson} linPerson={linPerson} yuPerson={yuPerson} currentLayout={currentLayout} effectiveGizmoId={effectiveGizmoId} isInspectorOpen={isInspectorOpen} onSelectGizmo={onSelectGizmo} onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd} presenceSlots={presenceSlots} isChairEmptyOverride={isChairEmptyOverride} onOpenChairInspector={onOpenChairInspector} onOpenCabinetInspector={onOpenCabinetInspector} onToggleChairSeated={onToggleChairSeated} stoveColor={stoveColor} setStoveColor={setStoveColor} dispatchInteraction={dispatchInteraction} onSelectPerson={onSelectPerson} bookshelfPreset={bookshelfPreset} customBookshelfTiers={customBookshelfTiers} isLinReading={isLinReading} onBookshelfClick={onBookshelfClick} onBookClick={onBookClick} triggerSofaSquish={triggerSofaSquish} sofaSquish={sofaSquish} sofaThought={sofaThought} onSelectMailbox={onSelectMailbox} unreadMailCount={unreadMailCount} onTriggerToast={onTriggerToast} />
 {cottageVergeDecoration ?? (currentMeadow ? <CottageVergeMeadowPlanting theme={theme} /> : undefined)}
-</SceneEntity>
+</SceneEntity></YardObject>
+          {sceneOptions.cottage === 'seedpod' && <YardObject id="main_cottage_venus">
+            <CottageVenusFloorWard theme={theme} layout={sceneLayout} />
+          </YardObject>}
 
           {/* ======================================================== */}
           {/* 2.5 VINTAGE CAPSULE CABIN (屋旁旧胶囊仓 · 卧室/休息室)    */}
           {/*     东侧独立休息区，与主屋之间留出草地间隔                */}
           {/* ======================================================== */}
-          <SceneEntity entityId="capsule_pod" layout={sceneLayout} id="capsule-pod-cluster">
-            <CapsulePodHaven
-              onSelectRoom={onSelectRoom}
-              presenceSlots={presenceSlots}
-              onSelectPerson={onSelectPerson}
-              setHoveredObject={setHoveredObject}
-              hasMovedRef={hasMovedRef}
-              theme={theme}
-            />
-          </SceneEntity>
+          <YardObject id="capsule_pod" positioned><SceneEntity entityId="capsule_pod" layout={sceneLayout} id="capsule-pod-cluster">
+            <CapsulePodHaven {...capsuleProps} />
+          </SceneEntity></YardObject>
 
           {/* ======================================================== */}
           {/* 3. FOREGROUND MEADOW & TRANQUIL MORANDI NEGATIVE SPACE   */}
           {/*    (前景大面积纯净留白负空间与点缀长椅，彻底解决杂乱与拥挤) */}
           {/* ======================================================== */}
           <ForegroundLandscape theme={theme} setHoveredObject={setHoveredObject} onTriggerToast={onTriggerToast} />
+          <CountryPicnic theme={theme} />
+          <TilledGardenPlot theme={theme} />
+          <MeadowTractor theme={theme} setHoveredObject={setHoveredObject} />
+          <KitchenHerbNursery theme={theme} />
+          <YardPaving theme={theme} />
+          <YardWearPaint theme={theme} />
           {hasNearPlants(meadowStudy) && (meadowForeground === 'points'
             ? <NearMeadowPlants theme={theme} />
             : <MeadowForegroundRegions theme={theme} entrance={meadowForeground === 'entrance'} />)}
+          </YardWorld>
         </g>
 
         {/* ======================================================== */}

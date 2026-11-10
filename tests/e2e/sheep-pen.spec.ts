@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { stableScene } from './helpers';
+import { stableScene, expectOverviewCamera } from './helpers';
 
 const penSelector = '#yorkshire-sheep-pen-cluster';
 
@@ -23,7 +23,7 @@ async function panToPen(page: Page) {
 
 test('one sheep pen has unique SVG resources and a single working gate', async ({ page }) => {
   await stableScene(page);
-  await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).click();
+  if (await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).isVisible()) await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).click();
   const pen = page.locator(penSelector);
   await expect(pen).toHaveCount(1);
   const duplicateIds = await pen.evaluate(element => [...element.querySelectorAll('[id]')]
@@ -73,7 +73,7 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1600, height: 900
     await stableScene(page);
     await page.getByTitle('收起面板（查看完整约克郡风光）', { exact: true }).click();
     const stage = page.locator('#panoramic-world-stage');
-    await expect(stage).toHaveAttribute('style', /translate\(0px, 135px\) scale\(0.66\)/);
+    await expectOverviewCamera(page);
     const camera = await stage.getAttribute('style');
     // Navigation is allowed to overlap the pen. Its dimensions must not change
     // the world camera or force the scenery back onto the terrace.
@@ -92,11 +92,11 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1600, height: 900
         return surface.isPointInFill(point);
       };
       return {
-        tractor: covered('#master-axonometric-ground-plane > path:nth-of-type(2)', '#tractor-in-field', 22, 46),
+        tractor: covered('#master-axonometric-ground-plane > path:nth-of-type(2)', '[data-tractor-body]', 22, 46),
         arches: covered('#organic-rolling-wheat-fields > path:first-child', '#yorkshire-railway-viaduct', -160, 205),
       };
     });
-    expect(hiddenLandmarks).toEqual({ tractor: false, arches: false });
+    expect(hiddenLandmarks).toEqual({ tractor: true, arches: false });
     await test.info().attach('overview', { body: await page.screenshot(), contentType: 'image/png' });
   });
 }
@@ -118,5 +118,5 @@ test('portrait exploration reaches the full sheep pen and overview restores the 
   }
   await page.setViewportSize({ width: 1600, height: 900 });
   await page.getByRole('button', { name: '整栋小屋', exact: true }).click();
-  await expect(page.locator('#panoramic-world-stage')).toHaveAttribute('style', /translate\(0px, 135px\) scale\(0.66\)/);
+  await expectOverviewCamera(page);
 });

@@ -6,10 +6,10 @@ import { meadowPlantPaletteCss } from './meadowPalette';
 /** Local coordinates retain the heritage tree's root at (0, 48). */
 export function guardianTreePalette(theme: YorkshireSceneTheme) {
   return theme.isNight
-    ? { deep: '#293d36', shade: '#354e3e', leaf: '#496349', light: '#6b8057', tip: '#839466', flower: '#b9af72', flowerLight: '#d7c88e', bark: '#51412c', barkLight: '#8c7854', barkShade: '#302c23', rope: '#a89c7d' }
+    ? { deep: '#293e30', shade: '#375237', leaf: '#4e6b3d', light: '#70874d', tip: '#94a767', flower: '#b5a264', flowerLight: '#d1ba7c', bark: '#51412c', barkLight: '#8c7854', barkShade: '#302c23', rope: '#a89c7d' }
     : theme.timeOfDay === 'dusk'
-      ? { deep: '#3e5036', shade: '#52643c', leaf: '#72834a', light: '#96a15c', tip: '#b5ba75', flower: '#d6aa54', flowerLight: '#eed08a', bark: '#81502a', barkLight: '#c69351', barkShade: '#472e1d', rope: '#c2ac80' }
-      : { deep: '#304b35', shade: '#45643c', leaf: '#618349', light: '#86a35c', tip: '#acbd79', flower: '#dbb156', flowerLight: '#f1d58b', bark: '#80542b', barkLight: '#c49a58', barkShade: '#493019', rope: '#baa17b' };
+      ? { deep: '#394d2d', shade: '#506638', leaf: '#738947', light: '#9ba655', tip: '#bdc577', flower: '#d6a448', flowerLight: '#ebc36d', bark: '#81502a', barkLight: '#c69351', barkShade: '#472e1d', rope: '#c2ac80' }
+      : { deep: '#2f4c30', shade: '#456737', leaf: '#638942', light: '#8ca850', tip: '#b1c571', flower: '#dba83f', flowerLight: '#f1cb70', bark: '#80542b', barkLight: '#c49a58', barkShade: '#493019', rope: '#baa17b' };
 }
 
 type Palette = ReturnType<typeof guardianTreePalette>;
@@ -58,38 +58,69 @@ export function OsmanthusWood({ palette: p }: { palette: Palette }) {
   </g>;
 }
 
-// Each crown is authored separately: a high left crown and a smaller outward right crown.
+// Four uneven crown volumes follow the existing branches. Dark undersides stay
+// visible between overlapping shoulders, while the lit patches occupy less area.
 const crowns = [
-  { d: 'M-80,-62 Q-90,-70 -79,-80 Q-86,-91 -72,-95 Q-76,-108 -59,-110 Q-52,-125 -39,-116 Q-28,-121 -21,-107 Q-9,-103 -17,-89 Q-10,-76 -25,-72 Q-32,-61 -44,-66 Q-55,-53 -65,-62 Q-73,-57 -80,-62Z', tone: 'shade' },
-  { d: 'M-40,-104 Q-52,-115 -40,-125 Q-42,-136 -27,-137 Q-19,-147 -7,-138 Q4,-144 12,-132 Q26,-132 25,-117 Q38,-106 25,-94 Q12,-83 -1,-94 Q-17,-83 -25,-98 Q-34,-94 -40,-104Z', tone: 'leaf' },
-  { d: 'M10,-91 Q3,-102 15,-110 Q14,-121 29,-121 Q37,-132 49,-121 Q62,-125 65,-112 Q80,-108 73,-96 Q82,-86 67,-80 Q57,-67 46,-77 Q32,-69 25,-80 Q15,-77 10,-91Z', tone: 'shade' },
-  { d: 'M65,-68 Q57,-80 71,-87 Q73,-98 86,-92 Q99,-98 103,-85 Q116,-81 108,-71 Q118,-60 105,-54 Q96,-42 85,-51 Q71,-44 68,-57 Q60,-58 65,-68Z', tone: 'leaf' },
-  { d: 'M-81,-82 Q-84,-92 -71,-97 Q-73,-108 -58,-109 Q-48,-122 -36,-112 Q-25,-113 -24,-101 Q-12,-94 -23,-85 Q-33,-78 -45,-85 Q-56,-74 -66,-81 Q-75,-76 -81,-82Z', tone: 'leaf' },
-  { d: 'M-41,-117 Q-43,-128 -28,-129 Q-24,-141 -12,-134 Q0,-139 5,-128 Q18,-127 15,-115 Q5,-105 -5,-111 Q-15,-101 -25,-111 Q-36,-106 -41,-117Z', tone: 'light' },
-  { d: 'M-58,-102 Q-67,-111 -54,-116 Q-45,-125 -36,-116 Q-23,-117 -24,-107 Q-27,-97 -39,-101 Q-48,-92 -58,-102Z', tone: 'light' },
-  { d: 'M20,-101 Q15,-111 29,-113 Q36,-124 47,-115 Q60,-118 60,-106 Q71,-100 60,-91 Q48,-83 40,-93 Q29,-86 20,-101Z', tone: 'leaf' },
-  { d: 'M70,-80 Q68,-88 80,-88 Q87,-98 95,-88 Q107,-87 103,-77 Q94,-67 85,-74 Q75,-69 70,-80Z', tone: 'light' },
+  { d: 'M-80,-64 Q-86,-70 -81,-77 Q-87,-85 -79,-91 L-74,-92 Q-75,-106 -61,-109 L-58,-115 Q-51,-123 -42,-117 L-37,-119 Q-23,-116 -22,-106 L-16,-103 Q-9,-96 -16,-87 Q-12,-77 -23,-73 Q-25,-65 -39,-64 L-45,-68 Q-55,-56 -64,-63 Q-73,-58 -80,-64Z', tone: 'shade' },
+  { d: 'M-39,-103 Q-50,-110 -45,-121 L-39,-126 Q-43,-136 -29,-138 L-23,-143 -16,-140 Q-6,-146 1,-137 L9,-138 Q23,-134 25,-123 L29,-116 Q34,-103 23,-98 L20,-91 -1,-91 -12,-97 -22,-93Z', tone: 'shade' },
+  { d: 'M10,-94 Q5,-103 15,-110 L18,-119 29,-121 Q38,-132 47,-122 L56,-123 Q66,-121 66,-111 L73,-107 Q79,-100 73,-91 Q77,-83 65,-78 Q59,-72 49,-78 Q40,-73 34,-80 Q22,-76 18,-85 Q10,-84 10,-94Z', tone: 'shade' },
+  { d: 'M65,-68 L62,-77 70,-84 Q69,-95 82,-93 L87,-96 96,-91 Q105,-93 107,-83 L113,-78 109,-71 Q117,-64 108,-57 L101,-56 Q97,-45 87,-51 L81,-48 72,-53 68,-60 61,-62Z', tone: 'shade' },
+  { d: 'M-79,-85 Q-81,-94 -70,-98 Q-73,-104 -60,-107 Q-54,-116 -44,-111 L-38,-112 Q-29,-107 -31,-99 Q-20,-94 -26,-86 Q-32,-77 -44,-81 Q-49,-74 -60,-80 Q-68,-72 -74,-79Z', tone: 'leaf' },
+  { d: 'M-39,-119 Q-41,-127 -28,-129 Q-23,-140 -14,-134 L-7,-137 Q2,-135 5,-127 L13,-126 Q24,-117 15,-110 Q10,-102 -2,-109 Q-8,-102 -20,-110 Q-28,-104 -36,-112Z', tone: 'leaf' },
+  { d: 'M14,-99 Q14,-110 26,-112 Q29,-121 40,-117 Q48,-124 56,-113 L62,-111 Q70,-102 61,-95 Q64,-87 49,-86 L42,-90 Q33,-81 24,-89 Q17,-85 14,-99Z', tone: 'leaf' },
+  { d: 'M72,-75 Q70,-83 79,-85 L84,-89 90,-87 Q99,-89 102,-80 L107,-77 103,-70 96,-69 92,-64 83,-68 77,-65 73,-69Z', tone: 'leaf' },
+  { d: 'M-69,-97 Q-68,-105 -58,-106 Q-55,-113 -46,-108 L-41,-109 Q-35,-106 -35,-103 Q-38,-97 -47,-101 Q-52,-94 -59,-99 Q-63,-93 -69,-97Z', tone: 'light' },
+  { d: 'M-30,-128 Q-28,-132 -25,-131 Q-23,-138 -15,-132 Q-9,-137 -4,-129 Q3,-130 4,-123 Q1,-119 -4,-121 L-10,-124 Q-17,-117 -22,-124 Q-27,-119 -30,-128Z', tone: 'light' },
+  { d: 'M24,-111 Q30,-118 36,-113 Q41,-119 48,-111 Q55,-114 56,-105 Q51,-100 44,-106 Q38,-99 33,-106 Q28,-101 24,-111Z', tone: 'light' },
+  { d: 'M77,-83 Q80,-89 87,-84 Q94,-88 98,-79 Q96,-72 88,-78 Q81,-72 77,-83Z', tone: 'light' },
+  // A small forward-facing spray overlaps the central leader's flat end,
+  // including enough margin for the canopy's gentle rustling rotation.
+  { d: 'M-25,-100 Q-19,-105 -14,-100 Q-8,-103 -4,-98 Q3,-100 6,-93 Q2,-87 -4,-89 Q-11,-82 -17,-88 Q-24,-85 -26,-92Z', tone: 'shade' },
+  { d: 'M-22,-98 Q-18,-102 -14,-98 Q-9,-101 -6,-96 Q-1,-98 1,-94 Q-4,-91 -9,-94 Q-15,-90 -18,-94Z', tone: 'leaf' },
 ] as const;
 
+// Leaf sprays follow the ends of four branch fans; most of the crown remains
+// quiet mass. Blooms are placed separately at leaf axils, not on every spray.
 const sprigs = [
-  [-75,-91,-24,.9], [-63,-103,18,1], [-49,-113,-12,.85], [-34,-104,26,1],
-  [-68,-77,-30,.8], [-48,-86,10,1], [-26,-86,36,.8], [-30,-123,-25,.85],
-  [-13,-132,16,.9], [3,-119,-18,.9], [-10,-108,35,1], [19,-103,-28,.8],
-  [35,-113,18,.95], [51,-105,-15,.85], [37,-91,28,1], [61,-91,35,.75],
-  [77,-84,-24,.8], [92,-82,28,.85], [101,-66,48,.7], [82,-62,15,.8],
+  [-76,-87,-68,.58],[-65,-101,-48,.66],[-51,-106,-25,.64],[-36,-98,12,.58],
+  [-70,-72,-80,.55],[-57,-85,-37,.7],[-40,-76,25,.62],[-24,-90,44,.56],
+  [-29,-126,-36,.6],[-15,-132,-8,.64],[-2,-124,19,.6],[14,-115,49,.61],[-12,-110,-21,.68],
+  [23,-107,-30,.63],[37,-115,4,.62],[52,-106,32,.67],[61,-91,65,.56],[34,-91,26,.6],
+  [76,-83,-23,.59],[90,-83,18,.58],[103,-72,57,.53],[85,-62,65,.57],
+  [-73,-81,-55,.56],[-49,-88,-12,.7],[-34,-83,43,.54],[-25,-111,-32,.66],
+  [4,-111,36,.62],[26,-94,-23,.6],[53,-92,53,.54],[91,-68,42,.55],
+  [-12,-91,-14,.46],
+] as const;
+
+const blossomClusters = [
+  { x:-61,y:-90, flowers:[[0,0,1],[-4,3,.8],[3,4,.9],[-1,7,.7],[6,1,.6]] },
+  { x:-31,y:-81, flowers:[[0,0,.8],[4,2,.65]] },
+  { x:-14,y:-118, flowers:[[0,0,.9],[-4,2,.65],[3,4,.85],[0,7,.65]] },
+  { x:35,y:-99, flowers:[[0,0,1],[4,-2,.75],[-3,4,.8],[3,5,.65],[7,2,.6]] },
+  { x:56,y:-88, flowers:[[0,0,.7],[4,2,.6]] },
+  { x:86,y:-73, flowers:[[0,0,.9],[-4,2,.75],[3,4,.8],[-1,6,.6]] },
 ] as const;
 
 export function OsmanthusCanopy({ palette: p, rustling }: { palette: Palette; rustling: boolean }) {
   return <g id="guardian-tree-canopy" className="guardian-osmanthus-canopy" data-rustling={rustling}>
     {crowns.map(({ d, tone }, i) => <path key={i} d={d} fill={p[tone]} />)}
-    {/* Opposite, pointed evergreen leaves and small four-petalled flowers. */}
+    <path d="M-77,-72 Q-70,-65 -64,-69 L-58,-66 Q-50,-66 -47,-71 Q-43,-65 -34,-68 L-31,-73 Q-37,-71 -41,-74 Q-47,-70 -53,-74 Q-60,-69 -66,-74Z
+      M22,-87 Q29,-80 36,-85 Q42,-79 49,-83 Q58,-78 64,-86 L60,-89 Q54,-84 49,-88 Q41,-84 36,-89 Q29,-84 22,-90Z"
+      fill={p.deep} opacity=".62" />
+    {/* Short glimpses of branch forks connect the foliage to its supporting limbs. */}
+    <path d="M-71,-71 L-65,-79 -62,-86 M-65,-79 L-72,-83 M-23,-98 L-18,-107 -20,-115 M-18,-107 L-10,-111 M44,-81 L43,-89 48,-96 M43,-89 L37,-93 M83,-54 L89,-62 89,-70"
+      stroke={p.bark} strokeWidth="1.1" fill="none" strokeLinecap="round" />
     {sprigs.map(([x,y,angle,size], i) => <g key={i} transform={`translate(${x} ${y}) rotate(${angle}) scale(${size})`}>
-      <path d="M-9,4 Q-4,0 10,-6" fill="none" stroke={p.shade} strokeWidth=".7" />
-      <path d="M-3,1 Q-14,1 -15,-6 Q-5,-8 -3,1 M1,-1 Q-3,-11 3,-14 Q9,-6 1,-1 M5,-3 Q8,-13 15,-11 Q14,-4 5,-3" fill={i % 3 === 0 ? p.tip : p.light} />
-      <path d="M-3,1 L-12,-5 M1,-1 L3,-11" stroke={p.leaf} strokeWidth=".55" fill="none" />
-      {[[0,3],[5,1],[-4,6]].map(([fx,fy], j) => <g key={j} transform={`translate(${fx} ${fy}) scale(${j === 0 ? 1 : .72})`}>
-        <path d="M0,0 C-5,-1 -3,-5 0,-2 C2,-6 5,-2 2,0 C6,2 2,5 0,2 C-3,5 -5,1 0,0Z" fill={i % 2 ? p.flower : p.flowerLight} />
-        <circle r=".65" fill={p.flower} />
+      <path d="M0,5 Q1,-2 3,-12" fill="none" stroke={p.shade} strokeWidth=".8" />
+      <path d="M1,1 Q-8,0 -9,-7 Q-2,-8 1,1 M2,-4 Q6,-12 12,-9 Q11,-2 2,-4 M3,-10 Q0,-17 5,-20 Q9,-15 3,-10Z"
+        fill={i%7===0?p.tip:i%4===0?p.leaf:p.light} />
+      {i%2===0 && <path d="M1,1 L-7,-6 M2,-4 L9,-8" stroke={p.leaf} strokeWidth=".6" fill="none" />}
+    </g>)}
+    {blossomClusters.map(({x,y,flowers},i) => <g key={i} transform={`translate(${x} ${y})`} data-osmanthus-blossoms="">
+      <path d="M-3,4 L0,1 4,2 M0,1 L0,-2" fill="none" stroke={p.shade} strokeWidth=".65" />
+      {flowers.map(([fx,fy,size],j) => <g key={j} transform={`translate(${fx} ${fy}) rotate(${j*23}) scale(${size})`}>
+        <path d="M0,-.8 C-3,-4 -4,0 -.9,.2 C-4,3 0,5 .5,1.2 C3,4 5,0 1.3,-.2 C4,-3 0,-5 0,-.8Z" fill={j%3===0?p.flowerLight:p.flower} />
+        <circle r=".55" fill={p.flower} />
       </g>)}
     </g>)}
   </g>;

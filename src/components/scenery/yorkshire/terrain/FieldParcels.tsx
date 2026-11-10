@@ -1,9 +1,9 @@
 import { useId } from 'react';
-import { tramlineX } from '../../../../world/scene/fieldParcels';
+import { FIELD_DETAIL_FRONT_Y, tramlineX } from '../../../../world/scene/fieldParcels';
 import { Grass, Plant } from '../vegetation/MeadowVegetationAssets';
 
 const BACK = 150;
-const FRONT = 520;
+const FRONT = FIELD_DETAIL_FRONT_Y;
 const a = (y: number) => tramlineX(4, y);
 const b = (y: number) => tramlineX(5, y);
 const west = `M-3200,${BACK} H${a(BACK)} L${a(FRONT)},${FRONT} H-3200Z`;
@@ -12,7 +12,8 @@ const east = `M${b(BACK)},${BACK} H4200 V${FRONT} H${b(FRONT)}Z`;
 // A low, grassy crown above the crop plane. Width and lift taper into distance;
 // the shallow earth side is a filled face, not two long outline strokes.
 function bankSection(index: number, y: number) {
-  const depth = (y - BACK) / (FRONT - BACK);
+  // Preserve the accepted bank width at every existing anchor as it continues.
+  const depth = (y - BACK) / (520 - BACK);
   return { x: tramlineX(index, y), y, width: 1.7 + depth * 14,
     lift: .45 + depth * 3.2, irregularity: Math.sin(y * .13 + index) * depth * .9 };
 }
@@ -29,15 +30,20 @@ const BANK_PLANTS = [
   { line: 4, y: 267, side: -1 }, { line: 4, y: 283, side: 1 }, { line: 4, y: 326, side: -1 },
   { line: 5, y: 209, side: 1 }, { line: 5, y: 224, side: -1 },
   { line: 5, y: 269, side: 1 }, { line: 5, y: 288, side: -1 }, { line: 5, y: 338, side: 1 },
+  { line: 4, y: 365, side: 1 }, { line: 4, y: 410, side: -1 },
+  { line: 4, y: 466, side: 1 }, { line: 4, y: 516, side: -1 },
+  { line: 5, y: 379, side: -1 }, { line: 5, y: 423, side: 1 },
+  { line: 5, y: 478, side: -1 }, { line: 5, y: 529, side: 1 },
 ];
 
 // A sparse cut-stubble patch, compressed into the ground plane. The central and
 // eastern parcels remain open; this is not a full-width texture or transition band.
-const stubble = Array.from({ length: 8 }, (_, row) => {
+const stubble = Array.from({ length: 32 }, (_, row) => {
   const y = 225 + row * 9;
   const left = -230 + row * 13, right = a(y) - 26;
-  return Array.from({ length: Math.max(0, Math.floor((right - left) / 24)) }, (_, col) => {
-    const x = left + col * 24 + (row % 2) * 7;
+  const spacing = 24 + Math.max(0, row - 7) * .65;
+  return Array.from({ length: Math.max(0, Math.floor((right - left) / spacing)) }, (_, col) => {
+    const x = left + col * spacing + (row % 2) * 7;
     const dy = ((col * 7 + row * 3) % 5) - 2;
     return `M${x},${y + dy} l1,-2.2 m3,1 l.7,-1.4`;
   }).join(' ');
@@ -56,7 +62,7 @@ export function FieldParcels({ surfacePath }: { surfacePath: string }) {
       {BANKS.map(bank => <g key={bank.index} data-parcel-margin={bank.index} data-bank-profile="raised">
         <path data-bank-face="" d={bank.face} fill="#a38c53" opacity=".65" />
         <path data-bank-crown="" d={bank.top} fill="#a8ad69" opacity=".82" />
-        {[218, 259, 302].map((y, i) => {
+        {[218, 259, 302, 366, 431, 503].map((y, i) => {
           const start = bankSection(bank.index, y), end = bankSection(bank.index, y + 10 + i * 3);
           return <path key={y} d={`M${start.x - start.width * .5},${y - start.lift} L${end.x - end.width * .5},${end.y - end.lift}`}
             stroke="#cfcb8b" strokeWidth={1 + i * .25} opacity=".55" strokeLinecap="round" />;

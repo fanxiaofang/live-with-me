@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { stableScene } from './helpers';
+import { stableScene, selectView } from './helpers';
 
 for(const viewport of [{width:1200,height:800},{width:1600,height:900},{width:390,height:844}]) {
   for(const zoom of [0.66,1.6,2.5]) {
@@ -52,7 +52,7 @@ test('cancel and lost capture restore layout without saving; axis drag follows i
 
 test('manual pan uses root SVG deltas, suppresses navigation, cancels, and the selected room refocuses',async({page})=>{
   await stableScene(page);
-  await page.getByRole('button',{name:'我的阁楼房间',exact:true}).click();
+  await page.locator('#room-my_room').press('Enter');
   const stage=page.locator('#panoramic-world-stage');
   const original=await stage.getAttribute('style');
   const beforePan=await stage.evaluate(e=>{const m=new DOMMatrix(getComputedStyle(e).transform);return {x:m.e,y:m.f};});
@@ -60,7 +60,7 @@ test('manual pan uses root SVG deltas, suppresses navigation, cancels, and the s
   const afterPan=await stage.evaluate(e=>{const m=new DOMMatrix(getComputedStyle(e).transform);return {x:m.e,y:m.f};});
   expect(afterPan.x-beforePan.x).toBeCloseTo(40,4);
   expect(afterPan.y-beforePan.y).toBeCloseTo(30,4);
-  await page.getByRole('button',{name:'我的阁楼房间',exact:true}).click();
+  await page.locator('#room-my_room').press('Enter');
   expect(await stage.getAttribute('style')).toBe(original);
   await page.mouse.move(800,180);await page.mouse.down();await page.mouse.move(830,195,{steps:3});
   await page.locator('#panoramic-world-stage').dispatchEvent('pointercancel',{pointerId:1});await page.mouse.up();
@@ -97,9 +97,12 @@ test('one-to-two-to-one touch switching rebases smoothly and cancels the whole g
   await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:520,y:170,id:1}]});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:520,y:170,id:1},{x:700,y:170,id:2}]});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:510,y:170,id:1},{x:710,y:170,id:2}]});
+  await page.evaluate(() => new Promise(requestAnimationFrame));
   const pinch=await stage.getAttribute('style');
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[{x:710,y:170,id:2}]});
+  await page.evaluate(() => new Promise(requestAnimationFrame));
   await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:520,y:170,id:1}]});
+  await page.evaluate(() => new Promise(requestAnimationFrame));
   const after=await stage.getAttribute('style');
   const translation=(value:string|null)=>Number(value!.match(/translate\(([^p]+)px/)![1]);
   expect(translation(after)-translation(pinch)).toBeCloseTo(10,3);

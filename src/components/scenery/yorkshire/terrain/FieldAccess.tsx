@@ -2,18 +2,15 @@ import { memo, useId } from 'react';
 import { FIELD_ACCESS, FIELD_ACCESS_BANK, FIELD_ACCESS_WASH, fieldAccessPoint } from '../../../../world/scene/fieldAccess';
 import type { YorkshireSceneTheme } from '../landscapeTypes';
 import { MeadowWearPatch } from '../dressing/MeadowWearPatch';
+import { fieldAccessPalette } from './groundReferencePalette';
 
 /** Foreground-owned wear through a clear lawn corridor. Overlap is restricted to
  * the soil foot; no rigid path tries to bridge the two camera transforms. */
 export const FieldAccess = memo(function FieldAccess({ theme }: { theme: YorkshireSceneTheme }) {
   const id = 'field-access-' + useId().replace(/:/g, '');
-  const soil = theme.isNight ? '#68694e' : theme.isRainy ? '#9b9269' : theme.timeOfDay === 'dusk' ? '#b2a176' : '#bcb180';
+  const { soil, ...wearTheme } = fieldAccessPalette(theme);
   // The old global road palette becomes almost black at dusk/night. This longer
   // exposed path needs soil close to the current meadow, while reusing entry wear.
-  const wearTheme = {
-    roadColor: theme.isNight ? '#68715a' : theme.isRainy ? '#8b8964' : theme.timeOfDay === 'dusk' ? '#a39771' : theme.roadColor,
-    hillGreenFar: theme.isNight ? '#5f6e50' : theme.hillGreenFar,
-  };
   return <g id={id} data-field-access="" data-access-owner="meadow" pointerEvents="none" aria-hidden="true">
     <defs>
       <linearGradient id={id + '-bank'} x1="0" y1={FIELD_ACCESS.foot.y - 2} x2="0" y2={FIELD_ACCESS.foot.y + 10} gradientUnits="userSpaceOnUse">

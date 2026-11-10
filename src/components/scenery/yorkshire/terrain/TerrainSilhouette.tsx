@@ -5,8 +5,9 @@ import { FOOTHILL_FARMSTEADS, foothillSurfaceY } from '../../../../world/scene/f
 import { requestedMeadowFoothill } from '../../../../world/scene/currentScene';
 import { MEADOW_HILL_FARM } from '../../../../world/scene/meadowFoothill';
 import type { YorkshireSceneTheme } from '../landscapeTypes';
-import { LandscapeTreeShape, type LandscapeTreeSpecies } from '../vegetation/LandscapeTreeShape';
-import { WHEAT_TRAMLINES, tramlinePoint } from '../../../../world/scene/fieldParcels';
+import type { LandscapeTreeSpecies } from '../vegetation/LandscapeTreeShape';
+import { NearFieldTreeShape } from '../vegetation/NearFieldTreeShape';
+import { FIELD_DETAIL_FRONT_Y, WHEAT_TRAMLINES, tramlinePoint, tramlineX } from '../../../../world/scene/fieldParcels';
 import { FieldParcels } from './FieldParcels';
 import { FieldDressing } from '../dressing/FieldDressing';
 
@@ -37,7 +38,7 @@ interface TerrainSurfaceProps extends YorkshireCommonProps {
 }
 
 const WHEAT_MARGIN_SECTIONS = [3, 4, 5, 6].map(index => ({
-  index, start: tramlinePoint(index, 0.14), end: tramlinePoint(index, 0.48),
+  index, start: tramlinePoint(index, 0.14), end: { x: tramlineX(index, FIELD_DETAIL_FRONT_Y), y: FIELD_DETAIL_FRONT_Y },
 }));
 const WHEAT_BOUNDARY_POSTS = wheatBoundaryFencePosts();
 const REFINED_BOUNDARY_POSTS = wheatBoundaryFencePosts(true);
@@ -57,11 +58,14 @@ const WHEAT_TREE_CLUSTERS: { line: number; t: number; trees: { t: number; dx: nu
   { line: 4, t: 0.27, trees: [{ t: -0.015, dx: -2, s: .78, species: 'birch' }, { t: 0.015, dx: 2, s: .92, species: 'broadleaf' }] },
   { line: 5, t: 0.29, trees: [{ t: -0.025, dx: -2, s: .84, species: 'pine' }, { t: 0, dx: 2, s: 1, species: 'birch' }, { t: 0.035, dx: -1, s: .9, species: 'broadleaf' }] },
 ];
+// Both existing clusters are in the middle of the wheat field. Scale at their
+// planted roots; the separate foothill woodland retains its distant proportions.
+const WHEAT_TREE_SCALE = 1.25;
 // Closer than the foothill woodland: clearer trunks and warmer, less air-mixed crowns.
 const FIELD_TREE_COLORS = {
   pine: { leaf: '#587548', shade: '#3e5c3d', light: '#7d9055' },
   birch: { leaf: '#718b52', shade: '#4f7044', light: '#9ba96b' },
-  broadleaf: { leaf: '#7a8448', shade: '#596b3c', light: '#9b9d5c' },
+  broadleaf: { leaf: '#89894a', shade: '#606e3d', light: '#aeab64' },
 };
 
 /**
@@ -339,7 +343,8 @@ export const MountainSilhouette: React.FC<TerrainSurfaceProps> = ({ theme, class
  * Layer 02: MIDGROUND ROLLING WHEAT FIELDS
  */
 export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouetteAsset({ theme, className, frontExtension = 0, rearRefined = false }: TerrainSurfaceProps) {
-  const surfacePath = rollingWheatPath(frontExtension, rearRefined);
+  // Keep a fully authored crop plane under the meadow, even before it is exposed.
+  const surfacePath = rollingWheatPath(Math.max(180, frontExtension), rearRefined);
   const environmentStyle = theme.landscapeEnvironment ? { filter: 'url(#field-environment-tone)' } : undefined;
 
   return (
@@ -376,7 +381,7 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
         {/* Restore the original faint diagonal tramlines for a little ground depth. */}
         <g id="flat-wheat-tramlines" opacity="0.14" pointerEvents="none">
           {(rearRefined ? REFINED_TRAMLINES : WHEAT_TRAMLINES).map((line, idx) => (
-            <line key={`ftl-${idx}`} {...line} stroke="#6b4c16"
+            <line key={`ftl-${idx}`} {...line} x2={tramlineX(idx, FIELD_DETAIL_FRONT_Y)} y2={FIELD_DETAIL_FRONT_Y} stroke="#6b4c16"
               strokeWidth="0.8" strokeDasharray="14 7" />
           ))}
         </g>
@@ -410,10 +415,11 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
                 const point = tramlinePoint(cluster.line, cluster.t + tree.t);
                 return (
                   <g key={i} data-field-tree="" data-tree-species={tree.species}
-                    transform={`translate(${point.x + tree.dx}, ${point.y}) scale(${tree.s})`}>
+                    transform={`translate(${point.x + tree.dx}, ${point.y}) scale(${tree.s * WHEAT_TREE_SCALE})`}>
                     <ellipse cx="1" cy="1" rx="12" ry="2.5" fill="#74723f" opacity="0.2" />
-                    <LandscapeTreeShape species={tree.species} {...FIELD_TREE_COLORS[tree.species]}
-                      trunk="#625238" birchTrunk="#dfdfc8" />
+                    <NearFieldTreeShape species={tree.species} {...FIELD_TREE_COLORS[tree.species]}
+                      trunk="#625238" birchTrunk="#dfdfc8"
+                      birchCrown={tree.species === 'birch' ? 'open-weave' : undefined} />
                   </g>
                 );
               })}

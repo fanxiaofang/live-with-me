@@ -1,8 +1,20 @@
 /** Fixed crop-plane placements. Depth owns the footprint, size and detail level;
  * it is not adjusted by the camera or by the foreground occlusion. */
 export function fieldDressingDepth(depth: number) {
-  return { y: 208 + depth * 78, scale: .43 + depth * .7, opacity: .79 + depth * .21 };
+  // Preserve the original rear sizes; nearer rolls grow gently rather than
+  // extrapolating the distant perspective into oversized foreground objects.
+  const scale = depth <= 1 ? .43 + depth * .7 : 1.13 + Math.min(.22, (depth - 1) * .18);
+  return { y: 208 + depth * 78, scale, opacity: Math.min(1, .79 + depth * .21) };
 }
+
+// Permanent crop-plane anchors revealed by downward pans. Leave a clear strip
+// before the meadow edge instead of lining it with partially occluded rolls.
+const FRONT_FIELD_BALES = [
+  [-2780, 332], [-1960, 343], [-1260, 328], [-610, 340], [55, 334],
+  [685, 347], [1480, 333], [2120, 345], [2900, 329], [3760, 340],
+  // Four requested accents in the expanded field, clear of the meadow fringe.
+  [-310, 398], [285, 389], [1040, 383], [1770, 386],
+].map(([x, y], i) => ({ id: `front-field-${i}`, x, depth: (y - 208) / 78 }));
 
 export const FIELD_HAY_BALES = [
   { id: 'far-west', x: -1150, depth: .08 },
@@ -26,6 +38,7 @@ export const FIELD_HAY_BALES = [
   { id: 'near-east-inner', x: 1160, depth: .96 },
   { id: 'near-east', x: 1470, depth: .94 },
   { id: 'near-outer', x: 1960, depth: .99 },
+  ...FRONT_FIELD_BALES,
 ].sort((a, b) => a.depth - b.depth);
 
 export const FIELD_SCARECROWS = [

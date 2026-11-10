@@ -1,3 +1,5 @@
+import { useYardEditor } from './features/yard-editor/useYardEditor';
+import { YardPanel } from './features/yard-editor/YardPanel';
 import type { WorldViewId } from './types';
 import { useBookshelf } from './features/bookshelf/useBookshelf';
 import { useToast } from './features/feedback/useToast';
@@ -34,7 +36,10 @@ const ChairInspectionModal = lazy(() => import('./components/desk/ChairInspectio
 const CabinetDetailModal = lazy(() => import('./components/cabinet/CabinetDetailModal').then(module => ({ default: module.CabinetDetailModal })));
 
 export default function App() {
-  const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('day');
+  const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>(() => {
+    const query=new URLSearchParams(window.location.search),time=query.get('wearTime');
+    return time==='dusk'||time==='night'?time:query.has('wearNightStudy')?'night':'day';
+  });
   const [memories, setMemories] = useState<LivingMemory[]>(INITIAL_MEMORIES);
   const [activeRoom, setRoom] = useState<WorldViewId>('overview');
   const [focusRevision, setFocusRevision] = useState(0);
@@ -104,6 +109,8 @@ export default function App() {
     updatePosition:handleUpdateLayoutPosition,dragDelta:handleDragGizmoDelta,
     beginDrag,commitDrag,cancelDrag,reset:handleResetLayoutDefaults} = useLayoutEditor(triggerToast);
 
+  const yard = useYardEditor();
+
   useEffect(() => () => ambientAudio.dispose(), []);
 
   return (
@@ -134,6 +141,8 @@ export default function App() {
       <div className="absolute inset-0 z-0">
         <DeskStudyContext.Provider value={deskStudyPreview && deskStudyDraft ? { surface: deskStudyDraft.surface, guides: deskStudyPreview.guides } : null}>
         <ThreeWorld
+          yardEditor={yard}
+          sceneLayout={yard.sceneLayout}
           timeOfDay={timeOfDay}
           presenceAllocation={presenceAllocation}
           people={people}
@@ -193,7 +202,9 @@ export default function App() {
       </aside>}
 
       {/* 3.5 2.5D 全屋轴测拖拽对齐校准面板 */}
-      {!deskStudyPreview && <LayoutInspectorPanel
+      {!deskStudyPreview && !isLayoutInspectorOpen && <YardPanel editor={yard} onOpen={() => { setActiveRoom('overview'); yard.setActive(true); }} />}
+
+      {!deskStudyPreview && !yard.active && <LayoutInspectorPanel
         layout={roomLayout}
         activeId={isLayoutInspectorOpen ? activeGizmoId : null}
         onSelectObject={setActiveGizmoId}

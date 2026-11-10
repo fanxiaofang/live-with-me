@@ -5,6 +5,8 @@ import { Grass, Plant } from './MeadowVegetationAssets';
 import { meadowPlantPaletteCss, meadowSeedPalette } from './meadowPalette';
 import { MEADOW_ENTRANCE, MEADOW_FOREGROUND_CLUSTERS } from './meadowForeground';
 import { MEADOW_STUDY } from './meadowStudy';
+import { YardObject } from '../../../../features/yard-editor/YardWorld';
+import type { YardGrassId } from '../../../../features/yard-editor/yardGrassObjects';
 
 export const MeadowForegroundRegions = memo(function MeadowForegroundRegions({ theme, entrance = false }: {
   theme: YorkshireSceneTheme; entrance?: boolean;
@@ -17,8 +19,9 @@ export const MeadowForegroundRegions = memo(function MeadowForegroundRegions({ t
   return <g id={id} data-meadow-regions="" pointerEvents="none" aria-hidden="true">
     <style>{meadowPlantPaletteCss(theme, '#' + id)}</style>
     {entrance && <MeadowEntrance theme={theme} />}
-    {clusters.map(c => <g key={c.id} data-meadow-region={c.side} data-region-clump={c.id}
+    {clusters.map(c => <YardObject key={c.id} id={`grass_foreground_${c.id}` as YardGrassId}><g id={`${id}-${c.id}`} data-meadow-region={c.side} data-region-clump={c.id}
       data-world-root={c.x + ',' + c.y} transform={'translate(' + c.x + ' ' + c.y + ') scale(' + c.scale + ')'}>
+      <style>{meadowPlantPaletteCss(theme, '#' + id + '-' + c.id)}</style>
       <Grass type={c.kind === 'low' ? 'leaning' : 'meadow'} x={-18} y={0} scale={c.kind === 'low' ? .66 : .74} flip={c.side === 'left'} />
       <Grass type="woven" x={29} y={5} scale={.68} flip={c.side === 'right'} />
       <Grass type="short" x={-53} y={7} scale={.48} />
@@ -34,6 +37,6 @@ export const MeadowForegroundRegions = memo(function MeadowForegroundRegions({ t
         </g>)}
       {c.kind === 'mixed' && <g transform="translate(6 -7) scale(.5)"><Plant species="daisy" /></g>}
       {c.id === 'left-middle' && <g transform="translate(47 0) scale(.38)"><Plant species="buttercup" /></g>}
-    </g>)}
+    </g></YardObject>)}
   </g>;
 });

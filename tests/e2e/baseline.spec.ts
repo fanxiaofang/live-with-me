@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { ROOM_VIEWS, stableScene } from './helpers';
+import { ROOM_VIEWS, stableScene, selectView } from './helpers';
 
-test('all eight navigation entries and the v6 editor remain usable', async ({ page }) => {
+test('all navigation entries and the v6 editor remain usable', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', e => errors.push(e.message));
   await stableScene(page);
   for (const [, label] of ROOM_VIEWS) {
-    await page.getByRole('button', { name: label, exact: true }).click();
+    await selectView(page, label);
     await expect(page.locator('#panoramic-world-stage')).toBeVisible();
   }
   await page.getByRole('button', { name: '全屋 2.5D 布局校准器', exact: true }).click();
@@ -27,7 +27,7 @@ for (const [id, label] of ROOM_VIEWS) {
   test(`@visual day ${id}`, async ({ page }) => {
     test.skip(process.platform !== 'win32', 'Visual baselines use Windows/Chromium/DPR=1');
     await stableScene(page);
-    await page.getByRole('button', { name: label, exact: true }).click();
+    await selectView(page, label);
     await expect(page).toHaveScreenshot(`${id}.png`);
     const first = await page.screenshot({ animations: 'disabled' });
     expect((await page.screenshot({ animations: 'disabled' })).equals(first),

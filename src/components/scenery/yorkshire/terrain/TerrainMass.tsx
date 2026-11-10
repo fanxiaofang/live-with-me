@@ -1,3 +1,4 @@
+import { YardAttachment } from '../../../../features/yard-editor/YardWorld';
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
 import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
@@ -30,6 +31,8 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
   const contactGradient = 'field-contact-' + React.useId().replace(/:/g, '');
   const boundary = YORKSHIRE_LAYOUT.drystoneWalls.eastWall;
   const station = sceneLayout.observatory;
+  const duskLawn = theme.timeOfDay === 'dusk' && !theme.isNight && !theme.isRainy;
+  const dayLawn = theme.timeOfDay === 'day' && !theme.isNight && !theme.isRainy;
   // Matching curve segments keep both feather rings around the entire organic silhouette.
   // The west apron gives the pumpkin rack a grass margin. The east shoulder
   // recedes before the sheep pen; the front yard extends toward y=630.
@@ -51,9 +54,9 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
           y1={FIELD_EDGE_STUDY.pastureGradientY[0]} y2={FIELD_EDGE_STUDY.pastureGradientY[1]} />}
         {/* 庭院微丘向阳面温暖漫射光斑 (Afternoon Sunbeam Dapple across Courtyard) */}
         <radialGradient id="lawnSunDapple" cx="48%" cy="42%" r="52%">
-          <stop offset="0%" stopColor="#d3ed7a" stopOpacity="0.25" />
-          <stop offset="50%" stopColor="#badb5e" stopOpacity="0.14" />
-          <stop offset="80%" stopColor="#8db042" stopOpacity="0.05" />
+          <stop offset="0%" stopColor={duskLawn ? '#e2c17b' : dayLawn ? '#d4df89' : '#d3ed7a'} stopOpacity="0.25" />
+          <stop offset="50%" stopColor={duskLawn ? '#b8b162' : dayLawn ? '#b9cf6b' : '#badb5e'} stopOpacity="0.14" />
+          <stop offset="80%" stopColor={duskLawn ? '#89924a' : dayLawn ? '#94ad4b' : '#8db042'} stopOpacity="0.05" />
           <stop offset="100%" stopColor="#5c7a2b" stopOpacity="0" />
         </radialGradient>
 
@@ -310,9 +313,9 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
       {/* 3. 外围低缓地形。只用柔和光影暗示起伏，不把外围设施并入主草台。 */}
       {/* ========================================================================= */}
       <g id="terrace-embedded-features" pointerEvents="none">
-        <path id="guardian-tree-lower-slope"
+        <YardAttachment id="osmanthus"><path id="guardian-tree-lower-slope"
           d="M 188,584 C 178,553 215,526 265,519 C 313,512 382,536 398,568 C 417,608 372,652 309,657 C 255,666 202,636 188,584 Z"
-          fill="url(#meadowLowSlopeGrad)" filter="url(#meadowLowSlopeFeather)" />
+          fill="url(#meadowLowSlopeGrad)" filter="url(#meadowLowSlopeFeather)" /></YardAttachment>
         <g id="station-independent-meadow-rise"
           transform={`translate(${station.position.x}, ${station.position.y}) scale(${station.scale})`}>
           <path d="M -112,45 C -120,13 -72,-17 -8,-16 C 57,-19 113,5 116,42 C 121,77 61,98 -5,94 C -68,97 -109,76 -112,45 Z"

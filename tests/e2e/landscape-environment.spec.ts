@@ -19,7 +19,7 @@ test('rooted landscape and the original ground projection survive zoom and pan',
       && ['#parallax-foothill-layer','#parallax-foothill-trees-layer']
         .every(s => projection(s) === projection('#f2-nearest-landmarks'))
       && projection('#parallax-railway-layer') === projection('#parallax-mountains-layer');
-    const wheel = new DOMPoint(22,46).matrixTransform($('#tractor-in-field').getScreenCTM()!).matrixTransform(meadow.getScreenCTM()!.inverse());
+    const wheel = new DOMPoint(22,46).matrixTransform($('[data-tractor-body]').getScreenCTM()!).matrixTransform(meadow.getScreenCTM()!.inverse());
     const landforms=[surface,...document.querySelectorAll<SVGGeometryElement>('[data-meadow-hill-body] > path')];
     const roots = [...document.querySelectorAll('[data-surface-root]')].every(e => {
       const screen = new DOMPoint(0,0).matrixTransform((e as SVGGraphicsElement).getScreenCTM()!);
@@ -48,7 +48,7 @@ test('rooted landscape and the original ground projection survive zoom and pan',
     });
     const independentGrass = projection('#master-axonometric-ground-plane') === projection('#panoramic-world-stage')
       && !document.querySelector('#field-meadow-contact-clip');
-    return {projects,seam, independentGrass, wheelVisible: !meadow.isPointInFill(wheel), roots, bales, bridgeSuspended,
+    return {projects,seam, independentGrass, wheelVisible: meadow.isPointInFill(wheel) && !!$('[data-tractor-body]').closest('#panoramic-world-stage'), roots, bales, bridgeSuspended,
       railwaySeparate: !$('#parallax-mountains-layer').contains($('#yorkshire-railway-viaduct')) && $('#parallax-railway-layer').contains($('#yorkshire-railway-viaduct'))};
   },{points:contactPoints});
   const all = {projects:true,seam:true,independentGrass:true,wheelVisible:true,roots:true,bales:true,bridgeSuspended:true,railwaySeparate:true};

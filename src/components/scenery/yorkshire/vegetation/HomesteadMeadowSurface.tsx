@@ -3,11 +3,11 @@ import type { YorkshireSceneTheme } from '../landscapeTypes';
 import { meadowSurfacePalette } from './meadowPalette';
 
 /** Accepted flat turf surface: three broad colour washes, with no grass brushes. */
-export function HomesteadMeadowSurface({ theme }: { theme: YorkshireSceneTheme }) {
+export function HomesteadMeadowSurface({ theme, surfaceId }: { theme: YorkshireSceneTheme; surfaceId?: string }) {
   const id = useId().replace(/:/g, '');
-  const light = theme.isNight ? 'night' : theme.isRainy ? 'rain' : 'day';
+  const light = theme.isNight ? 'night' : theme.isRainy ? 'rain' : theme.timeOfDay === 'dusk' ? 'dusk' : 'day';
   const colors = meadowSurfacePalette(theme);
-  return <g id="homestead-meadow-surface" data-composition="accepted-v9" data-light={light} pointerEvents="none" aria-hidden="true">
+  return <g id={surfaceId??'homestead-meadow-surface'} data-composition="accepted-v9" data-light={light} pointerEvents="none" aria-hidden="true">
     {/* The parent supplies the existing feather mask. No new filters or contours. */}
     <defs>
       {[
@@ -23,7 +23,7 @@ export function HomesteadMeadowSurface({ theme }: { theme: YorkshireSceneTheme }
       </radialGradient>)}
     </defs>
     {/* Broad overlapping fields cover the fixed terrace, independent of building movement. */}
-    <g id="meadow-surface-color" opacity={.8}>
+    <g id={surfaceId?surfaceId+'-color':'meadow-surface-color'} opacity={.8}>
       {['warm', 'cool', 'deep'].map(key => <rect key={key} x="-160" y="180" width="1320" height="500" fill={`url(#${id}-${key})`} />)}
     </g>
   </g>;
