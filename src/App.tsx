@@ -1,3 +1,4 @@
+import type { WorldViewId } from './types';
 import { useBookshelf } from './features/bookshelf/useBookshelf';
 import { useToast } from './features/feedback/useToast';
 import { useLayoutEditor } from './features/layout-editor/useLayoutEditor';
@@ -35,9 +36,9 @@ const CabinetDetailModal = lazy(() => import('./components/cabinet/CabinetDetail
 export default function App() {
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('day');
   const [memories, setMemories] = useState<LivingMemory[]>(INITIAL_MEMORIES);
-  const [activeRoom, setRoom] = useState<RoomId | 'overview'>('overview');
+  const [activeRoom, setRoom] = useState<WorldViewId>('overview');
   const [focusRevision, setFocusRevision] = useState(0);
-  const setActiveRoom = (room: RoomId | 'overview') => { setRoom(room); setFocusRevision(value => value + 1); };
+  const setActiveRoom = (room: WorldViewId) => { setRoom(room); setFocusRevision(value => value + 1); };
 
   // Modals
   const [isMailboxOpen, setIsMailboxOpen] = useState(false);

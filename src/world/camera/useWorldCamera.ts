@@ -1,15 +1,17 @@
+import type { WorldViewId } from '../../types';
 import type React from 'react';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { RoomId } from '../../types';
 import { clientToSvg, FULL_VIEWBOX, visibleViewBox } from '../coordinates/viewport';
-import { sceneExplorationBounds } from '../scene/explorationBounds';
+import { sceneExplorationBounds, type SceneBounds } from '../scene/explorationBounds';
 import { resolveRoomCamera } from '../scene/roomTargets';
 import type { SceneLayout } from '../scene/sceneTypes';
 import { viewBoxPoint } from '../scene/sceneTypes';
 import { clampZoom, focusCamera, viewBoxToScene, type Camera } from './cameraMath';
 import { clampPan } from './cameraBounds';
+import { overviewBottomY, panoramaBottomMargin, resolveOverviewCamera } from './overviewFraming';
 
-export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRevision=0,editing=false) {
+export function useWorldCamera(room:WorldViewId,layout:SceneLayout,focusRevision=0,editing=false,bounds?:SceneBounds) {
   const svgRef=useRef<SVGSVGElement>(null);
   const [camera,setCamera]=useState(()=>resolveRoomCamera(room,layout));
   const [isDragging,setIsDragging]=useState(false);
@@ -21,14 +23,26 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
   const pointers=useRef(new Map<number,{x:number;y:number}>());
   const gesture=useRef<{origin:Camera;originMode:'focus'|'pan';start:Camera;client:{x:number;y:number};point:{x:number;y:number};distance:number;midpoint:{x:number;y:number}} | null>(null);
   const apply=(value:Camera)=>{cameraRef.current=value;setCamera(value);};
-  const content=useMemo(()=>sceneExplorationBounds(layout),[layout]);
-  const focusedCamera=useMemo(()=>resolveRoomCamera(room,layout,viewport),[room,layout,viewport]);
+  const content=useMemo(()=>bounds ?? sceneExplorationBounds(layout),[layout,bounds]);
+  const focusedCamera=useMemo(()=>resolveRoomCamera(room,layout,viewport,content),[room,layout,viewport,content]);
   const selectionChanged=lastFocus.current.room!==room||lastFocus.current.revision!==focusRevision;
   // Put selection and its camera target in the same commit, rather than first
   // painting the old camera and scheduling another render from an effect.
   const renderedCamera=selectionChanged||mode.current==='focus'?focusedCamera:camera;
   const focus=()=>focusedCamera;
-  const constrain=(value:Camera)=>clampPan(value,focus(),viewport,content);
+  const constrain=(value:Camera)=>clampPan(value,focus(),viewport,content,room==='overview');
+  const zoomCamera=(zoom:number)=>{
+    const current=cameraRef.current;
+    // At panorama scale keep the estate's lower edge composed as it shrinks.
+    // Preserve the visitor's pan offset relative to that edge.
+    const overview=resolveOverviewCamera(layout,viewport,content);
+    const y=zoom<=overview.zoom&&current.zoom<=overview.zoom
+      ? current.y+overviewBottomY(zoom,content.maxY,viewport,panoramaBottomMargin(zoom))
+        -overviewBottomY(current.zoom,content.maxY,viewport,panoramaBottomMargin(current.zoom))
+      : current.y;
+    mode.current='pan';
+    apply(constrain({...current,zoom,y}));
+  };
 
   useEffect(()=>{
     const svg=svgRef.current;
@@ -48,7 +62,7 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
     lastFocus.current={room,revision:focusRevision};
     if(mode.current==='focus') cameraRef.current=focusedCamera;
     else apply(constrain(cameraRef.current));
-  },[room,layout,focusRevision,viewport]);
+  },[room,layout,focusRevision,viewport,content]);
 
   useEffect(()=>{
     const svg=svgRef.current;
@@ -56,12 +70,11 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
     const wheel=(e:WheelEvent)=>{
       e.preventDefault();
       if(editing||pointers.current.size) return;
-      mode.current='pan';
-      apply(constrain({...cameraRef.current,zoom:clampZoom(cameraRef.current.zoom-e.deltaY*0.0012)}));
+      zoomCamera(clampZoom(cameraRef.current.zoom-e.deltaY*0.0012));
     };
     svg.addEventListener('wheel',wheel,{passive:false});
     return ()=>svg.removeEventListener('wheel',wheel);
-  },[editing,room,layout,viewport]);
+  },[editing,room,layout,viewport,content]);
 
   const rootPoint=(p:{x:number;y:number})=>svgRef.current ? clientToSvg(svgRef.current,p.x,p.y) : null;
   const rebase=()=>{
@@ -120,7 +133,7 @@ export function useWorldCamera(room:RoomId|'overview',layout:SceneLayout,focusRe
   const onPointerCancel=(e:React.PointerEvent<HTMLDivElement>)=>{if(pointers.current.has(e.pointerId)) cancel();};
   // Ignore capture transferred from a child (including implicit touch capture).
   const onLostPointerCapture=(e:React.PointerEvent<HTMLDivElement>)=>{if(e.target===e.currentTarget&&pointers.current.has(e.pointerId)) cancel();};
-  const zoomBy=(delta:number)=>{mode.current='pan';apply(constrain({...cameraRef.current,zoom:clampZoom(cameraRef.current.zoom+delta)}));};
+  const zoomBy=(delta:number)=>zoomCamera(clampZoom(cameraRef.current.zoom+delta));
   const restoreFocus=()=>{mode.current='focus';apply(focus());};
   const onClickCapture=(e:React.MouseEvent)=>{if(hasMovedRef.current){e.preventDefault();e.stopPropagation();}};
   return {camera:renderedCamera,isDragging,svgRef,hasMovedRef,zoomBy,restoreFocus,

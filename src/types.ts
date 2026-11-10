@@ -25,6 +25,8 @@ export interface LifeState {
 }
 
 export type RoomId = 'my_room' | 'friend_room' | 'living_nook' | 'porch_mailbox' | 'capsule_pod' | 'observatory' | 'corn_lounge';
+/** Camera destinations are independent of the rooms used for presence/seating. */
+export type WorldViewId = RoomId | 'overview' | 'loft';
 
 export interface RoomInfo {
   id: RoomId;

@@ -1,3 +1,4 @@
+import type { WorldViewId } from '../types';
 import React, { lazy, Suspense, useMemo, useRef, useState } from 'react';
 import { F2Sky } from '../world/render/f2/F2Sky';
 import { createF2SceneTheme } from '../world/render/f2/F2Environment';
@@ -57,11 +58,11 @@ interface ThreeWorldProps {
   timeOfDay: TimeOfDay;
   people: Person[];
   presenceAllocation: PresenceAllocation;
-  activeRoom: RoomId | 'overview';
+  activeRoom: WorldViewId;
   unreadMailCount: number;
   onSelectPerson: (person: Person) => void;
   onSelectMailbox: () => void;
-  onSelectRoom: (roomId: RoomId | 'overview') => void;
+  onSelectRoom: (roomId: WorldViewId) => void;
   onFireplaceClick?: () => void;
   bookshelfPreset?: BookshelfPreset;
   onBookshelfClick?: () => void;
@@ -173,7 +174,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
     selectPoster: id => { setSelectedPosterId(id); onSelectPoster?.(id); },
     captureSignal: () => triggerAlienSignal(), selectFurniture: onSelectGizmo, fireplace: onFireplaceClick,
   }, { people, tiers: interactionTiers, editing: isInspectorOpen, activeFurniture: effectiveGizmoId }));
-  const onSelectRoom = useEventCallback((id: RoomId | 'overview') => dispatchInteraction({ kind: 'room', id }));
+  const onSelectRoom = useEventCallback((id: WorldViewId) => dispatchInteraction({ kind: 'room', id }));
   const onSelectPerson = useEventCallback((person: Person) => dispatchInteraction({ kind: 'person', id: person.id }));
   const onSelectMailbox = useEventCallback(() => dispatchInteraction({ kind: 'entity', id: 'mailbox' }));
   const captureSignal = useEventCallback(() => dispatchInteraction({ kind: 'entity', id: 'alien-receiver' }));

@@ -28,7 +28,7 @@ export const POSTER_DESCRIPTIONS = {
 export interface DescriptionContext { people: readonly Person[]; tiers: readonly TierConfig[]; editing: boolean }
 export function describeInteraction(target: InteractionTarget, context: DescriptionContext): string {
   switch (target.kind) {
-    case 'room': return target.id === 'overview' ? '田园全景' : ROOMS[target.id].name;
+    case 'room': return target.id === 'overview' ? '田园全景' : target.id === 'loft' ? '阁楼' : ROOMS[target.id].name;
     case 'person': { const p = context.people.find(p => p.id === target.id); return p?.isSelf ? '🌿 我 · 点击更新生活状态' : `${p?.name ?? '同住人'} · 点击查看状态与留下便笺`; }
     case 'poster': return POSTER_DESCRIPTIONS[target.id];
     case 'book': { const b = context.tiers.find(t => t.index === target.tierIndex)?.books?.find(b => b.id === target.id); return b ? `📖 《${b.title}》${b.author ? ` · ${b.author}` : ''}${b.isPulled ? ' (正在阅读中)' : ''}` : '📖 藏书 · 点击检视'; }

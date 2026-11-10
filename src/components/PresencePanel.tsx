@@ -23,7 +23,7 @@ export const PresencePanel: React.FC<PresencePanelProps> = ({
   onOpenSvgExport,
   onOpenChairInspector,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => window.matchMedia('(max-width: 639px)').matches);
   const me = people.find((p) => p.isSelf);
   const friends = people.filter((p) => !p.isSelf);
 

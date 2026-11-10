@@ -1,3 +1,4 @@
+import type { WorldViewId } from '../../src/types';
 import React, { Profiler, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import type { EditableObjectId } from '../../src/components/layout-gizmo/layoutStore';
@@ -45,7 +46,7 @@ const people = query.has('empty') ? [] : INITIAL_PEOPLE.map((p, index) => {
 function Fixture() {
   const editor=useLayoutEditor(() => {});
   const [requestedZoom,setRequestedZoom]=useState<number|null>(null);
-  const [activeRoom,setActiveRoom]=useState<RoomId|'overview'>(query.has('focusStation') ? 'observatory' : (query.get('focusRoom') as RoomId) || 'overview');
+  const [activeRoom,setActiveRoom]=useState<WorldViewId>(query.has('focusStation') ? 'observatory' : (query.get('focusRoom') as RoomId) || 'overview');
   useEffect(()=>{
     if(query.has('edit')){editor.setIsLayoutInspectorOpen(true);editor.setActiveGizmoId(query.get('edit') as EditableObjectId);}
   },[]);

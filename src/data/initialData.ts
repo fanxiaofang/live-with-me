@@ -132,9 +132,9 @@ export const ROOMS: Record<string, RoomInfo> = {
   },
   my_room: {
     id: 'my_room',
-    name: '我的阁楼房间',
-    enName: 'My Attic Studio',
-    desc: '有窗台、工作台与厚被子的私人小天地',
+    name: '工作区',
+    enName: 'Shared Workspace',
+    desc: '一楼窗边的双人工位，安静工作与学习的小天地',
   },
   living_nook: {
     id: 'living_nook',
@@ -144,9 +144,9 @@ export const ROOMS: Record<string, RoomInfo> = {
   },
   friend_room: {
     id: 'friend_room',
-    name: '林木的书房 · 懒人沙发',
-    enName: "Lin's Reading Room & Beanbag",
-    desc: '堆满旧书、绿植与超松软懒人沙发的惬意朝阳房间，整个人可以深陷其中静静翻书',
+    name: '阅读沙发',
+    enName: 'Reading Sofa',
+    desc: '公共起居角中的阅读沙发，靠着绿植与藏书，静静翻书',
   },
   porch_mailbox: {
     id: 'porch_mailbox',
@@ -162,9 +162,9 @@ export const ROOMS: Record<string, RoomInfo> = {
   },
   observatory: {
     id: 'observatory',
-    name: '山巅外星电波监听站',
+    name: '外星电波观测台',
     enName: 'Mountain Deep-Space SETI Station',
-    desc: '耸立在远山高耸石脊上的深空射电监听站，配备高精度微波抛物面天线塔架、CRT示波器与外星信号解调接收机',
+    desc: '庭院右侧的电波观测台，配备抛物面天线、CRT 示波器与信号接收装置',
   },
   corn_lounge: {
     id: 'corn_lounge',

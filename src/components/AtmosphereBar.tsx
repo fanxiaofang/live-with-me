@@ -1,5 +1,6 @@
+import { WorldViewToolbar } from './WorldViewToolbar';
+import type { WorldViewId } from '../types';
 import {
-Home,
 Moon,
 Sliders,
 Sparkles,
@@ -10,14 +11,13 @@ VolumeX,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { ambientAudio } from '../audio/ambientAudio';
-import { ROOMS } from '../data/initialData';
-import { RoomId, TimeOfDay } from '../types';
+import { TimeOfDay } from '../types';
 
 interface AtmosphereBarProps {
   timeOfDay: TimeOfDay;
   onChangeTime: (time: TimeOfDay) => void;
-  activeRoom: RoomId | 'overview';
-  onSelectRoom: (roomId: RoomId | 'overview') => void;
+  activeRoom: WorldViewId;
+  onSelectRoom: (roomId: WorldViewId) => void;
   unreadMailCount: number;
   onOpenMailbox: () => void;
   onOpenMemories: () => void;
@@ -256,45 +256,7 @@ export const AtmosphereBar: React.FC<AtmosphereBarProps> = ({
         </div>
       </header>
 
-      {/* Bottom Floating Room Navigation Bar */}
-      <nav aria-label="房间视角" className="fixed bottom-16 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 pointer-events-auto w-[calc(100%-2rem)] sm:w-auto">
-        <div className="px-3 py-2 rounded-2xl bg-[#1e1c19]/85 backdrop-blur-md border border-[#3c342c] shadow-overlay-control flex items-center gap-1.5 text-xs max-sm:overflow-x-auto max-sm:whitespace-nowrap">
-          <button
-            id="nav-room-overview"
-            aria-current={activeRoom === 'overview' ? 'page' : undefined}
-            onClick={() => onSelectRoom('overview')}
-            className={`px-3 py-1.5 rounded-xl font-medium transition-all flex items-center gap-1.5 max-sm:shrink-0 ${
-              activeRoom === 'overview'
-                ? 'bg-[#3b322a] border border-[#59493a] text-[#f2ece2]'
-                : 'text-[#94897d] hover:text-[#e0d6c8]'
-            }`}
-          >
-            <Home className="w-3.5 h-3.5" />
-            <span>整栋小屋</span>
-          </button>
-
-          <div className="h-4 w-px bg-[#38312a] max-sm:shrink-0" />
-
-          {(['my_room', 'living_nook', 'friend_room', 'capsule_pod', 'corn_lounge', 'observatory', 'porch_mailbox'] as RoomId[]).map((rId) => {
-            const rInfo = ROOMS[rId];
-            const active = activeRoom === rId;
-            return (
-              <button
-                key={rId}
-                aria-current={active ? 'page' : undefined}
-                onClick={() => onSelectRoom(rId)}
-                className={`px-3 py-1.5 rounded-xl font-medium transition-all max-sm:shrink-0 ${
-                  active
-                    ? 'bg-[#3b322a] border border-[#59493a] text-[#f2ece2]'
-                    : 'text-[#94897d] hover:text-[#e0d6c8]'
-                }`}
-              >
-                <span>{rInfo.name.split('&')[0].split('·')[0].trim()}</span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+      <WorldViewToolbar activeRoom={activeRoom} onSelectRoom={onSelectRoom} />
     </div>
   );
 };
