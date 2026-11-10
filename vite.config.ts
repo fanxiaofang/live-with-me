@@ -2,10 +2,11 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
+import {previewMetadata} from './scripts/devtools/vitePreviewMetadata';
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), previewMetadata()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
