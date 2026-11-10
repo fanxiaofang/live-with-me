@@ -1,3 +1,4 @@
+import type { WorldViewId } from '../../types';
 import React from 'react';
 import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
 import type { Person, RoomId } from '../../types';
@@ -24,17 +25,18 @@ import { EditableObjectId, IsoGizmo, RoomLayoutConfig } from '../layout-gizmo';
 import { FiddleLeafFig, MonsteraPlant } from '../plants';
 import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 import { WallPostersGallery } from '../wall-posters';
-import { CottageFoundation, CottageGroundPlanting } from './CottageFoundation';
+import { CottageFoundation } from './CottageFoundation';
+import { CottageStoneReturns } from './CottageStoneReturns';
 import { CottageRoofFraming } from './CottageRoofFraming';
 import { CottageWallProfiles } from './CottageWallProfiles';
 import { TimberFlooring } from './TimberFlooring';
 import { resolveSceneOptions } from '../../world/scene/currentScene';
 import { CottageWindow } from './CottageWindow';
-import { SeedpodCottageShell, SeedpodReadingLoft, SeedpodGalleryLadder, SeedpodRoofCover } from './SeedpodCottage';
+import { SeedpodCottageShell, SeedpodReadingLoft, SeedpodGalleryLadder, SeedpodRoofCover, SeedpodForkLanterns } from './SeedpodCottage';
 export interface MainCottageHavenProps {
   theme: YorkshireSceneTheme;
   hasMovedRef: React.RefObject<boolean>;
-  onSelectRoom: (id: RoomId | 'overview') => void;
+  onSelectRoom: (id: WorldViewId) => void;
   setHoveredObject: HoverTarget;
   selfPerson?: Person;
   linPerson?: Person;
@@ -71,11 +73,10 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
   const seedpod = resolveSceneOptions(typeof window === 'undefined' ? '' : window.location.search).cottage === 'seedpod';
   return <>
             {/* 2.5D Architectural Foundation, Ventilated Crawl Space & Porch Steps (工匠级建筑基底体系) */}
-            <CottageFoundation theme={theme} />
+            <CottageFoundation theme={theme} rearMasonry={seedpod ? <CottageStoneReturns theme={theme} /> : undefined} />
 
             {/* 2.5D Artisan Hardwood Timber Flooring (工匠级实木企口地板与收边地袱大梁) */}
             <TimberFlooring time={theme.isNight ? 'night' : theme.timeOfDay ?? 'day'} />
-            <CottageGroundPlanting />
 
             {seedpod ? <SeedpodCottageShell theme={theme} /> : <>
             {/* Back Walls & Timber Frames (温润燕麦奶油暖灰泥墙，消除冷白暴晒灯箱感) */}
@@ -134,7 +135,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
             </>}
 
             {/* --- ROOM 1: MY ROOM (LEFT WING) - 我的阁楼书屋 (2.5D 重构) --- */}
-            <g {...svgAction('我的田园阁楼书屋')}
+            <g {...svgAction('进入工作区')}
               id="room-my_room"
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('my_room');
@@ -147,7 +148,6 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               <RoomHitArea room="my_room" points="-270,135 -100,85 -40,130 -210,180" />
 
               <CottageWindow theme={theme} />
-
               {/* 1.12 墙面干花挂件：由暖炉移至左墙空白木板处 (x: -115, y: 32)，配原木挂钩，安全温馨 */}
               <g
                 id="dried-herb-bouquet"
@@ -1010,7 +1010,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
             </g>
 
             {/* --- ROOM 3: LIN'S ROOM (RIGHT WING) - 林木的花园书房 (2.5D 重构) --- */}
-            <g {...svgAction('进入林木的书房')}
+            <g {...svgAction('进入阅读沙发')}
               id="room-friend_room"
               onClick={() => {
                 if (!hasMovedRef.current) onSelectRoom('friend_room');
@@ -1451,7 +1451,14 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
               </g>
             </g>
           
-            {seedpod && <><SeedpodReadingLoft theme={theme} /><SeedpodRoofCover theme={theme} /></>}
+            {seedpod && <><SeedpodReadingLoft theme={theme} /><SeedpodForkLanterns theme={theme} /><SeedpodRoofCover theme={theme} />
+              <g id="room-loft" {...svgAction('进入阁楼')}
+                onClick={() => { if (!hasMovedRef.current) onSelectRoom('loft'); }}
+                onMouseEnter={() => setHoveredObject({ kind: 'room', id: 'loft' })}
+                onMouseLeave={() => setHoveredObject(null)} className="cursor-pointer">
+                <path d="M-150,-67 L0,-112 L90,-86 L120,-72 L-25,-32 Z" fill="transparent" />
+              </g>
+            </>}
   </>;
 }
 

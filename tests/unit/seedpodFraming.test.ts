@@ -7,10 +7,10 @@ import { sceneToViewBox } from '../../src/world/camera/cameraMath';
 import { visibleViewBox } from '../../src/world/coordinates/viewport';
 import { sceneExplorationBounds } from '../../src/world/scene/explorationBounds';
 
-test('cottage room focus keeps the new chimney and ground floor in frame', () => {
+test('workspace focus keeps the new chimney and ground floor in frame', () => {
   for (const [width, height] of [[1600, 900], [1600, 1000], [2560, 1080], [390, 844]]) {
     const viewport = visibleViewBox(width, height);
-    for (const room of ['my_room', 'living_nook', 'friend_room'] as const) {
+    for (const room of ['my_room'] as const) {
       for (const scale of [1, .8, 1.2]) {
         const layout = { ...DEFAULT_SCENE_LAYOUT, main_cottage: { ...DEFAULT_SCENE_LAYOUT.main_cottage, scale } };
         const camera = resolveRoomCamera(room, layout, viewport);
@@ -22,6 +22,21 @@ test('cottage room focus keeps the new chimney and ground floor in frame', () =>
       }
     }
   }
+});
+
+test('loft frames the actual upper deck and living focus frames the ground-floor activities', () => {
+  for (const [width, height] of [[1600, 900], [2560, 1080], [390, 844]]) {
+    const viewport = visibleViewBox(width, height);
+    for (const [room, bounds] of [['loft', [-160, 120, -170, -25]], ['living_nook', [-160, 230, 50, 230]]] as const) {
+      const camera = resolveRoomCamera(room, DEFAULT_SCENE_LAYOUT, viewport);
+      for (const x of [bounds[0], bounds[1]]) for (const y of [bounds[2], bounds[3]]) {
+        const p = sceneToViewBox(entityPointToScene(localPoint('main_cottage', x, y)), camera);
+        assert.ok(p.x > viewport.minX && p.x < viewport.maxX, `${room}: horizontal crop`);
+        assert.ok(p.y > viewport.minY && p.y < viewport.maxY, `${room}: vertical crop`);
+      }
+    }
+  }
+  assert.deepEqual(resolveRoomCamera('friend_room'), resolveRoomCamera('living_nook'));
 });
 
 test('exploration envelope contains the solid seedpod chimney after placement changes', () => {

@@ -55,11 +55,11 @@ function palette(theme: YorkshireSceneTheme) {
     moss: '#485f3d', mossLight: '#7c8d61', rope: '#a5916b', ropeLight: '#c3b18b' };
   if (theme.timeOfDay === 'dusk') return { wall: '#c3aa8c', wallShade: '#a89077', wallEnd: '#b29a7b', wallEndShade: '#958167', lining: '#8b6642',
     liningLight: '#b28b59', time, ...wood,
-    skin: '#7d8945', skinLight: '#c2b56a', skinShade: '#455c34', skinEdge: '#bda464',
+    skin: '#7b8c3d', skinLight: '#beb35c', skinShade: '#425c30', skinEdge: '#bda464',
     moss: '#607441', mossLight: '#9c9e63', rope: '#b89a67', ropeLight: '#d4bb88' };
   return { wall: '#d5c6aa', wallShade: '#c1b59b', wallEnd: '#bfae92', wallEndShade: '#a7977c', lining: '#94714b', liningLight: '#bda074',
     time, ...wood,
-    skin: '#819d4e', skinLight: '#c1ce7c', skinShade: '#42653c', skinEdge: '#bda46b',
+    skin: '#7f9f43', skinLight: '#b9cc64', skinShade: '#3e6538', skinEdge: '#bda46b',
     moss: '#56723f', mossLight: '#96a46b', rope: '#b69c73', ropeLight: '#d4c29a' };
 }
 type Palette = ReturnType<typeof palette>;
@@ -131,6 +131,54 @@ function PumpkinBranchLantern({ theme }: Props) {
     </g>
     <path d="M-5,-1 Q-3,-3 -3,0 Q-4,2 -5,-1 Z M3,-1 Q5,-3 5,0 Q4,2 3,-1 Z M-1,1 Q1,0 1,3 Q0,5 -1,3 Z"
       fill={night ? '#ffdf8c' : '#ffe0a0'} stroke="#a55a23" strokeWidth=".35" />
+  </g>;
+}
+
+/** Celadon caps, honey glass and fine brass edges follow the tea/cabinet assets. */
+function ForkLantern({ theme, position, name }: Props & { position: Point; name: string }) {
+  const id = `fork-lantern-${useId().replace(/:/g, '')}`;
+  const glow = theme.isNight ? .42 : theme.timeOfDay === 'dusk' ? .24 : .035;
+  return <g id={`seedpod-${name}-fork-lantern`} transform={`translate(${position.join(' ')})`}
+    strokeLinecap="round" strokeLinejoin="round">
+    <defs>
+      <linearGradient id={`${id}-glass`} x1="0" y1="0" x2="1" y2=".45">
+        <stop stopColor="#fef08a" /><stop offset=".38" stopColor="#fde047" />
+        <stop offset=".72" stopColor="#f59e0b" /><stop offset="1" stopColor="#b45309" />
+      </linearGradient>
+      <radialGradient id={`${id}-glow`}>
+        <stop stopColor="#ffd372" stopOpacity={glow} />
+        <stop offset="1" stopColor="#edac42" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    <ellipse cy="23" rx="24" ry="27" fill={`url(#${id}-glow)`} />
+    {/* A short hemp loop grips the inward branch; the metal bail hangs below it. */}
+    <path d="M4,-2 C8,-3 8,1 5,2 L1,4 V7" fill="none" stroke="#6e5030" strokeWidth=".9" />
+    <path d="M4.5,-1.5 Q7,-2 6.6,.5 M1.4,4.2 V6.6" fill="none" stroke="#e2c8a2" strokeWidth=".4" />
+    <path d="M-3.8,13 V10.5 C-3.8,5.5 3.8,5.5 3.8,10.5 V13" fill="none" stroke="#78350f" strokeWidth=".85" />
+    <path d="M-3.3,11 V10.5 Q-3.3,7 0,7" fill="none" stroke="#d99938" strokeWidth=".4" />
+    {/* Warm glass cylinder, a small luminous core and one crisp reflection. */}
+    <path d="M-6.8,16.8 Q0,14.4 6.8,16.8 L5.7,30 Q0,32.8 -5.7,30Z"
+      fill={`url(#${id}-glass)`} stroke="#92400e" strokeWidth=".55" />
+    <ellipse cy="24" rx="2.8" ry="5.1" fill={theme.isNight ? '#fff9d9' : '#fff3be'} opacity=".9" />
+    <path d="M-4.7,18.5 -4.1,28.5" fill="none" stroke="#fffdf0" strokeWidth=".75" opacity=".85" />
+    <path d="M-6.2,17.7 -5.3,29.6 M6.2,17.7 5.3,29.6" fill="none" stroke="#8c6d3b" strokeWidth=".65" />
+    {/* A ceramic shade and base use the shared teapot's green light/shadow pair. */}
+    <path d="M-8.4,16 Q-8.8,15.1 -6.2,13.8 L-3.3,11.6 Q0,10.6 3.3,11.6 L6.2,13.8 Q8.8,15.1 8.4,16 Q0,19 -8.4,16Z"
+      fill="#466944" stroke="#324c31" strokeWidth=".6" />
+    <path d="M-6.4,14 Q-3.5,12.2 0,12.2 Q3.5,12.2 5.7,14.1 Q0,15.4 -6.4,14Z" fill="#558053" />
+    <path d="M-7.1,15.6 Q-1,17.5 6.8,15.8" fill="none" stroke="#88ad84" strokeWidth=".5" />
+    <ellipse cy="11.6" rx="1.5" ry=".65" fill="#d99938" stroke="#8c6d3b" strokeWidth=".4" />
+    <path d="M-6.8,29.9 Q0,32.2 6.8,29.9 L6.3,32.2 Q0,35 -6.3,32.2Z"
+      fill="#324c31" stroke="#2d412b" strokeWidth=".55" />
+    <ellipse cy="30" rx="6.8" ry="1.9" fill="#466944" stroke="#324c31" strokeWidth=".5" />
+    <path d="M-5.6,30.2 Q0,31.6 5.6,30.2" fill="none" stroke="#88ad84" strokeWidth=".45" />
+  </g>;
+}
+
+export function SeedpodForkLanterns({ theme }: Props) {
+  return <g id="seedpod-fork-lanterns" pointerEvents="none" aria-hidden="true">
+    <ForkLantern theme={theme} position={[-32, -38]} name="central" />
+    <ForkLantern theme={theme} position={[259, 0]} name="right" />
   </g>;
 }
 
@@ -217,8 +265,8 @@ function ShellSkin({ back, front, id, p, small = false }: {
         <stop stopColor={p.skinLight} /><stop offset=".46" stopColor={p.skin} /><stop offset="1" stopColor={p.skinShade} />
       </linearGradient>
       <linearGradient id={`${id}-shoulder`} x1="0" y1="0" x2=".8" y2="1">
-        <stop stopColor={p.skinLight} stopOpacity=".35" />
-        <stop offset="1" stopColor={p.skinLight} stopOpacity=".04" />
+        <stop stopColor={p.skinLight} stopOpacity={p.time === 'night' ? .35 : .24} />
+        <stop offset="1" stopColor={p.skinLight} stopOpacity={p.time === 'night' ? .04 : .025} />
       </linearGradient>
       <radialGradient id={`${id}-patina`} cx=".48" cy=".52" r=".6">
         <stop stopColor={p.moss} stopOpacity=".28" />
@@ -267,6 +315,12 @@ export function SeedpodCottageShell({ theme }: Props) {
     <path d={`M262,-19.72 L270,-22 L270,135 L${wallFoot(262)} Z`} fill={p.wallEndShade} />
     <path d={`M${wallFoot(-262)} L-262,.28 C-196,-24 -129,-113 0,-145.44 L${wallFoot(0)} Z`} fill={`url(#${id}-plaster)`} />
     <path d={`M${wallFoot(0)} L0,-145.44 C89,-116 177,-40 262,-19.72 L${wallFoot(262)} Z`} fill={p.wallShade} />
+    {/* Narrow oak stops close the plaster ends above the stone returns. */}
+    <g id="seedpod-wall-end-stops">
+      <path d="M-270,-2 L-267,-1.15 L-267,134.15 L-270,135Z" fill={p.lining} />
+      <path d="M267,-21.15 L270,-22 L270,135 L267,134.15Z" fill={p.woodShade} />
+      <path d="M-269,8 V126 M269,-9 V125" fill="none" stroke={p.liningLight} strokeWidth=".55" opacity=".55" />
+    </g>
     <path d="M-270,30 V134 M270,0 V134" fill="none" stroke={p.lining} strokeWidth=".65" opacity=".45" />
     <path d="M-293,6 C-195,1 -148,-137 22,-167 C89,-88 215,4 294,-47 L277,-5 C190,-4 83,-91 0,-111 C-127,-83 -201,13 -273,27 Z"
       fill={`url(#${id}-lining)`} />

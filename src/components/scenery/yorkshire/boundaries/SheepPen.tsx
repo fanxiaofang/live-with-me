@@ -1,3 +1,4 @@
+import { StorybookSheep } from '../dressing/StorybookSheep';
 import React, { useState } from 'react';
 import { ambientAudio } from '../../../../audio/ambientAudio';
 import { useTimerScope } from '../../../../shared/timers/useTimerScope';
@@ -6,6 +7,13 @@ import { YORKSHIRE_LAYOUT } from '../landscapeLayout';
 import { YorkshireCommonProps } from '../landscapeTypes';
 import { MeadowWearPatch } from '../dressing/MeadowWearPatch';
 import { HayBaleStack } from '../dressing/HayBaleStack';
+import { RoofRuneEngravings } from '../../../architecture/RoofRuneEngravings';
+
+// The ward is painted on the visible inner face below the front eave, beside the lantern.
+const shelterWardPoint = (angle: number, t: number) => ({
+  x: 137 + (angle - Math.PI * 1.5) * 72 + (t - .5) * 26,
+  y: -27 + (angle - Math.PI * 1.5) * 20.6 - (t - .5) * 18,
+});
 
 /**
  * 🐑 SheepPen (Yorkshire Authentic Masterpiece 2.5D Stone-and-Timber Meadow Sheepfold)
@@ -34,6 +42,7 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
   className,
 }) => {
   const timers = useTimerScope();
+  const shelterWardClip = `shelter-ward-surface-${React.useId().replace(/:/g, '')}`;
   const [isGateOpen, setIsGateOpen] = useState(true);
   const [activeSheep, setActiveSheep] = useState<'mother' | 'peeking' | 'grazing' | null>(null);
   const [sheepSaying, setSheepSaying] = useState<string | null>(null);
@@ -79,6 +88,9 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
       transform={`translate(${anchor.x}, ${anchor.y})`}
     >
       <defs>
+        <clipPath id={shelterWardClip}>
+          <polygon points="107,-45 171,-27 163,-7 99,-25" />
+        </clipPath>
         {/* 沉稳橡木/雪松立柱与横梁渐变 */}
         <linearGradient id="spOakTimberGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#7a522a" />
@@ -147,11 +159,6 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
         </linearGradient>
 
         {/* 经典正统纯净羊毛渐变 */}
-        <linearGradient id="spCanonicalWoolGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fffdfa" />
-          <stop offset="55%" stopColor="#f3ede2" />
-          <stop offset="100%" stopColor="#ded5c4" />
-        </linearGradient>
 
         {/* 踩踏泥土小径与底床柔和渐变 */}
         <radialGradient id="spLoamBaseGrad" cx="45%" cy="45%" r="55%">
@@ -636,6 +643,9 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
         <ellipse cx="178" cy="-66" rx="4.5" ry="1.8" fill="#365314" opacity="0.6" />
         <ellipse cx="224" cy="-53" rx="4.0" ry="1.6" fill="#4d7c0f" opacity="0.5" />
 
+        <RoofRuneEngravings variant="pentagram" material="timber" radius={9} project={shelterWardPoint}
+          clipId={shelterWardClip} night={!!theme.isNight} dusk={theme.timeOfDay === 'dusk'} />
+
         {/* L. 悬挂于前梁左侧的黄铜防风马灯 */}
         <g id="sp-shelter-lantern" transform="translate(120, -41)">
           <ellipse cx="0" cy="4" rx="7" ry="5.5" fill="url(#spDaytimeLanternGlow)" />
@@ -840,26 +850,8 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-2' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
-        {/* 卧姿接触阴影 */}
-        <ellipse cx="0" cy="9" rx="16" ry="5.5" fill="#141a0f" opacity="0.35" />
-        <ellipse cx="-9" cy="9.5" rx="2.5" ry="1.3" fill="#241d18" />
-        <ellipse cx="9" cy="9.5" rx="2.5" ry="1.3" fill="#241d18" />
+        <g transform="scale(.8)"><StorybookSheep pose="resting" facing="left" /></g>
 
-        {/* 纯净圆润鹅蛋羊身 */}
-        <ellipse cx="0" cy="2" rx="16" ry="10" fill="url(#spCanonicalWoolGrad)" stroke="#d4cab7" strokeWidth="0.8" />
-        <ellipse cx="2" cy="0" rx="13.5" ry="8" fill="#fffdfa" />
-
-        {/* 黑脸、反刍眯眯眼微笑与小圆耳 */}
-        <g transform="translate(-13, 0)">
-          <ellipse cx="0" cy="0" rx="5.2" ry="4.0" fill="#2b231e" />
-          <ellipse cx="-1.5" cy="0" rx="3.8" ry="3.0" fill="#1c1612" />
-          {/* 反刍眯眯眼弯线 */}
-          <path d="M-1,-0.8 Q0,-0.1 1,-0.8" stroke="#fef08a" strokeWidth="0.75" fill="none" strokeLinecap="round" />
-          {/* 小黑耳 */}
-          <ellipse cx="1.5" cy="-3.5" rx="2.4" ry="1.0" fill="#221a15" transform="rotate(-15 1.5 -3.5)" />
-          {/* 嘴边叼着的细麦秸秆 */}
-          <path d="M-1.5,1.5 Q-5,3 -8,2" stroke="#eab308" strokeWidth="0.9" fill="none" strokeLinecap="round" />
-        </g>
       </g>
 
       {/* 🐑 2. 圈内开阔草地低头吃草羊 (Grazing Sheep in Center Meadow · 缩减至 0.76，呼吸感倍增) */}
@@ -872,28 +864,8 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-1' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
-        <ellipse cx="0" cy="15" rx="16" ry="5.5" fill="#141a0f" opacity="0.35" />
-        {/* 四条整齐小黑腿 */}
-        <line x1="-8" y1="8" x2="-8" y2="16" stroke="#241e1a" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="-3" y1="8" x2="-3" y2="17" stroke="#1d1714" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="5" y1="8" x2="6" y2="16" stroke="#241e1a" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="10" y1="8" x2="11" y2="17" stroke="#1d1714" strokeWidth="2.2" strokeLinecap="round" />
+        <g transform="scale(.85)"><StorybookSheep pose="grazing" /></g>
 
-        {/* 纯净圆润鹅蛋身躯 */}
-        <ellipse cx="0" cy="2" rx="17" ry="12" fill="url(#spCanonicalWoolGrad)" stroke="#d4cab7" strokeWidth="0.8" />
-        <ellipse cx="-3" cy="-1" rx="14.5" ry="9.5" fill="#fffdfa" />
-
-        {/* 低头嚼草黑脸与明亮黄眼 */}
-        <g transform="translate(14, 5) rotate(20)">
-          <ellipse cx="0" cy="0" rx="5.8" ry="4.5" fill="#2d2621" />
-          <ellipse cx="1.8" cy="0" rx="4.0" ry="3.2" fill="#1b1511" />
-          <circle cx="1" cy="-1.8" r="0.85" fill="#fef08a" />
-          <circle cx="1" cy="-1.8" r="0.45" fill="#000000" />
-          <ellipse cx="-1" cy="-3.5" rx="2.4" ry="1.1" fill="#241d18" transform="rotate(-15 -1 -3.5)" />
-          {/* 嘴边新鲜三叶草 */}
-          <path d="M2,3 Q5,6 8,4" stroke="#84cc16" strokeWidth="0.9" fill="none" strokeLinecap="round" />
-          <circle cx="7" cy="3.5" r="1.3" fill="#65a30d" />
-        </g>
       </g>
 
       {/* 🐑 3. 欢脱奔向门外草甸的小羊羔 (Playful Lamb Outside Open Gate) */}
@@ -906,24 +878,7 @@ export const SheepPen: React.FC<YorkshireCommonProps> = ({
         onMouseEnter={() => setHoveredObject?.({ kind: 'entity', id: 'sheep-3' })}
         onMouseLeave={() => setHoveredObject?.(null)}
       >
-        <ellipse cx="0" cy="14" rx="12" ry="4.5" fill="#141a0f" opacity="0.32" />
-        {/* 四条欢脱小黑腿 */}
-        <line x1="-7" y1="6" x2="-9" y2="15" stroke="#241e1a" strokeWidth="1.8" strokeLinecap="round" />
-        <line x1="-2" y1="6" x2="-3" y2="16" stroke="#1d1714" strokeWidth="1.8" strokeLinecap="round" />
-        <line x1="5" y1="6" x2="7" y2="14" stroke="#241e1a" strokeWidth="1.8" strokeLinecap="round" />
-        <line x1="9" y1="6" x2="12" y2="15" stroke="#1d1714" strokeWidth="1.8" strokeLinecap="round" />
-
-        {/* 纯净小鹅蛋羊身 */}
-        <ellipse cx="0" cy="0" rx="13" ry="9" fill="url(#spCanonicalWoolGrad)" stroke="#d4cab7" strokeWidth="0.7" />
-        <ellipse cx="-1" cy="-2" rx="11" ry="7" fill="#fffdfa" />
-
-        {/* 好奇小黑脸与圆黄大眼 */}
-        <g transform="translate(-10, -3)">
-          <ellipse cx="0" cy="0" rx="4.8" ry="3.8" fill="#2d2621" />
-          <circle cx="-1" cy="-1.4" r="0.9" fill="#fef08a" />
-          <circle cx="-1" cy="-1.4" r="0.45" fill="#000000" />
-          <ellipse cx="2" cy="-3" rx="2.2" ry="1.0" fill="#221a15" />
-        </g>
+        <StorybookSheep lamb facing="left" />
         {/* 门外小羊脚边的欢快蒲公英与小蹄印 */}
         <circle cx="15" cy="12" r="1.6" fill="#facc15" />
         <circle cx="15" cy="12" r="0.7" fill="#ca8a04" />

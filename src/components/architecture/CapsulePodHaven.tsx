@@ -1,3 +1,4 @@
+import type { WorldViewId } from '../../types';
 import React from 'react';
 import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
 import type { Person, RoomId } from '../../types';
@@ -6,18 +7,24 @@ import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
 import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
 import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
+import { CapsuleStonePlatform } from './CapsuleStonePlatform';
 
 export interface CapsulePodHavenProps {
-  onSelectRoom: (roomId: RoomId | 'overview') => void;
+  onSelectRoom: (roomId: WorldViewId) => void;
   presenceSlots: PresenceAllocation['slots'];
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
   hasMovedRef: React.MutableRefObject<boolean> | React.RefObject<boolean>;
+  design?: CapsulePodStyle;
   theme: Pick<YorkshireSceneTheme, 'roadColor' | 'hillGreenFar'> & {
     cottageGlow: string;
     isNight?: boolean;
+    isRainy?: boolean;
+    timeOfDay?: YorkshireSceneTheme['timeOfDay'];
   };
 }
+
+export type CapsulePodStyle = 'original' | 'rustic' | 'retro';
 
 /** Detached retro sleeping pod, preserving its original frontal silhouette. */
 export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
@@ -26,13 +33,16 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
   onSelectPerson,
   setHoveredObject,
   hasMovedRef,
+  design = 'original',
   theme,
 }) => {
+  const rustic = design === 'rustic';
+  const retro = design === 'retro';
   const podOccupant = presenceSlots.tatami_capsule?.occupant;
   const slotCfg = presenceSlots.tatami_capsule?.config;
 
   return (
-    <g id="capsule-pod-haven">
+    <g id="capsule-pod-haven" data-capsule-design={design} strokeLinejoin={retro ? 'round' : undefined}>
       <defs>
         {/* 1. 胶囊舱体外轮廓裁切路径 (用于保证舱门及内部组件严密嵌入，杜绝穿帮) */}
         <clipPath id="podHullSilhouetteClip">
@@ -43,58 +53,58 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
         {/* 2. 胶囊舱体 3D 柱面受光垂直渐变 (上壳象牙白) */}
         <linearGradient id="podShellUpperGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="20%" stopColor="#f6f5ef" />
-          <stop offset="68%" stopColor="#e3e7df" />
-          <stop offset="100%" stopColor="#caced6" />
+          <stop offset="0%" stopColor={rustic ? '#b5a47e' : retro ? '#fff4d7' : '#f5f0df'} />
+          <stop offset="20%" stopColor={rustic ? '#9f906d' : retro ? '#f2e8ca' : '#eee9d9'} />
+          <stop offset="68%" stopColor={rustic ? '#837e61' : retro ? '#dce2cb' : '#dce0d1'} />
+          <stop offset="100%" stopColor={rustic ? '#656751' : retro ? '#b7c8b2' : '#bfc8bf'} />
         </linearGradient>
 
         {/* 3. 胶囊舱体 3D 柱面漫反射与下壳复古草木灰绿渐变 */}
         <linearGradient id="podHullLowerGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5d7b6c" />
-          <stop offset="42%" stopColor="#455f52" />
-          <stop offset="85%" stopColor="#2c3e34" />
-          <stop offset="100%" stopColor="#3d5448" /> {/* 底部草地漫反射微光 */}
+          <stop offset="0%" stopColor={rustic ? '#6d7458' : retro ? '#9bb397' : '#5d7b6c'} />
+          <stop offset="42%" stopColor={rustic ? '#515a45' : retro ? '#789781' : '#455f52'} />
+          <stop offset="85%" stopColor={rustic ? '#353f33' : retro ? '#526f61' : '#2c3e34'} />
+          <stop offset="100%" stopColor={rustic ? '#494b37' : retro ? '#6e8c77' : '#3d5448'} /> {/* 底部草地漫反射微光 */}
         </linearGradient>
 
         {/* 4. 左半球封头 3D 球冠立体曲率阴影 */}
         <radialGradient id="podLeftCapRadial" cx="28%" cy="40%" r="72%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.42" />
-          <stop offset="55%" stopColor="#b4beaf" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#1a251f" stopOpacity="0.68" />
+          <stop offset="0%" stopColor={retro ? '#fff4dc' : rustic ? '#d9c397' : '#ffffff'} stopOpacity="0.42" />
+          <stop offset="55%" stopColor={retro ? '#b2c4a8' : rustic ? '#8c8262' : '#b4beaf'} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={rustic ? '#332f24' : '#1a251f'} stopOpacity="0.68" />
         </radialGradient>
 
         {/* 5. 右半球封头 3D 球冠立体曲率阴影 */}
         <radialGradient id="podRightCapRadial" cx="38%" cy="38%" r="70%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.4" />
-          <stop offset="58%" stopColor="#b4beaf" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#1a251f" stopOpacity="0.68" />
+          <stop offset="0%" stopColor={retro ? '#fff4dc' : rustic ? '#d9c397' : '#ffffff'} stopOpacity="0.4" />
+          <stop offset="58%" stopColor={retro ? '#b2c4a8' : rustic ? '#8c8262' : '#b4beaf'} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={rustic ? '#332f24' : '#1a251f'} stopOpacity="0.68" />
         </radialGradient>
 
         {/* 6. 锻造黄铜防撞中腰线金属渐变 */}
         <linearGradient id="podBrassBeltGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fff6d6" />
-          <stop offset="30%" stopColor="#dfb758" />
-          <stop offset="70%" stopColor="#9a7629" />
-          <stop offset="100%" stopColor="#5e4414" />
+          <stop offset="0%" stopColor={rustic ? '#a5794c' : retro ? '#d5dfc9' : '#e2ca8b'} />
+          <stop offset="30%" stopColor={rustic ? '#6f5035' : retro ? '#a8bcae' : '#bc984e'} />
+          <stop offset="70%" stopColor={rustic ? '#7e472e' : retro ? '#718b80' : '#896b34'} />
+          <stop offset="100%" stopColor={rustic ? '#47352a' : retro ? '#51695f' : '#594729'} />
         </linearGradient>
 
         {/* 7. 重型液压活塞连杆高光镜面铬铁渐变 */}
         <linearGradient id="podChromePistonGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#4f5954" />
-          <stop offset="25%" stopColor="#dce4df" />
-          <stop offset="45%" stopColor="#ffffff" />
-          <stop offset="75%" stopColor="#9db0a6" />
-          <stop offset="100%" stopColor="#3b433e" />
+          <stop offset="0%" stopColor={rustic ? '#514638' : retro ? '#6d887b' : '#4f5954'} />
+          <stop offset="25%" stopColor={rustic ? '#a68c64' : retro ? '#ecedda' : '#dce4df'} />
+          <stop offset="45%" stopColor={rustic ? '#785d3d' : retro ? '#f4f0d9' : '#dce1d6'} />
+          <stop offset="75%" stopColor={rustic ? '#8a6543' : retro ? '#b7ccba' : '#9db0a6'} />
+          <stop offset="100%" stopColor={rustic ? '#40382d' : retro ? '#587565' : '#3b433e'} />
         </linearGradient>
 
         {/* 8. 旋压黄铜舷窗多层金属法兰环渐变 */}
         <linearGradient id="portholeBrassRingGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#fcedc7" />
-          <stop offset="25%" stopColor="#d5aa50" />
-          <stop offset="50%" stopColor="#8d6a2a" />
-          <stop offset="75%" stopColor="#e4be68" />
-          <stop offset="100%" stopColor="#634718" />
+          <stop offset="0%" stopColor={rustic ? '#b88c59' : retro ? '#d9e1c8' : '#e8d5a1'} />
+          <stop offset="25%" stopColor={rustic ? '#90613f' : retro ? '#a4b9a7' : '#c2a05a'} />
+          <stop offset="50%" stopColor={rustic ? '#503d2d' : retro ? '#607b6c' : '#806638'} />
+          <stop offset="75%" stopColor={rustic ? '#ae764c' : retro ? '#c5d4ba' : '#cda85f'} />
+          <stop offset="100%" stopColor={rustic ? '#58402f' : retro ? '#526b61' : '#604c2d'} />
         </linearGradient>
 
         {/* 9. 舷窗内侧深邃切面绝热套环与内阴影渐变 (体现 15cm 真实舱壁深度) */}
@@ -107,15 +117,15 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
         {/* 10. 连廊实木甲板单块企口木料渐变 */}
         <linearGradient id="boardwalkPlankGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#946d47" />
-          <stop offset="50%" stopColor="#825c38" />
-          <stop offset="100%" stopColor="#6b482a" />
+          <stop offset="0%" stopColor={rustic ? '#86623d' : retro ? '#c39761' : '#946d47'} />
+          <stop offset="50%" stopColor={rustic ? '#694a30' : retro ? '#a87b4b' : '#825c38'} />
+          <stop offset="100%" stopColor={rustic ? '#4e3b2b' : retro ? '#79593c' : '#6b482a'} />
         </linearGradient>
 
         {/* 11. 平台前缘大梁横截面阴影渐变 */}
         <linearGradient id="boardwalkFasciaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5a381f" />
-          <stop offset="100%" stopColor="#321e0f" />
+          <stop offset="0%" stopColor={rustic ? '#503a29' : retro ? '#806044' : '#5a381f'} />
+          <stop offset="100%" stopColor={rustic ? '#30271f' : retro ? '#59432f' : '#321e0f'} />
         </linearGradient>
 
         {/* 12. 柱灯柔和多段径向光晕 (彻底杜绝生硬刺眼的实体大圆圈) */}
@@ -129,9 +139,9 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
         {/* 13. 单晶硅太阳能电池板深蓝微光 */}
         <linearGradient id="solarCellGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#253547" />
-          <stop offset="50%" stopColor="#182330" />
-          <stop offset="100%" stopColor="#0d141c" />
+          <stop offset="0%" stopColor={rustic ? '#594c38' : retro ? '#425a57' : '#253547'} />
+          <stop offset="50%" stopColor={rustic ? '#3e382c' : retro ? '#2e4946' : '#182330'} />
+          <stop offset="100%" stopColor={rustic ? '#28271f' : retro ? '#203631' : '#0d141c'} />
         </linearGradient>
 
         {/* 14. 气密门凹槽内暗影渐变 */}
@@ -144,12 +154,14 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
       </defs>
 
       <MeadowWearPatch id="pod-entry-grass-wear" theme={theme}
-        transform="translate(-50,66) scale(0.42,0.32)" />
+        transform="translate(-62,79) scale(0.42,0.26)" />
+
+      <CapsuleStonePlatform theme={{...theme, design}} />
 
       {/* ========================================================================= */}
       {/* 2. 胶囊睡眠舱交互主组 (The 3D Sculpted Capsule Pod Interactive Room)        */}
       {/* ========================================================================= */}
-      <g {...svgAction('旧太空胶囊仓')}
+      <g {...svgAction(rustic ? '农场改造的退役胶囊仓' : retro ? '复古未来胶囊仓' : '旧太空胶囊仓')}
         id="room-capsule_pod"
         onClick={() => {
           if (!hasMovedRef.current) onSelectRoom('capsule_pod');
@@ -162,7 +174,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
 
         {/* B. 四足重型液压升降支撑架 (每个支脚配备独立精确的 Contact Shadows) */}
-        <g id="pod-landing-gear">
+        <g id="pod-landing-gear" style={rustic ? { filter: 'sepia(.42) saturate(.82)' } : undefined}>
           {/* ============ 1. 后置支撑足 (处于舱体遮蔽阴影中) ============ */}
           {/* 左后足接地接触阴影与主腿 */}
           <g id="rear-stilt-left" opacity="0.88">
@@ -208,7 +220,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
             {/* 镜面镀铬伸缩活塞杆 (High-Mirror Chrome Piston Rod) */}
             <rect x="-22" y="47" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#222825" strokeWidth="0.5" />
-            <line x1="-21" y1="47.5" x2="-21" y2="61.5" stroke="#ffffff" strokeWidth="0.9" opacity="0.9" />
+            <line x1="-21" y1="47.5" x2="-21" y2="61.5" stroke="#eef0df" strokeWidth="0.6" opacity="0.5" />
 
             {/* 万向球形铰接脚座与加厚接地吸震垫 (Swivel Footpad) */}
             <circle cx="-20" cy="61" r="2.2" fill="#5a6b60" stroke="#262f29" strokeWidth="0.6" />
@@ -234,7 +246,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
             {/* 镜面活塞杆 */}
             <rect x="22" y="46" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#222825" strokeWidth="0.5" />
-            <line x1="23" y1="46.5" x2="23" y2="60.5" stroke="#ffffff" strokeWidth="0.9" opacity="0.9" />
+            <line x1="23" y1="46.5" x2="23" y2="60.5" stroke="#eef0df" strokeWidth="0.6" opacity="0.5" />
 
             {/* 脚座吸震垫 */}
             <circle cx="24" cy="60" r="2.2" fill="#5a6b60" stroke="#262f29" strokeWidth="0.6" />
@@ -293,27 +305,45 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             className="pointer-events-none"
           />
 
-          {/* 5. 顶部柱面光滑弧线主高光带 */}
+          {/* 5. 经日晒的烤漆保留宽弱反光，避免连续镜面亮带。 */}
           <path
             d="M-52,-23 Q-3,-32 46,-23 Q-3,-27 -52,-23 Z"
-            fill="#ffffff"
-            opacity="0.82"
+            fill="#fff8e5"
+            opacity="0.36"
             className="pointer-events-none"
           />
-          <line x1="-48" y1="-19" x2="42" y2="-19" stroke="#ffffff" strokeWidth="1.2" opacity="0.4" />
+          <path d="M-47,-19 L-33,-19 M-23,-19 L-12,-19" stroke="#fff8e5" strokeWidth="0.7" opacity="0.25" />
+
+          {/* Weathering follows seams and exposed edges; large paint planes stay quiet. */}
+          <g id="pod-shell-weathering" pointerEvents="none" clipPath="url(#podHullSilhouetteClip)" style={rustic ? { filter: 'saturate(1.12)' } : undefined}>
+            <path d="M-29,-25 Q-27.5,-19 -28.4,-12 L-29.3,-17 Z M43,-24 Q45,-19 44,-17 L43,-20 Z"
+              fill={rustic ? '#713f2d' : '#978967'} opacity={rustic ? '.38' : '.2'} />
+            <path d="M-61,16 L-59,17 L-59.8,18.3 L-62,17.5 Z M46,27 L49,26.6 L50.3,27.4 L47.4,28.3 Z M-25,32.5 L-21,33 L-22,34 L-26,33.6 Z"
+              fill="#8e9a83" opacity="0.75" />
+            <path d="M-61.5,17.3 L-60.3,17.7 M47,27.8 L48.6,27.4" fill="none" stroke={rustic ? '#79422c' : '#384b41'} strokeWidth="0.45" />
+            {/* One small brush-applied repair below the right-hand identification plate. */}
+            <path id="pod-repair-paint" d="M46,12.2 L55,11.7 L56.2,13.1 L55.8,20.3 L53.6,20 L47,20.7 L46.3,18.8 Z"
+              fill={rustic ? '#966d47' : retro ? '#a8b69b' : '#617d68'} opacity="0.88" />
+            <path d="M48,13.4 L53.8,13 M48.1,18.8 L51.2,18.6" fill="none" stroke={rustic ? '#c3a06b' : retro ? '#edf0d9' : '#85967a'} strokeWidth="0.45" opacity="0.48" />
+            {rustic && <path d="M-64,-19 Q-59,-22 -55,-18 L-53,-12 -57,-8 -55,-3 -60,0 -65,-4Z M36,-20 L42,-24 47,-21 45,-16 50,-12 46,-8 43,-11 39,-9Z M-27,27 L-21,26 -19,30 -24,33 -29,31Z"
+              fill="#87452e" opacity=".78" />}
+            {rustic && <path d="M-62,-18 l4,-2 -2,4 3,4 -3,3 -3,-4Z M39,-19 l4,-2 -1,4 4,3 -3,2 -4,-3Z M-25,28 l4,-1 -2,3Z"
+              fill="#c1804a" opacity=".8" />}
+          </g>
 
           {/* 6. 3D 立体锻造金属防撞中腰线 (Molded 3D Midline Belt) */}
           <g id="pod-midline-belt">
             <line x1="-69" y1="1.8" x2="65" y2="1.8" stroke="#36433c" strokeWidth="0.8" />
             <line x1="-69" y1="3" x2="65" y2="3" stroke="url(#podBrassBeltGrad)" strokeWidth="2.2" />
-            <line x1="-68" y1="2.2" x2="64" y2="2.2" stroke="#fff9e6" strokeWidth="0.6" opacity="0.9" />
+            <path d="M-66,2.2 H-58 M-28,2.2 H-19 M43,2.2 H54 M59,2.2 H63" stroke="#f0d79d" strokeWidth="0.6" opacity="0.65" />
             <line x1="-69" y1="4.2" x2="65" y2="4.2" stroke="#1d2822" strokeWidth="0.8" />
+            <path d="M-63,3.8 H-60 M49,3.8 H52 M60,3.8 H63" stroke="#536b56" strokeWidth="0.7" opacity="0.7" />
 
             {/* 沿防撞条均匀分布的精密航空微铆钉 */}
             {[-62, -54, -46, -38, -30, -22, 10, 18, 26, 34, 42, 50, 58].map((rv) => (
               <g key={`belt-rivet-${rv}`}>
-                <circle cx={rv} cy="3" r="0.8" fill="#2d210b" />
-                <circle cx={rv - 0.2} cy="2.8" r="0.4" fill="#ffe9a8" />
+                <circle cx={rv} cy="3" r="0.8" fill={retro ? '#445a50' : rustic ? '#493629' : '#2d210b'} />
+                <circle cx={rv - 0.2} cy="2.8" r="0.4" fill={retro ? '#f2edd7' : rustic ? '#b18b59' : '#ffe9a8'} />
               </g>
             ))}
           </g>
@@ -333,8 +363,8 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           {/* ========================================================================= */}
           <g id="pod-spec-plate" transform="translate(50, -9)">
             {/* 冲压金属铭牌底座 */}
-            <rect x="-12" y="-7.5" width="24" height="15" rx="2" fill="#29352e" stroke="#1c241f" strokeWidth="0.8" />
-            <rect x="-11" y="-6.5" width="22" height="13" rx="1.4" fill="#39483f" />
+            <rect x="-12" y="-7.5" width="24" height="15" rx="2" fill={retro ? '#647f71' : rustic ? '#493d2e' : '#29352e'} stroke={retro ? '#405a4e' : rustic ? '#2f2a22' : '#1c241f'} strokeWidth="0.8" />
+            <rect x="-11" y="-6.5" width="22" height="13" rx="1.4" fill={retro ? '#91a48f' : rustic ? '#65563c' : '#39483f'} />
             {/* 4 颗角落精密微螺丝 */}
             <circle cx="-9.5" cy="-5" r="0.6" fill="#8f9f95" />
             <circle cx="9.5" cy="-5" r="0.6" fill="#8f9f95" />
@@ -342,13 +372,13 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             <circle cx="9.5" cy="5" r="0.6" fill="#8f9f95" />
 
             {/* 规范的航空模组铭文 */}
-            <text x="0" y="-1.5" textAnchor="middle" fill="#e2ede7" fontSize="4.2" fontWeight="800" letterSpacing="0.8">
-              ORBITAL
+            <text x="0" y="-1.5" textAnchor="middle" fill={rustic ? '#e0c99c' : retro ? '#f4edce' : '#e2ede7'} fontSize="4.2" fontWeight="800" letterSpacing="0.8">
+              {rustic ? 'FIELD' : retro ? 'MEADOW' : 'ORBITAL'}
             </text>
-            <text x="0" y="3.2" textAnchor="middle" fill="#9db5a8" fontSize="3.2" fontWeight="700" letterSpacing="0.6">
-              POD · 03
+            <text x="0" y="3.2" textAnchor="middle" fill={retro ? '#e0e4cc' : rustic ? '#c0a879' : '#9db5a8'} fontSize="3.2" fontWeight="700" letterSpacing="0.6">
+              {rustic ? 'RETIRED · 07' : retro ? 'CAMPER · 07' : 'POD · 03'}
             </text>
-            <text x="0" y="7.2" textAnchor="middle" fill="#71877b" fontSize="2.2" fontWeight="600" letterSpacing="0.4">
+            <text x="0" y="7.2" textAnchor="middle" fill={retro ? '#d0dbc3' : rustic ? '#988261' : '#71877b'} fontSize="2.2" fontWeight="600" letterSpacing="0.4">
               HERMETIC SPEC
             </text>
           </g>
@@ -357,7 +387,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           {/* 9. 嵌入式气密潜艇加压舱门 (Recessed Submarine Airlock Hatch)              */}
           {/*    严格内嵌在 x=-56 ~ -32, y=-16 ~ 25，位于舱壁安全凹槽内，绝不穿帮      */}
           {/* ========================================================================= */}
-          <g id="pod-recessed-entrance-hatch">
+          <g id="pod-recessed-entrance-hatch" style={rustic ? { filter: 'sepia(.5) saturate(.88)' } : undefined}>
             {/* A. 舱壁冲压凹入式门框凹槽 (Sunken Recess Frame: 呈现 4px 真实舱壁厚度与内暗影) */}
             <rect
               x="-57"
@@ -447,11 +477,13 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
             {/* H. 门槛金属防滑过渡板 (连接至实木甲板) */}
             <polygon points="-56,23.5 -32,23.5 -31,25.5 -57,25.5" fill="#c49d52" stroke="#5e481c" strokeWidth="0.5" />
+            <path d="M-51,25 L-47,25 M-45,24.8 L-40,24.8 M-54.6,17 L-54.3,19.5"
+              fill="none" stroke="#d3c398" strokeWidth="0.65" opacity="0.75" pointerEvents="none" />
           </g>
         </g>
 
         {/* D. 舱顶精密航空外设 (Rooftop Environmental & Communications Array) */}
-        <g id="pod-rooftop-hardware">
+        <g id="pod-rooftop-hardware" style={rustic ? { filter: 'sepia(.42) saturate(.78)' } : undefined}>
           {/* 1. 中央高效双单晶硅光伏板 (Monocrystalline Solar Panel) */}
           <g id="pod-solar-array" transform="translate(6, -34)">
             <rect x="-1" y="2" width="24" height="4" rx="1" fill="#303c35" stroke="#1d2520" strokeWidth="0.6" />
@@ -540,6 +572,10 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             strokeWidth="1.8"
             filter="url(#softShadow)"
           />
+
+          {/* 局部铜绿留在下缘凹处，凸缘仍保留金属反光。 */}
+          <path d="M-23.2,13 A26.6,26.6 0 0,0 -18.2,19.4 M16.5,20.9 A26.6,26.6 0 0,0 20,17.5"
+            fill="none" stroke="#596f56" strokeWidth="1.1" opacity="0.62" pointerEvents="none" />
 
           {/* 2. 12 颗均布的重型航空钛金六角紧固螺栓 */}
           {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((ang) => {
@@ -816,6 +852,10 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           <line x1="-42.5" y1="45" x2="-44" y2="48" stroke="#7e9383" strokeWidth="0.6" />
           <line x1="-54.5" y1="56" x2="-56" y2="59" stroke="#7e9383" strokeWidth="0.6" />
           <line x1="-45" y1="56" x2="-46.5" y2="59" stroke="#7e9383" strokeWidth="0.6" />
+          <g pointerEvents="none" fill="none" strokeLinecap="round">
+            <path d="M-50,37.5 H-46 M-52.5,48.5 H-48 M-53,59.5 H-48.5" stroke="#bec2a5" strokeWidth="0.8" opacity="0.7" />
+            <path d="M-58.8,61.8 H-56 M-42,62 H-40.5" stroke="#9b8760" strokeWidth="0.7" opacity="0.5" />
+          </g>
         </g>
 
         {/* F. 安睡角色梦境浮标与宁静气泡 */}

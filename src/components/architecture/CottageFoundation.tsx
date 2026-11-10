@@ -17,9 +17,10 @@ import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
 interface CottageFoundationProps {
   theme: YorkshireSceneTheme;
   className?: string;
+  rearMasonry?: React.ReactNode;
 }
 
-export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, className }) => {
+export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, className, rearMasonry }) => {
   // 承重立柱沿前缘 X 轴分布坐标 (对称分布)
   const postsLeft = [-225, -165, -105, -45];
   const postsRight = [45, 105, 165, 225];
@@ -121,6 +122,8 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, cla
       {/* ======================================================== */}
       {/* 2. 架空防潮层暗部与通风木格栅 (Crawl Space & Ventilated Slats) */}
       {/* ======================================================== */}
+      {/* Rear stonework covers the gravel, while the front crawlspace hides its buried ends. */}
+      {rearMasonry}
       <g id="foundation-ventilated-crawlspace">
         {/* 室内架空深部阴影背板 (Deep Recessed Underfloor Shadow) */}
         {/* 左侧面: (-272, 142) -> (0, 219) -> (0, 236) -> (-272, 159) */}
@@ -371,52 +374,7 @@ export const CottageFoundation: React.FC<CottageFoundationProps> = ({ theme, cla
           </g>
         </g>
 
-        {/* 🌿 零星石缝随风草叶 (Sparse Stone-Verge Grass Tufts) */}
-        <g id="sparse-foundation-verge-grass">
-          <g transform="translate(-115, 204)">
-            <g className="animate-wind-grass" style={{ animationDelay: '0.6s', transformOrigin: '0px 0px' }}>
-              <path d="M-2,0 Q-4,-5 -5,-9 M1,0 Q2,-6 3,-10 M4,0 Q6,-4 7,-7" stroke="#4e722a" strokeWidth="0.85" fill="none" strokeLinecap="round" />
-            </g>
-          </g>
-          <g transform="translate(115, 204)">
-            <g className="animate-wind-grass" style={{ animationDelay: '1.25s', transformOrigin: '0px 0px' }}>
-              <path d="M-3,0 Q-4,-5 -4,-8 M0,0 Q1,-6 2,-9 M3,0 Q5,-4 6,-7" stroke="#4e722a" strokeWidth="0.85" fill="none" strokeLinecap="round" />
-            </g>
-          </g>
-        </g>
       </g>
     </g>
   );
 };
-
-/** Low, uneven groundcover in front of the footings. Render after the floor so
- * the leaves can overlap a few pier bases while the raised sill stays visible. */
-export const CottageGroundPlanting = React.memo(function CottageGroundPlanting() {
-  return <g id="cottage-ground-planting" className="pointer-events-none">
-    <g transform="translate(-232, 178)">
-      <ellipse cy="4" rx="32" ry="7" fill="#21341a" opacity="0.24" />
-      <path d="M-30,3 Q-33,-3 -25,-6 Q-26,-12 -18,-12 Q-13,-21 -5,-16 Q3,-22 10,-13 Q20,-16 23,-8 Q33,-9 30,2 Q12,8 -8,7 Z" fill="#365735" />
-      <path d="M-23,-4 Q-24,-11 -16,-10 Q-10,-19 -3,-12 Q6,-18 12,-10 Q19,-11 20,-5 Q5,-1 -5,-4 Z" fill="#517b45" />
-      <path d="M-14,-5 Q-9,-12 -4,-8 Q1,-15 7,-10 Q8,-5 1,-4 Z" fill="#709150" />
-      <path d="M-27,4 Q-32,-3 -36,-7 M-24,5 Q-27,-3 -28,-11 M24,3 Q29,-2 31,-8" fill="none" stroke="#668643" strokeWidth="1" />
-      <path d="M-5,5 Q-10,0 -10,-5 M-9,2 L-16,-1 M-10,-1 L-17,-4 M-10,0 L-3,-3" fill="none" stroke="#829f5b" strokeWidth="0.8" />
-      <ellipse cx="30" cy="7" rx="4" ry="1.7" fill="#8a826b" />
-    </g>
-    <g transform="translate(-126, 207)">
-      <ellipse cy="2" rx="22" ry="5" fill="#263b1c" opacity="0.22" />
-      <path d="M-20,2 Q-23,-4 -16,-6 Q-13,-13 -6,-9 Q0,-16 6,-8 Q14,-10 18,-4 Q23,0 18,3 Z" fill="#486b37" />
-      <path d="M-14,-4 Q-11,-10 -6,-7 Q1,-12 7,-5 L13,-3 Q1,1 -14,-4 Z" fill="#678746" />
-      <path d="M-18,3 Q-23,-2 -23,-8 M17,3 Q20,-4 24,-6" fill="none" stroke="#789653" strokeWidth="0.8" />
-      <circle cx="5" cy="-6" r="1.4" fill="#e7dec0" /><circle cx="5" cy="-6" r="0.5" fill="#d3a33c" />
-      <ellipse cx="-22" cy="4" rx="3.2" ry="1.3" fill="#776f59" />
-    </g>
-    <g transform="translate(231, 179)">
-      <ellipse cy="3" rx="28" ry="6" fill="#263b1c" opacity="0.22" />
-      <path d="M-26,2 Q-30,-4 -21,-6 Q-19,-14 -12,-10 Q-7,-19 0,-13 Q7,-20 14,-10 Q23,-11 25,-3 Q29,3 18,5 L-15,6 Z" fill="#35583b" />
-      <path d="M-20,-3 Q-19,-10 -12,-8 Q-5,-16 0,-10 Q8,-15 13,-8 Q19,-8 20,-3 Q4,0 -20,-3 Z" fill="#52794b" />
-      <path d="M-9,-8 Q-4,-14 1,-9 Q7,-12 10,-6 L0,-4 Z" fill="#718e55" />
-      <path d="M-22,3 Q-29,-2 -30,-9 M19,4 Q24,-4 27,-7" fill="none" stroke="#749252" strokeWidth="1" />
-      <ellipse cx="-29" cy="5" rx="3.5" ry="1.5" fill="#928970" />
-    </g>
-  </g>;
-});

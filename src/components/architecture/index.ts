@@ -1,4 +1,5 @@
 export * from './CapsulePodHaven';
+export * from './CapsuleStonePlatform';
 export * from './CottageFoundation';
 export * from './CottageRoofFraming';
 export * from './CottageWallProfiles';

@@ -1,14 +1,17 @@
+import type { WorldViewId } from '../../types';
 import React from 'react';
 import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
 import type { Person, RoomId } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
 import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
+import { RoofRuneEngravings } from './RoofRuneEngravings';
+import { EaveSleepButterfly } from './EaveSleepButterfly';
 import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
 import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 
 export interface WoodenCabinHavenProps {
-  onSelectRoom: (roomId: RoomId | 'overview') => void;
+  onSelectRoom: (roomId: WorldViewId) => void;
   presenceSlots: PresenceAllocation['slots'];
   onSelectPerson: (person: Person) => void;
   setHoveredObject: (target: InteractionTarget | null) => void;
@@ -17,6 +20,7 @@ export interface WoodenCabinHavenProps {
     cottageGlow: string;
     isNight?: boolean;
     roofColor?: string;
+    timeOfDay?: YorkshireSceneTheme['timeOfDay'];
   };
 }
 
@@ -35,6 +39,98 @@ const frontWall = (u: number, height: number) => {
   return `matrix(1 -0.2 0 1 ${point.x} ${point.y})`;
 };
 
+// The upper crown bends as a rounded volume. Its cross-section turns with the
+// neck, so the hanging end has a soft cap and enough substance for a tied ornament.
+const hatNeckStart = .68;
+const hatNeckU = 63 - 7 * hatNeckStart ** 2 - 24 * hatNeckStart ** 5;
+const hatNeckHeight = 51 + 90 * hatNeckStart ** 1.7 - 18 * hatNeckStart ** 9;
+const hatNeckControlU = hatNeckU + (-14 * hatNeckStart - 120 * hatNeckStart ** 4) * (1 - hatNeckStart) / 3;
+const hatNeckControlHeight = hatNeckHeight
+  + (153 * hatNeckStart ** .7 - 162 * hatNeckStart ** 8) * (1 - hatNeckStart) / 3;
+
+const hatPoint = (angle: number, t: number, drop = 0, inset = 1) => {
+  const cosine = Math.cos(angle), sine = Math.sin(angle);
+  const power = .42 + .58 * t;
+  let radius = 1 - t;
+  let centerU = 63 - 7 * t * t - 24 * t ** 5;
+  let centerHeight = 51 + 90 * Math.pow(t, 1.7) - 18 * t ** 9;
+  let sectionAngle = 0;
+  if (t > hatNeckStart) {
+    const s = (t - hatNeckStart) / (1 - hatNeckStart);
+    const back = 1 - s;
+    centerU = back ** 3 * hatNeckU + 3 * back ** 2 * s * hatNeckControlU
+      + 3 * back * s * s * 36 + s ** 3 * 26;
+    centerHeight = back ** 3 * hatNeckHeight + 3 * back ** 2 * s * hatNeckControlHeight
+      + 3 * back * s * s * 130 + s ** 3 * 119;
+    const tangentU = back ** 2 * (hatNeckControlU - hatNeckU)
+      + 2 * back * s * (36 - hatNeckControlU) + s * s * (26 - 36);
+    const tangentHeight = back ** 2 * (hatNeckControlHeight - hatNeckHeight)
+      + 2 * back * s * (130 - hatNeckControlHeight) + s * s * (119 - 130);
+    sectionAngle = Math.atan2(-tangentU, tangentHeight) * s * s * (3 - 2 * s);
+    radius = (1 - hatNeckStart) * Math.sqrt(back) * (1 - .5 * s);
+  }
+  const brimSpread = 1 + (.025 * Math.cos(angle - .35) + .035 * Math.sin(2 * angle + .4)) * (1 - t) ** 3;
+  const brimLift = (2.1 * Math.sin(angle - .4) + 1.3 * Math.sin(2 * angle + .7)) * (1 - t) ** 5;
+  const across = 77 * radius * brimSpread * Math.sign(cosine) * Math.pow(Math.abs(cosine), power) * inset;
+  const u = centerU + across * Math.cos(sectionAngle);
+  const v = 21 + 3 * t * t - 2 * t ** 4
+    + 32 * radius * brimSpread * Math.sign(sine) * Math.pow(Math.abs(sine), power) * inset;
+  const height = centerHeight + across * Math.sin(sectionAngle) + brimLift;
+  return cabinPoint(u, v, height - drop);
+};
+const hatPoints = (points: { x: number; y: number }[]) => points.map(p => `${p.x},${p.y}`).join(' ');
+const hatArc = (from: number, to: number, t: number, drop = 0, inset = 1) =>
+  Array.from({ length: 33 }, (_, i) => hatPoint(from + (to - from) * i / 32, t, drop, inset));
+const hatRadial = (angle: number, from: number, to: number) =>
+  Array.from({ length: 33 }, (_, i) => hatPoint(angle, from + (to - from) * (1 - Math.cos(Math.PI * i / 32)) / 2));
+const hatSides = [
+  { id: 'back', from: Math.PI / 4, to: Math.PI * 3 / 4, material: 'cabinTerracottaRight' },
+  { id: 'right', from: -Math.PI / 4, to: Math.PI / 4, material: 'cabinTerracottaRight' },
+  { id: 'left', from: Math.PI * 3 / 4, to: Math.PI * 5 / 4, material: 'cabinTerracottaEaveLip' },
+  { id: 'front', from: Math.PI * 5 / 4, to: Math.PI * 7 / 4, material: 'cabinTerracottaLeft' },
+] as const;
+const hatCourses = [0, .2, .43, .66];
+const hatTile = (from: number, to: number, lower: number, upper: number) => hatPoints([
+  ...hatArc(from, to, lower), ...hatRadial(to, lower, upper),
+  ...hatArc(to, from, upper), ...hatRadial(from, upper, lower),
+]);
+// The flight sweeps along the front brim, rises over the right shoulder, then
+// makes a broader S-shaped climb across the front crown before returning left.
+// Roof-relative waypoints lift into open air, with a short sweep outside the brim.
+const butterflyRoute = [
+  { turns: 1.07, height: .06, lift: 12, spread: 1.08 },
+  { turns: 1.32, height: .035, lift: 13, spread: 1.08 },
+  { turns: 1.62, height: .035, lift: 14, spread: 1.08 },
+  { turns: 1.94, height: .06, lift: 13, spread: 1.08 },
+  { turns: 1.83, height: .36, lift: 12, spread: 1.04 },
+  { turns: 1.57, height: .27, lift: 9, spread: 1.08 },
+  { turns: 1.38, height: .59, lift: 12, spread: 1.04 },
+  { turns: 1.15, height: .34, lift: 11, spread: 1.06 },
+].map(({ turns, height, lift, spread }) => {
+  const p = hatPoint(Math.PI * turns, height, 0, spread);
+  return { x: p.x, y: p.y - lift };
+});
+const butterflyFlightSegments = butterflyRoute.map((point, i, points) => {
+  const previous = points[(i + points.length - 1) % points.length];
+  const next = points[(i + 1) % points.length];
+  const after = points[(i + 2) % points.length];
+  // Chord-weighted handles keep short transitions from pulling a long sweep into a hook.
+  const beforeLength = Math.sqrt(Math.hypot(point.x - previous.x, point.y - previous.y));
+  const segmentLength = Math.sqrt(Math.hypot(next.x - point.x, next.y - point.y));
+  const afterLength = Math.sqrt(Math.hypot(after.x - next.x, after.y - next.y));
+  const fromWeight = segmentLength / (3 * (beforeLength + segmentLength));
+  const toWeight = segmentLength / (3 * (segmentLength + afterLength));
+  const controlFrom = {
+    x: point.x + (next.x - previous.x) * fromWeight,
+    y: point.y + (next.y - previous.y) * fromWeight,
+  };
+  const controlTo = {
+    x: next.x - (after.x - point.x) * toWeight,
+    y: next.y - (after.y - point.y) * toWeight,
+  };
+  return `C${controlFrom.x},${controlFrom.y} ${controlTo.x},${controlTo.y} ${next.x},${next.y}`;
+});
+const butterflyFlightPath = `M${butterflyRoute[0].x},${butterflyRoute[0].y} ${butterflyFlightSegments.join(' ')} Z`;
 /** A detached sleeping cabin, with a courtyard-facing cutaway and flower window. */
 export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
   onSelectRoom, presenceSlots, onSelectPerson, setHoveredObject, hasMovedRef, theme,
@@ -42,7 +138,30 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
   const cabinOccupant = presenceSlots.tatami_corn?.occupant;
   const slotCfg = presenceSlots.tatami_corn?.config;
   const lamp = cabinPoint(66, 30, 23);
-  const activeRoofColor = theme.roofColor || '#ad4c32';
+  // Change the whole clay material together; one near-black stop creates a dirty patch.
+  const clay = theme.isNight
+    ? { light: '#a65d38', body: '#87412c', shade: '#663326', edge: '#ad7043' }
+    : theme.timeOfDay === 'dusk'
+      ? { light: '#cf693a', body: '#b74b2b', shade: '#8d3c28', edge: '#d18449' }
+      : { light: '#d96e3c', body: '#bf512e', shade: '#a14329', edge: '#dd8046' };
+  const roofDetailUid = React.useId().replace(/:/g, '');
+  const runeClipId = `cabin-roof-rune-surface-${roofDetailUid}`;
+  const binding = theme.isNight
+    ? { light: '#718266', body: '#465e43', shade: '#314535', brass: '#ad8952', brassLight: '#c6aa70' }
+    : theme.timeOfDay === 'dusk'
+      ? { light: '#93a076', body: '#59734d', shade: '#3c533b', brass: '#ba9253', brassLight: '#dec18a' }
+      : { light: '#a0b18a', body: '#5e7b53', shade: '#405c42', brass: '#bb9458', brassLight: '#e4ca90' };
+  const bindingId = `cabin-moss-binding-${roofDetailUid}`;
+  const clasp = hatPoint(Math.PI * 1.72, 0, .15, .987);
+  const claspBefore = hatPoint(Math.PI * 1.71, 0);
+  const claspAfter = hatPoint(Math.PI * 1.73, 0);
+  const claspLength = Math.hypot(claspAfter.x - claspBefore.x, claspAfter.y - claspBefore.y);
+  const claspTransform = `matrix(${(claspAfter.x - claspBefore.x) / claspLength} ${(claspAfter.y - claspBefore.y) / claspLength} 0 1 ${clasp.x} ${clasp.y})`;
+  const potionAnchor = hatPoint(Math.PI * 1.12, .975);
+  const strawHatHook = cabinPoint(0, 21, 35);
+  const potionId = `cabin-potion-${roofDetailUid}`;
+  const strawId = `cabin-straw-${roofDetailUid}`;
+
 
   return (
     <g id="wooden-cabin-haven">
@@ -57,27 +176,59 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
         </linearGradient>
         {/* 2.5D 童话暖红陶瓦屋顶质感体系 (Artisan Terracotta Roof Palette - 同频大木屋红陶屋檐) */}
         <linearGradient id="cabinTerracottaLeft" x1="0%" y1="0%" x2="55%" y2="100%">
-          <stop offset="0%" stopColor="#c75b3e" />
-          <stop offset="28%" stopColor={activeRoofColor} />
-          <stop offset="68%" stopColor="#8c3822" />
-          <stop offset="100%" stopColor="#6e2716" />
+          <stop offset="0%" stopColor={clay.light} />
+          <stop offset="28%" stopColor={clay.body} />
+          <stop offset="68%" stopColor={clay.body} />
+          <stop offset="100%" stopColor={clay.shade} />
         </linearGradient>
         <linearGradient id="cabinTerracottaRight" x1="0%" y1="0%" x2="65%" y2="100%">
-          <stop offset="0%" stopColor="#963c25" />
-          <stop offset="38%" stopColor="#7a2e1c" />
-          <stop offset="75%" stopColor="#5f2012" />
-          <stop offset="100%" stopColor="#45160b" />
+          <stop offset="0%" stopColor={clay.body} />
+          <stop offset="55%" stopColor={clay.shade} />
+          <stop offset="100%" stopColor={clay.shade} />
         </linearGradient>
         <linearGradient id="cabinTerracottaEaveLip" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#d17256" />
-          <stop offset="45%" stopColor={activeRoofColor} />
-          <stop offset="100%" stopColor="#7a2d1b" />
+          <stop offset="0%" stopColor={clay.edge} />
+          <stop offset="45%" stopColor={clay.body} />
+          <stop offset="100%" stopColor={clay.shade} />
         </linearGradient>
+        <linearGradient id={bindingId} x1="0%" y1="0%" x2="25%" y2="100%">
+          <stop stopColor={binding.light} />
+          <stop offset=".35" stopColor={binding.body} />
+          <stop offset="1" stopColor={binding.shade} />
+        </linearGradient>
+        <linearGradient id={potionId} x1="0%" y1="0%" x2="85%" y2="100%">
+          <stop stopColor={theme.isNight ? '#a6d7b4' : '#c0e0c5'} />
+          <stop offset=".4" stopColor={theme.isNight ? '#6dbba4' : '#7fb7a2'} />
+          <stop offset="1" stopColor={theme.isNight ? '#438d7e' : '#397c70'} />
+        </linearGradient>
+        <linearGradient id={`cabin-potion-flame-${roofDetailUid}`} x1="0%" y1="0%" x2="20%" y2="100%">
+          <stop stopColor="#f5a7ff" />
+          <stop offset=".34" stopColor="#d64dff" />
+          <stop offset=".72" stopColor="#982fe4" />
+          <stop offset="1" stopColor="#612cbb" />
+        </linearGradient>
+        <linearGradient id={`cabin-potion-cord-${roofDetailUid}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop stopColor="#552e91" />
+          <stop offset=".5" stopColor="#ae67df" />
+          <stop offset="1" stopColor="#643a9e" />
+        </linearGradient>
+        <linearGradient id={strawId} x1="0%" y1="0%" x2="85%" y2="100%">
+          <stop stopColor={theme.isNight ? '#e1c85c' : '#ffe34f'} />
+          <stop offset=".48" stopColor={theme.isNight ? '#d2a92e' : '#edbb19'} />
+          <stop offset="1" stopColor={theme.isNight ? '#9e7428' : '#bd8112'} />
+        </linearGradient>
+        <clipPath id={runeClipId}>
+          {hatSides.map(({ id, from, to }) => <polygon key={id}
+            points={hatPoints([...hatArc(from, to, 0), ...hatRadial(to, 0, 1), ...hatRadial(from, 1, 0)])} />)}
+        </clipPath>
+        {hatSides.map(({ id, from, to }) => <clipPath key={id} id={`cabin-roof-face-${id}-${roofDetailUid}`}>
+          <polygon points={hatPoints([...hatArc(from, to, 0), ...hatRadial(to, 0, 1), ...hatRadial(from, 1, 0)])} />
+        </clipPath>)}
         <linearGradient id="cabinRidgeCapGrad" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#c85f41" />
           <stop offset="42%" stopColor="#a3442c" />
-          <stop offset="78%" stopColor="#752a18" />
-          <stop offset="100%" stopColor="#4e160a" />
+          <stop offset="78%" stopColor="#a04c33" />
+          <stop offset="100%" stopColor="#8e402d" />
         </linearGradient>
         {/* 床头灯柔和漫反射微光（消除眩光聚光灯感，还原安睡夜读温润柔光） */}
         <radialGradient id="cabinLanternGlow">
@@ -146,6 +297,28 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
             <rect width="55" height="7" rx="3.2" fill="url(#cabinLogGrad)" stroke="#49301a" strokeWidth="0.7" />
             <path d="M3,1.4 H51 M9,4.4 Q20,3.5 32,4.6" stroke="#c49362" strokeWidth="0.6" opacity="0.55" fill="none" />
           </g>)}
+        </g>
+
+        {/* A wall peg passes through the hat's hanging loop, on the visible return wall. */}
+        <g data-cabin-straw-hat="wall-hook" pointerEvents="none"
+          transform={`translate(${strawHatHook.x} ${strawHatHook.y})`}>
+          <path d="M-.7,0 L1.2,-.5 L1.5,3.1 L-.5,3.7 Z" fill="#583b28" />
+          <path d="M.4,1.3 Q3,1.4 2.2,3.2" fill="none" stroke="#b48b56" strokeWidth="1.1" strokeLinecap="round" />
+          <g transform="translate(.5 3.2) rotate(-16)">
+            <path d="M0,0 Q-2.7,1.2 -2.2,4.1 M0,0 Q1.9,1 1.6,3.6"
+              stroke="#9b783f" strokeWidth=".55" fill="none" />
+            <ellipse cx=".6" cy="10.3" rx="5.8" ry="7.6" fill="#251d13" opacity=".22" />
+            <path d="M-5.3,6.2 C-6.9,9.6 -6,15.5 -2.9,17 C.9,18.8 5.8,15.8 6,11.1 C6.4,7.4 4.5,3.4 1.5,3.2 C-1.6,2.9 -4,3.8 -5.3,6.2 Z"
+              fill={`url(#${strawId})`} stroke="#96723a" strokeWidth=".45" />
+            <path d="M-4,6.8 C-5.4,10 -4.5,14.6 -2,15.9 M2.2,4.5 C5.8,6.4 5.8,12.9 3.2,15.3"
+              fill="none" stroke="#fff09a" strokeWidth=".4" opacity=".78" strokeLinecap="round" />
+            <path d="M-3.3,8.6 C-3.4,5.1 -1.7,3.5 .7,3.8 C3.3,4.3 3.8,7.4 3.3,10.5 C2.9,13.3 -3.5,12.6 -3.3,8.6 Z"
+              fill={`url(#${strawId})`} stroke="#a07c3e" strokeWidth=".4" />
+            <path d="M-3.3,9 Q-.3,10.8 3.4,9.7 L3.1,11.3 Q-.4,12.5 -3.2,10.6 Z" fill={binding.body} />
+            <path d="M-1.6,5.2 Q-.5,4.7 .5,5 M-2,6.7 Q-.6,6.2 .9,6.6 M-2.2,8 Q-.6,7.6 1.3,8"
+              fill="none" stroke="#9b6812" strokeWidth=".34" opacity=".72" strokeLinecap="round" />
+            <path d="M2.7,10.3 Q4,11.6 3.1,13.2 L2.1,12.7 L2.5,10.6" fill={binding.shade} />
+          </g>
         </g>
 
         <g id="cabin-sleeping-interior" clipPath="url(#cabin-interior-clip)">
@@ -295,153 +468,105 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
           </g>
         </g>
 
-        {/* The gable and the two roof slopes use the same extrusion as the walls. */}
-        <g id="cabin-main-roof">
-          <polygon points={cabinFace([0, 0, 48], [63, 0, 84], [126, 0, 48])}
-            fill="#9c6d3d" stroke="#4e3018" strokeWidth="1.2" />
-          {[53, 60, 67, 74, 81].map(height => {
-            const halfWidth = (84 - height) * 63 / 36;
-            return <polyline key={height} points={cabinFace([63 - halfWidth, 0, height], [63 + halfWidth, 0, height])}
-              stroke="#67401f" strokeWidth="1.2" fill="none" />;
-          })}
-          <polyline points={cabinFace([63, 0, 49], [63, 0, 82])} stroke="#704724" strokeWidth="2.2" fill="none" />
-          {/* 2. 右坡红陶瓦底面 (Right Roof Terracotta Slope Base) */}
-          <polygon points={cabinFace([63, -4, 86], [133, -4, 46], [133, 47, 46], [63, 47, 86])}
-            fill="url(#cabinTerracottaRight)" stroke="#5f2012" strokeWidth="0.8" />
-          {/* 3. 右坡红陶瓦沉静背光层 (Selected Element 2: Right Slope Terracotta Ambient Depth - 与大木屋背光陶瓦同调，消除污浊灰黑感) */}
-          <polygon points={cabinFace([63, -4, 86], [133, -4, 46], [133, 47, 46], [63, 47, 86])}
-            fill="url(#cabinTerracottaRight)" stroke="#55190b" strokeWidth="0.5" opacity="0.88" />
-          {/* 4. 左坡暖阳红陶瓦面 (Selected Element 1: Left Slope Terracotta Clay Shingles - 饱满温暖的陶瓦红渐变) */}
-          <polygon points={cabinFace([-7, -4, 46], [63, -4, 86], [63, 47, 86], [-7, 47, 46])}
-            fill="url(#cabinTerracottaLeft)" stroke="#8a3720" strokeWidth="0.8" />
-
-          {/* 左坡红陶瓦横向搭接瓦层 (Sparser horizontal course lines - 简约舒展) */}
-          {[14, 32].map(v => (
-            <polyline key={`l-course-${v}`}
-              points={cabinFace([-7, v, 46], [63, v, 86])}
-              stroke="#6b2211" strokeWidth="0.8" opacity="0.45" fill="none" />
-          ))}
-
-          {/* 左坡红陶瓦起垄 (Sparser vertical tile ribs - 疏朗不密集) */}
-          {[10, 28, 46].map(u => {
-            const height = 86 - (63 - u) * 40 / 70;
-            return (
-              <g key={`l-rib-${u}`}>
-                <polyline points={cabinFace([u, -4, height], [u, 47, height])}
-                  stroke="#662211" strokeWidth="0.8" opacity="0.5" fill="none" />
-                <polyline points={cabinFace([u + 1.2, -4, height + 0.4], [u + 1.2, 47, height + 0.4])}
-                  stroke="#d57659" strokeWidth="0.5" opacity="0.4" fill="none" />
-              </g>
-            );
-          })}
-
-          {/* 右坡红陶瓦横向搭接瓦层 (Sparser horizontal course lines) */}
-          {[14, 32].map(v => (
-            <polyline key={`r-course-${v}`}
-              points={cabinFace([63, v, 86], [133, v, 46])}
-              stroke="#461408" strokeWidth="0.8" opacity="0.45" fill="none" />
-          ))}
-
-          {/* 右坡红陶瓦起垄 (Sparser vertical tile ribs) */}
-          {[80, 98, 116].map(u => {
-            const height = 86 - (u - 63) * 40 / 70;
-            return (
-              <g key={`r-rib-${u}`}>
-                <polyline points={cabinFace([u, -4, height], [u, 47, height])}
-                  stroke="#481508" strokeWidth="0.8" opacity="0.5" fill="none" />
-                <polyline points={cabinFace([u - 1, -4, height + 0.35], [u - 1, 47, height + 0.35])}
-                  stroke="#8c331f" strokeWidth="0.5" opacity="0.35" fill="none" />
-              </g>
-            );
-          })}
-
-          {/* 工匠级立体马鞍压脊陶瓦体系 (Clean, calm terracotta ridge cap) */}
-          <polyline points={cabinFace([63, -4, 86], [63, 47, 86])}
-            stroke="#451408" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-          <polyline points={cabinFace([63, -4, 86.8], [63, 47, 86.8])}
-            stroke="url(#cabinRidgeCapGrad)" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-          <polyline points={cabinFace([63, -4, 87.2], [63, 47, 87.2])}
-            stroke="#e48a6e" strokeWidth="0.6" opacity="0.7" strokeLinecap="round" fill="none" />
-          {[12, 28].map(v => (
-            <polyline key={`ridge-joint-${v}`}
-              points={cabinFace([61.8, v, 86.3], [64.2, v, 86.3])}
-              stroke="#381006" strokeWidth="0.75" fill="none" />
-          ))}
-
-          {/* 屋脊中央工匠金属压脊片与端头固定扣 (Ridge Crest Cap Plate - 呼应主屋屋脊) */}
-          <g id="cabin-roof-ridge-cap">
-            <polygon
-              points={`${cabinPoint(63, -4.2, 87.6).x},${cabinPoint(63, -4.2, 87.6).y} ` +
-                      `${cabinPoint(61, -4.2, 85.8).x},${cabinPoint(61, -4.2, 85.8).y} ` +
-                      `${cabinPoint(63, -4.2, 84.8).x},${cabinPoint(63, -4.2, 84.8).y} ` +
-                      `${cabinPoint(65, -4.2, 85.8).x},${cabinPoint(65, -4.2, 85.8).y}`}
-              fill="#452a1a"
-              stroke="#25140a"
-              strokeWidth="0.6"
-            />
-            <circle
-              cx={cabinPoint(63, -4.2, 86.2).x}
-              cy={cabinPoint(63, -4.2, 86.2).y}
-              r="0.8"
-              fill="#8c7a6b"
-            />
-          </g>
-
-          {/* Solid timber fascia and terracotta tile lip, using the main cottage's
-              terracotta material and warm timber face/soffit colours. */}
+        {/* A continuous four-slope terracotta hat roof, seated on the original walls. */}
+        <g id="cabin-main-roof" data-cabin-roof="four-slope-hat">
+          {/* Timber and clay thickness precede the roof, so far edges cannot cover its surface. */}
           <g id="cabin-solid-eaves">
-            {/* 左山墙陶瓦侧面厚度层 (Rake edge tile thickness: 完美封合屋面与木梁间缝隙) */}
-            <polygon points={cabinFace([-7, -4, 46], [-7, 47, 46], [-7, 47, 43], [-7, -4, 43])}
-              fill="#6e2515" stroke="#551a0d" strokeWidth="0.5" />
-
-            {/* 左山墙实木封檐厚度板 (Timber Gable Rake Fascia Board) */}
-            <polygon points={cabinFace([-7, -4, 43], [-7, 47, 43], [-7, 47, 36], [-7, -4, 36])}
-              fill="#3b2314" stroke="#2d190d" strokeWidth="0.65" />
-            <polyline points={cabinFace([-7, -4, 43], [-7, 47, 43])}
-              stroke="#805132" strokeWidth="0.8" fill="none" />
-
-            {/* 正面实木封檐大梁正面 (Front Fascia Board Face: 紧密衔接陶瓦檐口) */}
-            <polygon points={cabinFace([-7, -4, 43], [63, -4, 83], [63, -4, 76], [-7, -4, 36])}
-              fill="#5a3821" stroke="#3b2314" strokeWidth="0.65" />
-            <polygon points={cabinFace([63, -4, 83], [133, -4, 43], [133, -4, 36], [63, -4, 76])}
-              fill="#492c19" stroke="#2a170b" strokeWidth="0.65" />
-            <polyline points={cabinFace([-7, -4, 43], [63, -4, 83], [133, -4, 43])}
-              stroke="#805132" strokeWidth="0.8" fill="none" />
-
-            {/* 陶瓦出檐厚度口 (Terracotta Tile Eave Lips: 46 -> 43 高度咬合) */}
-            <polygon points={cabinFace([-7, -4, 46], [63, -4, 86], [63, -4, 83], [-7, -4, 43])}
-              fill="url(#cabinTerracottaEaveLip)" stroke="#8a3720" strokeWidth="0.5" />
-            <polygon points={cabinFace([63, -4, 86], [133, -4, 46], [133, -4, 43], [63, -4, 83])}
-              fill="url(#cabinTerracottaRight)" stroke="#752c18" strokeWidth="0.5" />
-
-            {/* 左前角包边交接线 (Corner Seamless Return Line) */}
-            <polyline points={cabinFace([-7, -4, 46], [-7, -4, 36])}
-              stroke="#2d190d" strokeWidth="0.8" fill="none" />
-
-            {/* 陶瓦起伏微节律瓦当滴水 (Sparser tile scallops aligned with ribs) */}
-            {[10, 28, 46].map(u => {
-              const height = 86 - (63 - u) * 40 / 70;
-              return (
-                <polyline key={`l-scallop-${u}`}
-                  points={cabinFace([u, -4, height], [u, -4, height - 2.8])}
-                  stroke="#662211" strokeWidth="0.75" fill="none" />
-              );
-            })}
-            {[80, 98, 116].map(u => {
-              const height = 86 - (u - 63) * 40 / 70;
-              return (
-                <polyline key={`r-scallop-${u}`}
-                  points={cabinFace([u, -4, height], [u, -4, height - 2.8])}
-                  stroke="#52180c" strokeWidth="0.75" fill="none" />
-              );
-            })}
-
-            {/* 陶瓦迎光沉稳温润檐脊微高光 (Matte Terracotta Eave Crest Lines - 与主屋一致) */}
-            <polyline points={cabinFace([-7, -4, 46.3], [63, -4, 86.3])}
-              stroke="#ba5539" strokeWidth="0.85" strokeLinecap="round" opacity="0.9" fill="none" />
-            <polyline points={cabinFace([63, -4, 86.3], [133, -4, 46.3])}
-              stroke="#9c422a" strokeWidth="0.75" strokeLinecap="round" opacity="0.85" fill="none" />
+            {hatSides.map(({ id, from, to }) => <g key={id}>
+              <polygon points={hatPoints([...hatArc(from, to, 0, 1.5, .985),
+                ...hatArc(to, from, 0, 4.7, .985)])}
+                fill={id === 'left' ? '#8a5e38' : '#795032'} stroke="#68472f" strokeWidth=".5" strokeLinejoin="round" />
+              <polygon points={hatPoints([...hatArc(from, to, 0), ...hatArc(to, from, 0, 1.6)])}
+                fill={binding.shade} stroke={binding.shade} strokeWidth=".35" strokeLinejoin="round" />
+            </g>)}
           </g>
+          {hatSides.map(({ id, from, to, material }) => <g key={id} data-hat-roof-slope={id}
+            clipPath={`url(#cabin-roof-face-${id}-${roofDetailUid})`}>
+            <polygon points={hatPoints([...hatArc(from, to, 0), ...hatRadial(to, 0, 1), ...hatRadial(from, 1, 0)])}
+              fill={`url(#${material})`} stroke="#994d35" strokeWidth=".35" strokeLinejoin="round" />
+            {/* The brim is a quieter clay plane; short seams describe tiles without a wireframe. */}
+            <polygon points={hatTile(from, to, 0, .1)} fill="#934026" opacity=".12" />
+            <polygon data-cabin-roof-binding={id}
+              points={hatPoints([...hatArc(from, to, 0), ...hatArc(to, from, 0, -.2, .965)])}
+              fill={`url(#${bindingId})`} />
+            {hatCourses.slice(1).map(t => <g key={t}>
+              <polyline points={hatPoints(hatArc(from, to, t))} fill="none"
+                stroke="#7f371f" strokeWidth=".6" opacity=".28" strokeLinejoin="round" />
+              <polyline points={hatPoints(hatArc(from + .05, to - .1, t + .005))} fill="none"
+                stroke="#e79a59" strokeWidth=".4" opacity=".25" />
+            </g>)}
+            {hatCourses.slice(1, -1).map((t, row) => {
+              const angle = from + (to - from) * (row % 2 ? .62 : .32);
+              return <polyline key={t}
+                points={hatPoints(hatRadial(angle, t + .025, hatCourses[row + 2] - .025))}
+                fill="none" stroke="#873b24" strokeWidth=".5" opacity=".2" strokeLinecap="round" />;
+            })}
+          </g>)}
+          {/* Short worn catches describe the binding's curved upper edge. */}
+          {[{ a: 1.23, b: 1.39 }, { a: 1.57, b: 1.71 }].map(({ a, b }) =>
+            <polyline key={a} points={hatPoints(hatArc(Math.PI * a, Math.PI * b, 0))}
+              stroke={binding.light} strokeWidth=".45" opacity=".65" fill="none" strokeLinecap="round" />)}
+          <g data-cabin-roof-clasp="moonleaf-cabochon" transform={claspTransform}>
+            <path d="M-3.7,0 Q-2.1,-1.55 -.7,-1.22 Q0,-1.95 .75,-1.18 Q2.25,-1.52 3.7,-.05
+              Q2.05,.25 3.25,.85 Q1.55,1.68 .35,1.12 Q-.35,1.86 -1.05,1.13 Q-2.65,1.52 -3.7,0 Z"
+              fill="#27382d" opacity=".62" transform="translate(0 .32)" />
+            <path d="M-3.7,0 Q-2.1,-1.55 -.7,-1.22 Q0,-1.95 .75,-1.18 Q2.25,-1.52 3.7,-.05
+              Q2.05,.25 3.25,.85 Q1.55,1.68 .35,1.12 Q-.35,1.86 -1.05,1.13 Q-2.65,1.52 -3.7,0 Z"
+              fill={binding.brass} stroke="#745a35" strokeWidth=".32" strokeLinejoin="round" />
+            <path d="M-2.85,-.02 Q-1.45,-1.1 -.5,-.8 Q.15,-1.35 .7,-.78 Q1.95,-1.1 2.85,-.02
+              Q1.35,.1 2.45,.74 Q1.1,1.23 .32,.77 Q-.35,1.3 -.92,.76 Q-2.13,1.1 -2.85,-.02 Z"
+              fill="none" stroke={binding.brassLight} strokeWidth=".3" strokeLinejoin="round" />
+            <path d="M-1.55,.48 Q-.62,-.65 .1,-.56 Q.85,-.45 .95,.36 Q.04,1.08 -.86,.68"
+              fill="none" stroke="#405e4a" strokeWidth=".72" strokeLinecap="round" />
+            <path d="M-1.38,.36 Q-.5,-.63 .14,-.49 Q.73,-.39 .8,.3"
+              fill="none" stroke={binding.brassLight} strokeWidth=".3" strokeLinecap="round" />
+            <ellipse cx="1.45" cy="-.28" rx=".62" ry=".45" fill="#558c70" stroke="#d0b677" strokeWidth=".28" />
+            <ellipse cx="1.28" cy="-.42" rx=".17" ry=".1" fill="#eff0bb" opacity=".9" />
+            <circle cx="-2.45" cy="-.08" r=".24" fill="#e2c987" />
+            <circle cx="2.5" cy=".55" r=".2" fill="#e2c987" />
+          </g>
+          <RoofRuneEngravings project={hatPoint} clipId={runeClipId}
+            night={!!theme.isNight} dusk={theme.timeOfDay === 'dusk'} />
+          <g data-cabin-potion="moon-jade" pointerEvents="none"
+            transform={`translate(${potionAnchor.x} ${potionAnchor.y})`}>
+            <path d="M-2.2,-.8 Q-1.5,1.2 .5,1.5 Q2.3,1.5 2.5,-.6"
+              fill="none" stroke="#49326c" strokeWidth="1.25" strokeLinecap="round" />
+            <path d="M-2,-.9 Q-1.5,1 .4,1.2 Q2.1,1.2 2.2,-.7"
+              fill="none" stroke="#ad73d8" strokeWidth=".6" strokeLinecap="round" />
+            <path d="M-1.5,-1 M-1.4,1.1 Q-2.5,2.9 -1.3,4.5 M1.4,1.1 Q2.7,2.8 1.5,4.5"
+              fill="none" stroke="#d6ad68" strokeWidth=".65" strokeLinecap="round" />
+            <path d="M-2.3,2.1 Q-.7,2.8 .9,2.1 M-2,3.3 Q-.5,4 1.7,3.1"
+              fill="none" stroke="#764eaf" strokeWidth=".65" strokeLinecap="round" />
+            <circle cx="-1.9" cy="2.1" r=".38" fill="#e6c577" />
+            <circle cx="1.3" cy="3.3" r=".32" fill="#f0d18b" />
+            <g transform="translate(.6 5)">
+              <path d="M-1.35,1 L-1.35,3.3 C-1.4,4.4 -3.8,5.1 -3.8,7.6 C-3.9,10.4 -2.2,12 0,12.1 C2.6,12.2 4,10.4 3.8,7.7 C3.6,5.3 1.4,4.3 1.35,3.3 L1.35,1 Z"
+                fill="#b8d7bd" fillOpacity=".24" stroke="#94b8a0" strokeWidth=".45" />
+              <path d="M-3.1,7 Q-.3,7.9 3.1,7 C3.8,9.5 2.4,11.4 .1,11.5 C-2.3,11.4 -3.6,9.6 -3.1,7 Z"
+                fill={`url(#${potionId})`} />
+              <ellipse cy="7" rx="3.1" ry=".6" fill="#c2e3c5" opacity={theme.isNight ? '.8' : '.65'} />
+              <ellipse cx="-.2" cy="9.3" rx="1.55" ry="2.15" fill="#b43cf0" opacity=".24" />
+              <path d="M-1.45,10.8 Q-2.6,9.4 -1.55,8.1 Q-1.2,7.5 -.85,6.5 Q.05,7.2 -.25,8.2 Q.65,7.8 .85,7 Q2.05,8.6 1.15,9.4 Q1.75,9.25 2,8.8 Q2.75,10.3 1.3,11.1 Q-.1,11.65 -1.45,10.8 Z"
+                fill={`url(#cabin-potion-flame-${roofDetailUid})`} stroke="#842fbe" strokeWidth=".26" />
+              <path d="M-.65,10.8 Q-1.65,9.8 -.85,9 Q-.45,8.55 -.35,7.9 Q.45,8.65 .05,9.4 Q.75,9.05 .8,8.75 Q1.55,10.1 .55,10.85 Q-.05,11.2 -.65,10.8 Z"
+                fill="#ee8cff" />
+              <path d="M-.15,10.8 Q-.7,10.1 -.2,9.65 Q.25,9.25 .2,8.8 Q.95,9.65 .45,10.25 Q.3,10.6 -.15,10.8 Z"
+                fill="#fff0bd" />
+              <path d="M-2.7,6.2 Q-3.7,8 -2.7,9.8 M-1.9,10.8 Q0,11.8 1.7,10.9"
+                fill="none" stroke="#edf2d5" strokeWidth=".5" strokeLinecap="round" opacity=".8" />
+              <path d="M2.5,5.9 Q3.5,7.6 2.9,9.1" fill="none" stroke="#d6e8ce" strokeWidth=".3" opacity=".5" />
+              <path d="M-1.1,1.1 L-1.35,-.6 Q0,-1.2 1.35,-.6 L1.1,1.1 Z" fill="#a9774f" stroke="#674529" strokeWidth=".3" />
+              <ellipse cy="-.6" rx="1.35" ry=".42" fill="#c9a5e4" stroke="#70499d" strokeWidth=".4" />
+              <path d="M-.8,-.65 Q0,-1.1 .7,-.65" fill="none" stroke="#fff1ff" strokeWidth=".35" />
+              <path d="M-1.5,1.1 Q0,1.7 1.5,1.1 L1.5,2.1 Q0,2.6 -1.5,2.1 Z" fill="#b67ad8" stroke="#70499d" strokeWidth=".28" />
+              <path d="M-1.25,1.35 Q0,1.85 1.25,1.35 M-1.25,1.9 Q0,2.4 1.25,1.9"
+                fill="none" stroke="#f0d18b" strokeWidth=".25" />
+              <path d="M.7,8.2 Q-1,8.4 -.3,9.6 Q.2,10.2 1,9.7 Q-.1,9.5 .7,8.2 Z"
+                fill="#edf1c9" opacity={theme.isNight ? '.95' : '.8'} />
+            </g>
+          </g>
+          <EaveSleepButterfly path={butterflyFlightPath} rest={butterflyRoute[4]}
+            night={!!theme.isNight} dusk={theme.timeOfDay === 'dusk'} />
         </g>
 
         {/* Sturdy artisan heavy-timber stairs (Plan B: 咬合门槛、厚重踏步挑檐、基石嵌地与真实接触阴影) */}

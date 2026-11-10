@@ -46,6 +46,72 @@ const pt = (u: number, v: number, z = 0) => ({
 const face = (...vertices: [number, number, number][]) =>
   vertices.map(([u, v, z]) => `${pt(u, v, z).x},${pt(u, v, z).y}`).join(' ');
 
+/** Simple timber staging on warm stone piers, below the retained metal deck. */
+function ObservatoryTimberBase() {
+  const posts = [
+    { u: -26, v: -26, id: 'back', lit: '#795334', shade: '#50351f' },
+    { u: -26, v: 26, id: 'left', lit: '#94663d', shade: '#604024' },
+    { u: 26, v: -26, id: 'right', lit: '#886039', shade: '#573a23' },
+    { u: 26, v: 26, id: 'front', lit: '#a07143', shade: '#694527' },
+  ];
+  const top = DECK_Z - DECK_THICKNESS;
+  const footingTop = 8;
+  const hw = 6.3;
+  const postHalf = 1.8;
+  const rail = (a: [number, number, number], b: [number, number, number], width: number, light = false) => {
+    const p = pt(...a), q = pt(...b);
+    return <g>
+      <path d={`M${p.x},${p.y} L${q.x},${q.y}`} fill="none" stroke={light ? '#986b3e' : '#704a2b'}
+        strokeWidth={width} strokeLinecap="butt" />
+      <path d={`M${p.x},${p.y - .6} L${q.x},${q.y - .6}`} fill="none" stroke={light ? '#c2945b' : '#a17447'}
+        strokeWidth=".7" opacity=".75" />
+    </g>;
+  };
+  return <>
+    <g id="observatory-stone-footings" strokeLinejoin="round">
+      {posts.map(({ u, v, id }) => <g key={id} id={`footing-${id}`}>
+        <polygon points={face([u-hw,v+hw,0],[u+hw,v+hw,0],[u+hw,v+hw,footingTop],[u-hw,v+hw,footingTop])}
+          fill="#8f806a" stroke="#5b5143" strokeWidth=".6" />
+        <polygon points={face([u+hw,v+hw,0],[u+hw,v-hw,0],[u+hw,v-hw,footingTop],[u+hw,v+hw,footingTop])}
+          fill="#6e6555" stroke="#514a3d" strokeWidth=".6" />
+        <polygon points={face([u-hw,v-hw,footingTop],[u+hw,v-hw,footingTop],[u+hw,v+hw,footingTop],[u-hw,v+hw,footingTop])}
+          fill="#b4a68d" stroke="#716550" strokeWidth=".6" />
+        <path d={`M${pt(u-hw+.6,v+hw,footingTop-.6).x},${pt(u-hw+.6,v+hw,footingTop-.6).y} L${pt(u+hw-.8,v+hw,footingTop-.6).x},${pt(u+hw-.8,v+hw,footingTop-.6).y}`}
+          stroke="#d0c3aa" strokeWidth=".55" fill="none" />
+        <path d={`M${pt(u-3,v+hw,2).x},${pt(u-3,v+hw,2).y} l2,.4 m3,-2 l1.5,.3`}
+          fill="none" stroke="#655a48" strokeWidth=".45" opacity=".55" />
+      </g>)}
+    </g>
+    <g id="observatory-staging-pylons" data-material="timber" strokeLinejoin="round">
+      {/* Rear post and ties precede the visible front frame. */}
+      {posts.map(({ u, v, id, lit, shade }) => <g key={id} data-timber-post={id}>
+        <polygon points={face([u-postHalf,v+postHalf,footingTop],[u+postHalf,v+postHalf,footingTop],
+          [u+postHalf,v+postHalf,top],[u-postHalf,v+postHalf,top])}
+          fill={lit} stroke="#50331d" strokeWidth=".5" />
+        <polygon points={face([u+postHalf,v+postHalf,footingTop],[u+postHalf,v-postHalf,footingTop],
+          [u+postHalf,v-postHalf,top],[u+postHalf,v+postHalf,top])}
+          fill={shade} stroke="#432c1b" strokeWidth=".5" />
+        <path d={`M${pt(u-postHalf+.6,v+postHalf,12).x},${pt(u-postHalf+.6,v+postHalf,12).y} L${pt(u-postHalf+.6,v+postHalf,top-3).x},${pt(u-postHalf+.6,v+postHalf,top-3).y}`}
+          stroke="#c0935c" strokeWidth=".55" opacity=".65" />
+        <path d={`M${pt(u,v+postHalf,18).x},${pt(u,v+postHalf,18).y} v-8 m.4,-13 v-5`}
+          fill="none" stroke={shade} strokeWidth=".45" opacity=".65" />
+      </g>)}
+      {/* A pair of low ties and four short knees replace the long steel diagonals. */}
+      {rail([-26,26,25],[26,26,25],3.3,true)}
+      {rail([26,-26,25],[26,26,25],3.3)}
+      {rail([-26,26,45],[-9,26,top-1],3.2,true)}
+      {rail([26,26,45],[9,26,top-1],3.2,true)}
+      {rail([26,-26,45],[26,-9,top-1],3.2)}
+      {rail([26,26,45],[26,9,top-1],3.2)}
+      {rail([-29,26,top-1],[29,26,top-1],4.2,true)}
+      {rail([26,-29,top-1],[26,29,top-1],4.2)}
+      {/* Quiet hardwood pegs at the front joints. */}
+      {[[-26,26],[26,-26],[26,26]].map(([u,v]) => <circle key={`${u}-${v}`} cx={pt(u,v,25).x}
+        cy={pt(u,v,25).y} r=".6" fill="#d0a36a" stroke="#5b3c22" strokeWidth=".25" />)}
+    </g>
+  </>;
+}
+
 function ObservatoryHavenAsset({
   theme,
   characterParentScale = 1,
@@ -86,201 +152,8 @@ function ObservatoryHavenAsset({
         transform="matrix(0.28 0.079 -0.5 0.35 -50 46)" opacity={0.85} />
 
       {/* ========================================================================= */}
-      {/* 1. ASHLAR STONE FOOTINGS (4个工整规矩的石砌锚固基座)                     */}
-      {/*    彻底解决毛刺问题：使用 strokeLinejoin="round" 和平滑描边               */}
-      {/* ========================================================================= */}
-      <g id="observatory-stone-footings">
-        {[
-          { u: -PU, v: -PV, id: 'back' },
-          { u: -PU, v: PV, id: 'left' },
-          { u: PU, v: -PV, id: 'right' },
-          { u: PU, v: PV, id: 'front' },
-        ].map((f) => {
-          const hw = 5.2; // 基础半宽
-          const zh = 5.5; // 基础顶面高度
-          return (
-            <g key={`footing-${f.id}`} id={`footing-${f.id}`}>
-              {/* 基座接地软阴影 */}
-              <ellipse
-                cx={pt(f.u, f.v, 0).x}
-                cy={pt(f.u, f.v, 0).y}
-                rx="8"
-                ry="3.2"
-                fill="#121a14"
-                opacity="0.4"
-              />
-              {/* 顶面 */}
-              <polygon
-                points={face(
-                  [f.u - hw, f.v - hw, zh],
-                  [f.u + hw, f.v - hw, zh],
-                  [f.u + hw, f.v + hw, zh],
-                  [f.u - hw, f.v + hw, zh]
-                )}
-                fill="#59685d"
-                stroke="#2a342c"
-                strokeWidth="0.8"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              {/* 前左侧立面 */}
-              <polygon
-                points={face(
-                  [f.u - hw, f.v + hw, 0],
-                  [f.u + hw, f.v + hw, 0],
-                  [f.u + hw, f.v + hw, zh],
-                  [f.u - hw, f.v + hw, zh]
-                )}
-                fill="#445147"
-                stroke="#2a342c"
-                strokeWidth="0.8"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              {/* 前右侧立面 */}
-              <polygon
-                points={face(
-                  [f.u + hw, f.v + hw, 0],
-                  [f.u + hw, f.v - hw, 0],
-                  [f.u + hw, f.v - hw, zh],
-                  [f.u + hw, f.v + hw, zh]
-                )}
-                fill="#343f36"
-                stroke="#2a342c"
-                strokeWidth="0.8"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              {/* 钢柱底座锚固钢板垫片 */}
-              <polygon
-                points={face(
-                  [f.u - 2.6, f.v - 2.6, zh + 0.8],
-                  [f.u + 2.6, f.v - 2.6, zh + 0.8],
-                  [f.u + 2.6, f.v + 2.6, zh + 0.8],
-                  [f.u - 2.6, f.v + 2.6, zh + 0.8]
-                )}
-                fill="#222a24"
-                stroke="#181f1a"
-                strokeWidth="0.5"
-                strokeLinejoin="round"
-              />
-            </g>
-          );
-        })}
-      </g>
-
-      {/* ========================================================================= */}
-      {/* 2. REFINED STEEL STAGING STRUCTURE (通透利落的高架钢构主柱与建筑斜撑)     */}
-      {/* ========================================================================= */}
-      <g id="observatory-staging-pylons">
-        {/* 后侧背光主钢柱 */}
-        <line
-          x1={pt(-PU, -PV, 5.5).x}
-          y1={pt(-PU, -PV, 5.5).y}
-          x2={pt(-PU, -PV, DECK_Z - DECK_THICKNESS).x}
-          y2={pt(-PU, -PV, DECK_Z - DECK_THICKNESS).y}
-          stroke="#263128"
-          strokeWidth="4"
-          strokeLinecap="round"
-        />
-
-        {/* 后侧向连系梁 (静谧背景横梁) */}
-        <line
-          x1={pt(-PU, -PV, 32).x}
-          y1={pt(-PU, -PV, 32).y}
-          x2={pt(PU, -PV, 32).x}
-          y2={pt(PU, -PV, 32).y}
-          stroke="#2b372e"
-          strokeWidth="2.2"
-        />
-        <line
-          x1={pt(-PU, -PV, 32).x}
-          y1={pt(-PU, -PV, 32).y}
-          x2={pt(-PU, PV, 32).x}
-          y2={pt(-PU, PV, 32).y}
-          stroke="#2b372e"
-          strokeWidth="2.2"
-        />
-
-        {/* 左侧主钢柱 */}
-        <line
-          x1={pt(-PU, PV, 5.5).x}
-          y1={pt(-PU, PV, 5.5).y}
-          x2={pt(-PU, PV, DECK_Z - DECK_THICKNESS).x}
-          y2={pt(-PU, PV, DECK_Z - DECK_THICKNESS).y}
-          stroke="#2d3930"
-          strokeWidth="4.5"
-          strokeLinecap="round"
-        />
-
-        {/* 右侧主钢柱 */}
-        <line
-          x1={pt(PU, -PV, 5.5).x}
-          y1={pt(PU, -PV, 5.5).y}
-          x2={pt(PU, -PV, DECK_Z - DECK_THICKNESS).x}
-          y2={pt(PU, -PV, DECK_Z - DECK_THICKNESS).y}
-          stroke="#29342c"
-          strokeWidth="4.5"
-          strokeLinecap="round"
-        />
-
-        {/* 前侧主钢柱 */}
-        <line
-          x1={pt(PU, PV, 5.5).x}
-          y1={pt(PU, PV, 5.5).y}
-          x2={pt(PU, PV, DECK_Z - DECK_THICKNESS).x}
-          y2={pt(PU, PV, DECK_Z - DECK_THICKNESS).y}
-          stroke="#38473c"
-          strokeWidth="5"
-          strokeLinecap="round"
-        />
-        {/* 前柱受光面微高光 */}
-        <line
-          x1={pt(PU, PV, 5.5).x + 0.6}
-          y1={pt(PU, PV, 5.5).y}
-          x2={pt(PU, PV, DECK_Z - DECK_THICKNESS).x + 0.6}
-          y2={pt(PU, PV, DECK_Z - DECK_THICKNESS).y}
-          stroke="#55695a"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-
-        {/* 前左跨间 (v = PV) 极简建筑横梁与斜撑 */}
-        <line
-          x1={pt(-PU, PV, 32).x}
-          y1={pt(-PU, PV, 32).y}
-          x2={pt(PU, PV, 32).x}
-          y2={pt(PU, PV, 32).y}
-          stroke="#323f34"
-          strokeWidth="2.8"
-        />
-        <line
-          x1={pt(-PU, PV, 10).x}
-          y1={pt(-PU, PV, 10).y}
-          x2={pt(PU, PV, 54).x}
-          y2={pt(PU, PV, 54).y}
-          stroke="#3b4b3f"
-          strokeWidth="2.2"
-        />
-
-        {/* 前右跨间 (u = PU) 极简建筑横梁与斜撑 */}
-        <line
-          x1={pt(PU, -PV, 32).x}
-          y1={pt(PU, -PV, 32).y}
-          x2={pt(PU, PV, 32).x}
-          y2={pt(PU, PV, 32).y}
-          stroke="#323f34"
-          strokeWidth="2.8"
-        />
-        <line
-          x1={pt(PU, -PV, 10).x}
-          y1={pt(PU, -PV, 10).y}
-          x2={pt(PU, PV, 54).x}
-          y2={pt(PU, PV, 54).y}
-          stroke="#3b4b3f"
-          strokeWidth="2.2"
-        />
-      </g>
+      {/* 1–2. Stone piers and a simple timber support frame. */}
+      <ObservatoryTimberBase />
 
       {/* ========================================================================= */}
       {/* 3. SLEEK ACCESS LADDER (左侧极简登台直梯)                                 */}
