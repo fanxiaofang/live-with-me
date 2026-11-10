@@ -1,0 +1,27 @@
+{
+  "onlyFourNearYPositionsChanged": true,
+  "originalSizesPreserved": true,
+  "clearance": [
+    {
+      "transform": "translate(-440, 270) scale(1.15)",
+      "coveredByMeadow": false,
+      "gapSceneUnits": 5.675712034478806
+    },
+    {
+      "transform": "translate(880, 268) scale(1.1)",
+      "coveredByMeadow": false,
+      "gapSceneUnits": 7.92725229784844
+    },
+    {
+      "transform": "translate(1420, 270) scale(1.08)",
+      "coveredByMeadow": false,
+      "gapSceneUnits": 8.470977651029784
+    },
+    {
+      "transform": "translate(1960, 274) scale(1.12)",
+      "coveredByMeadow": false,
+      "gapSceneUnits": 4.87556196480989
+    }
+  ],
+  "errors": []
+}

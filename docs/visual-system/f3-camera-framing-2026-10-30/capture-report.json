@@ -1,0 +1,35 @@
+{
+  "errors": [],
+  "shots": [
+    {
+      "name": "desktop",
+      "width": 1600,
+      "height": 900,
+      "camera": "transform: translate(0px, 153.481px) scale(0.54); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "name": "portrait",
+      "width": 390,
+      "height": 844,
+      "camera": "transform: translate(31.1908px, 215.689px) scale(0.519846); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "name": "ultrawide",
+      "width": 2560,
+      "height": 1080,
+      "camera": "transform: translate(0px, 98.8482px) scale(0.487774); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "name": "farthest",
+      "width": 1600,
+      "height": 900,
+      "camera": "transform: translate(0px, 183.6px) scale(0.45); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    },
+    {
+      "name": "closest",
+      "width": 1600,
+      "height": 900,
+      "camera": "transform: translate(0px, 153.481px) scale(2.5); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+    }
+  ]
+}

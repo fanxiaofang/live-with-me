@@ -1,0 +1,12 @@
+{
+  "errors": [],
+  "captures": [
+    "docs/architecture/metrics/FLAT-FIELD-JOIN-2026-10-22/after.png",
+    "docs/architecture/metrics/FLAT-FIELD-JOIN-2026-10-22/morning.png",
+    "docs/architecture/metrics/FLAT-FIELD-JOIN-2026-10-22/dusk.png",
+    "docs/architecture/metrics/FLAT-FIELD-JOIN-2026-10-22/night.png",
+    "docs/architecture/metrics/FLAT-FIELD-JOIN-2026-10-22/rainy.png"
+  ],
+  "mobile": true,
+  "home": true
+}
