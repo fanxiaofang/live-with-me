@@ -3,19 +3,13 @@ import type { YorkshireSceneTheme } from '../scenery/yorkshire/landscapeTypes';
 import { Grass } from '../scenery/yorkshire/vegetation/MeadowVegetationAssets';
 import { meadowPlantPaletteCss } from '../scenery/yorkshire/vegetation/meadowPalette';
 
-type PlatformTheme = Partial<Pick<YorkshireSceneTheme, 'isNight' | 'isRainy' | 'timeOfDay'>> & { design?: 'original' | 'rustic' | 'retro' };
+type PlatformTheme = Partial<Pick<YorkshireSceneTheme, 'isNight' | 'isRainy' | 'timeOfDay'>>;
 
 function stonePalette(theme: PlatformTheme) {
-  if (theme.isNight && theme.design === 'rustic') return { base: '#65604b', left: '#77705a', light: '#908067', right: '#625c49', front: '#423d32', joint: '#39362b', edge: '#a48a62', grain: '#5f523d', soil: '#252d20', moss: '#51553a' };
-  if (theme.isNight && theme.design === 'retro') return { base: '#566b65', left: '#637a70', light: '#82958a', right: '#50665e', front: '#394e48', joint: '#35443e', edge: '#a5b8a4', grain: '#64756a', soil: '#27372d', moss: '#576845' };
   if (theme.isNight) return { base: '#777b68', left: '#7d806b', light: '#8c8c75', right: '#686f5f', front: '#545e4e',
     joint: '#4b5748', edge: '#a0a18a', grain: '#626957', soil: '#253c28', moss: '#4a6040' };
-  if (theme.timeOfDay === 'dusk' && theme.design === 'rustic') return { base: '#9a8059', left: '#a58b63', light: '#c0a16b', right: '#89744f', front: '#66513a', joint: '#594833', edge: '#d2b17a', grain: '#806749', soil: '#493d2c', moss: '#687043' };
-  if (theme.timeOfDay === 'dusk' && theme.design === 'retro') return { base: '#a6b59c', left: '#b7c3a7', light: '#d6d6b7', right: '#91a395', front: '#667e70', joint: '#52695e', edge: '#e4ddbd', grain: '#84947d', soil: '#434a32', moss: '#687441' };
   if (theme.timeOfDay === 'dusk') return { base: '#a09271', left: '#a99a76', light: '#b7a581', right: '#928568', front: '#796d51',
     joint: '#72664b', edge: '#ceba90', grain: '#8b7b5b', soil: '#495232', moss: '#67733f' };
-  if (theme.design === 'rustic') return { base: '#877552', left: '#9a865f', light: '#b39a69', right: '#786a4d', front: '#594a35', joint: '#51442f', edge: '#c5a571', grain: '#746346', soil: '#3c422d', moss: '#667344' };
-  if (theme.design === 'retro') return { base: '#c0c7ad', left: '#d0d4b5', light: '#e6dfc1', right: '#aab8a7', front: '#748a79', joint: '#627566', edge: '#f1e6c7', grain: '#95a18b', soil: '#4b5234', moss: '#70804b' };
   return { base: '#ad9f81', left: '#b3a588', light: '#bfb296', right: '#a19377', front: '#897c61',
     joint: '#7b7059', edge: '#d3c5a8', grain: '#97896d', soil: '#4a5c34', moss: '#6b7d45' };
 }
@@ -26,7 +20,7 @@ export function CapsuleStonePlatform({ theme }: { theme: PlatformTheme }) {
   const id = 'pod-stone-' + useId().replace(/:/g, '');
   const p = stonePalette(theme);
   const top = 'M-77,45 L-36,38 L42,39 L76,44 L83,55 L75,69 L44,75 L-26,76 L-76,72 L-85,61Z';
-  return <g id="capsule-stone-platform" data-material={theme.design === 'rustic' ? 'weathered-fieldstone' : theme.design === 'retro' ? 'sage-painted-stone' : 'sandstone'} pointerEvents="none" aria-hidden="true" strokeLinejoin="round">
+  return <g id="capsule-stone-platform" data-material="sandstone" pointerEvents="none" aria-hidden="true" strokeLinejoin="round">
     <defs><clipPath id={`${id}-top`}><path d={top} /></clipPath></defs>
     {/* Broken, close contact shadows sit below the buried stone edge. */}
     <path d="M-82,67 Q-69,76 -48,76 L-31,78 L-60,78 Q-79,75 -84,69Z M17,77 L44,76 L72,71 L79,70 L74,74 L47,79 L19,79Z"
