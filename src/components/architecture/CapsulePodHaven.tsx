@@ -173,78 +173,78 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           {/* 左后足接地接触阴影与主腿 */}
           <g id="rear-stilt-left" opacity="0.88">
             {/* 独立深浅接触阴影 (Contact Shadow) */}
-            <ellipse cx="-47" cy="56.5" rx="7" ry="2.2" fill="#0d140e" opacity="0.46" />
-            <ellipse cx="-47" cy="56.5" rx="10" ry="3.2" fill="#1a251b" opacity="0.18" />
+            <ellipse cx="-47" cy="56.45" rx="5.4" ry="1.7" fill="#121913" opacity="0.30" />
+            <ellipse cx="-47" cy="56.45" rx="7.6" ry="2.4" fill="#233126" opacity="0.09" />
 
             <rect x="-47" y="16" width="7" height="6" rx="1.5" fill="#242b26" />
-            <line x1="-44" y1="20" x2="-47" y2="56" stroke="#46564b" strokeWidth="4.2" strokeLinecap="round" />
-            <line x1="-44" y1="20" x2="-47" y2="56" stroke="#65766a" strokeWidth="1.15" strokeLinecap="round" />
-            <ellipse cx="-47" cy="56" rx="6" ry="2.2" fill="#424f46" stroke="#4d5946" strokeWidth="0.65" />
+            <line x1="-44" y1="20" x2="-47" y2="56" stroke="#4f5f54" strokeWidth="3.8" strokeLinecap="round" />
+            <line x1="-44" y1="20" x2="-47" y2="56" stroke="#758579" strokeWidth="0.95" strokeLinecap="round" />
+            <ellipse cx="-47" cy="56" rx="6" ry="2.2" fill="#47554b" stroke="#5d6c61" strokeWidth="0.55" />
           </g>
 
           {/* 右后足接地接触阴影与主腿 */}
           <g id="rear-stilt-right" opacity="0.88">
-            <ellipse cx="38" cy="54.5" rx="7" ry="2.2" fill="#0d140e" opacity="0.46" />
-            <ellipse cx="38" cy="54.5" rx="10" ry="3.2" fill="#1a251b" opacity="0.18" />
+            <ellipse cx="38" cy="54.45" rx="5.4" ry="1.7" fill="#121913" opacity="0.30" />
+            <ellipse cx="38" cy="54.45" rx="7.6" ry="2.4" fill="#233126" opacity="0.09" />
 
             <rect x="35" y="16" width="7" height="6" rx="1.5" fill="#242b26" />
-            <line x1="38" y1="20" x2="38" y2="54" stroke="#46564b" strokeWidth="4.2" strokeLinecap="round" />
-            <line x1="38" y1="20" x2="38" y2="54" stroke="#65766a" strokeWidth="1.15" strokeLinecap="round" />
-            <ellipse cx="38" cy="54" rx="6" ry="2.2" fill="#424f46" stroke="#4d5946" strokeWidth="0.65" />
+            <line x1="38" y1="20" x2="38" y2="54" stroke="#4f5f54" strokeWidth="3.8" strokeLinecap="round" />
+            <line x1="38" y1="20" x2="38" y2="54" stroke="#758579" strokeWidth="0.95" strokeLinecap="round" />
+            <ellipse cx="38" cy="54" rx="6" ry="2.2" fill="#47554b" stroke="#5d6c61" strokeWidth="0.55" />
           </g>
 
           {/* ============ 2. 前置重型工业液压足 (前景高亮，配备重力压缩触地阴影) ============ */}
           {/* 左前足 */}
           <g id="front-stilt-left">
             {/* 左前脚接地重力接触阴影 */}
-            <ellipse cx="-20" cy="63.2" rx="8.5" ry="2.8" fill="#090f0b" opacity="0.68" />
-            <ellipse cx="-20" cy="63.2" rx="12" ry="4" fill="#162218" opacity="0.27" />
+            <ellipse cx="-20" cy="63.1" rx="6.2" ry="2.0" fill="#101712" opacity="0.46" />
+            <ellipse cx="-20" cy="63.15" rx="9.2" ry="3.0" fill="#223126" opacity="0.14" />
 
             {/* 锻造三角底座夹板与六角螺栓 */}
-            <polygon points="-26,24 -14,24 -17,33 -23,33" fill="#323d36" stroke="#46554b" strokeWidth="0.58" />
+            <polygon points="-26,24 -14,24 -17,33 -23,33" fill="#323d36" stroke="#58685d" strokeWidth="0.5" />
             <circle cx="-23" cy="26" r="1.1" fill="#75887c" />
             <circle cx="-17" cy="26" r="1.1" fill="#75887c" />
 
             {/* 液压外缸套筒 (Gunmetal Sleeve) */}
-            <rect x="-23.5" y="32" width="7" height="15" rx="2" fill="#3e4a42" stroke="#4d5946" strokeWidth="0.65" />
+            <rect x="-23.5" y="32" width="7" height="15" rx="2" fill="#3e4a42" stroke="#5c6b60" strokeWidth="0.55" />
             <circle cx="-24.5" cy="35" r="1.4" fill="#c49d52" stroke="#806f49" strokeWidth="0.4" />
             {/* 螺纹高度微调铜锁环 (Knurled Brass Collar) */}
-            <rect x="-24.5" y="44" width="9" height="3.5" rx="1" fill="#c9a45b" stroke="#8b7650" strokeWidth="0.4" />
+            <rect x="-24.5" y="44" width="9" height="3.5" rx="1" fill="#c9a45b" stroke="#9b8760" strokeWidth="0.36" />
             <line x1="-23" y1="44" x2="-23" y2="47.5" stroke="#ffe59e" strokeWidth="0.6" />
 
             {/* 镜面镀铬伸缩活塞杆 (High-Mirror Chrome Piston Rod) */}
-            <rect x="-22" y="47" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#536158" strokeWidth="0.38" />
-            <line x1="-21" y1="47.5" x2="-21" y2="61.5" stroke="#dfe6d6" strokeWidth="0.5" opacity="0.32" />
+            <rect x="-22" y="47" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#617066" strokeWidth="0.32" />
+            <line x1="-21" y1="47.5" x2="-21" y2="61.5" stroke="#dfe6d6" strokeWidth="0.5" opacity="0.22" />
 
             {/* 万向球形铰接脚座与加厚接地吸震垫 (Swivel Footpad) */}
-            <circle cx="-20" cy="61" r="2.2" fill="#5a6b60" stroke="#58685d" strokeWidth="0.45" />
-            <ellipse cx="-20" cy="63" rx="7.5" ry="2.8" fill="#424f46" stroke="#4d5946" strokeWidth="0.65" />
+            <circle cx="-20" cy="61" r="2.2" fill="#5a6b60" stroke="#66756a" strokeWidth="0.36" />
+            <ellipse cx="-20" cy="63" rx="7.5" ry="2.8" fill="#424f46" stroke="#5d6c61" strokeWidth="0.55" />
             <ellipse cx="-20" cy="62.5" rx="5.5" ry="1.8" fill="#697a70" />
           </g>
 
           {/* 右前足 */}
           <g id="front-stilt-right">
             {/* 右前脚接地接触阴影 */}
-            <ellipse cx="24" cy="62.2" rx="8.5" ry="2.8" fill="#090f0b" opacity="0.68" />
-            <ellipse cx="24" cy="62.2" rx="12" ry="4" fill="#162218" opacity="0.27" />
+            <ellipse cx="24" cy="62.1" rx="6.2" ry="2.0" fill="#101712" opacity="0.46" />
+            <ellipse cx="24" cy="62.15" rx="9.2" ry="3.0" fill="#223126" opacity="0.14" />
 
-            <polygon points="18,24 30,24 27,33 21,33" fill="#323d36" stroke="#46554b" strokeWidth="0.58" />
+            <polygon points="18,24 30,24 27,33 21,33" fill="#323d36" stroke="#58685d" strokeWidth="0.5" />
             <circle cx="21" cy="26" r="1.1" fill="#75887c" />
             <circle cx="27" cy="26" r="1.1" fill="#75887c" />
 
             {/* 外缸套筒 */}
-            <rect x="20.5" y="32" width="7" height="14" rx="2" fill="#3e4a42" stroke="#4d5946" strokeWidth="0.65" />
+            <rect x="20.5" y="32" width="7" height="14" rx="2" fill="#3e4a42" stroke="#5c6b60" strokeWidth="0.55" />
             <circle cx="28.5" cy="35" r="1.4" fill="#c49d52" stroke="#806f49" strokeWidth="0.4" />
-            <rect x="19.5" y="43" width="9" height="3.5" rx="1" fill="#c9a45b" stroke="#8b7650" strokeWidth="0.4" />
+            <rect x="19.5" y="43" width="9" height="3.5" rx="1" fill="#c9a45b" stroke="#9b8760" strokeWidth="0.36" />
             <line x1="21" y1="43" x2="21" y2="46.5" stroke="#ffe59e" strokeWidth="0.6" />
 
             {/* 镜面活塞杆 */}
-            <rect x="22" y="46" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#536158" strokeWidth="0.38" />
-            <line x1="23" y1="46.5" x2="23" y2="60.5" stroke="#dfe6d6" strokeWidth="0.5" opacity="0.32" />
+            <rect x="22" y="46" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#617066" strokeWidth="0.32" />
+            <line x1="23" y1="46.5" x2="23" y2="60.5" stroke="#dfe6d6" strokeWidth="0.5" opacity="0.22" />
 
             {/* 脚座吸震垫 */}
-            <circle cx="24" cy="60" r="2.2" fill="#5a6b60" stroke="#58685d" strokeWidth="0.45" />
-            <ellipse cx="24" cy="62" rx="7.5" ry="2.8" fill="#424f46" stroke="#4d5946" strokeWidth="0.65" />
+            <circle cx="24" cy="60" r="2.2" fill="#5a6b60" stroke="#66756a" strokeWidth="0.36" />
+            <ellipse cx="24" cy="62" rx="7.5" ry="2.8" fill="#424f46" stroke="#5d6c61" strokeWidth="0.55" />
             <ellipse cx="24" cy="61.5" rx="5.5" ry="1.8" fill="#697a70" />
           </g>
 
@@ -353,7 +353,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           {/* ========================================================================= */}
           {/* 8. 规范化复古模组技术铭牌 (彻底避开大舷窗、太阳能板和高光带)              */}
           {/* ========================================================================= */}
-          <g id="pod-spec-plate" transform="translate(50, -9)">
+          <g id="pod-spec-plate" transform="translate(50, -9) scale(0.92)">
             {/* 冲压金属铭牌底座 */}
             <rect x="-12" y="-7.5" width="24" height="15" rx="2" fill="#29352e" stroke="#1c241f" strokeWidth="0.8" />
             <rect x="-11" y="-6.5" width="22" height="13" rx="1.4" fill="#39483f" />
@@ -805,34 +805,34 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 
         <g id="pod-entry-steps">
           {/* 接地阴影 (梯脚与阶梯投射在草坪上的深浅接触阴影) */}
-          <ellipse cx="-49.5" cy="63.5" rx="17" ry="4.5" fill="#18271b" opacity="0.32" />
-          <ellipse cx="-61" cy="63.5" rx="5" ry="2" fill="#0d140e" opacity="0.65" />
-          <ellipse cx="-38" cy="63.5" rx="5" ry="2" fill="#0d140e" opacity="0.65" />
+          <ellipse cx="-49.5" cy="63.35" rx="13.2" ry="3.1" fill="#223126" opacity="0.18" />
+          <ellipse cx="-61" cy="63.35" rx="3.6" ry="1.35" fill="#111813" opacity="0.42" />
+          <ellipse cx="-38" cy="63.35" rx="3.6" ry="1.35" fill="#111813" opacity="0.42" />
 
           {/* 梯架双侧重型金属斜梁 (从舱门基座稳固延伸至地面) */}
-          <path d="M-57,24 L-53.5,24 L-59.5,63 L-63,63 Z" fill="#2d3830" stroke="#46544a" strokeWidth="0.58" />
-          <line x1="-55" y1="24" x2="-61" y2="63" stroke="#78877b" strokeWidth="0.65" opacity="0.66" />
+          <path d="M-57,24 L-53.5,24 L-59.5,63 L-63,63 Z" fill="#2d3830" stroke="#59695e" strokeWidth="0.5" />
+          <line x1="-55" y1="24" x2="-61" y2="63" stroke="#8d9b8f" strokeWidth="0.52" opacity="0.48" />
           <rect x="-58" y="24" width="4.5" height="3.5" rx="0.8" fill="#1f2722" stroke="#46544a" strokeWidth="0.38" />
           <circle cx="-56" cy="25.5" r="0.8" fill="#c49d52" />
-          <ellipse cx="-61" cy="63" rx="4" ry="1.8" fill="#424f46" stroke="#4d5946" strokeWidth="0.65" />
+          <ellipse cx="-61" cy="63" rx="4" ry="1.8" fill="#49564d" stroke="#5e6d62" strokeWidth="0.55" />
 
-          <path d="M-34.5,24 L-31,24 L-36,63 L-39.5,63 Z" fill="#2d3830" stroke="#46544a" strokeWidth="0.58" />
-          <line x1="-32.5" y1="24" x2="-37.5" y2="63" stroke="#78877b" strokeWidth="0.65" opacity="0.66" />
+          <path d="M-34.5,24 L-31,24 L-36,63 L-39.5,63 Z" fill="#2d3830" stroke="#59695e" strokeWidth="0.5" />
+          <line x1="-32.5" y1="24" x2="-37.5" y2="63" stroke="#8d9b8f" strokeWidth="0.52" opacity="0.48" />
           <rect x="-34.5" y="24" width="4" height="3.5" rx="0.8" fill="#1f2722" stroke="#46544a" strokeWidth="0.38" />
           <circle cx="-32.5" cy="25.5" r="0.8" fill="#c49d52" />
-          <ellipse cx="-38" cy="63" rx="4" ry="1.8" fill="#424f46" stroke="#4d5946" strokeWidth="0.65" />
+          <ellipse cx="-38" cy="63" rx="4" ry="1.8" fill="#49564d" stroke="#5e6d62" strokeWidth="0.55" />
 
           {/* 第一级水平踏板 (Selector 1: Upper Step Tread) */}
-          <polygon points="-55,33 -32.5,33 -34.5,37.5 -57,37.5" fill="#5a6a5e" stroke="#2a382e" strokeWidth="0.8" />
-          <path d="M-57,37.5 H-34.5 V41.5 H-57.5 Z" fill="#334237" stroke="#1f2922" strokeWidth="0.6" />
+          <polygon points="-55,33 -32.5,33 -34.5,37.5 -57,37.5" fill="#5f6f63" stroke="#425247" strokeWidth="0.62" />
+          <path d="M-57,37.5 H-34.5 V41.5 H-57.5 Z" fill="#39493e" stroke="#3b4a40" strokeWidth="0.45" />
 
           {/* 第二级水平踏板 (Selector 2: Middle Step Tread) */}
-          <polygon points="-57.5,44 -35,44 -37,48.5 -59.5,48.5" fill="#58685c" stroke="#2a382e" strokeWidth="0.8" />
-          <path d="M-59.5,48.5 H-37 V52.5 H-60 Z" fill="#303f34" stroke="#1f2922" strokeWidth="0.6" />
+          <polygon points="-57.5,44 -35,44 -37,48.5 -59.5,48.5" fill="#5d6d61" stroke="#425247" strokeWidth="0.62" />
+          <path d="M-59.5,48.5 H-37 V52.5 H-60 Z" fill="#36473c" stroke="#3b4a40" strokeWidth="0.45" />
 
           {/* 第三级接地踏板 (Bottom Step Tread) */}
-          <polygon points="-60,55 -37.5,55 -39.5,59.5 -62,59.5" fill="#556559" stroke="#2a382e" strokeWidth="0.8" />
-          <path d="M-62,59.5 H-39.5 V63 H-62.5 Z" fill="#2d3a30" stroke="#1c251e" strokeWidth="0.6" />
+          <polygon points="-60,55 -37.5,55 -39.5,59.5 -62,59.5" fill="#5b6b5f" stroke="#425247" strokeWidth="0.62" />
+          <path d="M-62,59.5 H-39.5 V63 H-62.5 Z" fill="#35453a" stroke="#3b4a40" strokeWidth="0.45" />
 
           {/* 踏面前缘向光高光线与防滑纹槽 */}
           <line x1="-57" y1="37.5" x2="-34.5" y2="37.5" stroke="#8fa394" strokeWidth="0.75" />
