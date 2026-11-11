@@ -154,7 +154,8 @@ export const SCENE_SLOT_CONFIGS: Record<FurnitureSlotId, SceneSlotConfig> = {
     accessory: 'none',
     badgeLabel: '小木屋 · 暖榻 (安睡)',
     actionDesc: '在雪松原木幽香与床头暖灯微光中沉沉熟睡',
-    offset: { dx: -6.64, dy: 31.2 },
+    // cabinPoint(63, 20.5, 19), above the enlarged cabin pillow.
+    offset: { dx: 6.29, dy: 29.4 },
   },
   observatory_post: {
     slotId: 'observatory_post',

@@ -71,7 +71,7 @@ const placement = [
   { kind: 'triple-moon', angle: 1.49, t: .49, radius: 18.5, weight: 1 },
   { kind: 'venus-flower', angle: 1.27, t: wardBandHeight(1.27), radius: 5.3, weight: .48 },
   { kind: 'pentagram', angle: 1.73, t: wardBandHeight(1.73), radius: 5.1, weight: .42 },
-  { kind: 'hamsa', angle: 1.10, t: .46, radius: 6.1, weight: .16 },
+  { kind: 'hamsa', angle: 1.10, t: .31, radius: 6.1, weight: .16 },
   { kind: 'rising-woman', angle: 1.47, t: .77, radius: 4.6, weight: .16 },
 ] as const;
 /** Engraved paths are sampled onto the actual roof, including its changing curvature. */

@@ -110,6 +110,17 @@ const butterflyRoute = [
   const p = hatPoint(Math.PI * turns, height, 0, spread);
   return { x: p.x, y: p.y - lift };
 });
+const butterflyOrbitRadius = 6.5;
+// Match the central moon's roof anchor, then leave room below its engraved band.
+const tripleMoonAnchor = hatPoint(Math.PI * 1.49, .49);
+const butterflyOrbitCenter = { x: tripleMoonAnchor.x, y: tripleMoonAnchor.y + 21 };
+const orbitTangentX = butterflyRoute[2].x - butterflyRoute[0].x;
+const orbitTangentY = butterflyRoute[2].y - butterflyRoute[0].y;
+const orbitTangentLength = Math.hypot(orbitTangentX, orbitTangentY);
+butterflyRoute[1] = {
+  x: butterflyOrbitCenter.x - orbitTangentY / orbitTangentLength * butterflyOrbitRadius,
+  y: butterflyOrbitCenter.y + orbitTangentX / orbitTangentLength * butterflyOrbitRadius,
+};
 const butterflyFlightSegments = butterflyRoute.map((point, i, points) => {
   const previous = points[(i + points.length - 1) % points.length];
   const next = points[(i + 1) % points.length];
@@ -128,7 +139,17 @@ const butterflyFlightSegments = butterflyRoute.map((point, i, points) => {
     x: next.x - (after.x - point.x) * toWeight,
     y: next.y - (after.y - point.y) * toWeight,
   };
-  return `C${controlFrom.x},${controlFrom.y} ${controlTo.x},${controlTo.y} ${next.x},${next.y}`;
+  // Pause forward travel with one small orbit directly below the triple moon.
+  // Both arc ends share the route's tangent, keeping the entry and exit continuous.
+  let orbit = '';
+  if (i === 1) {
+    const opposite = {
+      x: butterflyOrbitCenter.x * 2 - point.x,
+      y: butterflyOrbitCenter.y * 2 - point.y,
+    };
+    orbit = `A${butterflyOrbitRadius},${butterflyOrbitRadius} 0 1 0 ${opposite.x},${opposite.y} A${butterflyOrbitRadius},${butterflyOrbitRadius} 0 1 0 ${point.x},${point.y} `;
+  }
+  return `${orbit}C${controlFrom.x},${controlFrom.y} ${controlTo.x},${controlTo.y} ${next.x},${next.y}`;
 });
 const butterflyFlightPath = `M${butterflyRoute[0].x},${butterflyRoute[0].y} ${butterflyFlightSegments.join(' ')} Z`;
 /** A detached sleeping cabin, with a courtyard-facing cutaway and flower window. */
@@ -137,7 +158,8 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
 }) => {
   const cabinOccupant = presenceSlots.tatami_corn?.occupant;
   const slotCfg = presenceSlots.tatami_corn?.config;
-  const lamp = cabinPoint(66, 30, 23);
+  // Keep the lamp near the front of the recessed cabinet so its shade stays visible.
+  const lamp = cabinPoint(66, 26.5, 18);
   // Change the whole clay material together; one near-black stop creates a dirty patch.
   const clay = theme.isNight
     ? { light: '#a65d38', body: '#87412c', shade: '#663326', edge: '#ad7043' }
@@ -160,6 +182,9 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
   const potionAnchor = hatPoint(Math.PI * 1.12, .975);
   const strawHatHook = cabinPoint(0, 21, 35);
   const potionId = `cabin-potion-${roofDetailUid}`;
+  const potionFlameClass = `${potionId}-flame`;
+  const potionCoreClass = `${potionId}-core`;
+  const potionGlowClass = `${potionId}-glow`;
   const strawId = `cabin-straw-${roofDetailUid}`;
 
 
@@ -207,6 +232,11 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
           <stop offset=".72" stopColor="#982fe4" />
           <stop offset="1" stopColor="#612cbb" />
         </linearGradient>
+        <radialGradient id={`${potionId}-flame-glow`}>
+          <stop stopColor="#f2c6ff" stopOpacity=".8" />
+          <stop offset=".42" stopColor="#b15ce9" stopOpacity=".32" />
+          <stop offset="1" stopColor="#963bd3" stopOpacity="0" />
+        </radialGradient>
         <linearGradient id={`cabin-potion-cord-${roofDetailUid}`} x1="0%" y1="0%" x2="100%" y2="0%">
           <stop stopColor="#552e91" />
           <stop offset=".5" stopColor="#ae67df" />
@@ -241,6 +271,31 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
           <polygon points={cabinFace([6, 0, 45], [74, 0, 45], [74, 0], [6, 0])} />
         </clipPath>
       </defs>
+      <style>{`
+        @keyframes ${potionId}-sway {
+          0%,100% { transform:translateX(0px) skewX(-2deg) scale(.98,.96) }
+          23% { transform:translateX(.1px) skewX(4deg) scale(1.02,1.08) }
+          51% { transform:translateX(-.08px) skewX(-3deg) scale(.97,1.02) }
+          76% { transform:translateX(.06px) skewX(1deg) scale(1.01,.98) }
+        }
+        @keyframes ${potionId}-flicker {
+          0%,100% { opacity:.85; transform:scale(.98,.94) }
+          31% { opacity:1; transform:translate(.08px,-.06px) scale(1.02,1.1) }
+          58% { opacity:.78; transform:translateX(-.06px) scale(.96,.98) }
+          82% { opacity:.94; transform:scale(1,1.04) }
+        }
+        @keyframes ${potionId}-breathe {
+          0%,100% { opacity:.65 }
+          46% { opacity:1 }
+          73% { opacity:.8 }
+        }
+        .${potionGlowClass} { opacity:.8 }
+        @media (prefers-reduced-motion:no-preference) {
+          .${potionFlameClass} { transform-origin:0px 11.1px; animation:${potionId}-sway 3.8s ease-in-out infinite }
+          .${potionCoreClass} { transform-origin:0px 10.9px; animation:${potionId}-flicker 2.9s ease-in-out -.7s infinite }
+          .${potionGlowClass} { animation:${potionId}-breathe 4.6s ease-in-out -.8s infinite }
+        }
+      `}</style>
 
       {/* The worn grass follows the cabin's south-east facing stair approach. */}
       <MeadowWearPatch id="cabin-entry-grass-wear" theme={theme}
@@ -325,33 +380,52 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
           <polygon points={cabinFace([6, 0], [74, 0], [74, 0, 45], [6, 0, 45])} fill="#3b2414" />
           {/* The sleeping area and the space behind the flower window share
               one back wall and floor; the front window wall is not a partition. */}
-          <polygon points={cabinFace([6, 36], [126, 36], [126, 36, 43], [6, 36, 43])} fill="#a77a49" />
+          <polygon points={cabinFace([6, 40], [126, 40], [126, 40, 43], [6, 40, 43])} fill="#a77a49" />
           {[9, 17, 25, 33, 41].map(height => <polyline key={height}
-            points={cabinFace([6, 36, height], [126, 36, height])} stroke="#6f4a29" strokeWidth="1.1" fill="none" />)}
-          <polygon points={cabinFace([6, 0], [6, 36], [6, 36, 43], [6, 0, 45])} fill="#755033" />
-          <polygon id="cabin-timber-floor" points={cabinFace([6, 0], [126, 0], [126, 36], [6, 36])}
+            points={cabinFace([6, 40, height], [126, 40, height])} stroke="#6f4a29" strokeWidth="1.1" fill="none" />)}
+          <polygon points={cabinFace([6, 0], [6, 40], [6, 40, 43], [6, 0, 45])} fill="#755033" />
+          <polygon id="cabin-timber-floor" points={cabinFace([6, 0], [126, 0], [126, 40], [6, 40])}
             fill="url(#cabinFloorIsoGrad)" stroke="#503018" strokeWidth="0.8" />
           {[8, 16, 24, 32].map(v => <polyline key={v} points={cabinFace([6, v], [126, v])}
             stroke="#59371b" strokeWidth="0.7" opacity="0.75" fill="none" />)}
-          {[20, 43, 65, 87, 109].map(u => <polyline key={u} points={cabinFace([u, 0], [u, 36])}
+          {[20, 43, 65, 87, 109].map(u => <polyline key={u} points={cabinFace([u, 0], [u, 40])}
             stroke="#59371b" strokeWidth="0.5" opacity="0.5" fill="none" />)}
-          <polyline points={cabinFace([6, 36, 2], [126, 36, 2])}
+          <polyline points={cabinFace([6, 40, 2], [126, 40, 2])}
             stroke="#694222" strokeWidth="2" fill="none" />
-          <polygon points={cabinFace([6, 0, 45], [126, 0, 45], [126, 36, 43], [6, 36, 43])}
+          <polygon points={cabinFace([6, 0, 45], [126, 0, 45], [126, 40, 43], [6, 40, 43])}
             fill="#24160d" opacity="0.35" />
 
-          {/* A narrow bedside cabinet, with one reading lamp as the main light. */}
-          <g id="cabin-nightstand-3d">
-            <polygon points={cabinFace([60, 25, 1], [72, 25, 1], [72, 37, 1], [60, 37, 1])}
-              fill="#23170d" opacity="0.4" />
-            <polygon points={cabinFace([60, 25, 14], [72, 25, 14], [72, 25, 2], [60, 25, 2])}
-              fill="#855b34" stroke="#4e321c" strokeWidth="0.7" />
-            <polygon points={cabinFace([60, 25, 14], [60, 37, 14], [60, 37, 2], [60, 25, 2])}
-              fill="#624024" stroke="#4e321c" strokeWidth="0.7" />
-            <polygon points={cabinFace([59, 24, 15], [73, 24, 15], [73, 38, 15], [59, 38, 15])}
-              fill="#b18758" stroke="#624024" strokeWidth="0.7" />
-            <polyline points={cabinFace([62, 25, 10], [70, 25, 10])} stroke="#5d3c20" strokeWidth="0.6" fill="none" />
-            <circle cx={cabinPoint(66, 25, 8).x} cy={cabinPoint(66, 25, 8).y} r="0.8" fill="#bd8b43" />
+          {/* Leave a little space beyond the headboard and bring the complete cabinet toward the doorway. */}
+          <g id="cabin-nightstand-3d" transform="translate(14.38 -3.4)">
+            <polygon points={cabinFace([59.6, 24.6], [71.4, 24.6], [71.4, 37.4], [59.6, 37.4])}
+              fill="#23170d" opacity=".32" />
+            {/* A shallow plinth closes the carcass all the way down to the floor. */}
+            <polygon points={cabinFace([59.8, 24.8, 1.4], [59.8, 37.2, 1.4], [59.8, 37.2, .2], [59.8, 24.8, .2])}
+              fill="#54371f" stroke="#4e321c" strokeWidth=".4" />
+            <polygon points={cabinFace([59.8, 24.8, 1.4], [71.2, 24.8, 1.4], [71.2, 24.8, .2], [59.8, 24.8, .2])}
+              fill="#674526" stroke="#4e321c" strokeWidth=".4" />
+            <polygon points={cabinFace([59.8, 24.8, 1.4], [71.2, 24.8, 1.4], [71.2, 37.2, 1.4], [59.8, 37.2, 1.4])}
+              fill="#805b35" />
+            <polygon points={cabinFace([60, 25, 9], [60, 37, 9], [60, 37, 1.4], [60, 25, 1.4])}
+              fill="#624024" stroke="#4e321c" strokeWidth=".5" />
+            <polygon points={cabinFace([60, 25, 9], [71, 25, 9], [71, 25, 1.4], [60, 25, 1.4])}
+              fill="#855b34" stroke="#4e321c" strokeWidth=".5" />
+            {/* The drawer has a closed inset front, with its pull centred inside it. */}
+            <polygon points={cabinFace([60.9, 24.94, 8.1], [70.1, 24.94, 8.1], [70.1, 24.94, 3.1], [60.9, 24.94, 3.1])}
+              fill="#9b7047" stroke="#51351f" strokeWidth=".45" strokeLinejoin="round" />
+            <polyline points={cabinFace([61.3, 24.9, 7.65], [69.7, 24.9, 7.65])}
+              fill="none" stroke="#c39a68" strokeWidth=".25" opacity=".55" />
+            <circle cx={cabinPoint(65.5, 24.88, 5.6).x} cy={cabinPoint(65.5, 24.88, 5.6).y}
+              r=".44" fill="#c5a367" stroke="#75512c" strokeWidth=".18" />
+            {/* The cap's front and return edges meet the carcass at height 9. */}
+            <polygon points={cabinFace([59.4, 24.4, 10], [59.4, 37.6, 10], [59.4, 37.6, 9], [59.4, 24.4, 9])}
+              fill="#7f5731" stroke="#624024" strokeWidth=".45" />
+            <polygon points={cabinFace([59.4, 24.4, 10], [71.6, 24.4, 10], [71.6, 24.4, 9], [59.4, 24.4, 9])}
+              fill="#9a6d42" stroke="#624024" strokeWidth=".45" />
+            <polygon points={cabinFace([59.4, 24.4, 10], [71.6, 24.4, 10], [71.6, 37.6, 10], [59.4, 37.6, 10])}
+              fill="#b18758" stroke="#624024" strokeWidth=".5" />
+            <polyline points={cabinFace([59.8, 24.4, 9.9], [71.2, 24.4, 9.9])}
+              fill="none" stroke="#d0a576" strokeWidth=".3" opacity=".65" />
             <g id="bedside-table-lamp" transform={`translate(${lamp.x}, ${lamp.y})`}>
               <ellipse cy="8" rx="2.8" ry="1.1" fill="#926127" />
               <path d="M0,8 V0" stroke="#ae7d39" strokeWidth="1.2" fill="none" />
@@ -361,24 +435,24 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
             </g>
           </g>
 
-          {/* The old pine bed's turned posts, slats and thick wool quilt, now
-              on the same ground axes as the cabin, with its head at the east. */}
-          <g id="cabin-pine-bed-isometric">
-            <polygon points={cabinFace([12, 10, 0], [60, 10, 0], [60, 34, 0], [12, 34, 0])} fill="#2a1a0e" opacity="0.5" />
-            <polygon points={cabinFace([14, 12, 9], [58, 12, 9], [58, 12, 4], [14, 12, 4])}
+          {/* Recess the complete bed, pillow and occupant by 4 depth units,
+              leaving a 12-unit strip of floor in front of the bed. */}
+          <g id="cabin-pine-bed-isometric" transform="translate(-2.48 -1.6)">
+            <polygon points={cabinFace([12, 6, 0], [72, 6, 0], [72, 35, 0], [12, 35, 0])} fill="#2a1a0e" opacity="0.5" />
+            <polygon points={cabinFace([14, 8, 9], [70, 8, 9], [70, 8, 4], [14, 8, 4])}
               fill="#704827" stroke="#3d2512" strokeWidth="0.8" />
-            <polygon points={cabinFace([14, 12, 9], [14, 33, 9], [14, 33, 4], [14, 12, 4])}
+            <polygon points={cabinFace([14, 8, 9], [14, 34, 9], [14, 34, 4], [14, 8, 4])}
               fill="#51331c" stroke="#3d2512" strokeWidth="0.7" />
-            <polygon points={cabinFace([14, 12, 10], [58, 12, 10], [58, 33, 10], [14, 33, 10])}
+            <polygon points={cabinFace([14, 8, 10], [70, 8, 10], [70, 34, 10], [14, 34, 10])}
               fill="#f5ebdc" stroke="#c8b89f" strokeWidth="0.7" />
             <g id="cabin-bed-headboard">
-              <path d={`M${cabinFace([58, 12, 19])} Q${cabinFace([58, 17, 23])} ${cabinFace([58, 22.5, 21])}
-                Q${cabinFace([58, 28, 23])} ${cabinFace([58, 33, 19])} L${cabinFace([58, 33, 8])}
-                L${cabinFace([58, 12, 8])} Z`} fill="#754b28" stroke="#3b2311" strokeWidth="0.8" />
+              <path d={`M${cabinFace([70, 8, 19])} Q${cabinFace([70, 14, 23])} ${cabinFace([70, 21, 21])}
+                Q${cabinFace([70, 28, 23])} ${cabinFace([70, 34, 19])} L${cabinFace([70, 34, 8])}
+                L${cabinFace([70, 8, 8])} Z`} fill="#754b28" stroke="#3b2311" strokeWidth="0.8" />
               {[11, 15, 18].map(height => <polyline key={height}
-                points={cabinFace([58, 14, height], [58, 31, height])} stroke="#492b14" strokeWidth="0.8" fill="none" />)}
-              {[12, 33].map(v => {
-                const top = cabinPoint(58, v, 24), bottom = cabinPoint(58, v, 2);
+                points={cabinFace([70, 10, height], [70, 32, height])} stroke="#492b14" strokeWidth="0.8" fill="none" />)}
+              {[8, 34].map(v => {
+                const top = cabinPoint(70, v, 24), bottom = cabinPoint(70, v, 2);
                 return <g key={v}>
                   <path d={`M${top.x},${top.y} V${bottom.y}`} stroke="#513017" strokeWidth="2.8" strokeLinecap="round" />
                   <path d={`M${top.x - 0.5},${top.y + 1} V${bottom.y - 1}`} stroke="#9b693e" strokeWidth="0.7" />
@@ -386,27 +460,27 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
                 </g>;
               })}
             </g>
-            <path id="cabin-soft-pillow" d={`M${cabinFace([47, 14, 12])} Q${cabinFace([55, 12, 12])} ${cabinFace([56, 17, 12])}
-              L${cabinFace([56, 28, 12])} Q${cabinFace([56, 33, 12])} ${cabinFace([50, 32, 12])}
-              L${cabinFace([46, 30, 12])} Q${cabinFace([43, 23, 12])} ${cabinFace([47, 14, 12])} Z`}
+            <path id="cabin-soft-pillow" d={`M${cabinFace([59, 10, 12])} Q${cabinFace([67, 8, 12])} ${cabinFace([68, 14, 12])}
+              L${cabinFace([68, 28, 12])} Q${cabinFace([68, 34, 12])} ${cabinFace([62, 33, 12])}
+              L${cabinFace([58, 31, 12])} Q${cabinFace([55, 22, 12])} ${cabinFace([59, 10, 12])} Z`}
               fill="#fffdfa" stroke="#d5cbba" strokeWidth="0.8" />
-            <polyline points={cabinFace([49, 18, 12.4], [48, 23, 12.4], [49, 29, 12.4])}
+            <polyline points={cabinFace([61, 14, 12.4], [60, 22, 12.4], [61, 30, 12.4])}
               fill="none" stroke="#ded1bd" strokeWidth="0.7" strokeLinejoin="round" />
-            <polygon points={cabinFace([14, 12, 11], [44, 12, 11], [44, 33, 11], [14, 33, 11])}
+            <polygon points={cabinFace([14, 8, 11], [56, 8, 11], [56, 34, 11], [14, 34, 11])}
               fill="#b94e32" stroke="#882e16" strokeWidth="0.8" />
-            <polygon points={cabinFace([14, 12, 11], [44, 12, 11], [44, 12, 5], [14, 12, 5])} fill="#942a12" />
-            {[17, 27, 37].map(u => <polyline key={u} points={cabinFace([u, 12, 11.4], [u + 7, 23, 11.4], [u, 33, 11.4])}
+            <polygon points={cabinFace([14, 8, 11], [56, 8, 11], [56, 8, 5], [14, 8, 5])} fill="#942a12" />
+            {[17, 27, 37, 47].map(u => <polyline key={u} points={cabinFace([u, 8, 11.4], [u + 7, 21, 11.4], [u, 34, 11.4])}
               stroke="#8e321d" strokeWidth="0.7" strokeDasharray="2 1.3" fill="none" />)}
-            {[18, 28].map(v => <polyline key={v} points={cabinFace([14, v, 11.4], [29, v - 4, 11.4], [44, v, 11.4])}
+            {[15, 27].map(v => <polyline key={v} points={cabinFace([14, v, 11.4], [35, v - 4, 11.4], [56, v, 11.4])}
               stroke="#d87550" strokeWidth="0.6" fill="none" />)}
-            <polygon points={cabinFace([40, 12, 11.5], [44, 12, 11.5], [44, 33, 11.5], [40, 33, 11.5])}
+            <polygon points={cabinFace([52, 8, 11.5], [56, 8, 11.5], [56, 34, 11.5], [52, 34, 11.5])}
               fill="#3a5a40" stroke="#29402e" strokeWidth="0.5" />
-            <polyline points={cabinFace([44, 12, 12], [43, 19, 12], [44, 26, 12], [43, 33, 12])}
+            <polyline points={cabinFace([56, 8, 12], [55, 17, 12], [56, 26, 12], [55, 34, 12])}
               fill="none" stroke="#fff7e9" strokeWidth="1.7" strokeLinejoin="round" />
             <g id="cabin-bed-footboard">
-              <polygon points={cabinFace([14, 12, 13], [14, 33, 13], [14, 33, 5], [14, 12, 5])}
+              <polygon points={cabinFace([14, 8, 13], [14, 34, 13], [14, 34, 5], [14, 8, 5])}
                 fill="#673f20" stroke="#38200f" strokeWidth="0.8" />
-              {[12, 33].map(v => {
+              {[8, 34].map(v => {
                 const top = cabinPoint(14, v, 16), bottom = cabinPoint(14, v, 2);
                 return <g key={v}>
                   <path d={`M${top.x},${top.y} V${bottom.y}`} stroke="#583416" strokeWidth="2.4" strokeLinecap="round" />
@@ -545,13 +619,20 @@ export const WoodenCabinHaven: React.FC<WoodenCabinHavenProps> = React.memo(({
               <path d="M-3.1,7 Q-.3,7.9 3.1,7 C3.8,9.5 2.4,11.4 .1,11.5 C-2.3,11.4 -3.6,9.6 -3.1,7 Z"
                 fill={`url(#${potionId})`} />
               <ellipse cy="7" rx="3.1" ry=".6" fill="#c2e3c5" opacity={theme.isNight ? '.8' : '.65'} />
-              <ellipse cx="-.2" cy="9.3" rx="1.55" ry="2.15" fill="#b43cf0" opacity=".24" />
-              <path d="M-1.45,10.8 Q-2.6,9.4 -1.55,8.1 Q-1.2,7.5 -.85,6.5 Q.05,7.2 -.25,8.2 Q.65,7.8 .85,7 Q2.05,8.6 1.15,9.4 Q1.75,9.25 2,8.8 Q2.75,10.3 1.3,11.1 Q-.1,11.65 -1.45,10.8 Z"
-                fill={`url(#cabin-potion-flame-${roofDetailUid})`} stroke="#842fbe" strokeWidth=".26" />
-              <path d="M-.65,10.8 Q-1.65,9.8 -.85,9 Q-.45,8.55 -.35,7.9 Q.45,8.65 .05,9.4 Q.75,9.05 .8,8.75 Q1.55,10.1 .55,10.85 Q-.05,11.2 -.65,10.8 Z"
-                fill="#ee8cff" />
-              <path d="M-.15,10.8 Q-.7,10.1 -.2,9.65 Q.25,9.25 .2,8.8 Q.95,9.65 .45,10.25 Q.3,10.6 -.15,10.8 Z"
-                fill="#fff0bd" />
+              <g opacity={theme.isNight ? .72 : theme.timeOfDay === 'dusk' ? .5 : .34}>
+                <ellipse className={potionGlowClass} data-potion-flame-glow="breathing"
+                  cx="-.1" cy="8.9" rx="3.3" ry="3" fill={`url(#${potionId}-flame-glow)`} />
+              </g>
+              <g className={potionFlameClass} data-potion-flame="gentle-sway">
+                <path d="M-1.45,10.8 Q-2.6,9.4 -1.55,8.1 Q-1.2,7.5 -.85,6.5 Q.05,7.2 -.25,8.2 Q.65,7.8 .85,7 Q2.05,8.6 1.15,9.4 Q1.75,9.25 2,8.8 Q2.75,10.3 1.3,11.1 Q-.1,11.65 -1.45,10.8 Z"
+                  fill={`url(#cabin-potion-flame-${roofDetailUid})`} stroke="#842fbe" strokeWidth=".26" />
+                <g className={potionCoreClass} data-potion-flame-core="soft-flicker">
+                  <path d="M-.65,10.8 Q-1.65,9.8 -.85,9 Q-.45,8.55 -.35,7.9 Q.45,8.65 .05,9.4 Q.75,9.05 .8,8.75 Q1.55,10.1 .55,10.85 Q-.05,11.2 -.65,10.8 Z"
+                    fill="#ee8cff" />
+                  <path d="M-.15,10.8 Q-.7,10.1 -.2,9.65 Q.25,9.25 .2,8.8 Q.95,9.65 .45,10.25 Q.3,10.6 -.15,10.8 Z"
+                    fill="#fff0bd" />
+                </g>
+              </g>
               <path d="M-2.7,6.2 Q-3.7,8 -2.7,9.8 M-1.9,10.8 Q0,11.8 1.7,10.9"
                 fill="none" stroke="#edf2d5" strokeWidth=".5" strokeLinecap="round" opacity=".8" />
               <path d="M2.5,5.9 Q3.5,7.6 2.9,9.1" fill="none" stroke="#d6e8ce" strokeWidth=".3" opacity=".5" />
