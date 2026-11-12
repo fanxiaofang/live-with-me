@@ -3,6 +3,7 @@ import React from 'react';
 import type { PresenceAllocation } from '../../features/presence/presenceAllocation';
 import type { Person, RoomId } from '../../types';
 import type { InteractionTarget } from '../../world/interactions/interactionTypes';
+import { ContactGroundShadow, SoftContactShadow } from '../../world/render/GroundShadow';
 import { svgAction } from '../../world/interactions/svgAction';
 import { CharacterHead } from '../CharacterAvatar';
 import { MeadowWearPatch } from '../scenery/yorkshire/dressing/MeadowWearPatch';
@@ -34,6 +35,10 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
 }) => {
   const podOccupant = presenceSlots.tatami_capsule?.occupant;
   const slotCfg = presenceSlots.tatami_capsule?.config;
+  const gearMaterialId = 'pod-gear-' + React.useId().replace(/[^a-zA-Z0-9_-]/g, '');
+  const plantingSoil = theme.isNight ? '#3d4235' : theme.timeOfDay === 'dusk' ? '#786e55' : '#8a8066';
+  const plantingMoss = theme.isNight ? '#4e5d43' : theme.timeOfDay === 'dusk' ? '#72764f' : '#7c845c';
+  const plantingCore = theme.isNight ? '#353b30' : theme.timeOfDay === 'dusk' ? '#655e49' : '#726b55';
 
   return (
     <g id="capsule-pod-haven" data-capsule-design="original">
@@ -91,6 +96,39 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           <stop offset="75%" stopColor="#9db0a6" />
           <stop offset="100%" stopColor="#3b433e" />
         </linearGradient>
+
+        <linearGradient id={`${gearMaterialId}-podHydraulicCylinderGrad`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#3e4c42" />
+          <stop offset="16%" stopColor="#849487" />
+          <stop offset="34%" stopColor="#6b7b6f" />
+          <stop offset="72%" stopColor="#526157" />
+          <stop offset="100%" stopColor="#354239" />
+        </linearGradient>
+        <linearGradient id={`${gearMaterialId}-podHydraulicRodGrad`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#354239" />
+          <stop offset="22%" stopColor="#8e9e91" />
+          <stop offset="40%" stopColor="#c1cdbf" />
+          <stop offset="68%" stopColor="#829286" />
+          <stop offset="100%" stopColor="#435047" />
+        </linearGradient>
+        <linearGradient id={`${gearMaterialId}-podLadderBeamGrad`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#70816f" /><stop offset="0.32" stopColor="#4e6452" /><stop offset="1" stopColor="#2e4033" />
+        </linearGradient>
+        <linearGradient id={`${gearMaterialId}-podFootPadWallGrad`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#66766a" />
+          <stop offset="42%" stopColor="#4b594f" />
+          <stop offset="100%" stopColor="#303b33" />
+        </linearGradient>
+        <linearGradient id={`${gearMaterialId}-podFootPadTopGrad`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#8e9d8c" />
+          <stop offset="55%" stopColor="#71816f" />
+          <stop offset="100%" stopColor="#536451" />
+        </linearGradient>
+        <radialGradient id={`${gearMaterialId}-podBallJointGrad`} cx="34%" cy="28%" r="78%">
+          <stop offset="0%" stopColor="#9aa99b" />
+          <stop offset="42%" stopColor="#68796d" />
+          <stop offset="100%" stopColor="#3c493f" />
+        </radialGradient>
 
         {/* 8. 旋压黄铜舷窗多层金属法兰环渐变 */}
         <linearGradient id="portholeBrassRingGrad" x1="0" y1="0" x2="1" y2="1">
@@ -173,32 +211,38 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
           {/* 左后足接地接触阴影与主腿 */}
           <g id="rear-stilt-left" opacity="0.88">
             {/* 独立深浅接触阴影 (Contact Shadow) */}
-            <ellipse cx="-47" cy="56.45" rx="5.4" ry="1.7" fill="#121913" opacity="0.30" />
-            <ellipse cx="-47" cy="56.45" rx="7.6" ry="2.4" fill="#233126" opacity="0.09" />
+            <SoftContactShadow cx={-47} cy={56.45} rx={7.6} ry={2.4} color="#233126" opacity={0.09} />
+            <ContactGroundShadow cx={-47} cy={56.45} rx={5.4} ry={1.7} color="#121913" opacity={0.3} />
 
             <rect x="-47" y="16" width="7" height="6" rx="1.5" fill="#242b26" />
-            <line x1="-44" y1="20" x2="-47" y2="56" stroke="#4f5f54" strokeWidth="3.8" strokeLinecap="round" />
-            <line x1="-44" y1="20" x2="-47" y2="56" stroke="#758579" strokeWidth="0.95" strokeLinecap="round" />
-            <ellipse cx="-47" cy="56" rx="6" ry="2.2" fill="#47554b" stroke="#5d6c61" strokeWidth="0.55" />
+            <ellipse cx="-47" cy="56.45" rx="6" ry="2.2" fill="#354139" />
+            <path d="M-53,54.8 A6,2.2 0 0 1 -41,54.8 L-41,56.45 A6,2.2 0 0 1 -53,56.45 Z" fill={`url(#${gearMaterialId}-podFootPadWallGrad)`} />
+            <ellipse cx="-47" cy="54.8" rx="6" ry="2.2" fill={`url(#${gearMaterialId}-podFootPadTopGrad)`} />
+            <ellipse cx="-47" cy="54.8" rx="2.35" ry="0.8" fill="#4d6052" />
+            <path d="M-45.9,20 H-42.1 L-45.1,54.8 H-48.9 Z" fill={`url(#${gearMaterialId}-podHydraulicRodGrad)`} />
+            <path d="M-44.8,20 L-47.8,54.5" fill="none" stroke="#a0afa1" strokeWidth="0.42" opacity="0.55" />
           </g>
 
           {/* 右后足接地接触阴影与主腿 */}
           <g id="rear-stilt-right" opacity="0.88">
-            <ellipse cx="38" cy="54.45" rx="5.4" ry="1.7" fill="#121913" opacity="0.30" />
-            <ellipse cx="38" cy="54.45" rx="7.6" ry="2.4" fill="#233126" opacity="0.09" />
+            <SoftContactShadow cx={38} cy={54.45} rx={7.6} ry={2.4} color="#233126" opacity={0.09} />
+            <ContactGroundShadow cx={38} cy={54.45} rx={5.4} ry={1.7} color="#121913" opacity={0.3} />
 
             <rect x="35" y="16" width="7" height="6" rx="1.5" fill="#242b26" />
-            <line x1="38" y1="20" x2="38" y2="54" stroke="#4f5f54" strokeWidth="3.8" strokeLinecap="round" />
-            <line x1="38" y1="20" x2="38" y2="54" stroke="#758579" strokeWidth="0.95" strokeLinecap="round" />
-            <ellipse cx="38" cy="54" rx="6" ry="2.2" fill="#47554b" stroke="#5d6c61" strokeWidth="0.55" />
+            <ellipse cx="38" cy="54.45" rx="6" ry="2.2" fill="#354139" />
+            <path d="M32,52.8 A6,2.2 0 0 1 44,52.8 L44,54.45 A6,2.2 0 0 1 32,54.45 Z" fill={`url(#${gearMaterialId}-podFootPadWallGrad)`} />
+            <ellipse cx="38" cy="52.8" rx="6" ry="2.2" fill={`url(#${gearMaterialId}-podFootPadTopGrad)`} />
+            <ellipse cx="38" cy="52.8" rx="2.35" ry="0.8" fill="#4d6052" />
+            <path d="M36.1,20 H39.9 L39.9,52.8 H36.1 Z" fill={`url(#${gearMaterialId}-podHydraulicRodGrad)`} />
+            <path d="M37.2,20 L37.2,52.5" fill="none" stroke="#a0afa1" strokeWidth="0.42" opacity="0.55" />
           </g>
 
           {/* ============ 2. 前置重型工业液压足 (前景高亮，配备重力压缩触地阴影) ============ */}
           {/* 左前足 */}
           <g id="front-stilt-left">
             {/* 左前脚接地重力接触阴影 */}
-            <ellipse cx="-20" cy="63.1" rx="6.2" ry="2.0" fill="#101712" opacity="0.46" />
-            <ellipse cx="-20" cy="63.15" rx="9.2" ry="3.0" fill="#223126" opacity="0.14" />
+            <SoftContactShadow cx={-20} cy={63.15} rx={9.2} ry={3} color="#223126" opacity={0.14} />
+            <ContactGroundShadow cx={-20} cy={63.1} rx={6.2} ry={2} color="#101712" opacity={0.46} />
 
             {/* 锻造三角底座夹板与六角螺栓 */}
             <polygon points="-26,24 -14,24 -17,33 -23,33" fill="#323d36" stroke="#58685d" strokeWidth="0.5" />
@@ -206,64 +250,104 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             <circle cx="-17" cy="26" r="1.1" fill="#75887c" />
 
             {/* 液压外缸套筒 (Gunmetal Sleeve) */}
-            <rect x="-23.5" y="32" width="7" height="15" rx="2" fill="#3e4a42" stroke="#5c6b60" strokeWidth="0.55" />
+            <rect x="-23.5" y="32" width="7" height="15" rx="2" fill={`url(#${gearMaterialId}-podHydraulicCylinderGrad)`} stroke="#5c6b60" strokeWidth="0.55" />
+            <path d="M-18.5,32.5 Q-16.5,32 -16.5,34 V45 Q-16.5,46.8 -18.5,46.8 Z" fill="#344239" opacity="0.52" />
+            <line x1="-22.5" y1="34" x2="-22.5" y2="45" stroke="#b0bcae" strokeWidth="0.42" opacity="0.48" />
             <circle cx="-24.5" cy="35" r="1.4" fill="#c49d52" stroke="#806f49" strokeWidth="0.4" />
             {/* 螺纹高度微调铜锁环 (Knurled Brass Collar) */}
             <rect x="-24.5" y="44" width="9" height="3.5" rx="1" fill="#c9a45b" stroke="#9b8760" strokeWidth="0.36" />
             <line x1="-23" y1="44" x2="-23" y2="47.5" stroke="#ffe59e" strokeWidth="0.6" />
 
             {/* 镜面镀铬伸缩活塞杆 (High-Mirror Chrome Piston Rod) */}
-            <rect x="-22" y="47" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#617066" strokeWidth="0.32" />
+            <rect x="-22" y="47" width="4" height="15" fill={`url(#${gearMaterialId}-podHydraulicRodGrad)`} stroke="#617066" strokeWidth="0.32" />
             <line x1="-21" y1="47.5" x2="-21" y2="61.5" stroke="#dfe6d6" strokeWidth="0.5" opacity="0.22" />
 
             {/* 万向球形铰接脚座与加厚接地吸震垫 (Swivel Footpad) */}
-            <circle cx="-20" cy="61" r="2.2" fill="#5a6b60" stroke="#66756a" strokeWidth="0.36" />
-            <ellipse cx="-20" cy="63" rx="7.5" ry="2.8" fill="#424f46" stroke="#5d6c61" strokeWidth="0.55" />
-            <ellipse cx="-20" cy="62.5" rx="5.5" ry="1.8" fill="#697a70" />
+            <ellipse cx="-20" cy="63.1" rx="7.5" ry="2.5" fill="#354139" />
+            <path d="M-27.5,61.5 A7.5,2.5 0 0 1 -12.5,61.5 L-12.5,63.1 A7.5,2.5 0 0 1 -27.5,63.1 Z" fill={`url(#${gearMaterialId}-podFootPadWallGrad)`} />
+            <ellipse cx="-20" cy="61.5" rx="7.5" ry="2.5" fill={`url(#${gearMaterialId}-podFootPadTopGrad)`} />
+            <ellipse cx="-20" cy="61.5" rx="2.8" ry="0.9" fill="#45564a" />
+            <rect x="-22" y="57.5" width="4" height="3.2" fill={`url(#${gearMaterialId}-podHydraulicRodGrad)`} />
+            <line x1="-21" y1="57.5" x2="-21" y2="60.5" stroke="#dfe6d6" strokeWidth="0.4" opacity="0.22" />
+            <path d="M-22,59.6 Q-20,58.7 -18,59.6 L-17.7,61 Q-20,62 -22.3,61 Z" fill={`url(#${gearMaterialId}-podBallJointGrad)`} />
+            <path d="M-26.4,61.6 Q-23,63.5 -19.3,63.5" fill="none" stroke="#9eae9e" strokeWidth="0.35" opacity="0.55" />
           </g>
 
           {/* 右前足 */}
           <g id="front-stilt-right">
             {/* 右前脚接地接触阴影 */}
-            <ellipse cx="24" cy="62.1" rx="6.2" ry="2.0" fill="#101712" opacity="0.46" />
-            <ellipse cx="24" cy="62.15" rx="9.2" ry="3.0" fill="#223126" opacity="0.14" />
+            <SoftContactShadow cx={24} cy={62.15} rx={9.2} ry={3} color="#223126" opacity={0.14} />
+            <ContactGroundShadow cx={24} cy={62.1} rx={6.2} ry={2} color="#101712" opacity={0.46} />
 
             <polygon points="18,24 30,24 27,33 21,33" fill="#323d36" stroke="#58685d" strokeWidth="0.5" />
             <circle cx="21" cy="26" r="1.1" fill="#75887c" />
             <circle cx="27" cy="26" r="1.1" fill="#75887c" />
 
             {/* 外缸套筒 */}
-            <rect x="20.5" y="32" width="7" height="14" rx="2" fill="#3e4a42" stroke="#5c6b60" strokeWidth="0.55" />
+            <rect x="20.5" y="32" width="7" height="14" rx="2" fill={`url(#${gearMaterialId}-podHydraulicCylinderGrad)`} stroke="#5c6b60" strokeWidth="0.55" />
+            <path d="M25,32.5 Q27,32 27,34 V44 Q27,45.8 25,45.8 Z" fill="#344239" opacity="0.52" />
+            <line x1="21.5" y1="34" x2="21.5" y2="44" stroke="#b0bcae" strokeWidth="0.42" opacity="0.48" />
             <circle cx="28.5" cy="35" r="1.4" fill="#c49d52" stroke="#806f49" strokeWidth="0.4" />
             <rect x="19.5" y="43" width="9" height="3.5" rx="1" fill="#c9a45b" stroke="#9b8760" strokeWidth="0.36" />
             <line x1="21" y1="43" x2="21" y2="46.5" stroke="#ffe59e" strokeWidth="0.6" />
 
             {/* 镜面活塞杆 */}
-            <rect x="22" y="46" width="4" height="15" fill="url(#podChromePistonGrad)" stroke="#617066" strokeWidth="0.32" />
+            <rect x="22" y="46" width="4" height="15" fill={`url(#${gearMaterialId}-podHydraulicRodGrad)`} stroke="#617066" strokeWidth="0.32" />
             <line x1="23" y1="46.5" x2="23" y2="60.5" stroke="#dfe6d6" strokeWidth="0.5" opacity="0.22" />
 
             {/* 脚座吸震垫 */}
-            <circle cx="24" cy="60" r="2.2" fill="#5a6b60" stroke="#66756a" strokeWidth="0.36" />
-            <ellipse cx="24" cy="62" rx="7.5" ry="2.8" fill="#424f46" stroke="#5d6c61" strokeWidth="0.55" />
-            <ellipse cx="24" cy="61.5" rx="5.5" ry="1.8" fill="#697a70" />
+            <ellipse cx="24" cy="62.1" rx="7.5" ry="2.5" fill="#354139" />
+            <path d="M16.5,60.5 A7.5,2.5 0 0 1 31.5,60.5 L31.5,62.1 A7.5,2.5 0 0 1 16.5,62.1 Z" fill={`url(#${gearMaterialId}-podFootPadWallGrad)`} />
+            <ellipse cx="24" cy="60.5" rx="7.5" ry="2.5" fill={`url(#${gearMaterialId}-podFootPadTopGrad)`} />
+            <ellipse cx="24" cy="60.5" rx="2.8" ry="0.9" fill="#45564a" />
+            <rect x="22" y="56.5" width="4" height="3.2" fill={`url(#${gearMaterialId}-podHydraulicRodGrad)`} />
+            <line x1="23" y1="56.5" x2="23" y2="59.5" stroke="#dfe6d6" strokeWidth="0.4" opacity="0.22" />
+            <path d="M22,58.6 Q24,57.7 26,58.6 L26.3,60 Q24,61 21.7,60 Z" fill={`url(#${gearMaterialId}-podBallJointGrad)`} />
+            <path d="M17.6,60.6 Q21,62.5 24.7,62.5" fill="none" stroke="#9eae9e" strokeWidth="0.35" opacity="0.55" />
           </g>
 
           {/* ============ 3. 支脚周边的山野草甸植被 ============ */}
           <g id="stilt-meadow-flora">
-            <path d="M-26,63 Q-23,52 -25,42 Q-21,48 -23,63" fill="#3c6b45" />
-            <ellipse cx="-23" cy="46" rx="3.5" ry="2.2" fill="#528e5e" />
-            <ellipse cx="-27" cy="54" rx="3.2" ry="2" fill="#62a36f" />
-            <ellipse cx="-16" cy="62" rx="3" ry="1.8" fill="#4d8258" />
+            <g id="pod-stilt-planting-pockets" pointerEvents="none">
+              {/* Recessed earth follows each joint; moss hugs its edges rather than forming beads. */}
+              <path d="M-26.9,62.1 L-26.9,63.4 L-27.4,64.5 L-27.6,65.5 L-28.2,66.2 L-28.6,67.1 L-29.3,67.6 L-29.1,66.6 L-29.3,65.8 L-28.7,65 L-28.7,63.9 L-27.7,63.1Z" fill={plantingSoil} />
+              <path d="M-27.3,62.8 L-27.5,64.1 L-28.2,65.2 L-28.6,66.4 L-29,67.1 L-28.8,65.7 L-28,63.7Z" fill={plantingCore} opacity="0.62" />
+              <path d="M-28.7,63.8 L-28.6,64.5 Q-29.5,65 -29.7,66.1 L-29.2,65.9 L-28.7,65.1 L-28.1,64.7 L-28.2,64Z" fill={plantingMoss} />
 
-            <line x1="30" y1="62" x2="33" y2="46" stroke="#3d6642" strokeWidth="1.8" strokeLinecap="round" />
-            <circle cx="33" cy="46" r="2.6" fill="#8f65be" />
-            <circle cx="32.5" cy="42" r="2.3" fill="#a77ed9" />
-            <circle cx="33" cy="38" r="1.9" fill="#cbb3ed" />
-            <line x1="35" y1="62" x2="38" y2="50" stroke="#3d6642" strokeWidth="1.6" strokeLinecap="round" />
-            <circle cx="38" cy="50" r="2.2" fill="#8f65be" />
-            <circle cx="38" cy="46" r="1.9" fill="#a77ed9" />
-            <circle cx="16" cy="61" r="2" fill="#fcd34d" />
-            <circle cx="16" cy="61" r="0.8" fill="#b45309" />
+              <path d="M34.5,60.6 L35.4,61 L35.7,61.8 L36.7,62.3 L37,63.1 L38,63.8 L38,64.7 L38.9,66.3 L37.8,65.6 L37.3,64.6 L36.3,64.2 L35.9,63.5 L34.9,63 L34.8,62 L34.2,61.4Z" fill={plantingSoil} />
+              <path d="M34.7,61.1 L35.6,62.1 L36.5,62.5 L36.9,63.5 L37.6,64.1 L38.3,65.6 L37.1,64.5 L36,63.8 L35.5,62.7 L34.7,62Z" fill={plantingCore} opacity="0.72" />
+              <path d="M34.2,61.2 Q33.9,62 34.6,62.7 L35.1,63 L35.5,63.6 L36.2,63.8 L36,63.3 L35.3,62.8 L35,62.2 L34.5,62Z M37.7,64.1 L38.2,64.4 L38.7,65.6 L38.1,65.3 L37.9,64.7 L37.4,64.5Z" fill={plantingMoss} />
+            </g>
+
+            <g id="pod-vine">
+              {/* The main vine lifts gently from the seam and climbs the cylinder. */}
+              <path d="M-27.8,64.1 C-27.7,61.1 -26.4,58.1 -25.7,54.4" fill="none" stroke="#3c6b45" strokeWidth="0.72" strokeLinecap="round" />
+            </g>
+
+            <g id="pod-purple-flowers">
+              <path d="M36,63.1 C35.5,61.3 35.9,59.5 35.6,57.8 C35.1,53.7 33.6,50.1 34.2,46 L34.2,38" fill="none" stroke="#3d6642" strokeWidth="0.95" strokeLinecap="round" />
+              <path d="M36.1,63.1 C35.6,60.9 37,59.2 37.5,57.8 C38.6,54.7 39.3,52.2 38.8,50 L38.8,46" fill="none" stroke="#3d6642" strokeWidth="0.8" strokeLinecap="round" />
+              <path d="M36,62.9 C34.7,62.9 32.2,62.1 32.7,61.1 C33.3,60.1 35.4,61.1 36,62.9Z" fill="#4d8258" />
+              <path d="M36,62.9 C36.6,61.1 38.3,60.6 38.8,61.4 C39.1,62.2 37.4,62.9 36,62.9Z" fill="#528e5e" />
+              <circle cx="34.2" cy="46" r="2.6" fill="#8f65be" />
+              <circle cx="33.7" cy="42" r="2.3" fill="#a77ed9" />
+              <circle cx="34.2" cy="38" r="1.9" fill="#cbb3ed" />
+              <circle cx="38.8" cy="50" r="2.2" fill="#8f65be" />
+              <circle cx="38.8" cy="46" r="1.9" fill="#a77ed9" />
+            </g>
+
+            <g id="pod-yellow-flower">
+              <path d="M-28.6,66.4 C-29.2,65.7 -29.7,64.4 -29.9,62.8" fill="none" stroke="#3d6642" strokeWidth="0.48" strokeLinecap="round" />
+              <ellipse cx="-28.9" cy="65" rx="1" ry="0.5" fill="#4d8258" transform="rotate(-28 -28.9 65)" />
+              <circle cx="-29.9" cy="62.8" r="1.7" fill="#fcd34d" />
+              <circle cx="-29.9" cy="62.8" r="0.68" fill="#b45309" />
+            </g>
+
+            {/* A continuous near lip hides the stem tips inside the recessed joint. */}
+            <path d="M-28.7,64.4 L-28.1,63.9 L-27.7,64 L-27.4,63.7 L-27.4,64.5 L-28,65.3 L-28.2,66.2 L-28.8,66.8 L-29.1,66.4 L-28.5,65.3Z" fill={plantingSoil} />
+            <path d="M-28.7,64.5 L-28.2,64.3 L-28.1,65 L-28.6,65.5 L-28.8,66.2 L-29.1,66.1 L-28.9,65.3Z" fill={plantingMoss} />
+            <path d="M35.2,63.1 L35.7,62.9 L36.1,63.1 L36.4,62.8 L36.7,63.7 L37.2,64 L37.5,64.7 L36.7,64.3 L36.1,63.9 L35.7,63.8Z" fill={plantingSoil} />
+            <path d="M35.1,63.1 L35.6,63.2 L35.8,63.6 L36.4,63.9 L36.8,64.4 L36.1,64.1 L35.5,63.9Z" fill={plantingMoss} />
           </g>
         </g>
 
@@ -543,14 +627,21 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             />
           </g>
 
-          {/* 4. 舱顶锻造吊装吊耳 */}
-          <g id="pod-lifting-rings">
-            <ellipse cx="-20" cy="-30" rx="2.5" ry="3.5" fill="none" stroke="#45544a" strokeWidth="1.2" />
-            <ellipse cx="30" cy="-30" rx="2.5" ry="3.5" fill="none" stroke="#45544a" strokeWidth="1.2" />
-          </g>
         </g>
 
         {/* ========================================================================= */}
+        {/* The climbing canopy crosses in front of the hull; roots stay beneath the soil lip. */}
+        <g id="pod-vine-canopy" pointerEvents="none">
+          <path d="M-25.7,54.4 C-25.1,50.9 -22.5,48.4 -22.8,44 C-23.1,40.5 -22.6,37.7 -21.5,35.2" fill="none" stroke="#3c6b45" strokeWidth="0.95" strokeLinecap="round" />
+          <path d="M-21.5,35.2 Q-20.8,33.9 -21.3,33.3" fill="none" stroke="#3c6b45" strokeWidth="0.65" strokeLinecap="round" />
+          <path d="M-25.7,54.4 C-22.8,53.2 -19.1,51.6 -18.4,48 C-18,45.7 -17.4,43 -18,40.5 Q-18.5,39 -19.1,39.7 Q-19.5,40.4 -18.8,40.7" fill="none" stroke="#3c6b45" strokeWidth="0.65" strokeLinecap="round" />
+          <path d="M-25.7,54.4 L-27,54 M-19.7,51.3 L-20.8,51.5 M-21.5,35.2 L-20.8,34.9" fill="none" stroke="#3c6b45" strokeWidth="0.65" strokeLinecap="round" />
+          <ellipse cx="-23" cy="46" rx="3.5" ry="2.2" fill="#528e5e" />
+          <ellipse cx="-27" cy="54" rx="3.2" ry="2" fill="#62a36f" />
+          <ellipse cx="-20.8" cy="51.5" rx="3" ry="1.8" fill="#4d8258" transform="rotate(-10 -20.8 51.5)" />
+          <ellipse cx="-20.6" cy="34.8" rx="1.8" ry="1.15" fill="#528e5e" transform="rotate(-24 -20.6 34.8)" />
+        </g>
+
         {/* E. 全景大舷窗与极致温馨卧舱 (Panoramic Porthole & Bedroom Sanctuary)       */}
         {/* ========================================================================= */}
         <g id="pod-bedroom-interior" transform="translate(12, 3)">
@@ -630,9 +721,10 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             <rect x="-19.5" y="-4.5" width="2.2" height="3.6" rx="0.8" fill="#bfa054" stroke="#68501e" strokeWidth="0.4" />
             <circle cx="-18.4" cy="-2.7" r="0.6" fill="#ffe082" />
 
+
             {/* 可调角度的精致黄铜金属弯管 (鹅颈灯臂) */}
             <path
-              d="M-18.4,-2.7 C-15,-6.5 -13.5,-5.5 -12,-1.2"
+              d="M-18.4,-2.7 C-14.8,-6.7 -7.4,-7 -6,-3.2"
               fill="none"
               stroke="#dfb758"
               strokeWidth="1.2"
@@ -640,7 +732,7 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
             />
             {/* 弯管金属高光细线 */}
             <path
-              d="M-18.4,-2.7 C-15,-6.5 -13.5,-5.5 -12,-1.2"
+              d="M-18.4,-2.7 C-14.8,-6.7 -7.4,-7 -6,-3.2"
               fill="none"
               stroke="#fff7cf"
               strokeWidth="0.4"
@@ -648,19 +740,16 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
               opacity="0.85"
             />
 
-            {/* 喇叭口复古黄铜锥形灯罩 */}
-            <polygon points="-14.5,-1.2 -9.5,-1.2 -10.5,2.2 -13.5,2.2" fill="#dfb758" stroke="#7c5c1d" strokeWidth="0.5" />
-            {/* 暖色发光小灯珠 */}
-            <circle cx="-12" cy="2.2" r="1.3" fill="#ffffff" />
-            <circle cx="-12" cy="2.2" r="2.2" fill="#fef08a" opacity="0.6" />
-
-            {/* 投向床头枕侧的温馨锥形暖光束 */}
-            <polygon
-              points="-12,2.2 -3,15 -19,15"
-              fill="#fff3c4"
-              opacity="0.42"
-              className="pointer-events-none"
-            />
+            {/* The shade and round light pearl share a gently tilted local axis. */}
+            <g transform="translate(-6 -3.2) rotate(-20)">
+              <circle cx="0" cy="4.1" r="2.8" fill="#fef08a" opacity="0.4" pointerEvents="none" />
+              <path d="M-1.2,0 Q0,-0.4 1.2,0 L2.5,3.4 Q0,4.2 -2.5,3.4Z" fill="#dfb758" stroke="#7c5c1d" strokeWidth="0.45" strokeLinejoin="round" />
+              <path d="M-0.8,0.4 L-1.8,3.1" fill="none" stroke="#fff7cf" strokeWidth="0.35" opacity="0.65" strokeLinecap="round" />
+              <ellipse cx="0" cy="3.4" rx="2.5" ry="0.65" fill="#b18b3f" stroke="#7c5c1d" strokeWidth="0.32" />
+              <ellipse cx="0" cy="3.48" rx="1.85" ry="0.43" fill="#ffe6a0" />
+              <circle cx="0" cy="4.1" r="1.25" fill="#fff7cf" />
+              <path d="M-2.5,3.4 Q0,2.75 2.5,3.4 L2.28,3.7 Q0,3.12 -2.28,3.7Z" fill="#b18b3f" />
+            </g>
           </g>
 
           {/* 9. 悬浮床头置物架与热饮小品 (Floating Nightstand Shelf & Steaming Mug) */}
@@ -804,50 +893,68 @@ export const CapsulePodHaven: React.FC<CapsulePodHavenProps> = React.memo(({
         </g>
 
         <g id="pod-entry-steps">
-          {/* 接地阴影 (梯脚与阶梯投射在草坪上的深浅接触阴影) */}
-          <ellipse cx="-49.5" cy="63.35" rx="13.2" ry="3.1" fill="#223126" opacity="0.18" />
-          <ellipse cx="-61" cy="63.35" rx="3.6" ry="1.35" fill="#111813" opacity="0.42" />
-          <ellipse cx="-38" cy="63.35" rx="3.6" ry="1.35" fill="#111813" opacity="0.42" />
-
-          {/* 梯架双侧重型金属斜梁 (从舱门基座稳固延伸至地面) */}
-          <path d="M-57,24 L-53.5,24 L-59.5,63 L-63,63 Z" fill="#2d3830" stroke="#59695e" strokeWidth="0.5" />
-          <line x1="-55" y1="24" x2="-61" y2="63" stroke="#8d9b8f" strokeWidth="0.52" opacity="0.48" />
+          <defs>
+            <clipPath id={`${gearMaterialId}-ladder-interior`}>
+              <path d="M-53.5,24 L-34.5,24 L-39.365,61.95 L-59.338,61.95 Z" />
+            </clipPath>
+          </defs>
+          {/* Each pad, pivot and receiving shadow share the beam axis at its contact height. */}
+          <SoftContactShadow cx={-61.088} cy={63.35} rx={5.2} ry={2.1} color="#29392d" opacity={0.24} />
+          <ContactGroundShadow cx={-61.088} cy={63.35} rx={3.6} ry={1.35} color="#111813" opacity={0.35} />
+          <ellipse cx="-61.088" cy="63.35" rx="4" ry="1.8" fill="#354139" />
+          <path d="M-65.088,61.95 A4,1.8 0 0 1 -57.088,61.95 L-57.088,63.35 A4,1.8 0 0 1 -65.088,63.35 Z" fill={`url(#${gearMaterialId}-podFootPadWallGrad)`} />
+          <ellipse cx="-61.088" cy="61.95" rx="4" ry="1.8" fill={`url(#${gearMaterialId}-podFootPadTopGrad)`} />
+          <ellipse cx="-61.088" cy="61.95" rx="2.05" ry="0.78" fill="#4c6051" />
+          <SoftContactShadow cx={-37.615} cy={63.35} rx={5.2} ry={2.1} color="#29392d" opacity={0.24} />
+          <ContactGroundShadow cx={-37.615} cy={63.35} rx={3.6} ry={1.35} color="#111813" opacity={0.35} />
+          <ellipse cx="-37.615" cy="63.35" rx="4" ry="1.8" fill="#354139" />
+          <path d="M-41.615,61.95 A4,1.8 0 0 1 -33.615,61.95 L-33.615,63.35 A4,1.8 0 0 1 -41.615,63.35 Z" fill={`url(#${gearMaterialId}-podFootPadWallGrad)`} />
+          <ellipse cx="-37.615" cy="61.95" rx="4" ry="1.8" fill={`url(#${gearMaterialId}-podFootPadTopGrad)`} />
+          <ellipse cx="-37.615" cy="61.95" rx="2.05" ry="0.78" fill="#4c6051" />
+          {/* Treads terminate at the rail interiors; the rails cover their embedded ends. */}
+          <g clipPath={`url(#${gearMaterialId}-ladder-interior)`}>
+            <g id="pod-step-1">
+              <path d="M-54.885,33 L-35.654,33 L-36.231,37.5 L-55.577,37.5 Z" fill="#6b7b6d" />
+              <path d="M-55.577,37.5 L-36.231,37.5 L-36.641,40.7 L-56.069,40.7 Z" fill="#39493e" />
+              <path d="M-55.577,37.5 L-54.927,37.5 L-55.419,40.7 L-56.069,40.7 Z M-36.881,37.5 L-36.231,37.5 L-36.641,40.7 L-37.291,40.7 Z" fill="#2e3d33" opacity="0.75" />
+              <path d="M-55.177,37.5 H-36.631" stroke="#9eac9b" strokeWidth="0.48" opacity="0.75" />
+              <path d="M-55.669,40.55 H-37.041" stroke="#293c30" strokeWidth="0.32" opacity="0.55" />
+              <path d="M-48.346,33.7 L-48.999,36.7" stroke="#94a390" strokeWidth="0.5" opacity="0.65" />
+              <path d="M-41.423,33.7 L-42.035,36.7" stroke="#94a390" strokeWidth="0.5" opacity="0.65" />
+            </g>
+            <g id="pod-step-2">
+              <path d="M-56.577,44 L-37.064,44 L-37.641,48.5 L-57.269,48.5 Z" fill="#667868" />
+              <path d="M-57.269,48.5 L-37.641,48.5 L-38.051,51.7 L-57.762,51.7 Z" fill="#36473c" />
+              <path d="M-57.269,48.5 L-56.619,48.5 L-57.112,51.7 L-57.762,51.7 Z M-38.291,48.5 L-37.641,48.5 L-38.051,51.7 L-38.701,51.7 Z" fill="#2e3d33" opacity="0.75" />
+              <path d="M-56.869,48.5 H-38.041" stroke="#9eac9b" strokeWidth="0.48" opacity="0.75" />
+              <path d="M-57.362,51.55 H-38.451" stroke="#293c30" strokeWidth="0.32" opacity="0.55" />
+              <path d="M-49.943,44.7 L-50.596,47.7" stroke="#94a390" strokeWidth="0.5" opacity="0.65" />
+              <path d="M-42.918,44.7 L-43.529,47.7" stroke="#94a390" strokeWidth="0.5" opacity="0.65" />
+            </g>
+            <g id="pod-step-3">
+              <path d="M-58.269,55 L-38.474,55 L-39.051,59.5 L-58.962,59.5 Z" fill="#627363" />
+              <path d="M-58.962,59.5 L-39.051,59.5 L-39.333,61.7 L-59.3,61.7 Z" fill="#35453a" />
+              <path d="M-58.962,59.5 L-58.312,59.5 L-58.65,61.7 L-59.3,61.7 Z M-39.701,59.5 L-39.051,59.5 L-39.333,61.7 L-39.983,61.7 Z" fill="#2e3d33" opacity="0.75" />
+              <path d="M-58.562,59.5 H-39.451" stroke="#9eac9b" strokeWidth="0.48" opacity="0.75" />
+              <path d="M-58.9,61.55 H-39.733" stroke="#293c30" strokeWidth="0.32" opacity="0.55" />
+              <path d="M-51.539,55.7 L-52.192,58.7" stroke="#94a390" strokeWidth="0.5" opacity="0.65" />
+              <path d="M-44.413,55.7 L-45.024,58.7" stroke="#94a390" strokeWidth="0.5" opacity="0.65" />
+            </g>
+          </g>
+          <g id="pod-ladder-rail-left">
+            <path d="M-57,24 H-53.5 L-59.338,61.95 H-62.838 Z" fill={`url(#${gearMaterialId}-podLadderBeamGrad)`} stroke="#59695e" strokeWidth="0.4" />
+            <path d="M-57,24 L-56.25,24 L-62.088,61.95 L-62.838,61.95 Z" fill="#26382c" opacity="0.78" />
+            <path d="M-54,24 L-59.838,61.95" fill="none" stroke="#98a792" strokeWidth="0.45" opacity="0.65" />
+          </g>
+          <g id="pod-ladder-rail-right">
+            <path d="M-34.5,24 H-31 L-35.865,61.95 H-39.365 Z" fill={`url(#${gearMaterialId}-podLadderBeamGrad)`} stroke="#59695e" strokeWidth="0.4" />
+            <path d="M-31,24 L-31.75,24 L-36.615,61.95 L-35.865,61.95 Z" fill="#26382c" opacity="0.78" />
+            <path d="M-34,24 L-38.865,61.95" fill="none" stroke="#98a792" strokeWidth="0.45" opacity="0.65" />
+          </g>
           <rect x="-58" y="24" width="4.5" height="3.5" rx="0.8" fill="#1f2722" stroke="#46544a" strokeWidth="0.38" />
           <circle cx="-56" cy="25.5" r="0.8" fill="#c49d52" />
-          <ellipse cx="-61" cy="63" rx="4" ry="1.8" fill="#49564d" stroke="#5e6d62" strokeWidth="0.55" />
-
-          <path d="M-34.5,24 L-31,24 L-36,63 L-39.5,63 Z" fill="#2d3830" stroke="#59695e" strokeWidth="0.5" />
-          <line x1="-32.5" y1="24" x2="-37.5" y2="63" stroke="#8d9b8f" strokeWidth="0.52" opacity="0.48" />
           <rect x="-34.5" y="24" width="4" height="3.5" rx="0.8" fill="#1f2722" stroke="#46544a" strokeWidth="0.38" />
           <circle cx="-32.5" cy="25.5" r="0.8" fill="#c49d52" />
-          <ellipse cx="-38" cy="63" rx="4" ry="1.8" fill="#49564d" stroke="#5e6d62" strokeWidth="0.55" />
-
-          {/* 第一级水平踏板 (Selector 1: Upper Step Tread) */}
-          <polygon points="-55,33 -32.5,33 -34.5,37.5 -57,37.5" fill="#5f6f63" stroke="#425247" strokeWidth="0.62" />
-          <path d="M-57,37.5 H-34.5 V41.5 H-57.5 Z" fill="#39493e" stroke="#3b4a40" strokeWidth="0.45" />
-
-          {/* 第二级水平踏板 (Selector 2: Middle Step Tread) */}
-          <polygon points="-57.5,44 -35,44 -37,48.5 -59.5,48.5" fill="#5d6d61" stroke="#425247" strokeWidth="0.62" />
-          <path d="M-59.5,48.5 H-37 V52.5 H-60 Z" fill="#36473c" stroke="#3b4a40" strokeWidth="0.45" />
-
-          {/* 第三级接地踏板 (Bottom Step Tread) */}
-          <polygon points="-60,55 -37.5,55 -39.5,59.5 -62,59.5" fill="#5b6b5f" stroke="#425247" strokeWidth="0.62" />
-          <path d="M-62,59.5 H-39.5 V63 H-62.5 Z" fill="#35453a" stroke="#3b4a40" strokeWidth="0.45" />
-
-          {/* 踏面前缘向光高光线与防滑纹槽 */}
-          <line x1="-57" y1="37.5" x2="-34.5" y2="37.5" stroke="#8fa394" strokeWidth="0.75" />
-          <line x1="-59.5" y1="48.5" x2="-37" y2="48.5" stroke="#8fa394" strokeWidth="0.75" />
-          <line x1="-62" y1="59.5" x2="-39.5" y2="59.5" stroke="#8fa394" strokeWidth="0.75" />
-          <line x1="-50" y1="34" x2="-51.5" y2="37" stroke="#7e9383" strokeWidth="0.6" />
-          <line x1="-40.5" y1="34" x2="-42" y2="37" stroke="#7e9383" strokeWidth="0.6" />
-          <line x1="-52" y1="45" x2="-53.5" y2="48" stroke="#7e9383" strokeWidth="0.6" />
-          <line x1="-42.5" y1="45" x2="-44" y2="48" stroke="#7e9383" strokeWidth="0.6" />
-          <line x1="-54.5" y1="56" x2="-56" y2="59" stroke="#7e9383" strokeWidth="0.6" />
-          <line x1="-45" y1="56" x2="-46.5" y2="59" stroke="#7e9383" strokeWidth="0.6" />
-          <g pointerEvents="none" fill="none" strokeLinecap="round">
-            <path d="M-50,37.5 H-46 M-52.5,48.5 H-48 M-53,59.5 H-48.5" stroke="#bec2a5" strokeWidth="0.8" opacity="0.7" />
-            <path d="M-58.8,61.8 H-56 M-42,62 H-40.5" stroke="#9b8760" strokeWidth="0.7" opacity="0.5" />
-          </g>
         </g>
 
         {/* F. 安睡角色梦境浮标与宁静气泡 */}

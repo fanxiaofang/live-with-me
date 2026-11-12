@@ -6,10 +6,10 @@ import { meadowPlantPaletteCss } from './meadowPalette';
 /** Local coordinates retain the heritage tree's root at (0, 48). */
 export function guardianTreePalette(theme: YorkshireSceneTheme) {
   return theme.isNight
-    ? { deep: '#293e30', shade: '#375237', leaf: '#4e6b3d', light: '#70874d', tip: '#94a767', flower: '#b5a264', flowerLight: '#d1ba7c', bark: '#51412c', barkLight: '#8c7854', barkShade: '#302c23', rope: '#a89c7d' }
+    ? { deep: '#293e30', shade: '#375237', leaf: '#4e6b3d', light: '#70874d', tip: '#94a767', flower: '#bba354', flowerLight: '#d2bc78', bark: '#4a4b40', barkFace: '#666653', barkLight: '#85826a', barkShade: '#363e34', barkPatch: '#575c4c', barkCool: '#566451', barkRecess: '#2d382e', timber: '#51412c', timberLight: '#8c7854', rope: '#a89c7d' }
     : theme.timeOfDay === 'dusk'
-      ? { deep: '#394d2d', shade: '#506638', leaf: '#738947', light: '#9ba655', tip: '#bdc577', flower: '#d6a448', flowerLight: '#ebc36d', bark: '#81502a', barkLight: '#c69351', barkShade: '#472e1d', rope: '#c2ac80' }
-      : { deep: '#2f4c30', shade: '#456737', leaf: '#638942', light: '#8ca850', tip: '#b1c571', flower: '#dba83f', flowerLight: '#f1cb70', bark: '#80542b', barkLight: '#c49a58', barkShade: '#493019', rope: '#baa17b' };
+      ? { deep: '#394d2d', shade: '#506638', leaf: '#738947', light: '#9ba655', tip: '#bdc577', flower: '#e2a13a', flowerLight: '#f3c565', bark: '#82705d', barkFace: '#a68f72', barkLight: '#beaa8d', barkShade: '#605345', barkPatch: '#95836d', barkCool: '#89836e', barkRecess: '#484a3b', timber: '#81502a', timberLight: '#c69351', rope: '#c2ac80' }
+      : { deep: '#2f4c30', shade: '#456737', leaf: '#638942', light: '#8ca850', tip: '#b1c571', flower: '#eda82d', flowerLight: '#ffd16a', bark: '#81735f', barkFace: '#a29479', barkLight: '#c0b49a', barkShade: '#615b4c', barkPatch: '#918772', barkCool: '#858775', barkRecess: '#4b5040', timber: '#80542b', timberLight: '#c49a58', rope: '#baa17b' };
 }
 
 type Palette = ReturnType<typeof guardianTreePalette>;
@@ -24,36 +24,68 @@ export function OsmanthusWood({ palette: p }: { palette: Palette }) {
   const id = `osmanthus-bark-${useId().replace(/:/g, '')}`;
   return <g id="guardian-tree-trunk" strokeLinejoin="round">
     <defs>
-      <linearGradient id={id} gradientUnits="userSpaceOnUse" x1="-40" y1="-65" x2="30" y2="30">
-        <stop stopColor={p.barkLight} /><stop offset=".42" stopColor={p.bark} /><stop offset="1" stopColor={p.barkShade} />
-      </linearGradient>
-      <linearGradient id={`${id}-light`} x1="0" y1="0" x2="1" y2=".7">
-        <stop stopColor={p.barkLight} /><stop offset="1" stopColor={p.bark} />
-      </linearGradient>
       <clipPath id={`${id}-outline`}>{trunkContours.map((d,i) => <path key={i} d={d} />)}</clipPath>
     </defs>
-    {trunkContours.map((d,i) => <path key={i} d={d} fill={`url(#${id})`} stroke={i === 0 ? p.barkShade : undefined} strokeWidth=".8" />)}
+    {trunkContours.map((d,i) => <path key={i} d={d} fill={p.bark} />)}
     <g clipPath={`url(#${id}-outline)`}>
-      {/* Broken planes follow torsion and branch crotches; no continuous light ribbon. */}
-      <path d="M-25,46 Q-15,34 -19,20 L-17,13 Q-10,31 -17,44 L-20,49 Z
-        M-23,4 Q-33,-17 -23,-33 L-15,-43 Q-23,-25 -24,-16 L-21,-9 L-17,3 Z
-        M-13,-51 Q-6,-69 -13,-87 L-8,-90 Q0,-71 -4,-61 L-9,-53 Z
-        M-65,-62 Q-49,-48 -38,-40 L-31,-30 Q-48,-44 -61,-53 Z
-        M4,-48 Q22,-52 41,-50 L49,-49 Q33,-46 22,-47 L13,-45 Z
-        M58,-51 Q73,-55 85,-64 L86,-61 Q73,-49 62,-47 Z
-        M-37,-79 Q-31,-65 -23,-59 L-19,-52 Q-31,-59 -37,-70 Z"
-        fill={`url(#${id}-light)`} />
-      <path d="M-7,3 Q1,20 0,35 L13,46 L18,49 L7,47 Q-6,34 -6,22 L-12,8 Z
-        M-4,-46 Q8,-50 20,-50 L9,-44 Q-7,-35 -13,-21 L-16,-12 Q-20,-22 -14,-32 Z
-        M33,-43 Q61,-42 83,-58 L89,-61 Q75,-47 60,-41 L42,-41 Z"
-        fill={p.barkShade} opacity=".72" />
-      <path d="M-20,38 Q-16,30 -20,19 M-23,-9 Q-27,-22 -20,-31 M-9,-58 Q-5,-68 -10,-80
-        M-51,-49 L-42,-43 M25,-48 L35,-48 M65,-50 L73,-53"
-        fill="none" stroke={p.barkShade} strokeWidth=".7" strokeLinecap="round" opacity=".7" />
-      <path d="M-18,37 L-16,30 M-25,-15 Q-26,-22 -22,-28 M55,-48 L63,-50"
-        fill="none" stroke={p.barkLight} strokeWidth=".65" strokeLinecap="round" opacity=".65" />
-      <path d="M-19,4 Q-22,9 -17,14 Q-14,9 -19,4 Z" fill={p.barkShade} />
-      <path d="M-20,3 Q-25,9 -19,16 M-18,7 L-17,11" fill="none" stroke={p.barkLight} strokeWidth=".65" opacity=".6" />
+      {/* Matte grey-brown bark: broad irregular shoulders and recessed sides. */}
+      <path d="M-20,-7 C-29,-28 -45,-40 -59,-52 Q-70,-61 -74,-76 L-70,-78 Q-63,-63 -53,-57 C-39,-51 -29,-41 -21,-29 L-18,-21Z" fill={p.barkPatch} />
+      <path d="M-68,-66 Q-59,-56 -49,-50 L-43,-44 Q-38,-42 -33,-35 L-30,-32 C-41,-40 -53,-47 -63,-56Z" fill={p.barkFace} />
+      <path d="M-64,-57 C-51,-47 -36,-37 -26,-23 L-20,-7 C-29,-28 -45,-40 -59,-52Z" fill={p.barkShade} />
+      <path d="M-17,-43 C-27,-52 -38,-66 -42,-83 L-37,-86 C-32,-67 -21,-59 -11,-55Z" fill={p.barkPatch} />
+      <path d="M-39,-81 Q-34,-64 -23,-56 L-18,-50 L-21,-49 Q-34,-60 -40,-75Z" fill={p.barkFace} />
+
+      {/* The leader has a broken lit shoulder, with a real side plane. */}
+      <path d="M-16,-92 L-11,-93 Q-4,-76 -6,-65 L-8,-61 Q-10,-52 -17,-43 L-22,-35 L-20,-43 Q-11,-56 -11,-65 L-12,-69 L-12,-78Z" fill={p.barkFace} />
+      <path d="M-7,-93 C3,-74 4,-61 -4,-46 L-10,-37 L-8,-46 Q-1,-60 -2,-69 L-4,-74 L-4,-81Z" fill={p.barkShade} />
+      <path d="M-13,-77 L-12,-73 Q-11,-67 -14,-60 L-14,-56 L-17,-52 L-16,-60 Q-14,-67 -16,-73Z" fill={p.barkPatch} />
+
+      {/* This rear branch passes behind the shoulder of the swing-bearing limb. */}
+      <path d="M22,-47 C30,-62 39,-73 52,-80 L55,-77 C42,-66 36,-54 34,-46Z" fill={p.barkPatch} />
+      <path d="M22,-47 C30,-62 39,-73 52,-80 L53,-79 Q40,-68 35,-59 L32,-56 L29,-48Z" fill={p.barkFace} />
+      <path d="M34,-46 C36,-54 42,-66 55,-77 L53,-78 Q43,-69 38,-59 L36,-52 L33,-49Z" fill={p.barkShade} />
+      <path d="M-6,-45 C8,-51 22,-51 40,-50 Q62,-49 86,-65 L87,-62 Q68,-49 47,-47 L35,-47 L29,-45 L17,-45 Q3,-41 -6,-36 L-13,-27 Q-12,-37 -6,-45Z" fill={p.barkFace} />
+      <path d="M1,-37 C13,-44 27,-45 42,-44 C61,-44 75,-50 87,-62 L89,-61 C75,-47 60,-41 42,-41 C23,-42 9,-38 -4,-28Z" fill={p.barkShade} />
+      <path d="M12,-46 L24,-48 L30,-47 L39,-48 L45,-46 L37,-45 L30,-45 L25,-44 L17,-44Z M58,-50 L68,-54 L75,-56 L72,-53 L64,-50 L60,-49Z" fill={p.barkPatch} />
+
+      {/* Main stem shoulders vary in width and break at shallow bark ridges. */}
+      <path d="M-25,47 C-18,35 -20,21 -25,8 L-27,-1 C-32,-12 -29,-26 -24,-35 L-18,-44 Q-24,-31 -24,-21 L-22,-12 L-19,-5 C-11,12 -9,27 -14,39 L-13,43 L-17,48Z" fill={p.barkFace} />
+      <path d="M-13,-12 C-15,-5 -9,2 -6,9 C0,23 -1,36 13,46 L18,49 L8,48 C-2,44 -6,34 -8,23 L-13,13 L-16,6 C-20,-3 -20,-8 -17,-13Z" fill={p.barkShade} />
+      <path d="M-23,-14 Q-25,-24 -21,-31 L-19,-33 L-21,-24 L-20,-21 L-21,-16 L-18,-9 L-17,-4 L-19,-5Z
+        M-21,1 L-18,5 L-18,10 L-15,16 L-14,23 L-16,21 L-18,16 L-20,13 L-20,8 L-23,3Z
+        M-19,26 L-17,30 L-18,36 L-21,41 L-23,44 L-21,37 L-21,34Z" fill={p.barkPatch} />
+      <path d="M-11,17 L-8,22 L-7,29 L-5,34 L-7,32 L-10,26 L-10,22Z M-2,40 L2,44 L7,47 L2,47 L-3,43Z" fill={p.barkCool} />
+
+      {/* Short branch collars and canopy occlusion locate the sheltered recesses. */}
+      <path d="M-24,-31 Q-19,-38 -13,-41 Q-19,-33 -20,-26 L-20,-22 Q-23,-25 -24,-28Z" fill={p.barkShade} />
+      <path d="M-75,-78 L-69,-79 Q-66,-71 -61,-66 L-56,-62 Q-63,-61 -68,-66Z
+        M-17,-94 L-6,-95 Q-2,-87 -2,-80 L-7,-82 L-12,-84Z
+        M48,-83 L57,-80 L53,-73 Q48,-73 44,-76Z
+        M81,-66 L89,-70 L93,-63 L84,-58 L79,-58Z" fill={p.barkRecess} opacity=".42" />
+      <path d="M-9,-40 Q-6,-43 -1,-44 M-10,-35 Q-6,-39 -2,-40 M-29,-27 Q-25,-24 -23,-19" fill="none" stroke={p.barkRecess} strokeWidth=".7" strokeLinecap="round" opacity=".65" />
+
+      {/* Shallow, interrupted longitudinal fissures follow the growth of each limb. */}
+      <path d="M-20,39 Q-18,34 -19,30 L-20,28 M-15,26 Q-14,22 -16,17
+        M-22,15 Q-20,10 -23,5 M-25,-1 L-26,-5 Q-27,-11 -25,-14
+        M-21,-21 Q-21,-25 -18,-29 M-12,-1 Q-9,3 -9,7 M-4,29 L-2,34
+        M-10,-59 Q-7,-67 -10,-75 L-10.4,-79 M-14,-66 L-15,-72 Q-15,-76 -17,-80
+        M-6,-78 L-6.7,-83 M-32,-66 Q-28,-58 -25,-56
+        M-62,-59 Q-58,-54 -52,-50 M-48,-49 L-44,-46 L-43,-44 M-37,-38 L-33,-33
+        M9,-45 Q15,-47 20,-46 L23,-46.3 M28,-47 L34,-47.5 L37,-46.9
+        M42,-47 L45.5,-46 M53,-48 Q59,-49 62,-50
+        M39,-64 L41,-68 L44,-70 M47,-73 L49,-75"
+        fill="none" stroke={p.barkShade} strokeWidth=".58" strokeLinecap="round" opacity=".8" />
+      <path d="M-20.8,38 L-20.1,34 M-23.3,13 L-23.8,9 M-26,-8 L-25.9,-11
+        M-11.1,-68 Q-11.2,-72 -12.1,-74 M-58.5,-55.5 L-55,-52.8
+        M12,-45.7 L17,-46 M31,-48.2 L34,-48.4 M40,-65 L41.5,-67.5"
+        fill="none" stroke={p.barkLight} strokeWidth=".48" strokeLinecap="round" opacity=".55" />
+      {/* Sparse, elongated lenticels and two worn lichen patches stay subordinate. */}
+      <path d="M-18.7,23 L-18,21 L-17.2,22.4 L-17.9,24.2Z M-22.5,-16 L-22,-18.3 L-21.2,-17.8 L-21.6,-15.6Z
+        M-8,-54 L-7.1,-56 L-6.6,-54.5 L-7.3,-53Z M-12,-83 L-11.5,-85 L-10.6,-83.5Z
+        M-51,-50.5 L-48.8,-49.5 L-49.4,-48.8 L-51.6,-50Z M20,-44.3 L23,-44.8 L22.6,-44 L20.4,-43.6Z
+        M42,-67 L43.5,-69 L43.9,-68.1 L42.6,-66.5Z" fill={p.barkCool} opacity=".7" />
+      <path d="M-22,29 L-20.8,28 L-20,28.8 L-20.2,30 L-19.5,30.7 L-20.1,32.2 L-21.3,31.7 L-21.7,32.6 L-22.5,31.5Z
+        M-14,-50 L-12.4,-51 L-11.7,-50.1 L-12.3,-49.3 L-11.8,-48.5 L-13,-47.7 L-14,-48.3 L-14.6,-49Z" fill={p.barkLight} opacity=".36" />
     </g>
   </g>;
 }
@@ -93,12 +125,15 @@ const sprigs = [
 ] as const;
 
 const blossomClusters = [
-  { x:-61,y:-90, flowers:[[0,0,1],[-4,3,.8],[3,4,.9],[-1,7,.7],[6,1,.6]] },
+  { x:-61,y:-90, flowers:[[0,0,1],[-4,3,.8],[3,4,.9],[-1,7,.7],[6,1,.6],[5,7,.65]] },
   { x:-31,y:-81, flowers:[[0,0,.8],[4,2,.65]] },
-  { x:-14,y:-118, flowers:[[0,0,.9],[-4,2,.65],[3,4,.85],[0,7,.65]] },
-  { x:35,y:-99, flowers:[[0,0,1],[4,-2,.75],[-3,4,.8],[3,5,.65],[7,2,.6]] },
+  { x:-14,y:-118, flowers:[[0,0,.9],[-4,2,.65],[3,4,.85],[0,7,.65],[5,-2,.6]] },
+  { x:35,y:-99, flowers:[[0,0,1],[4,-2,.75],[-3,4,.8],[3,5,.65],[7,2,.6],[-5,0,.6]] },
   { x:56,y:-88, flowers:[[0,0,.7],[4,2,.6]] },
   { x:86,y:-73, flowers:[[0,0,.9],[-4,2,.75],[3,4,.8],[-1,6,.6]] },
+  { x:-44,y:-77, flowers:[[0,0,.7],[-3,2,.55],[2,3,.6]] },
+  { x:4,y:-111, flowers:[[0,0,.65],[3,2,.55]] },
+  { x:96,y:-66, flowers:[[0,0,.6],[-3,2,.55]] },
 ] as const;
 
 export function OsmanthusCanopy({ palette: p, rustling }: { palette: Palette; rustling: boolean }) {
@@ -108,8 +143,8 @@ export function OsmanthusCanopy({ palette: p, rustling }: { palette: Palette; ru
       M22,-87 Q29,-80 36,-85 Q42,-79 49,-83 Q58,-78 64,-86 L60,-89 Q54,-84 49,-88 Q41,-84 36,-89 Q29,-84 22,-90Z"
       fill={p.deep} opacity=".62" />
     {/* Short glimpses of branch forks connect the foliage to its supporting limbs. */}
-    <path d="M-71,-71 L-65,-79 -62,-86 M-65,-79 L-72,-83 M-23,-98 L-18,-107 -20,-115 M-18,-107 L-10,-111 M44,-81 L43,-89 48,-96 M43,-89 L37,-93 M83,-54 L89,-62 89,-70"
-      stroke={p.bark} strokeWidth="1.1" fill="none" strokeLinecap="round" />
+    <path d="M-65,-80 Q-63,-85 -61,-88 M-65,-80 L-68,-82 M-18,-109 L-20,-115 M-18,-109 L-13,-112 M43,-90 L45,-94 M43,-90 L38,-94 M89,-63 L89,-70"
+      stroke={p.bark} strokeWidth=".8" fill="none" strokeLinecap="round" />
     {sprigs.map(([x,y,angle,size], i) => <g key={i} transform={`translate(${x} ${y}) rotate(${angle}) scale(${size})`}>
       <path d="M0,5 Q1,-2 3,-12" fill="none" stroke={p.shade} strokeWidth=".8" />
       <path d="M1,1 Q-8,0 -9,-7 Q-2,-8 1,1 M2,-4 Q6,-12 12,-9 Q11,-2 2,-4 M3,-10 Q0,-17 5,-20 Q9,-15 3,-10Z"
@@ -123,6 +158,12 @@ export function OsmanthusCanopy({ palette: p, rustling }: { palette: Palette; ru
         <circle r=".55" fill={p.flower} />
       </g>)}
     </g>)}
+    {/* A few existing leaf axils sit in front of the lower blooms. */}
+    <g fill={p.light}>
+      <path d="M-60,-81 C-58,-84 -55,-85 -53,-84 C-53,-81 -57,-80 -60,-81Z" />
+      <path d="M-14,-110 C-18,-110 -20,-113 -19,-115 C-15,-116 -12,-112 -14,-110Z" />
+      <path d="M86,-65 C84,-68 83,-70 85,-71 C88,-71 89,-67 86,-65Z" />
+    </g>
   </g>;
 }
 
@@ -130,8 +171,8 @@ export function OsmanthusSwing({ palette: p }: { palette: Palette }) {
   return <g id="guardian-tree-swing" pointerEvents="none">
     {/* Rope eyes sit on the exposed limb; seat stays above the original root plane. */}
     <path d="M31,-48 C29,-53 34,-54 34,-48 L33,26 M59,-48 C57,-53 62,-54 62,-48 L63,22" fill="none" stroke={p.rope} strokeWidth="1.45" strokeLinecap="round" />
-    <path d="M27,25 L61,20 L69,24 L34,30Z" fill={p.barkLight} stroke={p.bark} strokeWidth=".8" />
-    <path d="M34,30 L69,24 L69,27 L34,33Z M27,25 L34,30 L34,33 L27,28Z" fill={p.bark} />
+    <path d="M27,25 L61,20 L69,24 L34,30Z" fill={p.timberLight} stroke={p.timber} strokeWidth=".8" />
+    <path d="M34,30 L69,24 L69,27 L34,33Z M27,25 L34,30 L34,33 L27,28Z" fill={p.timber} />
     <path d="M35,27 L60,23" stroke={p.rope} strokeWidth=".7" opacity=".7" />
     <path d="M33,26 L33,29 M63,22 L63,25" stroke={p.rope} strokeWidth="1.6" />
   </g>;

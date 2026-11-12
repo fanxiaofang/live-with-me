@@ -130,16 +130,6 @@ export const YorkshireDressing: React.FC<YorkshireCommonProps> = ({
           <circle cx="0" cy="21" r="1.2" fill="#ef4444" />
         </g>
 
-        {/* B. 树干上系着的精致手作木牌: "守护之树 · 1892" (Weathered Heritage Plaque) */}
-        <g id="guardian-tree-sign" transform="translate(-16, -7) rotate(-6)">
-          <line x1="-10" y1="-4" x2="-6" y2="0" stroke="#785532" strokeWidth="0.8" />
-          <line x1="10" y1="-4" x2="6" y2="0" stroke="#785532" strokeWidth="0.8" />
-          <rect x="-14" y="0" width="28" height="13" rx="2" fill="#eedcc5" stroke="#6b4624" strokeWidth="0.9" />
-          <text x="0" y="8.5" fill="#4a2e16" fontSize="5.2" fontWeight="bold" textAnchor="middle">
-            守护之树
-          </text>
-        </g>
-
         {/* C. 树梢歇脚的英伦小知更鸟 (Little Perched Songbird) */}
         <g id="guardian-tree-bird" transform="translate(68, -54)">
           <ellipse cx="0" cy="0" rx="3.5" ry="2.5" fill="#784b28" />

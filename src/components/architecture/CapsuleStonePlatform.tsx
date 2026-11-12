@@ -40,7 +40,7 @@ export function CapsuleStonePlatform({ theme }: { theme: PlatformTheme }) {
         fill="none" stroke={p.edge} strokeWidth=".55" opacity=".65" />
       <path d="M-72,59 l8,-1.3 m4,8 l5,.6 M-6,47 l11,.5 M49,49 l7,1.2 m4,9 l4,-.6 M-8,69 l8,.7 m12,-5 l5,-.5"
         fill="none" stroke={p.grain} strokeWidth=".5" opacity=".5" strokeLinecap="round" />
-      <path d="M-31,69 l-1.4,4 M35.6,61.5 l1.2,2.6 M47,74.4 l4,-.8"
+      <path d="M35.6,61.5 l1.2,2.6 M47,74.4 l4,-.8"
         fill="none" stroke={p.moss} strokeWidth="1" opacity=".65" />
       {/* Small broken corners expose the same material rather than black chips. */}
       <path d="M-81,64 L-78,65 L-80,66.5Z M64,71 L67,69.8 L65,72Z" fill={p.front} opacity=".6" />
