@@ -70,14 +70,17 @@ test('the relocated path clears actual accepted grass and perimeter planting foo
   }
 });
 
-test('the shorter fence keeps the gate passage and turns back instead of descending across the frame', () => {
-  const { westPosts, eastPosts, hinge, latch, openEnd } = MEADOW_ENTRANCE;
+test('the entrance wings retain a dipped inner bay and returning outer bay', () => {
+  const { westPosts, eastPosts, hinge, latch } = MEADOW_ENTRANCE;
   assert.deepEqual(westPosts.at(-1), hinge);
   assert.deepEqual(eastPosts[0], latch);
-  assert.ok(latch.x - openEnd.x >= 50, 'keep the open gate passage');
   for (const posts of [westPosts, eastPosts]) for (let i = 1; i < posts.length; i++) {
     assert.ok(Math.hypot(posts[i].x - posts[i - 1].x, posts[i].y - posts[i - 1].y) < 120);
+    const slope = (posts[i].y - posts[i - 1].y) / (posts[i].x - posts[i - 1].x);
+    assert.ok(Math.abs(slope) < .35, 'avoid a steep last bay');
   }
+  assert.ok(westPosts.at(-2)!.y > hinge.y, 'the west inner bay dips toward the viewer');
+  assert.ok(eastPosts[1].y > latch.y, 'the east inner bay dips toward the viewer');
+  assert.ok(westPosts[0].y < hinge.y, 'the west outer bay returns into the lawn');
   assert.ok(eastPosts.at(-1)!.y < eastPosts[0].y, 'the east end should turn into the lawn');
-  assert.ok(Math.max(...[...westPosts, ...eastPosts].map(p => p.y)) < 730);
 });

@@ -21,14 +21,14 @@ export const MEADOW_FOREGROUND_CLUSTERS = [
   { id: 'left-outer', side: 'left', x: treeRoot.x - 437, y: treeRoot.y + 104, scale: 1.08, kind: 'plume' },
 ] as const;
 
-/** Short, turning boundaries frame the retained gate without a long diagonal
- * running off the bottom of the wide view. All post roots remain on the lawn. */
+/** Matching shallow turns retain the original east wing's dipped middle and
+ * returning outer bay. Roots include the different saved offsets of each wing. */
 export const MEADOW_ENTRANCE = {
-  hinge: { x: 0, y: 680 },
-  openEnd: { x: 75, y: 661 },
-  latch: { x: 125, y: 680 + 125 * .283088 },
-  westPosts: [{ x: -320, y: 620 }, { x: -210, y: 633 }, { x: -95, y: 653 }, { x: 0, y: 680 }],
-  eastPosts: [{ x: 125, y: 680 + 125 * .283088 }, { x: 235, y: 721 }, { x: 330, y: 710 }, { x: 380, y: 681 }],
+  hinge: { x: 57.8, y: 701 },
+  latch: { x: 97.3, y: 748 },
+  gateOpenAngle: 55,
+  westPosts: [{ x: -262.2, y: 661 }, { x: -162.2, y: 695 }, { x: -52.2, y: 709 }, { x: 57.8, y: 701 }],
+  eastPosts: [{ x: 97.3, y: 748 }, { x: 207.3, y: 756 }, { x: 317.3, y: 742 }, { x: 417.3, y: 708 }],
   postHeight: 31,
   // Lift the middle clump into the pasture, above the open leaf and passage.
   leftMiddlePlantOffset: { x: 80, y: -50 },

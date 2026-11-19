@@ -55,7 +55,8 @@ export const YARD_OBJECTS = Object.assign({
   wild_sunflowers: { name: '野生向日葵丛', x: 1545, y: 665, grass: true },
   osmanthus: { name: '桂花树与秋千', x: 295, y: 568 + 48 * 1.08 },
   fence_west: { name: '西侧木栅栏与门', x: -155, y: 671, rotate: true },
-  fence_east: { name: '东侧木栅栏', x: 269, y: 718, rotate: true },
+  fence_east: { name: '东侧木栅栏与门', x: 269, y: 718, rotate: true },
+  gate_spirit_deer: { name: '门外守护 · 枯枝精灵鹿', x: 345, y: 1015, bounds: { radiusX: 68, above: 145, below: 12 } },
   sheep_1: { name: '啃草小羊', x: -420, y: 474 },
   sheep_2: { name: '安睡小羊', x: -50, y: 624 },
   sheep_3: { name: '散养母羊', x: 735, y: 591 },
@@ -86,7 +87,7 @@ export function constrainPlacement(id: YardId, value: YardPlacement): YardPlacem
   const anchor = YARD_OBJECTS[id];
   return {
     dx: Math.round(Math.max(-700 - anchor.x, Math.min(1850 - anchor.x, value.dx)) * 10) / 10,
-    dy: Math.round(Math.max(Math.min(240, anchor.y) - anchor.y, Math.min(840 - anchor.y, value.dy)) * 10) / 10,
+    dy: Math.round(Math.max(Math.min(240, anchor.y) - anchor.y, Math.min((id === 'gate_spirit_deer' ? 1060 : 840) - anchor.y, value.dy)) * 10) / 10,
     angle: canRotate(id) ? Math.max(canResize(id) ? -180 : -75, Math.min(canResize(id) ? 180 : 75, value.angle)) : 0,
     ...(canResize(id) ? {
       length: Number.isFinite(value.length) ? Math.max(50, Math.min(250, value.length!)) : 100,
@@ -133,11 +134,11 @@ export function yardDepth(id: YardId, layout: YardLayout) { return YARD_OBJECTS[
 
 export function yardExplorationBounds(layout: YardLayout, scene = yardSceneLayout(layout)) {
   const bounds = sceneExplorationBounds(scene);
-  // Preserve the approved default framing. Only moved outdoor groups extend it.
+  // Include the new guardian foreground; other groups extend framing only when moved.
   for (const id of YARD_IDS) {
     const p = layout[id];
     if (p.removed) continue;
-    if (!(p.dx || p.dy || p.angle || (p.length ?? 100) !== 100 || (p.width ?? 100) !== 100) || id in scene) continue;
+    if ((!(p.dx || p.dy || p.angle || (p.length ?? 100) !== 100 || (p.width ?? 100) !== 100) && id !== 'gate_spirit_deer') || id in scene) continue;
     const base = YARD_OBJECTS[id], parent = parentOffset(id, layout);
     const anchor = { x: base.x + parent.dx, y: base.y + parent.dy };
     if (canResize(id)) {
@@ -151,10 +152,11 @@ export function yardExplorationBounds(layout: YardLayout, scene = yardSceneLayou
     }
     const radiusX = isPaving(id) ? 36 : id === 'tractor' ? 150 : id === 'herb_nursery' ? 80 : id === 'supply_shed' ? 100 : id === 'sheep_hand_pump' ? 44 : id === 'sheep_water_station' ? 82 : id === 'hand_pump' ? 48 : id === 'wild_sunflowers' ? 60 : isGround(id) ? 115 : isGrass(id) ? 180 : id.startsWith('fence_') ? 400 : id === 'sheep_pen' ? 300 : id === 'osmanthus' ? 110 : id === 'pumpkin' ? 115 : id === 'beehive' ? 100 : id === 'picnic' ? 85 : 25;
     const above = isPaving(id) ? 14 : id === 'tractor' ? 75 : id === 'herb_nursery' ? 65 : id === 'supply_shed' ? 120 : id === 'sheep_hand_pump' ? 104 : id === 'sheep_water_station' ? 28 : id === 'hand_pump' ? 68 : id === 'wild_sunflowers' ? 100 : id === 'osmanthus' ? 215 : id === 'sheep_pen' ? 115 : 80;
-    bounds.minX = Math.min(bounds.minX, anchor.x + p.dx - radiusX);
-    bounds.maxX = Math.max(bounds.maxX, anchor.x + p.dx + radiusX);
-    bounds.minY = Math.min(bounds.minY, anchor.y + p.dy - above);
-    bounds.maxY = Math.max(bounds.maxY, anchor.y + p.dy + (isPaving(id) ? 14 : id === 'sheep_pen' ? 70 : 35));
+    const extent = 'bounds' in base ? base.bounds : { radiusX, above, below: isPaving(id) ? 14 : id === 'sheep_pen' ? 70 : 35 };
+    bounds.minX = Math.min(bounds.minX, anchor.x + p.dx - extent.radiusX);
+    bounds.maxX = Math.max(bounds.maxX, anchor.x + p.dx + extent.radiusX);
+    bounds.minY = Math.min(bounds.minY, anchor.y + p.dy - extent.above);
+    bounds.maxY = Math.max(bounds.maxY, anchor.y + p.dy + extent.below);
   }
   return bounds;
 }

@@ -1,19 +1,31 @@
-import React, { createContext, createRef, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { createContext, createRef, useContext, useEffect, useLayoutEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import type { YardEditor } from './useYardEditor';
 import { YARD_IDS, YARD_OBJECTS, isLocked, isGrass, isGround, yardDepth, type YardId, type YardPlacement } from './yardLayout';
 import { wearPolyline } from './wearCurve';
+import {deerPathFromLayout,isDeerPathClear} from './deerPatrolRoute';
 
 type Drag = { pointer: number; id: YardId; matrix: DOMMatrix; x: number; y: number; origin: YardPlacement; svg: SVGSVGElement };
 type BrushDrag = { pointer: number; matrix: DOMMatrix; svg: SVGSVGElement };
 type Context = { editor: YardEditor; ready: boolean; targets: Record<YardId, React.RefObject<SVGGElement>>;
-  start: (id: YardId, event: React.PointerEvent<SVGGElement>) => void };
+  start: (id: YardId, event: React.PointerEvent<SVGGElement>) => void; runtimeDepth:(id:YardId,dy:number|null)=>void };
 const YardContext = createContext<Context | null>(null);
 export function useYardPlacement(id: YardId): YardPlacement {
   return useContext(YardContext)?.editor.layout[id] ?? { dx: 0, dy: 0, angle: 0 };
 }
 export function useYardWearStrokes() { return useContext(YardContext)?.editor.wearStrokes ?? []; }
 export function useYardNightPathTone() { return useContext(YardContext)?.editor.nightPathTone ?? 'warmBrown'; }
+
+/** Runtime route derives from both saved gate leaves; never writes layout. */
+export function useYardDeerPatrol(){
+  const context=useContext(YardContext),layout=context?.editor.layout;
+  const path=useMemo(()=>layout?deerPathFromLayout(layout):undefined,[layout]);
+  return {path,available:!context?.editor.active&&(!layout||isDeerPathClear(path!,layout))};
+}
+export function useYardRuntimeDepth(id:YardId){
+  const report=useContext(YardContext)?.runtimeDepth;
+  return useCallback((dy:number|null)=>report?.(id,dy),[id,report]);
+}
 
 /** Portals keep asset state/handlers intact while placing complete objects in one depth-sorted SVG layer. */
 export function YardWorld({ editor, children }: { editor?: YardEditor; children: React.ReactNode }) {
@@ -30,8 +42,19 @@ export function YardWorld({ editor, children }: { editor?: YardEditor; children:
   const schedulePreview=useRef<()=>void>(()=>{});
   const live = useRef(editor); live.current = editor;
   const order = useRef([...YARD_IDS]);
+  const runtimeDepths=useRef(new Map<YardId,number>());
+  const [,setDepthRevision]=useState(0);
+  const sortedOrder=()=>[...YARD_IDS].sort((a,b)=>Number(isGround(b))-Number(isGround(a))||
+    yardDepth(a,live.current!.layout)+(runtimeDepths.current.get(a)??0)-yardDepth(b,live.current!.layout)-(runtimeDepths.current.get(b)??0));
+  const runtimeDepth=useCallback((id:YardId,dy:number|null)=>{
+    if(!live.current)return;
+    if(dy===null)runtimeDepths.current.delete(id);else runtimeDepths.current.set(id,dy);
+    const next=sortedOrder();
+    if(next.some((key,i)=>key!==order.current[i])){order.current=next;setDepthRevision(n=>n+1);}
+  },[]);
+
   useLayoutEffect(() => { setTargetCount(YARD_IDS.length); }, [YARD_IDS.length]);
-  if (editor && !editor.dragging) order.current = [...YARD_IDS].sort((a, b) => Number(isGround(b)) - Number(isGround(a)) || yardDepth(a, editor.layout) - yardDepth(b, editor.layout));
+  if (editor && !editor.dragging) order.current = sortedOrder();
 
   useEffect(() => {
     let frame=0;
@@ -123,7 +146,7 @@ export function YardWorld({ editor, children }: { editor?: YardEditor; children:
     drag.current = { pointer: e.pointerId, id, matrix, origin: { ...editor.layout[id] }, x: p.x, y: p.y, svg };
     svg.setPointerCapture(e.pointerId);
   };
-  return <YardContext.Provider value={{ editor, ready, targets, start }}>
+  return <YardContext.Provider value={{ editor, ready, targets, start, runtimeDepth }}>
     {children}
     <g id="yard-depth-layer" data-yard-editing={editor.active}>
       {editor.active && editor.pavingMaterial && <rect data-paving-placement-surface="" x="-700" y="240" width="2550" height="600"
@@ -176,14 +199,14 @@ export function YardWorld({ editor, children }: { editor?: YardEditor; children:
   </YardContext.Provider>;
 }
 
-export function YardObject({ id, children, positioned = false }: { id: YardId; children: React.ReactNode; positioned?: boolean }) {
+export function YardObject({ id, children, positioned = false,editBounds }: { id: YardId; children: React.ReactNode; positioned?: boolean;editBounds?:{x:number;y:number;width:number;height:number} }) {
   const context = useContext(YardContext);
   const content = useRef<SVGGElement>(null);
   const [box, setBox] = useState<DOMRect | null>(null);
   const selected = context?.editor.active && context.editor.selected === id;
   useLayoutEffect(() => {
     if (!context?.editor.active || context.editor.wearBrush || !content.current) return;
-    const b = content.current.getBBox();
+    const b = editBounds?new DOMRect(editBounds.x,editBounds.y,editBounds.width,editBounds.height):content.current.getBBox();
     setBox(old => old && old.x === b.x && old.y === b.y && old.width === b.width && old.height === b.height ? old : b);
   });
   if (!context) return <>{children}</>;

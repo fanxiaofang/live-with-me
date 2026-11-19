@@ -5,13 +5,13 @@ import { fitWearStroke } from './wearCurve';
 import { isWearDab } from './wearMaterial';
 import { resolveNightPathTone, type NightPathTone } from './yardAppearance';
 
-type YardSnapshot = { layout: YardLayout; wearStrokes: WearStroke[]; nightPathTone: NightPathTone };
+import { defaultYardSnapshot, resolveSavedYardSnapshot, type YardSnapshot } from './yardDefaults';
 
 function load(): YardSnapshot {
   try {
     const saved = JSON.parse(localStorage.getItem(YARD_STORAGE_KEY) || 'null');
-    return { layout: resolveYardLayout(saved?.objects), wearStrokes: resolveWearStrokes(saved?.wearStrokes), nightPathTone: resolveNightPathTone(saved?.nightPathTone) };
-  } catch { return { layout: emptyYardLayout(), wearStrokes: [], nightPathTone: 'warmBrown' }; }
+    return resolveSavedYardSnapshot(saved);
+  } catch { return defaultYardSnapshot(); }
 }
 export function useYardEditor() {
   const [snapshot, setSnapshot] = useState(load);

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { emptyYardLayout, resolveYardLayout, constrainPlacement, yardSceneLayout, yardExplorationBounds, rotateGroundPoint, yardDepth, YARD_IDS, isGrass } from '../../src/features/yard-editor/yardLayout';
+import { emptyYardLayout, resolveYardLayout, constrainPlacement, yardSceneLayout, yardExplorationBounds, rotateGroundPoint, yardDepth, YARD_IDS, YARD_OBJECTS, isGrass } from '../../src/features/yard-editor/yardLayout';
 import { DEFAULT_SCENE_LAYOUT, entityPointToScene } from '../../src/world/scene/sceneLayout';
 import { sceneExplorationBounds } from '../../src/world/scene/explorationBounds';
 import { resolveRoomCamera, ROOM_FOCUS } from '../../src/world/scene/roomTargets';
@@ -12,6 +12,7 @@ test('土地尺寸兼容旧布局，限制无效值并拓展放大后的探索�
   assert.deepEqual(constrainPlacement('tilled_plot', { dx: 0, dy: 0, angle: 300, length: NaN, width: 999 }),
     { dx: 0, dy: 0, angle: 180, length: 100, width: 250 });
   const original = emptyYardLayout();
+  original.gate_spirit_deer.dy = -400;
   original.tilled_plot = { dx: -600, dy: 250, angle: 0, length: 100, width: 100 };
   const before = yardExplorationBounds(original);
   original.tilled_plot.length = 250; original.tilled_plot.width = 250;
@@ -48,9 +49,12 @@ test('fence ground rotation preserves pivot and compressed ground distance', () 
   const q = rotateGroundPoint(p, pivot, 50);
   assert.ok(Math.abs(Math.hypot(p.x - pivot.x, (p.y - pivot.y) / .285) - Math.hypot(q.x - pivot.x, (q.y - pivot.y) / .285)) < 1e-8);
 });
-test('default framing stays unchanged, moved objects extend exploration and change depth order', () => {
+test('the gate guardian fits the foreground envelope and moved objects change depth order', () => {
   const yard = emptyYardLayout();
-  assert.deepEqual(yardExplorationBounds(yard), sceneExplorationBounds(DEFAULT_SCENE_LAYOUT));
+  const baseline = sceneExplorationBounds(DEFAULT_SCENE_LAYOUT), bounds = yardExplorationBounds(yard);
+  assert.deepEqual({ ...bounds, maxY: baseline.maxY }, baseline);
+  assert.equal(bounds.maxY, YARD_OBJECTS.gate_spirit_deer.y + YARD_OBJECTS.gate_spirit_deer.bounds.below);
+  assert.deepEqual(resolveYardLayout({}).gate_spirit_deer, { dx: 0, dy: 0, angle: 0 });
   assert.ok(yardDepth('osmanthus', yard) > yardDepth('capsule_pod', yard));
   yard.osmanthus.dy = -300;
   assert.ok(yardDepth('osmanthus', yard) < yardDepth('capsule_pod', yard));

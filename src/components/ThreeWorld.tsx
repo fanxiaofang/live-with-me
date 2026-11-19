@@ -1,5 +1,6 @@
 import { YardWorld, YardObject } from '../features/yard-editor/YardWorld';
 import { MeadowTractor } from './scenery/yorkshire/dressing/MeadowTractor';
+import { GateSpiritDeer } from './scenery/yorkshire/dressing/GateSpiritDeer';
 import { CountryPicnic } from './scenery/yorkshire/dressing/CountryPicnic';
 import { TilledGardenPlot } from './scenery/yorkshire/dressing/TilledGardenPlot';
 import { KitchenHerbNursery } from './scenery/yorkshire/dressing/KitchenHerbNursery';
@@ -346,6 +347,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/* ======================================================== */}
           <ForegroundLandscape theme={theme} setHoveredObject={setHoveredObject} onTriggerToast={onTriggerToast} />
           <CountryPicnic theme={theme} />
+          {meadowForeground === 'entrance' && <GateSpiritDeer theme={theme} />}
           <TilledGardenPlot theme={theme} />
           <MeadowTractor theme={theme} setHoveredObject={setHoveredObject} />
           <KitchenHerbNursery theme={theme} />
