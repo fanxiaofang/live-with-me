@@ -191,7 +191,9 @@ export function SheepWaterStation({ theme }: { theme: YorkshireSceneTheme }) {
 export function SheepHandPump({ theme }: { theme: YorkshireSceneTheme }) {
   return <FarmObject id="sheep_hand_pump" theme={theme}>
     <title>羊圈独立铸铁压水井</title>
-    <HandPumpArtwork troughOutlet />
+    <g transform="translate(0 5) scale(.85) translate(0 -5)">
+      <HandPumpArtwork troughOutlet />
+    </g>
   </FarmObject>;
 }
 

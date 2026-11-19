@@ -17,7 +17,7 @@ for (const id of ['desk-laptop','desk-laptop-secondary','desk-lamp','desk-cup','
 for (const id of Object.keys(DEFAULT_ROOM_LAYOUT) as EditableObjectId[]) {
   if (id.startsWith('shelf-')) parents[id] = { parent:'bookshelf-group', selector:'#isometric-bookshelf-container' };
 }
-for (const id of ['craft-tool-wall','left-wall-photos','craft-wind-chime'] as const) {
+for (const id of ['craft-tool-wall','left-wall-photos'] as const) {
   parents[id] = { parent:'craft-wall', selector:'#left-wall-craft-board' };
 }
 export const FURNITURE_PARENTS: Readonly<Record<EditableObjectId, ParentContract>> = parents;

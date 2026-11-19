@@ -9,6 +9,7 @@ export { rotateGroundPoint } from '../../world/scene/placementMath';
 export const PAVING_MATERIALS = {
   fieldstone: '不规则田野石',
   limestone: '浅色石板',
+  steppingStone: '大块踏步石',
   cobble: '圆角卵石',
   rawGranite: '暖灰椭圆景石',
   riverRock: '苔青椭圆景石',
@@ -18,20 +19,37 @@ export const PAVING_MATERIALS = {
   weathered: '风化木板',
 } as const;
 export type PavingMaterial = keyof typeof PAVING_MATERIALS;
+export const STEPPING_STONE_VIEWS = [
+  // Independent art families; these entries do not rotate a shared slab.
+  { label: 'NW 向', view: 'crosswise' },
+  { label: 'NE 向', view: 'diagonal' },
+  { label: 'NS 向', view: 'lengthwise' },
+  { label: 'WE 向', view: 'eastwest' },
+] as const;
+export type PavingView = typeof STEPPING_STONE_VIEWS[number]['view'];
 export const PAVING_SIZES = { small: '小号', medium: '中号', large: '大号' } as const;
 export type PavingSize = keyof typeof PAVING_SIZES;
 export const PAVING_SIZE_SCALE: Record<PavingSize, number> = { small: .75, medium: 1, large: 1.35 };
 export type PavingId = `paving_${number}`;
 export const PAVING_IDS = Array.from({ length: 48 }, (_, i) => `paving_${i + 1}` as PavingId);
 const PAVING_OBJECTS = Object.fromEntries(PAVING_IDS.map((id, i) => [id, {
-  name: `道路铺装 ${String(i + 1).padStart(2, '0')}`, x: 0, y: 0, paving: true as const, rotate: true as const,
-}])) as Record<PavingId, { name: string; x: number; y: number; paving: true; rotate: true }>;
+  name: `道路铺装 ${String(i + 1).padStart(2, '0')}`, x: 0, y: 0, paving: true as const, ground: true as const, rotate: true as const,
+}])) as Record<PavingId, { name: string; x: number; y: number; paving: true; ground: true; rotate: true }>;
 
-export const TILLED_PLOTS = {
+export const TILLED_PLOT_TEMPLATES = {
   tilled_plot: { name: '开垦土地 · 东西向（原版）', x: 45, y: 530, ground: true, plotView: 'original', heading: 0 },
   tilled_plot_front: { name: '开垦土地 · 东北—西南向', x: -115, y: 590, ground: true, plotView: 'front', heading: -45 },
   tilled_plot_perpendicular: { name: '开垦土地 · 南北向', x: -110, y: 760, ground: true, plotView: 'perpendicular', heading: 90 },
 } as const;
+export type TilledPlotTemplate = keyof typeof TILLED_PLOT_TEMPLATES;
+type ExtraPlotId = `${TilledPlotTemplate}_${number}`;
+export const TILLED_PLOTS_PER_VIEW = 8;
+const extraPlots = Object.fromEntries(Object.entries(TILLED_PLOT_TEMPLATES).flatMap(([id, plot]) =>
+  Array.from({ length: TILLED_PLOTS_PER_VIEW - 1 }, (_, i) => [`${id}_${i + 2}`, {
+    ...plot, name: `${plot.name} · ${i + 2}`, reserve: true as const,
+  }])
+)) as Record<ExtraPlotId, { name: string; x: number; y: number; ground: true; plotView: (typeof TILLED_PLOT_TEMPLATES)[TilledPlotTemplate]['plotView']; heading: number; reserve: true }>;
+export const TILLED_PLOTS = Object.assign({}, TILLED_PLOT_TEMPLATES, extraPlots);
 export type TilledPlotId = keyof typeof TILLED_PLOTS;
 export const TILLED_PLOT_IDS = Object.keys(TILLED_PLOTS) as TilledPlotId[];
 
@@ -64,17 +82,28 @@ export const YARD_OBJECTS = Object.assign({
   sheep_5: { name: '探头小羊', x: 640, y: 432 },
   picnic: { name: '野餐垫与野餐篮', x: 570, y: 620 },
   herb_nursery: { name: '清新香草苗圃', x: 400, y: 555 },
+  bowl_lotus: { name: '开花水培碗莲', x: 460, y: 447, bounds: { radiusX: 24, above: 54, below: 5 } },
+  meadow_pond: { name: '牧场清浅小池塘', x: 1065, y: 735, ground: true, bounds: { radiusX: 100, above: 64, below: 34 } },
+  cottage_potting_corner: { name: '木屋花草与换盆角', x: 270, y: 435, bounds: { radiusX: 78, above: 80, below: 28 } },
+  // Retain the old saved placement while the outdoor bench is out of the composition.
+  cottage_tea_bench: { name: '户外长凳（暂存）', x: 750, y: 480, retired: true, bounds: { radiusX: 110, above: 70, below: 35 } },
+  cottage_firewood: { name: '木屋柴架与劈柴墩', x: 790, y: 420, bounds: { radiusX: 85, above: 60, below: 40 } },
+  cottage_bird_garden: { name: '木屋鸟浴花园', x: 855, y: 423, bounds: { radiusX: 70, above: 65, below: 30 } },
+  cottage_flower_border: { name: '木屋右侧郁金香花境', x: 735, y: 405, bounds: { radiusX: 140, above: 85, below: 45 } },
+  lamp_cottage_left: { name: '台阶左侧 · 种荚小地灯', x: 495, y: 474, bounds: { radiusX: 22, above: 35, below: 5 } },
+  lamp_cottage_right: { name: '台阶右侧 · 种荚小地灯', x: 585, y: 474, bounds: { radiusX: 22, above: 35, below: 5 } },
+  lamp_path_bend: { name: '主路分岔 · 弯叶庭院灯', x: 540, y: 595, bounds: { radiusX: 30, above: 68, below: 5 } },
+  lamp_entry_left: { name: '庭院入口左侧 · 弯叶庭院灯', x: 345, y: 822, bounds: { radiusX: 30, above: 68, below: 5 } },
+  lamp_entry_right: { name: '庭院入口右侧 · 弯叶庭院灯', x: 795, y: 822, bounds: { radiusX: 30, above: 68, below: 5 } },
   tractor: { name: '田边拖拉机与农场物资', x: 45, y: 310 },
-  ...TILLED_PLOTS,
-  ...GRASS_YARD_OBJECTS,
-} as const, PAVING_OBJECTS);
+} as const, TILLED_PLOTS, GRASS_YARD_OBJECTS, PAVING_OBJECTS);
 export type YardId = keyof typeof YARD_OBJECTS;
 export const YARD_IDS = Object.keys(YARD_OBJECTS) as YardId[];
-export type YardPlacement = { dx: number; dy: number; angle: number; length?: number; width?: number; removed?: boolean; crop?: GardenCrop; cropDensity?: CropDensity; material?: PavingMaterial; pavingSize?: PavingSize };
+export type YardPlacement = { dx: number; dy: number; angle: number; length?: number; width?: number; removed?: boolean; crop?: GardenCrop; cropDensity?: CropDensity; material?: PavingMaterial; pavingSize?: PavingSize; pavingView?: PavingView };
 export type YardLayout = Record<YardId, YardPlacement>;
 export const YARD_STORAGE_KEY = 'live_with_me_yard_layout_v1';
 export const canResize = (id: YardId): id is TilledPlotId => 'plotView' in YARD_OBJECTS[id];
-export const emptyYardLayout = (): YardLayout => Object.fromEntries(YARD_IDS.map(id => [id, { dx: 0, dy: 0, angle: 0, ...(canResize(id) ? { length: 100, width: 100 } : {}) }])) as YardLayout;
+export const emptyYardLayout = (): YardLayout => Object.fromEntries(YARD_IDS.map(id => [id, { dx: 0, dy: 0, angle: 0, ...(canResize(id) ? { length: 100, width: 100, ...('reserve' in YARD_OBJECTS[id] ? { removed: true } : {}) } : {}) }])) as YardLayout;
 export const canRotate = (id: YardId) => 'rotate' in YARD_OBJECTS[id] || canResize(id);
 export const isPaving = (id: YardId): id is PavingId => 'paving' in YARD_OBJECTS[id];
 export const isPavingMaterial = (value: unknown): value is PavingMaterial => typeof value === 'string' && value in PAVING_MATERIALS;
@@ -85,10 +114,14 @@ export const isGround = (id: YardId) => 'ground' in YARD_OBJECTS[id];
 export function constrainPlacement(id: YardId, value: YardPlacement): YardPlacement {
   if (isLocked(id)) return { dx: 0, dy: 0, angle: 0 };
   const anchor = YARD_OBJECTS[id];
+  // The station can be arranged within the wheat margin as well as the lawn.
+  const minY = id === 'observatory' ? 75 : Math.min(240, anchor.y);
+  const maxY = id === 'gate_spirit_deer' ? 1060 : 840;
   return {
     dx: Math.round(Math.max(-700 - anchor.x, Math.min(1850 - anchor.x, value.dx)) * 10) / 10,
-    dy: Math.round(Math.max(Math.min(240, anchor.y) - anchor.y, Math.min((id === 'gate_spirit_deer' ? 1060 : 840) - anchor.y, value.dy)) * 10) / 10,
-    angle: canRotate(id) ? Math.max(canResize(id) ? -180 : -75, Math.min(canResize(id) ? 180 : 75, value.angle)) : 0,
+    dy: Math.round(Math.max(minY - anchor.y, Math.min(maxY - anchor.y, value.dy)) * 10) / 10,
+    angle: canRotate(id) ? Math.max(canResize(id) || (isPaving(id) && value.material === 'steppingStone') ? -180 : -75,
+      Math.min(canResize(id) || (isPaving(id) && value.material === 'steppingStone') ? 180 : 75, value.angle)) : 0,
     ...(canResize(id) ? {
       length: Number.isFinite(value.length) ? Math.max(50, Math.min(250, value.length!)) : 100,
       width: Number.isFinite(value.width) ? Math.max(50, Math.min(250, value.width!)) : 100,
@@ -98,6 +131,7 @@ export function constrainPlacement(id: YardId, value: YardPlacement): YardPlacem
     } : {}),
     ...(isPaving(id) && isPavingMaterial(value.material) ? { material: value.material } : {}),
     ...(isPaving(id) && isPavingSize(value.pavingSize) ? { pavingSize: value.pavingSize } : {}),
+    ...(isPaving(id) && STEPPING_STONE_VIEWS.some(h => h.view === value.pavingView) ? { pavingView: value.pavingView } : {}),
   };
 }
 export function resolveYardLayout(value: unknown): YardLayout {
@@ -105,8 +139,11 @@ export function resolveYardLayout(value: unknown): YardLayout {
   if (!value || typeof value !== 'object') return result;
   for (const id of YARD_IDS) {
     const p = (value as Record<string, unknown>)[id] as Partial<YardPlacement> | undefined;
-    if (p && Number.isFinite(p.dx) && Number.isFinite(p.dy) && Number.isFinite(p.angle))
-      result[id] = constrainPlacement(id, p as YardPlacement);
+    if (p && Number.isFinite(p.dx) && Number.isFinite(p.dy) && Number.isFinite(p.angle)) {
+      // Move only the previous shipped station site to its new wheat-field site.
+      result[id] = constrainPlacement(id, id === 'observatory' && p.dx === 730.5 && p.dy === -28.4 && p.angle === 0
+        ? { dx: 540, dy: 0, angle: 0 } : p as YardPlacement);
+    }
   }
   // Detach at the current saved building position once; subsequent moves are independent.
   if (!('sheep_water_station' in value)) {
@@ -134,10 +171,11 @@ export function yardDepth(id: YardId, layout: YardLayout) { return YARD_OBJECTS[
 
 export function yardExplorationBounds(layout: YardLayout, scene = yardSceneLayout(layout)) {
   const bounds = sceneExplorationBounds(scene);
-  // Include the new guardian foreground; other groups extend framing only when moved.
+  // The gate guardian occupies new foreground ground; other groups extend the
+  // existing envelope only after being moved.
   for (const id of YARD_IDS) {
     const p = layout[id];
-    if (p.removed) continue;
+    if (p.removed || 'retired' in YARD_OBJECTS[id]) continue;
     if ((!(p.dx || p.dy || p.angle || (p.length ?? 100) !== 100 || (p.width ?? 100) !== 100) && id !== 'gate_spirit_deer') || id in scene) continue;
     const base = YARD_OBJECTS[id], parent = parentOffset(id, layout);
     const anchor = { x: base.x + parent.dx, y: base.y + parent.dy };
@@ -152,7 +190,10 @@ export function yardExplorationBounds(layout: YardLayout, scene = yardSceneLayou
     }
     const radiusX = isPaving(id) ? 36 : id === 'tractor' ? 150 : id === 'herb_nursery' ? 80 : id === 'supply_shed' ? 100 : id === 'sheep_hand_pump' ? 44 : id === 'sheep_water_station' ? 82 : id === 'hand_pump' ? 48 : id === 'wild_sunflowers' ? 60 : isGround(id) ? 115 : isGrass(id) ? 180 : id.startsWith('fence_') ? 400 : id === 'sheep_pen' ? 300 : id === 'osmanthus' ? 110 : id === 'pumpkin' ? 115 : id === 'beehive' ? 100 : id === 'picnic' ? 85 : 25;
     const above = isPaving(id) ? 14 : id === 'tractor' ? 75 : id === 'herb_nursery' ? 65 : id === 'supply_shed' ? 120 : id === 'sheep_hand_pump' ? 104 : id === 'sheep_water_station' ? 28 : id === 'hand_pump' ? 68 : id === 'wild_sunflowers' ? 100 : id === 'osmanthus' ? 215 : id === 'sheep_pen' ? 115 : 80;
-    const extent = 'bounds' in base ? base.bounds : { radiusX, above, below: isPaving(id) ? 14 : id === 'sheep_pen' ? 70 : 35 };
+    // Cover the broad slab at every ground heading, including its largest size.
+    const extent = isPaving(id) && p.material === 'steppingStone'
+      ? { radiusX: 95, above: 30, below: 34 }
+      : 'bounds' in base ? base.bounds : { radiusX, above, below: isPaving(id) ? 14 : id === 'sheep_pen' ? 70 : 35 };
     bounds.minX = Math.min(bounds.minX, anchor.x + p.dx - extent.radiusX);
     bounds.maxX = Math.max(bounds.maxX, anchor.x + p.dx + extent.radiusX);
     bounds.minY = Math.min(bounds.minY, anchor.y + p.dy - extent.above);

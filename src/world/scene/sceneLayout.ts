@@ -10,13 +10,14 @@ export const DEFAULT_SCENE_LAYOUT: SceneLayout = {
   main_cottage: { position: scenePoint(540, 210), scale: 1 },
   capsule_pod: scaleAtGround(scenePoint(950, 390), 1.46718, [0, 63]),
   wooden_cabin: scaleAtGround(scenePoint(150, 300), 1.364, [9, 63]),
-  // Preserve the original station's ground contact at y=268.4 while enlarging the whole structure.
-  observatory: scaleAtGround(scenePoint(1100, 220.4), 1.04, [0, 48]),
+  // Keep the station inside the outer wheat fence, with the entrance facing into the field.
+  observatory: scaleAtGround(scenePoint(960, 67), 1.04, [0, 48]),
 };
 
 // Garden groups are independent yard objects, not children of the cabin's scale.
 export const DEFAULT_GARDEN_PLACEMENTS = {
-  pumpkin: { position: scenePoint(-93.96, 377.88), scale: 1.24 },
+  // 15% smaller around the yard anchor (60, 50), preserving saved offsets.
+  pumpkin: { position: scenePoint(-82.8, 387.18), scale: 1.054 },
   beehive: { position: scenePoint(-69.16, 229.08), scale: 1.24 },
 };
 

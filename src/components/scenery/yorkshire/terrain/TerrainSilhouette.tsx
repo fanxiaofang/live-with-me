@@ -1,6 +1,6 @@
 import React from 'react';
 import { YorkshireCommonProps } from '../landscapeTypes';
-import { mountainApronPath, rollingWheatPath, wheatBackEdgePath, wheatBoundaryFencePosts, wheatRearY } from '../../../../world/scene/landscapeGeometry';
+import { LANDSCAPE_SURFACES, mountainApronPath, rollingWheatPath, wheatBackEdgePath, wheatBoundaryFencePosts, wheatRearY } from '../../../../world/scene/landscapeGeometry';
 import { FOOTHILL_FARMSTEADS, foothillSurfaceY } from '../../../../world/scene/foothillGeometry';
 import { requestedMeadowFoothill } from '../../../../world/scene/currentScene';
 import { MEADOW_HILL_FARM } from '../../../../world/scene/meadowFoothill';
@@ -10,6 +10,7 @@ import { NearFieldTreeShape } from '../vegetation/NearFieldTreeShape';
 import { FIELD_DETAIL_FRONT_Y, WHEAT_TRAMLINES, tramlinePoint, tramlineX } from '../../../../world/scene/fieldParcels';
 import { FieldParcels } from './FieldParcels';
 import { FieldDressing } from '../dressing/FieldDressing';
+import { isInObservatorySite, type ObservatorySite } from '../../../../world/scene/observatorySite';
 
 export function DistantFarmsteads({ theme, landform = false }: { theme?: YorkshireSceneTheme; landform?: boolean }) {
   const meadow=landform && requestedMeadowFoothill();
@@ -32,6 +33,7 @@ export function DistantFarmsteads({ theme, landform = false }: { theme?: Yorkshi
 }
 
 interface TerrainSurfaceProps extends YorkshireCommonProps {
+  observatorySite?: ObservatorySite;
   frontExtension?: number;
   rearRefined?: boolean;
   ridgesOnly?: boolean;
@@ -342,7 +344,7 @@ export const MountainSilhouette: React.FC<TerrainSurfaceProps> = ({ theme, class
  * 🌾 RollingWheatSilhouette (Continuous Midground Wheat Plain)
  * Layer 02: MIDGROUND ROLLING WHEAT FIELDS
  */
-export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouetteAsset({ theme, className, frontExtension = 0, rearRefined = false }: TerrainSurfaceProps) {
+export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouetteAsset({ theme, className, frontExtension = 0, rearRefined = false, observatorySite }: TerrainSurfaceProps) {
   // Keep a fully authored crop plane under the meadow, even before it is exposed.
   const surfacePath = rollingWheatPath(Math.max(180, frontExtension), rearRefined);
   const environmentStyle = theme.landscapeEnvironment ? { filter: 'url(#field-environment-tone)' } : undefined;
@@ -427,7 +429,7 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
           ))}
         </g>
 
-        <FieldDressing style={environmentStyle} />
+        <FieldDressing style={environmentStyle} observatorySite={observatorySite} />
 
         {/* ================================================================= */}
         {/* 🌾 E. 地头边界金黄麦穗微风轻摇簇 (Field Margin Wheat Tufts)        */}
@@ -443,7 +445,8 @@ export const RollingWheatSilhouette = React.memo(function RollingWheatSilhouette
             { x: 1140, y: 272, s: 1.05, d: '0.5s' },
             { x: 1460, y: 274, s: 0.9, d: '1.4s' },
             { x: 1820, y: 266, s: 1.1, d: '2.1s' },
-          ].map((wt, i) => (
+          ].filter(wt => !observatorySite || !isInObservatorySite(wt.x,
+            wt.y + LANDSCAPE_SURFACES.backgroundOffsetY - 8 * wt.s, observatorySite, 7 * wt.s)).map((wt, i) => (
             <g key={`wt-${i}`} transform={`translate(${wt.x}, ${wt.y}) scale(${wt.s})`}>
               <g className="animate-wheat-tuft" style={{ animationDelay: wt.d }}>
                 <path d="M0,0 Q-1,-6 -2,-10 M0,0 Q1,-6 2,-11 M0,0 Q0,-7 0,-13" stroke="#8c6a28" strokeWidth="0.8" fill="none" />

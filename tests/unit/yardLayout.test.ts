@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { emptyYardLayout, resolveYardLayout, constrainPlacement, yardSceneLayout, yardExplorationBounds, rotateGroundPoint, yardDepth, YARD_IDS, YARD_OBJECTS, isGrass } from '../../src/features/yard-editor/yardLayout';
+import { emptyYardLayout, resolveYardLayout, constrainPlacement, yardSceneLayout, yardExplorationBounds, rotateGroundPoint, yardDepth, YARD_IDS, YARD_OBJECTS, isGrass, TILLED_PLOT_IDS, isGround } from '../../src/features/yard-editor/yardLayout';
 import { DEFAULT_SCENE_LAYOUT, entityPointToScene } from '../../src/world/scene/sceneLayout';
 import { sceneExplorationBounds } from '../../src/world/scene/explorationBounds';
 import { resolveRoomCamera, ROOM_FOCUS } from '../../src/world/scene/roomTargets';
@@ -86,4 +86,16 @@ test('newly detached building grass keeps the saved starting position and then m
   const reloaded = resolveYardLayout(layout);
   assert.equal(reloaded['grass_detached_cabin-front'].dx, 130);
   assert.equal(reloaded['grass_detached_pod-rear'].dy, 15);
+});
+
+
+test('新增土地默认收回，旧三块保持原位且新增布局可往返保存', () => {
+  const legacy = { tilled_plot: { dx: 25, dy: 10, angle: 20, length: 125, width: 150 } };
+  const layout = resolveYardLayout(legacy);
+  assert.equal(TILLED_PLOT_IDS.length, 24);
+  assert.equal(TILLED_PLOT_IDS.filter(id => !layout[id].removed).length, 3);
+  assert.deepEqual(layout.tilled_plot, legacy.tilled_plot);
+  layout.tilled_plot_front_2 = constrainPlacement('tilled_plot_front_2', { dx: 40, dy: 30, angle: 25, length: 140, width: 115, crop: 'carrot' });
+  assert.deepEqual(resolveYardLayout(JSON.parse(JSON.stringify(layout))), layout);
+  assert.equal(isGround('paving_1'), true);
 });

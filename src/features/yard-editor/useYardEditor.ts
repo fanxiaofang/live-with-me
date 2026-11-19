@@ -1,10 +1,9 @@
 import { useMemo, useRef, useState } from 'react';
-import { emptyYardLayout, constrainPlacement, resolveYardLayout, yardSceneLayout, yardExplorationBounds, YARD_STORAGE_KEY, PAVING_IDS, isPaving, type PavingMaterial, type PavingSize, type YardId, type YardLayout, type YardPlacement } from './yardLayout';
-import { extendWearStroke, isWearPoint, MAX_WEAR_POINTS, MAX_ERASE_POINTS, resolveWearStrokes, type WearPoint, type WearStrength, type WearStroke } from './yardWear';
+import { constrainPlacement, resolveYardLayout, yardSceneLayout, yardExplorationBounds, YARD_STORAGE_KEY, PAVING_IDS, TILLED_PLOTS, TILLED_PLOT_IDS, canResize, type TilledPlotTemplate, isPaving, type PavingMaterial, type PavingSize, type PavingView, type YardId, type YardPlacement } from './yardLayout';
+import { extendWearStroke, isWearPoint, MAX_WEAR_POINTS, MAX_ERASE_POINTS, type WearPoint, type WearStrength, type WearStroke } from './yardWear';
 import { fitWearStroke } from './wearCurve';
 import { isWearDab } from './wearMaterial';
 import { resolveNightPathTone, type NightPathTone } from './yardAppearance';
-
 import { defaultYardSnapshot, resolveSavedYardSnapshot, type YardSnapshot } from './yardDefaults';
 
 function load(): YardSnapshot {
@@ -22,9 +21,10 @@ export function useYardEditor() {
   const [selected, select] = useState<YardId | null>(null);
   const [pavingMaterial, setPaving] = useState<PavingMaterial | null>(null);
   const [pavingSize, setPavingSize] = useState<PavingSize>('medium');
+  const [pavingView, setPavingView] = useState<PavingView>('crosswise');
   const [wearBrush, setBrush] = useState<WearStrength | null>(null);
   const [wearBrushSize, setWearBrushSize] = useState(64);
-  const setPavingMaterial = (material: PavingMaterial | null) => { setPaving(material); if (material) setBrush(null); };
+  const setPavingMaterial = (material: PavingMaterial | null) => { setPaving(material); if (material) { setBrush(null); select(null); } };
   const setWearBrush = (strength: WearStrength | null) => { setBrush(strength); if (strength) { setPaving(null); select(null); } };
   const [dragging, setDragging] = useState(false);
   const [guide, setGuide] = useState(false);
@@ -103,11 +103,23 @@ export function useYardEditor() {
     const next = { ...current.current, wearStrokes: [] };
     apply(next); save(next);
   };
+  const addPlot = (template: TilledPlotTemplate) => {
+    if (transaction.current) return;
+    const view = TILLED_PLOTS[template].plotView;
+    const id = TILLED_PLOT_IDS.find(candidate => TILLED_PLOTS[candidate].plotView === view && current.current.layout[candidate].removed);
+    if (!id) { setSaveState('此朝向的土地已全部使用，可收回后再添加'); return; }
+    const source = selected && canResize(selected) && TILLED_PLOTS[selected].plotView === view && !current.current.layout[selected].removed ? selected : template;
+    const origin = current.current.layout[source];
+    const occupied = !current.current.layout[source].removed;
+    setPavingMaterial(null); setBrush(null);
+    update(id, { dx: origin.dx + (occupied ? 45 : 0), dy: origin.dy + (occupied ? 30 : 0), angle: 0, length: 100, width: 100 });
+    select(id);
+  };
   const placePaving = (point: { x: number; y: number }) => {
-    if (!pavingMaterial) return;
+    if (!pavingMaterial || transaction.current || ![point.x, point.y].every(Number.isFinite)) return;
     const id = PAVING_IDS.find(candidate => !current.current.layout[candidate].material);
     if (!id) { setSaveState('道路铺装槽位已用完'); return; }
-    update(id, { dx: point.x, dy: point.y, angle: 0, material: pavingMaterial, pavingSize });
+    update(id, { dx: point.x, dy: point.y, angle: 0, material: pavingMaterial, pavingSize, ...(pavingMaterial === 'steppingStone' ? { pavingView } : {}) });
     select(id);
   };
   const removePaving = (id: YardId) => {
@@ -127,11 +139,11 @@ export function useYardEditor() {
     const present = current.current;
     setHistory(h => [...h, present]); setFuture(f => f.slice(0, -1)); apply(next); save(next);
   };
-  const reset = () => { cancel(); setPavingMaterial(null); setBrush(null); select(null); record(current.current); const next: YardSnapshot = { layout: emptyYardLayout(), wearStrokes: [], nightPathTone: 'warmBrown' }; apply(next); save(next); };
+  const reset = () => { cancel(); setPavingMaterial(null); setBrush(null); select(null); record(current.current); const next = defaultYardSnapshot(); apply(next); save(next); };
   const close = () => { cancel(); setPavingMaterial(null); setBrush(null); setActive(false); };
   const sceneLayout = useMemo(() => yardSceneLayout(layout), [layout]);
   const bounds = useMemo(() => yardExplorationBounds(layout, sceneLayout), [layout, sceneLayout]);
-  return { layout, active, setActive, selected, select, pavingMaterial, setPavingMaterial, pavingSize, setPavingSize, placePaving, removePaving, dragging, guide, setGuide, saveState,
+  return { layout, active, setActive, selected, select, pavingMaterial, setPavingMaterial, pavingSize, setPavingSize, pavingView, setPavingView, placePaving, removePaving, addPlot, dragging, guide, setGuide, saveState,
     wearStrokes, wearBrush, setWearBrush, wearBrushSize, setWearBrushSize, startWearStroke, paintWear, clearWear,
     getWearDraft:()=>wearDraft.current, wearFitReview, nightPathTone: resolveNightPathTone(snapshot.nightPathTone), setNightPathTone,
     begin, cancel, commit, update, undo, redo, reset, close, save,

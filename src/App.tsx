@@ -202,9 +202,14 @@ export default function App() {
       </aside>}
 
       {/* 3.5 2.5D 全屋轴测拖拽对齐校准面板 */}
-      {!deskStudyPreview && !isLayoutInspectorOpen && <YardPanel editor={yard} onOpen={() => { setActiveRoom('overview'); yard.setActive(true); }} />}
+      {!deskStudyPreview && <YardPanel editor={yard} onOpen={() => {
+        setIsLayoutInspectorOpen(false);
+        setActiveGizmoId(null);
+        setActiveRoom('overview');
+        yard.setActive(true);
+      }} />}
 
-      {!deskStudyPreview && !yard.active && <LayoutInspectorPanel
+      {!deskStudyPreview && <LayoutInspectorPanel
         layout={roomLayout}
         activeId={isLayoutInspectorOpen ? activeGizmoId : null}
         onSelectObject={setActiveGizmoId}
@@ -215,6 +220,7 @@ export default function App() {
         onToggleChairSeated={handleToggleChairSeated}
         onOpenChairInspector={() => openChairInspector()}
         onToggleOpen={() => {
+          yard.close();
           setIsLayoutInspectorOpen((prev) => {
             const next = !prev;
             if (!next) {

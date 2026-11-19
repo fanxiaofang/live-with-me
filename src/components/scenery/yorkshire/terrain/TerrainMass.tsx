@@ -8,14 +8,12 @@ import { FIELD_EDGE_STUDY } from '../../../../world/scene/fieldEdges';
 import { MEADOW_STUDY } from '../vegetation/meadowStudy';
 import { FieldContactFringe } from './FieldContactFringe';
 import { FieldEdgePlanting } from './FieldEdgePlanting';
-import { FieldAccess } from './FieldAccess';
 import type { EntityId, SceneLayout } from '../../../../world/scene/sceneTypes';
 
 const GROUND_SHADOWS: { entity: EntityId; x: number; y: number; rx: number; ry: number; opacity: number }[] = [
   { entity: 'main_cottage', x: 0, y: 165, rx: 310, ry: 100, opacity: 1 },
   { entity: 'wooden_cabin', x: 9, y: 57, rx: 92, ry: 24, opacity: 0.55 },
   { entity: 'capsule_pod', x: 0, y: 57, rx: 76, ry: 22, opacity: 0.55 },
-  { entity: 'observatory', x: 0, y: 50, rx: 78, ry: 20, opacity: 0.45 },
 ];
 
 /**
@@ -30,7 +28,6 @@ const GROUND_SHADOWS: { entity: EntityId; x: number; y: number; rx: number; ry: 
 export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneLayout; meadowSurface?: React.ReactNode; frontRefined?: boolean; surfaceRefined?: boolean }> = ({ theme, className, sceneLayout = DEFAULT_SCENE_LAYOUT, meadowSurface, frontRefined = false, surfaceRefined = false }) => {
   const contactGradient = 'field-contact-' + React.useId().replace(/:/g, '');
   const boundary = YORKSHIRE_LAYOUT.drystoneWalls.eastWall;
-  const station = sceneLayout.observatory;
   const duskLawn = theme.timeOfDay === 'dusk' && !theme.isNight && !theme.isRainy;
   const dayLawn = theme.timeOfDay === 'day' && !theme.isNight && !theme.isRainy;
   // Matching curve segments keep both feather rings around the entire organic silhouette.
@@ -105,7 +102,6 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
         <path d={meadowGroundPath(frontRefined)} transform={frontRefined ? undefined : 'translate(0, -2)'}
           fill={frontRefined ? 'none' : '#9aa640'} opacity="0.28" />
         <path d={meadowGroundPath(frontRefined)} fill={frontRefined ? 'url(#' + contactGradient + ')' : 'url(#isoGroundPastureGrad)'} />
-        {frontRefined && surfaceRefined && <FieldAccess theme={theme} />}
         {frontRefined && <FieldContactFringe />}
         {frontRefined && theme.landscapeEnvironment && <FieldEdgePlanting theme={theme} />}
 
@@ -316,11 +312,6 @@ export const TerrainMass: React.FC<YorkshireCommonProps & { sceneLayout?: SceneL
         <YardAttachment id="osmanthus"><path id="guardian-tree-lower-slope"
           d="M 188,584 C 178,553 215,526 265,519 C 313,512 382,536 398,568 C 417,608 372,652 309,657 C 255,666 202,636 188,584 Z"
           fill="url(#meadowLowSlopeGrad)" filter="url(#meadowLowSlopeFeather)" /></YardAttachment>
-        <g id="station-independent-meadow-rise"
-          transform={`translate(${station.position.x}, ${station.position.y}) scale(${station.scale})`}>
-          <path d="M -112,45 C -120,13 -72,-17 -8,-16 C 57,-19 113,5 116,42 C 121,77 61,98 -5,94 C -68,97 -109,76 -112,45 Z"
-            fill="url(#meadowLowSlopeGrad)" filter="url(#meadowLowSlopeFeather)" />
-        </g>
       </g>
     </g>
   );

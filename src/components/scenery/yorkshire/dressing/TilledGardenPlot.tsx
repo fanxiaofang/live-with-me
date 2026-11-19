@@ -60,7 +60,7 @@ const ORIGINAL_PLANTING_ROWS: readonly PlantingRow[] = [
   [-67,67,13,-1,2,1.1],[-67,67,25,-1,2,1.1],
 ];
 
-/** All three independent patches reuse the existing world mount and yard editing contract. */
+/** Independent patches reuse the existing world mount and yard editing contract. */
 export function TilledGardenPlot({ theme }: { theme: YorkshireSceneTheme }) {
   return <>{TILLED_PLOT_IDS.map(objectId => <TilledPlot key={objectId} objectId={objectId} theme={theme} />)}</>;
 }
@@ -71,6 +71,7 @@ function TilledPlot({ theme, objectId }: { theme: YorkshireSceneTheme; objectId:
   const p = soilPalette(theme);
   const anchor = TILLED_PLOTS[objectId];
   const placement = useYardPlacement(objectId);
+  if (placement.removed) return null;
   const study: SoilStudy | null = anchor.plotView === 'original' ? null : SOIL_STUDIES[anchor.plotView];
   const heading = anchor.heading + placement.angle;
   // Only the projection is shared. Each study owns its contour, ridges and broken edges.
@@ -112,7 +113,7 @@ function TilledPlot({ theme, objectId }: { theme: YorkshireSceneTheme; objectId:
     ? `M${point(-81,-17)} C${point(-78,-17)} ${point(-76.3,-16)} ${point(-75.6,-15.4)} C${point(-73.9,-14.8)} ${point(-74.1,-13.3)} ${point(-76.1,-12.9)} Q${point(-79,-12)} ${point(-81,-12)}Z`
     : bitePath(bite));
   return <YardObject id={objectId}>
-    <g id={objectId === 'tilled_plot' ? 'tilled-garden-plot' : `tilled-garden-plot-${anchor.plotView}`}
+    <g id={objectId === 'tilled_plot' ? 'tilled-garden-plot' : `tilled-garden-plot-${'reserve' in anchor ? objectId : anchor.plotView}`}
       transform={`translate(${anchor.x} ${anchor.y})`} data-material="turned-soil" data-plot-view={anchor.plotView}
       pointerEvents="none" aria-hidden="true" data-soil-edge="soft">
       <defs>

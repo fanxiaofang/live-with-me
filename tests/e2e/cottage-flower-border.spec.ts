@@ -1,0 +1,32 @@
+import { test, expect } from '@playwright/test';
+
+test('木屋右侧花境可独立摆放并恢复，鸟浴盆保持原位', async ({ page }) => {
+  test.setTimeout(120000);
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/');
+  const border = page.locator('[data-yard-object="cottage_flower_border"]');
+  const bird = page.locator('[data-yard-object="cottage_bird_garden"]');
+  await expect(border).toBeVisible({ timeout: 60000 });
+  const birdOrigin = await bird.getAttribute('transform');
+  await page.getByRole('button', { name: '布置庭院', exact: true }).click();
+  const panel = page.getByRole('complementary', { name: '庭院布置', exact: true });
+  await panel.getByLabel('选择庭院物件').selectOption('cottage_flower_border');
+  await expect(border).toHaveAttribute('data-selected', 'true');
+  await panel.getByRole('button', { name: '收起', exact: true }).click();
+  const box = (await border.boundingBox())!;
+  const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+  await page.mouse.move(point.x, point.y);
+  await page.mouse.down();
+  await page.mouse.move(point.x + 24, point.y + 16, { steps: 4 });
+  await page.mouse.up();
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('live_with_me_yard_layout_v1')!).objects.cottage_flower_border);
+  expect(saved.dx).toBeGreaterThan(0);
+  expect(saved.dy).toBeGreaterThan(0);
+  await expect(bird).toHaveAttribute('transform', birdOrigin!);
+  await page.reload();
+  await expect(border).toHaveAttribute('transform', `translate(${saved.dx} ${saved.dy})`, { timeout: 60000 });
+  await expect(bird).toHaveAttribute('transform', birdOrigin!);
+  expect(errors).toEqual([]);
+});

@@ -30,8 +30,10 @@ import { CottageStoneReturns } from './CottageStoneReturns';
 import { CottageRoofFraming } from './CottageRoofFraming';
 import { CottageWallProfiles } from './CottageWallProfiles';
 import { TimberFlooring } from './TimberFlooring';
+import { CottageTeaSideTable } from '../scenery/yorkshire/dressing/CottageGardenCorners';
 import { resolveSceneOptions } from '../../world/scene/currentScene';
 import { CottageWindow } from './CottageWindow';
+import { CottageCopperBell } from './CottageCopperBell';
 import { SeedpodCottageShell, SeedpodReadingLoft, SeedpodGalleryLadder, SeedpodRoofCover, SeedpodForkLanterns } from './SeedpodCottage';
 export interface MainCottageHavenProps {
   theme: YorkshireSceneTheme;
@@ -134,6 +136,10 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
             <CottageWallProfiles />
             </>}
 
+            <CottageCopperBell theme={theme} layout={currentLayout} effectiveGizmoId={effectiveGizmoId}
+              isInspectorOpen={isInspectorOpen} onHover={setHoveredObject} onSelectGizmo={onSelectGizmo}
+              onDragGizmoDelta={onDragGizmoDelta} onDragGizmoEnd={onDragGizmoEnd} />
+
             {/* --- ROOM 1: MY ROOM (LEFT WING) - 我的阁楼书屋 (2.5D 重构) --- */}
             <g {...svgAction('进入工作区')}
               id="room-my_room"
@@ -192,7 +198,7 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                 <ellipse cx="-0.5" cy="16.5" rx="0.9" ry="1.5" fill="#fde047" stroke="#d97706" strokeWidth="0.2" />
               </g>
 
-              {/* 1.15 2.5D LEFT WALL CRAFT BOARD (手作工具洞洞墙 + 陶木风铃挂饰 + 三人温馨拍立得合照) */}
+              {/* Left wall craft tools; the copper bell now hangs on the support post. */}
               <LeftWallCraftBoard
                 onHover={(label) => setHoveredObject(label)}
                 selfPerson={selfPerson}
@@ -1243,6 +1249,22 @@ function MainCottageHavenAsset({ theme, hasMovedRef, onSelectRoom, setHoveredObj
                     onDragEnd={() => onDragGizmoEnd?.()}
                   />
                 )}
+              </g>
+
+              <g id="cottage-sofa-side-table"
+                transform={`translate(${currentLayout['sofa-side-table'].screen.x}, ${currentLayout['sofa-side-table'].screen.y})`}
+                {...(isInspectorOpen ? svgAction('调整沙发旁小圆边几') : {})}
+                onClick={event => {
+                  if (!isInspectorOpen) return;
+                  event.stopPropagation();
+                  onSelectGizmo?.(effectiveGizmoId === 'sofa-side-table' ? null : 'sofa-side-table');
+                }}
+                onMouseEnter={() => { if (isInspectorOpen) setHoveredObject({ kind: 'furniture-part', id: 'sofa-side-table' }); }}
+                onMouseLeave={() => setHoveredObject(null)}>
+                <CottageTeaSideTable theme={theme} />
+                {effectiveGizmoId === 'sofa-side-table' && <IsoGizmo
+                  pos={{ x: 0, y: 0 }} displayCoords={currentLayout['sofa-side-table'].screen} fixedW={0} label="沙发小圆边几"
+                  onDragDelta={(dx, dy) => onDragGizmoDelta?.(dx, dy)} onDragEnd={() => onDragGizmoEnd?.()} />}
               </g>
 
               {/* 3.4 CHARACTER NESTLED IN LAZY SOFA (由 Presence 场景槽位 sofa_lounge 动态驱动：正面/膝上捧书) */}

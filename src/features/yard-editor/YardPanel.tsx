@@ -1,8 +1,10 @@
 import { Download, Move, Redo2, RotateCcw, Undo2, X, Sprout } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { YardEditor } from './useYardEditor';
-import { canRotate, canResize, isLocked, isGrass, isPaving, PAVING_MATERIALS, PAVING_SIZES, TILLED_PLOT_IDS, YARD_IDS, YARD_OBJECTS, type PavingId, type PavingMaterial, type PavingSize } from './yardLayout';
+import { canRotate, canResize, isLocked, isGrass, isPaving, PAVING_MATERIALS, PAVING_SIZES, PAVING_IDS, TILLED_PLOT_TEMPLATES, TILLED_PLOTS_PER_VIEW, TILLED_PLOTS, TILLED_PLOT_IDS, type TilledPlotTemplate, YARD_IDS, YARD_OBJECTS, type PavingId, type PavingMaterial, type PavingSize } from './yardLayout';
 import { NaturalPavingStone } from '../../components/scenery/yorkshire/dressing/NaturalPavingStone';
+import { LargeSteppingStone } from '../../components/scenery/yorkshire/dressing/LargeSteppingStone';
+import { STEPPING_STONE_VIEWS } from './yardLayout';
 import { WEAR_STRENGTHS, type WearStrength } from './yardWear';
 import { GARDEN_CROPS, CROP_DENSITIES, type GardenCrop, type CropDensity } from './yardCrops';
 import { NIGHT_PATH_TONES, type NightPathTone } from './yardAppearance';
@@ -17,7 +19,7 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
       if ((e.target as HTMLElement).closest('input,select,textarea,[contenteditable=true]')) return;
       if (e.key === 'Escape') {
         if (editor.dragging) return;
-        if (editor.wearBrush) editor.setWearBrush(null); else editor.close();
+        if (editor.wearBrush) editor.setWearBrush(null); else if (editor.pavingMaterial) editor.setPavingMaterial(null); else editor.close();
       }
       if ((e.ctrlKey || e.metaKey) && ['z', 'y'].includes(e.key.toLowerCase())) {
         e.preventDefault(); if (e.shiftKey || e.key.toLowerCase() === 'y') editor.redo(); else editor.undo();
@@ -54,7 +56,7 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
         className="mt-2 w-full rounded-lg border border-[#66543d] bg-[#332a20] px-2 py-2 text-sm">
         <option value="">点击场景中的物件</option>
         <optgroup label="建筑与生活摆设">
-          {YARD_IDS.filter(key => !isGrass(key) && !isPaving(key) && !canResize(key)).map(key => <option key={key} value={key}>{YARD_OBJECTS[key].name}{isLocked(key) ? ' · 已锁定' : ''}</option>)}
+          {YARD_IDS.filter(key => !isGrass(key) && !isPaving(key) && !canResize(key) && !('retired' in YARD_OBJECTS[key])).map(key => <option key={key} value={key}>{YARD_OBJECTS[key].name}{isLocked(key) ? ' · 已锁定' : ''}</option>)}
         </optgroup>
         <optgroup label="开垦土地">
           {YARD_IDS.filter(canResize).map(key => <option key={key} value={key}>{YARD_OBJECTS[key].name}{editor.layout[key].removed ? ' · 已收回' : ''}</option>)}
@@ -67,6 +69,19 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
         </optgroup>}
       </select>
     </label>
+    <section className="mt-4 border-t border-[#4f4232] pt-3" aria-label="添加开垦土地">
+      <h3 className="text-xs font-medium text-[#e1cfad]">添加开垦土地</h3>
+      <p className="mt-1 text-[11px] leading-4 text-[#bdb29d]">每种朝向最多 {TILLED_PLOTS_PER_VIEW} 块。添加后可拖动摆放、调整尺寸和种植作物。</p>
+      <div className="mt-2 flex flex-col gap-1.5">
+        {(Object.entries(TILLED_PLOT_TEMPLATES) as [TilledPlotTemplate, typeof TILLED_PLOT_TEMPLATES[TilledPlotTemplate]][]).map(([template, plot]) => {
+          const count = TILLED_PLOT_IDS.filter(key => TILLED_PLOTS[key].plotView === plot.plotView && !editor.layout[key].removed).length;
+          const label = plot.name.replace('开垦土地 · ', '').replace('（原版）', '');
+          return <button key={template} type="button" className={`${button} flex items-center justify-between`} disabled={editor.dragging || count >= TILLED_PLOTS_PER_VIEW} onClick={() => editor.addPlot(template)}>
+            <span>添加{label}土地</span><span className="tabular-nums">{count}/{TILLED_PLOTS_PER_VIEW}</span>
+          </button>;
+        })}
+      </div>
+    </section>
     <section className="mt-4 border-t border-[#4f4232] pt-3" aria-label="踩踏笔刷">
       <h3 className="text-xs font-medium text-[#e1cfad]">踩踏笔刷</h3>
       <p className="mt-1 text-[11px] leading-4 text-[#bdb29d]">踩踏适合局部磨损，土径适合连续小路。按住拖动涂刷或局部擦除，每一笔都可撤销；擦除仅影响已有手绘痕迹。</p>
@@ -105,18 +120,18 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
       </details>
     </section>
     <section className="mt-4 border-t border-[#4f4232] pt-3" aria-label="道路铺装素材">
-      <h3 className="text-xs font-medium text-[#e1cfad]">道路铺装素材</h3>
-      <p className="mt-1 text-[11px] leading-4 text-[#bdb29d]">选素材后点草地放一块；重复点击可连续铺设，拖动已铺石块可调整位置。</p>
+      <h3 className="text-xs font-medium text-[#e1cfad]">道路铺装素材 <span className="float-right tabular-nums text-[#bdb29d]">{pavingIds.length}/{PAVING_IDS.length}</span></h3>
+      <p className="mt-1 text-[11px] leading-4 text-[#bdb29d]">选素材后点击地面连续铺设；结束铺设后可选中、拖动已有石块。Esc 结束铺设。</p>
       <div className="mt-2 grid grid-cols-2 gap-1.5">
         {(Object.entries(PAVING_MATERIALS) as [PavingMaterial,string][]).map(([material,name])=>{
           const painting=editor.pavingMaterial===material;
-          const editing=!!id && isPaving(id) && p?.material===material;
-          return <button key={material} type="button" aria-pressed={painting || editing}
+          return <button key={material} type="button" aria-pressed={painting} disabled={editor.dragging}
             onClick={()=>editor.setPavingMaterial(painting ? null : material)}
-            className={`rounded-md border px-2 py-2 text-left text-[11px] leading-4 transition-colors ${painting || editing ? 'border-[#d5b476] bg-[#51422e] text-[#f5e4c0]' : 'border-[#514633] bg-[#332d23] text-[#d5c8b1] hover:bg-[#433a2b]'}`}>
+            className={`rounded-md border px-2 py-2 text-left text-[11px] leading-4 transition-colors ${painting ? 'border-[#d5b476] bg-[#51422e] text-[#f5e4c0]' : 'border-[#514633] bg-[#332d23] text-[#d5c8b1] hover:bg-[#433a2b]'}`}>
             <span className="mb-1.5 flex h-5 items-center gap-0.5" aria-hidden="true">
               {material==='fieldstone' && <><i className="h-2 w-4 -skew-x-12 rounded-[3px] bg-[#b8a77e]"/><i className="h-2 w-3 rounded-[3px] bg-[#998966]"/></>}
               {material==='limestone' && <i className="h-2 w-6 rounded-[3px] bg-[#d2c8a9]"/>}
+              {material==='steppingStone' && <svg viewBox="-40 -16 80 34" className="h-5 w-12"><LargeSteppingStone index={1} /></svg>}
               {material==='cobble' && <><i className="h-2 w-2 rounded-full bg-[#9a9b86]"/><i className="h-2.5 w-2.5 rounded-full bg-[#818572]"/><i className="h-2 w-2 rounded-full bg-[#b7b59a]"/></>}
               {(material==='rawGranite' || material==='riverRock' || material==='splitSlate') && <svg viewBox="-23 -12 46 25" className="h-5 w-10"><NaturalPavingStone kind={material} index={1} /></svg>}
               {material==='brick' && <><i className="h-2 w-3 rounded-sm bg-[#a66d4d]"/><i className="h-2 w-3 rounded-sm bg-[#90573e]"/></>}
@@ -135,6 +150,15 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
           <span className="mr-1 inline-block rounded-sm bg-[#b8a77e] align-middle" style={{width:size==='small'?8:size==='medium'?12:16,height:4}} />{label}
         </button>)}
       </div>
+      {editor.pavingMaterial === 'steppingStone' && <div className="mt-3" aria-label="新铺踏步石视图">
+        <p className="mb-1.5 text-[11px] text-[#bdb29d]">踏步石长边朝向</p>
+        <div className="flex gap-1.5">
+          {STEPPING_STONE_VIEWS.map(({label,view}) => <button key={view} type="button" aria-pressed={editor.pavingView===view}
+            onClick={()=>editor.setPavingView(view)} className={`${button} flex-1 ${editor.pavingView===view ? 'border-[#d5b476] bg-[#51422e]' : ''}`}>
+            <svg viewBox="-52 -29 104 62" className="mx-auto h-6 w-12" aria-hidden="true"><LargeSteppingStone index={1} view={view} /></svg>{label}
+          </button>)}
+        </div>
+      </div>}
       {editor.pavingMaterial && <div className="mt-2 flex items-center justify-between rounded-md bg-[#3a3327] px-2.5 py-2 text-[11px] text-[#ddc99f]">
         <span>铺设中：{PAVING_MATERIALS[editor.pavingMaterial]}</span>
         <button type="button" className="underline underline-offset-2" onClick={()=>editor.setPavingMaterial(null)}>结束铺设</button>
@@ -154,9 +178,14 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
             {(Object.entries(PAVING_SIZES) as [PavingSize,string][]).map(([value,label])=><option key={value} value={value}>{label}</option>)}
           </select>
         </label>}
+        {isPaving(id) && p.material === 'steppingStone' && <div className="mb-3 flex gap-1.5" aria-label="此块踏步石视图">
+          {STEPPING_STONE_VIEWS.map(({label,view}) => <button key={view} type="button" aria-pressed={(p.pavingView ?? 'crosswise')===view}
+            className={`${button} flex-1 ${(p.pavingView ?? 'crosswise')===view ? 'border-[#d5b476] bg-[#51422e]' : ''}`}
+            onClick={()=>editor.update(id,{...p,pavingView:view,angle:0})}>{label}</button>)}
+        </div>}
         <div className="flex items-center justify-between gap-2">
           <span className="text-xs text-[#c5b9a5]">{canRotate(id) ? '调整位置与朝向' : '调整位置'}</span>
-          <button className={button} onClick={() => editor.update(id, canResize(id) ? { ...p, dx: 0, dy: 0, angle: 0, length: 100, width: 100 } : { dx: 0, dy: 0, angle: 0 })}>还原此物件</button>
+          <button className={button} onClick={() => editor.update(id, isPaving(id) ? { ...p, angle: 0, pavingSize: 'medium', ...(p.material==='steppingStone' ? {pavingView:'crosswise'} : {}) } : canResize(id) ? { ...p, dx: 0, dy: 0, angle: 0, length: 100, width: 100 } : { dx: 0, dy: 0, angle: 0 })}>{isPaving(id) ? '还原尺寸与朝向' : '还原此物件'}</button>
         </div>
         {isPaving(id) && <button type="button" className={`${button} mt-2 w-full`} onClick={()=>editor.removePaving(id)}>收回这块铺装</button>}
         {canResize(id) && <>
@@ -175,7 +204,7 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
             <span className="rounded-full bg-[#51422e] px-2 py-0.5 text-[10px] text-[#f0d3a7]">地面旋转</span>
           </div>
           <div className="mb-3 grid grid-cols-2 gap-1.5" aria-label="选择要调整的开垦土地">
-            {TILLED_PLOT_IDS.map(plotId => {
+            {TILLED_PLOT_IDS.filter(plotId => !('reserve' in YARD_OBJECTS[plotId]) || !editor.layout[plotId].removed || id === plotId).map(plotId => {
               const selected = id === plotId;
               const removed = editor.layout[plotId].removed;
               const label = YARD_OBJECTS[plotId].name.replace('开垦土地 · ', '');
@@ -229,7 +258,7 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
           </>}
         </section>}
         {canRotate(id) && !canResize(id) && <label className="mt-3 flex items-center gap-3 text-xs">转向
-          <input aria-label={canResize(id) ? '土地旋转' : '栅栏转向'} type="range" min={canResize(id) ? -180 : -75} max={canResize(id) ? 180 : 75} step="5" value={p.angle}
+          <input aria-label={canResize(id) ? '土地旋转' : isPaving(id) ? '铺装转向' : '栅栏转向'} type="range" min={canResize(id) || p.material==='steppingStone' ? -180 : -75} max={canResize(id) || p.material==='steppingStone' ? 180 : 75} step="5" value={p.angle}
             onPointerDown={() => editor.begin()} onPointerUp={() => editor.commit()} onPointerCancel={() => editor.cancel()}
             onBlur={() => editor.commit()} onChange={e => editor.update(id, { ...p, angle: Number(e.target.value) })} className="min-w-0 flex-1 accent-[#cfaa73]" />
           <span className="w-8 tabular-nums">{p.angle}°</span>
@@ -244,7 +273,7 @@ export function YardPanel({ editor, onOpen }: { editor: YardEditor; onOpen: () =
       <button aria-label="恢复庭院默认布局" className={button} disabled={editor.dragging} onClick={() => setConfirmReset(true)}><RotateCcw size={15} /></button>
     </div>
     {confirmReset && <div className="mt-3 rounded-lg bg-[#3a2d20] p-3 text-xs">
-      <p>恢复庭院初始布局，并清除道路铺装与手绘踩踏痕迹？可撤销。</p>
+      <p>恢复当前默认庭院布局，包括物件摆放、道路铺装、手绘痕迹和土径外观？可撤销。</p>
       <div className="mt-2 flex gap-2"><button className={button} onClick={() => { editor.reset(); setConfirmReset(false); }}>恢复默认</button><button className={button} onClick={() => setConfirmReset(false)}>取消</button></div>
     </div>}
     <p role="status" className="mt-3 text-xs leading-5 text-[#c5b9a5]">{exportError || editor.saveState}</p>

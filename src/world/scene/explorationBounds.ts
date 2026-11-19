@@ -14,7 +14,7 @@ const BUILDING_ENVELOPES: Record<EntityId, SceneBounds> = {
   main_cottage: { minX: -320, maxX: 320, minY: -243, maxY: 310 },
   capsule_pod: { minX: -86, maxX: 86, minY: -72, maxY: 82 },
   wooden_cabin: { minX: -88, maxX: 98, minY: -62, maxY: 95 },
-  observatory: { minX: -78, maxX: 79, minY: -66, maxY: 72 },
+  observatory: { minX: -78, maxX: 79, minY: -186, maxY: 75 },
 };
 
 export function sceneExplorationBounds(layout: SceneLayout): SceneBounds {

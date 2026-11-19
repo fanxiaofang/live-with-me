@@ -3,6 +3,17 @@ import { test } from 'node:test';
 import { DEFAULT_ROOM_LAYOUT, resolveRoomLayout, saveRoomLayout } from '../../src/components/layout-gizmo/layoutStore';
 import { FURNITURE_PARENTS, furnitureScenePoint } from '../../src/features/layout-editor/furnitureParents';
 
+test('原左墙风铃默认位置迁到左柱铜铃，保留 ID、定制坐标和主屋父级', () => {
+  const migrated = resolveRoomLayout({ 'craft-wind-chime': { screen: { x: -72, y: -36 } } });
+  assert.deepEqual(migrated['craft-wind-chime'].screen, { x: -266, y: 45 });
+  assert.equal(FURNITURE_PARENTS['craft-wind-chime'].parent, 'main_cottage');
+  const point = furnitureScenePoint('craft-wind-chime', migrated);
+  assert.equal(point.x, 274);
+  assert.equal(point.y, 255);
+  const custom = resolveRoomLayout({ 'craft-wind-chime': { screen: { x: -251, y: 41 } } });
+  assert.deepEqual(custom['craft-wind-chime'].screen, { x: -251, y: 41 });
+});
+
 test('v6 accepts only known finite edits and positive scales; each corrupt entry falls back alone', () => {
   const layout=resolveRoomLayout({
     'cabinet-group':{id:'wrong',name:'unsafe',category:'wrong',screen:{x:-80.25,y:81.5}},
@@ -37,6 +48,16 @@ test('storage failure is reported to the owner while resolved memory data remain
   const layout=resolveRoomLayout({ 'cabinet-group':{screen:{x:-80,y:82}} });
   try { assert.equal(saveRoomLayout(layout),false); assert.equal(layout['cabinet-group'].screen.x,-80); }
   finally { delete globalThis.localStorage; }
+});
+
+test('新增小圆边几承接旧沙发位置，已有边几坐标独立保存', () => {
+  const old = resolveRoomLayout({ 'lazy-sofa': { screen: { x: 165, y: 126 } } });
+  assert.deepEqual(old['sofa-side-table'].screen, { x: 133, y: 146 });
+  old['sofa-side-table'].screen = { x: 120, y: 150 };
+  old['lazy-sofa'].screen.x += 20;
+  const restored = resolveRoomLayout(old);
+  assert.deepEqual(restored['sofa-side-table'].screen, { x: 120, y: 150 });
+  assert.equal(FURNITURE_PARENTS['sofa-side-table'].parent, 'main_cottage');
 });
 
 test('two-seat defaults upgrade only untouched legacy desk items and preserve custom v6 positions', () => {

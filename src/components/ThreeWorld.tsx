@@ -1,9 +1,14 @@
 import { YardWorld, YardObject } from '../features/yard-editor/YardWorld';
+import { ObservatoryFieldSite } from './architecture/ObservatoryFieldSite';
+import { resolveObservatorySite } from '../world/scene/observatorySite';
 import { MeadowTractor } from './scenery/yorkshire/dressing/MeadowTractor';
-import { GateSpiritDeer } from './scenery/yorkshire/dressing/GateSpiritDeer';
 import { CountryPicnic } from './scenery/yorkshire/dressing/CountryPicnic';
+import { GateSpiritDeer } from './scenery/yorkshire/dressing/GateSpiritDeer';
 import { TilledGardenPlot } from './scenery/yorkshire/dressing/TilledGardenPlot';
 import { KitchenHerbNursery } from './scenery/yorkshire/dressing/KitchenHerbNursery';
+import { BowlLotus } from './scenery/yorkshire/dressing/BowlLotus';
+import { MeadowPond } from './scenery/yorkshire/dressing/MeadowPond';
+import { CottageGardenCorners } from './scenery/yorkshire/dressing/CottageGardenCorners';
 import { YardPaving } from './scenery/yorkshire/dressing/YardPaving';
 import { YardWearPaint } from './scenery/yorkshire/dressing/YardWearPaint';
 import type { YardEditor } from '../features/yard-editor/useYardEditor';
@@ -151,6 +156,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const [selectedPosterId, setSelectedPosterId] = useState<PosterId | null>(null);
 
   // Keep the view steady while arranging buildings; navigation uses the new layout on exit.
+  const [wheatObjectLayer, setWheatObjectLayer] = useState<SVGGElement | null>(null);
+  const observatorySite = useMemo(() => resolveObservatorySite(sceneLayout.observatory), [sceneLayout.observatory]);
   const cameraLayout = useRef(sceneLayout);
   const cameraBounds = useRef(yardEditor?.bounds);
   if (!yardEditor?.active) cameraLayout.current = sceneLayout;
@@ -262,6 +269,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           {/*    Layer 2: Midground Rolling Wheat (0.65x)             */}
           {/* ======================================================== */}
           <BackgroundLandscape hillsMode={f2Active ? 'f2' : 'legacy'} integratedGround={hillsMode === 'f2'} fieldEdges={fieldEdges}
+            wheatObjectsRef={setWheatObjectLayer}
+            observatorySite={observatorySite}
             camera={camera}
             isDragging={isDragging}
             theme={theme}
@@ -279,7 +288,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             style={cameraTransformStyle(camera, isDragging || !!yardEditor?.active)}
           >
 
-          <YardWorld editor={yardEditor}>
+          <YardWorld editor={yardEditor} wheatObjectLayer={wheatObjectLayer}>
           {/* Master Meadow Ground, Drystone Walls, Garden Flora, Pumpkin Patch */}
           <HomesteadMeadow fieldEdges={fieldEdges} surfaceRefined={meadowStudy !== 'original'}
             theme={theme}
@@ -290,8 +299,8 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
             onTriggerToast={onTriggerToast}
           />
           {groundDecoration ?? (currentMeadow ? <HomesteadMeadowPlanting sceneLayout={sceneLayout} theme={theme} treeRefined={meadowStudy === 'complete'} /> : undefined)}
-          <YardObject id="observatory" positioned><g id="hilltop-observatory-haven">
-            {/* Radio station on the rear-right meadow, still in the physical stage. */}
+          <YardObject id="observatory" positioned><ObservatoryFieldSite site={observatorySite} /><g id="hilltop-observatory-haven">
+            {/* YardWorld routes the complete station into the wheat's camera layer. */}
             <SceneEntity entityId="observatory" layout={sceneLayout}
               id="room-observatory"
               onClick={() => {
@@ -303,6 +312,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
               className="cursor-pointer group/observatory"
             >
   <ObservatoryHaven theme={theme} characterParentScale={sceneLayout.observatory.scale} presenceSlots={presenceSlots} alienPulseEffect={alienPulseEffect}
+    showFrequencyReadout={!!alienTransmissionText}
     triggerAlienSignal={captureSignal} onSelectPerson={onSelectPerson} setHoveredObject={setHoveredObject} />
 </SceneEntity>
           </g></YardObject>
@@ -351,6 +361,9 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
           <TilledGardenPlot theme={theme} />
           <MeadowTractor theme={theme} setHoveredObject={setHoveredObject} />
           <KitchenHerbNursery theme={theme} />
+          <BowlLotus theme={theme} />
+          <MeadowPond theme={theme} />
+          <CottageGardenCorners theme={theme} />
           <YardPaving theme={theme} />
           <YardWearPaint theme={theme} />
           {hasNearPlants(meadowStudy) && (meadowForeground === 'points'

@@ -1,4 +1,5 @@
 import { YardObject } from '../../features/yard-editor/YardWorld';
+import type { ObservatorySite } from '../scene/observatorySite';
 import { DEFAULT_GARDEN_PLACEMENTS } from '../scene/sceneLayout';
 import React from 'react';
 import { DistantFarmsteads } from '../../components/scenery/yorkshire/terrain/TerrainSilhouette';
@@ -22,6 +23,8 @@ import { useLandscapeCoverage } from './useLandscapeCoverage';
 import { hasFrontEdge, hasRearEdge, type FieldEdgeMode } from '../scene/fieldEdges';
 
 export interface BackgroundLandscapeProps {
+  observatorySite?: ObservatorySite;
+  wheatObjectsRef?: React.Ref<SVGGElement>;
   hillsMode?: HillsMode;
   integratedGround?: boolean;
   fieldEdges?: FieldEdgeMode;
@@ -47,6 +50,8 @@ export interface HomesteadMeadowProps {
  * 🌾 BackgroundLandscape (Multiplane Parallax Far & Midground Layers - Minimalist & Clean)
  */
 function BackgroundLandscapeAsset({
+  observatorySite,
+  wheatObjectsRef,
   hillsMode = 'legacy',
   integratedGround = hillsMode === 'f2',
   fieldEdges = 'original',
@@ -109,8 +114,9 @@ function BackgroundLandscapeAsset({
       </g>
       <g id="parallax-wheat-layer" style={wheatStyle}>
         <g id="distant-wheat-depth" transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
-          <RollingWheatSilhouette theme={theme} frontExtension={coverage.wheatFrontExtension} rearRefined={rearRefined} />
+          <RollingWheatSilhouette theme={theme} frontExtension={coverage.wheatFrontExtension} rearRefined={rearRefined} observatorySite={observatorySite} />
         </g>
+        <g id="wheat-scene-objects" ref={wheatObjectsRef} />
       </g>
     </>
   );
@@ -182,8 +188,11 @@ function HomesteadMeadowAsset({ surfaceRefined = false, fieldEdges = 'original',
         <polygon points="8,2 96,2 102,20 14,20" fill="#24160a" stroke="#150c05" strokeWidth="0.8" />
         <polygon points="10,3 94,3 100,19 16,19" fill="#3e2712" />
         <polygon points="12,4 92,4 97,18 17,18" fill="#20140a" />
-        <rect x="8" y="0" width="4" height="20" rx="0.6" fill="#543317" stroke="#1c0f05" strokeWidth="0.5" />
-        <rect x="94" y="0" width="4" height="20" rx="0.6" fill="#543317" stroke="#1c0f05" strokeWidth="0.5" />
+        {/* The upper trough has a solid front apron; its posts continue into the lower bed. */}
+        <polygon points="14,20 102,20 102,24 14,24" fill="#4d3017" stroke="#1d1107" strokeWidth="0.6" />
+        <path d="M15,20.8 H101" stroke="#754924" strokeWidth="0.65" fill="none" />
+        <rect x="8" y="0" width="4" height="30" rx="0.6" fill="#543317" stroke="#1c0f05" strokeWidth="0.5" />
+        <rect x="94" y="0" width="4" height="30" rx="0.6" fill="#543317" stroke="#1c0f05" strokeWidth="0.5" />
 
         <PumpkinSucculentNursery />
 

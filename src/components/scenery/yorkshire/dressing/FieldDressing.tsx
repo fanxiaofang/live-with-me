@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react';
 import { FIELD_HAY_BALES, FIELD_SCARECROWS, fieldDressingDepth } from '../../../../world/scene/fieldDressing';
+import { isBaleInObservatorySite, type ObservatorySite } from '../../../../world/scene/observatorySite';
+import { LANDSCAPE_SURFACES } from '../../../../world/scene/landscapeGeometry';
 
 /** The retained bale geometry is anchored at its bottom (local y=17.5). */
 function HayBale({ detailed }: { detailed: boolean }) {
@@ -34,11 +36,12 @@ function Scarecrow({ shirt, detailed }: { shirt: string; detailed: boolean }) {
   </g>;
 }
 
-export function FieldDressing({ style }: { style?: CSSProperties }) {
+export function FieldDressing({ style, observatorySite }: { style?: CSSProperties; observatorySite?: ObservatorySite }) {
   return <g id="field-depth-dressing" pointerEvents="none" aria-hidden="true" style={style}>
     <g id="perspective-hay-bales">
       {FIELD_HAY_BALES.map(bale => {
         const { y, scale, opacity } = fieldDressingDepth(bale.depth);
+        if (observatorySite && isBaleInObservatorySite(bale.x, y + LANDSCAPE_SURFACES.backgroundOffsetY, scale, observatorySite)) return null;
         return <g key={bale.id} data-hay-bale={bale.id} data-field-depth={bale.depth}
           data-field-root={`${bale.x},${y}`} transform={`translate(${bale.x} ${y}) scale(${scale})`} opacity={opacity}>
           <HayBale detailed={bale.depth > .3} />

@@ -84,12 +84,11 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
       >
 
         {/* ----------------------------------------------------------------------- */}
-        {/* 1. 海报 1: 《泳者之心》 (Young Woman and the Sea)                       */}
-        {/* 位置：x = 30                                                            */}
+        {/* 画作：《泳者之心》 (Young Woman and the Sea)；新顺序居中，x = 68 */}
         {/* ----------------------------------------------------------------------- */}
         <g {...svgAction('赏析泳者之心海报')}
           id="poster-young-woman"
-          transform="translate(30, 0)"
+          transform="translate(68, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('young-woman');
@@ -226,12 +225,11 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
         </g>
 
         {/* ----------------------------------------------------------------------- */}
-        {/* 2. 海报 2: 《还有明天》 (C'è ancora domani)                             */}
-        {/* 位置：x = 68                                                            */}
+        {/* 画作：《还有明天》 (C'è ancora domani)；新顺序居右，x = 106 */}
         {/* ----------------------------------------------------------------------- */}
         <g {...svgAction('赏析还有明天海报')}
           id="poster-ancora-domani"
-          transform="translate(68, 0)"
+          transform="translate(106, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('ancora-domani');
@@ -388,12 +386,11 @@ export const WallPostersGallery: React.FC<WallPostersGalleryProps> = ({
         </g>
 
         {/* ----------------------------------------------------------------------- */}
-        {/* 3. 海报 3: 《红辣椒》 (Paprika)                                         */}
-        {/* 位置：x = 106                                                           */}
+        {/* 画作：《红辣椒》 (Paprika)；新顺序居左，x = 30 */}
         {/* ----------------------------------------------------------------------- */}
         <g {...svgAction('赏析红辣椒海报')}
           id="poster-paprika"
-          transform="translate(106, 0)"
+          transform="translate(30, 0)"
           onClick={(e) => {
             e.stopPropagation();
             onSelectPoster('paprika');

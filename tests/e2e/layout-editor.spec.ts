@@ -150,3 +150,36 @@ test('a native coffee cabinet drag commits its new position and survives reload'
   expect(transform).toBe(`translate(${saved.x}, ${saved.y})`);
   expect(errors).toEqual([]);
 });
+
+test('庭院面板收起时仍可打开室内编辑器，并可在两个入口间切换', async ({ page }) => {
+  test.setTimeout(90000);
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const yardButton = page.getByRole('button', { name: '布置庭院', exact: true });
+  const indoorButton = page.getByRole('button', { name: '全屋 2.5D 布局校准器', exact: true });
+  const yardPanel = page.getByRole('complementary', { name: '庭院布置', exact: true });
+  const indoorPanel = page.getByRole('complementary', { name: '2.5D 室内全屋布局校准面板', exact: true });
+  await yardButton.click();
+  await yardPanel.getByRole('button', { name: '收起', exact: true }).click();
+  await expect(indoorButton).toBeVisible();
+  await indoorButton.click();
+  await expect(indoorPanel).toBeVisible();
+  await expect(yardPanel).toHaveCount(0);
+  await expect(page.locator('#yard-depth-layer')).toHaveAttribute('data-yard-editing', 'false');
+  await indoorPanel.getByText(Object.values(DEFAULT_ROOM_LAYOUT)[0].name, { exact: true }).click();
+  await expect(page.locator('#iso-interactive-gizmo')).toHaveCount(1);
+  await yardButton.click();
+  await expect(indoorPanel).toHaveCount(0);
+  await expect(yardPanel).toBeVisible();
+  await expect(page.locator('#iso-interactive-gizmo')).toHaveCount(0);
+  await expect(page.locator('#yard-depth-layer')).toHaveAttribute('data-yard-editing', 'true');
+  await expect(indoorButton).toBeVisible();
+  await indoorButton.click();
+  await expect(indoorPanel).toBeVisible();
+  await indoorPanel.getByRole('button', { name: '关闭', exact: true }).click();
+  await expect(indoorButton).toBeVisible();
+  await expect(yardButton).toBeVisible();
+  expect(errors).toEqual([]);
+});

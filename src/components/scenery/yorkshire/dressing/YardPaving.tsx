@@ -2,6 +2,7 @@ import type { YorkshireSceneTheme } from '../landscapeTypes';
 import { PAVING_SIZE_SCALE, YARD_IDS, isPaving, type YardId } from '../../../../features/yard-editor/yardLayout';
 import { YardObject, useYardPlacement } from '../../../../features/yard-editor/YardWorld';
 import { NaturalPavingStone } from './NaturalPavingStone';
+import { LargeSteppingStone } from './LargeSteppingStone';
 
 const STONE = {
   fieldstone: { top:'#b8a77e', mid:'#998966', side:'#70634d', seam:'#665b48', light:'#d0c29a' },
@@ -16,23 +17,24 @@ export function YardPaving({ theme }: { theme: YorkshireSceneTheme }) {
 }
 
 function PavingSlot({id,theme}:{id: YardId;theme:YorkshireSceneTheme}) {
-  const {material,angle,pavingSize='medium'}=useYardPlacement(id);
+  const {material,angle,pavingSize='medium',pavingView='crosswise'}=useYardPlacement(id);
   if (!material) return null;
   const index=Number(id.slice(7))||1;
   const size=PAVING_SIZE_SCALE[pavingSize];
   return <YardObject id={id}>
-    <g data-paving-piece={material} data-paving-index={index} transform={`scale(1 .285) rotate(${angle}) scale(1 3.50877)`}
+    <g data-paving-piece={material} data-paving-index={index} transform={material==='steppingStone' ? undefined : `scale(1 .285) rotate(${angle}) scale(1 3.50877)`}
       pointerEvents="none" strokeLinejoin="round" strokeLinecap="round"
       style={theme.landscapeEnvironment ? {filter:'url(#field-environment-tone)'} : theme.isNight ? {opacity:.73} : undefined}>
       <g data-paving-size={pavingSize} transform={`scale(${size})`}>
-        <ellipse cx="0" cy="4.5" rx="18" ry="5" fill="#2d3826" opacity=".2" />
+        {material!=='steppingStone' && <ellipse cx="0" cy="4.5" rx="18" ry="5" fill="#2d3826" opacity=".2" />}
+        {material==='steppingStone' && <LargeSteppingStone index={index} angle={angle} view={pavingView} thickness={2.8/size} />}
         {material==='fieldstone' && <Fieldstone index={index} thickness={2/size} />}
         {material==='limestone' && <Limestone index={index} thickness={2/size} />}
         {material==='cobble' && <Cobble index={index} thickness={2/size} />}
         {material==='brick' && <Brick index={index} thickness={2/size} />}
         {(material==='rawGranite' || material==='riverRock' || material==='splitSlate') && <NaturalPavingStone kind={material} index={index} thickness={2/size} />}
         {(material==='oak' || material==='weathered') && <Timber index={index} weathered={material==='weathered'} thickness={1.3/size} />}
-        {material!=='rawGranite' && material!=='riverRock' && material!=='splitSlate' && <path d="M-9,0 l4,-1 M5,-3 l4,-1" fill="none" stroke="#fff1d2" strokeWidth=".55" opacity=".35" />}
+        {material!=='steppingStone' && material!=='rawGranite' && material!=='riverRock' && material!=='splitSlate' && <path d="M-9,0 l4,-1 M5,-3 l4,-1" fill="none" stroke="#fff1d2" strokeWidth=".55" opacity=".35" />}
       </g>
     </g>
   </YardObject>;

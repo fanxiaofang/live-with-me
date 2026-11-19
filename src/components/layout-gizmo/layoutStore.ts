@@ -45,6 +45,7 @@ export type EditableObjectId =
   | 'hearth-cat'
   // 5. 林木的花园书房 (Study Group)
   | 'lazy-sofa'
+  | 'sofa-side-table'
   | 'fiddle-plant'
   | 'wall-posters'
   // 6. 前廊门厅 (Porch Group)
@@ -208,10 +209,10 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
   },
   'craft-wind-chime': {
     id: 'craft-wind-chime',
-    name: '左墙陶艺微鸣三色风铃挂饰',
+    name: '左侧支撑柱小铜铃',
     category: 'attic',
     categoryLabel: '阁楼书屋',
-    screen: { x: -72.0, y: -36.0 },
+    screen: { x: -266.0, y: 45.0 },
     fixedW: 0.0,
   },
 
@@ -372,6 +373,14 @@ export const DEFAULT_ROOM_LAYOUT: RoomLayoutConfig = {
     screen: { x: 112.0, y: 90.0 },
     fixedW: 0.0,
   },
+  'sofa-side-table': {
+    id: 'sofa-side-table',
+    name: '沙发旁原木小圆边几（含茶具）',
+    category: 'study',
+    categoryLabel: '花园书房',
+    screen: { x: 110, y: 138 },
+    fixedW: 0,
+  },
   'wall-posters': {
     id: 'wall-posters',
     name: '右墙艺术海报三联组 (整体)',
@@ -409,7 +418,8 @@ export function resolveRoomLayout(input: unknown): RoomLayoutConfig {
       && typeof item.screen.y === 'number' && Number.isFinite(item.screen.y);
     const validScale = item?.scale === undefined || (typeof item.scale === 'number' && Number.isFinite(item.scale) && item.scale > 0);
     const legacy = legacyDefaults[id as EditableObjectId];
-    const unchangedLegacy = legacyLayout && legacy && item?.screen?.x === legacy.x && item?.screen?.y === legacy.y;
+    const oldWallChime = id === 'craft-wind-chime' && item?.screen?.x === -72 && item?.screen?.y === -36;
+    const unchangedLegacy = oldWallChime || (legacyLayout && legacy && item?.screen?.x === legacy.x && item?.screen?.y === legacy.y);
     return [id, { ...defaults, screen: validPoint && validScale && !unchangedLegacy ? { x: item.screen.x, y: item.screen.y } : { ...defaults.screen },
       ...(validPoint && validScale && item.scale !== undefined ? { scale: item.scale } : {}) }];
   })) as RoomLayoutConfig;
@@ -421,6 +431,11 @@ export function resolveRoomLayout(input: unknown): RoomLayoutConfig {
   if (!overrides['attic-chair-secondary']) {
     const desk = resolved['desk-group'].screen, computer = resolved['desk-laptop-secondary'].screen;
     resolved['attic-chair-secondary'].screen = { x: desk.x + computer.x, y: Number((desk.y + computer.y + 7).toFixed(4)) };
+  }
+  // First introduction honours a previously moved sofa; the table is independent afterward.
+  if (!overrides['sofa-side-table']) {
+    const sofa = resolved['lazy-sofa'].screen;
+    resolved['sofa-side-table'].screen = { x: sofa.x - 32, y: sofa.y + 20 };
   }
   return resolved;
 }

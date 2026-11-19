@@ -1,5 +1,6 @@
 import type { WorldViewId } from '../../types';
-import { CAMERA_ORIGIN, focusCamera } from '../camera/cameraMath';
+import { CAMERA_ORIGIN, OVERVIEW_CAMERA, focusCamera } from '../camera/cameraMath';
+import { PARALLAX_PRESETS } from '../camera/parallaxMath';
 import { resolveOverviewCamera } from '../camera/overviewFraming';
 import { FULL_VIEWBOX, type ViewBoxBounds } from '../coordinates/viewport';
 import { DEFAULT_SCENE_LAYOUT, entityPointToScene } from './sceneLayout';
@@ -39,7 +40,7 @@ export const ROOM_FOCUS: Record<Exclude<WorldViewId, 'overview'>, RoomFocus> = {
   porch_mailbox: focus('main_cottage', 52, 218, 1.08, 440, 400, 450),
   capsule_pod: focus('capsule_pod', 0, 8, 1.45, 260, 250),
   corn_lounge: focus('wooden_cabin', 9, 18, 1.4, 280, 260),
-  observatory: focus('observatory', 0, -5, 1.55, 280, 250),
+  observatory: focus('observatory', 0, -50, 1.45, 280, 330),
 };
 export function resolveRoomCamera(room: WorldViewId, layout: SceneLayout = DEFAULT_SCENE_LAYOUT,
   viewport: ViewBoxBounds = FULL_VIEWBOX, bounds?: SceneBounds) {
@@ -51,5 +52,13 @@ export function resolveRoomCamera(room: WorldViewId, layout: SceneLayout = DEFAU
     width * (target.frameToViewport ? 1 : 0.86) / (target.contextSize.width * scale),
     height * (target.frameToViewport ? 1 : 0.76) / (target.contextSize.height * scale)));
   const composition = viewBoxPoint(600, 400 + (target.compositionPoint.y - 400) * height / 800);
-  return focusCamera(entityPointToScene(target.localAnchor, layout), Number(zoom.toFixed(4)), composition);
+  const focused = focusCamera(entityPointToScene(target.localAnchor, layout), Number(zoom.toFixed(4)), composition);
+  if (target.targetEntity !== 'observatory') return focused;
+  // Solve the master camera from the desired wheat-layer camera, including its zoom damping.
+  const damping = PARALLAX_PRESETS.wheat;
+  return {
+    x: OVERVIEW_CAMERA.x + (focused.x - OVERVIEW_CAMERA.x) / damping.kTx,
+    y: OVERVIEW_CAMERA.y + (focused.y - OVERVIEW_CAMERA.y) / damping.kTy,
+    zoom: OVERVIEW_CAMERA.zoom + (focused.zoom - OVERVIEW_CAMERA.zoom) / damping.kSz,
+  };
 }

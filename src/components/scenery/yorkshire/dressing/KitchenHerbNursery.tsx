@@ -4,6 +4,31 @@ import { YARD_OBJECTS } from '../../../../features/yard-editor/yardLayout';
 import { KitchenHerbPlant } from './KitchenGardenPlants';
 import { useId } from 'react';
 
+const TROUGH_LIFT = 4;
+type StandPalette = { face: string; end: string; wood: string; edge: string; seam: string };
+// Exactly the box bottom's two projected axes: (-48,-16), (34,7.4), (51,2.55).
+const underBox = (u: number, v: number, drop: number) => ({
+  x: -48 + u + v,
+  y: -16 - TROUGH_LIFT + u * (23.4 / 82) - v * (4.85 / 17) + drop,
+});
+
+function HerbFramePart({ u, v, width, depth, height, drop, p, post = false }: {
+  u: number; v: number; width: number; depth: number; height: number; drop: number; p: StandPalette; post?: boolean;
+}) {
+  const q = (du: number, dv: number, dh = 0) => {
+    const point = underBox(u + du, v + dv, drop + dh);
+    return `${point.x},${point.y}`;
+  };
+  const foot = underBox(u + width/2, v + depth/2, drop + height);
+  return <g data-herb-support={post ? 'joined-to-underframe' : undefined}>
+    {post && <ellipse cx={foot.x} cy={foot.y+.4} rx="3.8" ry="1.2" fill={p.seam} opacity=".2" />}
+    <path d={`M${q(0,0)} L${q(width,0)} ${q(width,0,height)} ${q(0,0,height)}Z`} fill={p.face} />
+    <path d={`M${q(width,0)} L${q(width,depth)} ${q(width,depth,height)} ${q(width,0,height)}Z`} fill={p.end} />
+    <path d={`M${q(0,0)} L${q(width,0)} ${q(width,depth)} ${q(0,depth)}Z`} fill={p.wood} />
+    {post && <path d={`M${q(.8,0,2)} L${q(.8,0,height-2)}`} stroke={p.edge} strokeWidth=".4" opacity=".5" />}
+  </g>;
+}
+
 /** A low kitchen herb trough with a rosemary pot; the whole garden is one movable yard object. */
 export function KitchenHerbNursery({ theme }: { theme: YorkshireSceneTheme }) {
   const soilClip='herb-trough-'+useId().replace(/:/g,'');
@@ -20,11 +45,11 @@ export function KitchenHerbNursery({ theme }: { theme: YorkshireSceneTheme }) {
         <path d="M-100,-150 L100,-150 100,12.2 -100,-44.8Z" />
       </clipPath></defs>
       <ellipse cx="8" cy="4" rx="55" ry="8" fill={p.seam} opacity=".085" />
-      <ellipse cx="-41.5" cy="-5.5" rx="4.2" ry="1.2" fill={p.seam} opacity=".34" />
-      <ellipse cx="31.5" cy="11.2" rx="4" ry="1.1" fill={p.seam} opacity=".36" />
+      {/* End bearers and legs share the actual bottom plane; post heads overlap their bearer. */}
+      {[2,73].map(u => <HerbFramePart key={`rail-${u}`} u={u} v={0} width={7} depth={17} drop={0} height={2.5} p={p} />)}
+      {[12.5,1.5].flatMap(v => [4,75].map(u => <HerbFramePart key={`${u}-${v}`} u={u} v={v} width={3} depth={3} drop={2} height={10} p={p} post />))}
+      <g transform={`translate(0 ${-TROUGH_LIFT})`}>
       {/* Low timber trough, with a shallow open top and a distinct end face. */}
-      <path d="M-44,-16 L-39,-14.6 -39,-5 -44,-6.4Z M29,5 L34,6.4 34,12 29,10.6Z" fill={p.end} />
-      <path d="M-44,-15.8 L-39,-14.4 -39,-12.4 -44,-13.8Z M29,5.1 L34,6.5 34,8.3 29,6.9Z" fill={p.seam} opacity=".6" />
       <path d="M-48,-30 L34,-6.6 51,-11.45 -31,-34.85Z" fill={p.wood} />
       <path d="M-43,-29.3 L33,-7.6 46,-11.3 -30,-33Z" fill={p.soil} />
       <path d="M-48,-30 L34,-6.6 34,7.4 -48,-16Z" fill={p.face} />
@@ -43,6 +68,7 @@ export function KitchenHerbNursery({ theme }: { theme: YorkshireSceneTheme }) {
       <g transform="translate(25 -12.6) scale(.82)"><KitchenHerbPlant kind="lemonBalm" theme={theme} variation={2} /></g>
       </g>
       <path d="M-47,-29.7 L33.6,-6.7" fill="none" stroke={p.edge} strokeWidth="1" strokeLinecap="round" />
+      </g>
       <g transform="translate(64 3)">
         <ellipse cx="1" cy="1.5" rx="9" ry="2.3" fill={p.seam} opacity=".12" />
         <ellipse cx="0" cy=".4" rx="6.1" ry="1.3" fill={p.seam} opacity=".34" />
@@ -58,7 +84,7 @@ export function KitchenHerbNursery({ theme }: { theme: YorkshireSceneTheme }) {
         <path d="M-8.6,-14 A8.6,2.6 0 0 0 8.6,-14" fill="none" stroke={p.potLight} strokeWidth=".85" />
       </g>
       {/* A small hand-written label sits on the front board rather than hiding the leaves. */}
-      <g transform="translate(-18 -15) rotate(16)">
+      <g transform={`translate(-18 ${-15-TROUGH_LIFT}) rotate(16)`}>
         <rect x="-10" y="-3.2" width="20" height="6.4" rx=".8" fill={p.label} />
         <text y="1.7" textAnchor="middle" fontSize="4.6" fill={p.seam} fontWeight="600">香草</text>
         <circle cx="-8" r=".45" fill={p.seam} /><circle cx="8" r=".45" fill={p.seam} />
