@@ -1,5 +1,40 @@
 import { expect, test } from '@playwright/test';
 import { expectOverviewCamera, stableScene } from './helpers';
+import { wheatRevealMaxY } from '../../src/world/camera/cameraBounds';
+import { visibleViewBox } from '../../src/world/coordinates/viewport';
+
+test('downward exploration stops once the authored wheat field is exposed', async ({ page }) => {
+  test.setTimeout(90000);
+  // Viewport/zoom geometry is covered by unit cases; one actual scene verifies
+  // pointer handling and saturation without testing unrelated toolbar layouts.
+  for (const viewport of [{ width: 1440, height: 900 }]) {
+    await page.setViewportSize(viewport);
+    await stableScene(page);
+    await expectOverviewCamera(page);
+    const stage = page.locator('#panoramic-world-stage');
+    const dragDown = async () => {
+      await page.mouse.move(viewport.width * .65, 150);
+      await page.mouse.down();
+      // One long gesture is enough to hit the clamp; avoid rendering six
+      // intermediate frames of the full SVG scene for every limit assertion.
+      await page.mouse.move(viewport.width * .65, viewport.height - 100);
+      await page.mouse.up();
+    };
+    for (const zoom of [.54, .66]) {
+      if (zoom === .66) {
+        await stage.evaluate(el => el.closest('svg')!.dispatchEvent(new WheelEvent('wheel',
+          { deltaY: -100, bubbles: true, cancelable: true })));
+      }
+      await expect(stage).toHaveAttribute('data-zoom', String(zoom));
+      await dragDown();
+      const limit = wheatRevealMaxY(zoom, visibleViewBox(viewport.width, viewport.height));
+      const readY = () => stage.evaluate(el => new DOMMatrixReadOnly(getComputedStyle(el).transform).f);
+      await expect.poll(readY).toBeCloseTo(limit, 2);
+      await dragDown();
+      await expect.poll(readY).toBeCloseTo(limit, 2);
+    }
+  }
+});
 
 for (const viewport of [{ width: 1200, height: 800 }, { width: 1600, height: 900 },
   { width: 2560, height: 1080 }, { width: 390, height: 844 }]) {

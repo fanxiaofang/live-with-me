@@ -19,6 +19,21 @@ function overviewMinY(zoom: number, viewportHeight: number) {
     / (PARALLAX_PRESETS.wheat.kTy - PARALLAX_PRESETS.mountains.kTy);
 }
 
+/** Stop when the pasture clears the authored crop front, not its hidden skirt.
+ * Solve both projections in viewBox units so zoom and slice cropping agree.
+ */
+export function wheatRevealMaxY(zoom: number, viewport: ViewBoxBounds = FULL_VIEWBOX) {
+  const { backgroundOffsetY, wheatFrontMaxY, meadowBackMinY, overlap } = LANDSCAPE_SURFACES;
+  const damping = PARALLAX_PRESETS.wheat;
+  const wheat = resolveParallaxCamera({ x: 0, y: 0, zoom }, damping);
+  const cropFront = sceneToViewBox(scenePoint(600, wheatFrontMaxY + backgroundOffsetY), wheat).y;
+  const pastureRear = sceneToViewBox(scenePoint(600, meadowBackMinY), { x: 0, y: 0, zoom }).y;
+  const clearPasture = (cropFront + overlap - pastureRear) / (1 - damping.kTy);
+  // At close zoom the front must also stay inside the visible screen crop.
+  const visibleFront = (viewport.maxY - (viewport.maxY - viewport.minY) * .04 - cropFront) / damping.kTy;
+  return Math.min(clearPasture, visibleFront);
+}
+
 export function panBounds(
   camera: Camera,
   focus: Camera,
@@ -80,6 +95,12 @@ export function panBounds(
     bounds.maxX = Math.max(bounds.maxX, focusX + width * 0.12);
     bounds.minY = Math.min(bounds.minY, focusY - height * 0.1);
     bounds.maxY = Math.max(bounds.maxY, focusY + height * 0.1);
+  }
+  if (isOverviewFocus) {
+    // Apply after all estate/focus allowances: tall buildings and distant yard
+    // objects must not re-open downward travel beyond the fully exposed field.
+    bounds.maxY = Math.max(focus.y, Math.min(bounds.maxY, wheatRevealMaxY(camera.zoom, viewport)));
+    bounds.minY = Math.min(bounds.minY, bounds.maxY);
   }
   return bounds;
 }

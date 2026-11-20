@@ -6,6 +6,9 @@ export const LANDSCAPE_SURFACES = {
   mountainApronFrontMinY: 238,
   wheatBackMaxY: 225,
   wheatFrontMinY: 355,
+  // Authored crop front, before hidden coverage skirts are added.
+  wheatFrontMaxY: 390,
+  meadowBackMinY: 170,
   meadowBackMaxY: 190,
   overlap: 8,
 } as const;

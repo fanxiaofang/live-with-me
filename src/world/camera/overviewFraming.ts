@@ -6,10 +6,13 @@ import { clampZoom, type Camera } from './cameraMath';
 export const OVERVIEW_MAX_ZOOM = .54;
 
 /** Frame the roof and estate, reserving the lower edge for navigation. */
-export function resolveOverviewCamera(layout: SceneLayout, viewport: ViewBoxBounds = FULL_VIEWBOX, bounds?: SceneBounds): Camera {
+export function resolveOverviewCamera(layout: SceneLayout, viewport: ViewBoxBounds = FULL_VIEWBOX, _bounds?: SceneBounds): Camera {
   const width = viewport.maxX - viewport.minX;
   const height = viewport.maxY - viewport.minY;
-  const content = bounds ?? sceneExplorationBounds(layout);
+  // Opening composition frames the cottage estate, not every explorable object.
+  // The wheat-layer tower and the guardian beyond the gate must not lift the
+  // foreground over the approved hill/windmill view. Full bounds still govern pan.
+  const content = sceneExplorationBounds(layout, false);
   const cottage = layout.main_cottage;
   const zoom = clampZoom(Math.min(OVERVIEW_MAX_ZOOM,
     width * .9 / (640 * cottage.scale), height * .66 / (content.maxY - content.minY)));

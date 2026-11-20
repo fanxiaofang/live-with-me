@@ -17,8 +17,8 @@ const BUILDING_ENVELOPES: Record<EntityId, SceneBounds> = {
   observatory: { minX: -78, maxX: 79, minY: -186, maxY: 75 },
 };
 
-export function sceneExplorationBounds(layout: SceneLayout): SceneBounds {
-  const bounds = Object.entries(BUILDING_ENVELOPES).map(([id, envelope]) => {
+export function sceneExplorationBounds(layout: SceneLayout, includeObservatory = true): SceneBounds {
+  const bounds = Object.entries(BUILDING_ENVELOPES).filter(([id]) => includeObservatory || id !== 'observatory').map(([id, envelope]) => {
     const { position, scale } = layout[id as EntityId];
     return {
       minX: position.x + envelope.minX * scale,

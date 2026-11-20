@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { clampPan, panBounds } from '../../src/world/camera/cameraBounds';
+import { clampPan, panBounds, wheatRevealMaxY } from '../../src/world/camera/cameraBounds';
 import { OVERVIEW_CAMERA, sceneToViewBox } from '../../src/world/camera/cameraMath';
 import { FULL_VIEWBOX, visibleViewBox } from '../../src/world/coordinates/viewport';
 import { sceneExplorationBounds } from '../../src/world/scene/explorationBounds';
@@ -8,6 +8,8 @@ import { resolveRoomCamera } from '../../src/world/scene/roomTargets';
 import { DEFAULT_SCENE_LAYOUT } from '../../src/world/scene/sceneLayout';
 import { scenePoint } from '../../src/world/scene/sceneTypes';
 import { YORKSHIRE_LAYOUT } from '../../src/components/scenery/yorkshire/landscapeLayout';
+import { LANDSCAPE_SURFACES } from '../../src/world/scene/landscapeGeometry';
+import { PARALLAX_PRESETS, resolveParallaxCamera } from '../../src/world/camera/parallaxMath';
 
 test('visible slice rectangle follows wide and portrait screen crops', () => {
   assert.deepEqual(visibleViewBox(1200, 800), FULL_VIEWBOX);
@@ -18,36 +20,41 @@ test('visible slice rectangle follows wide and portrait screen crops', () => {
   assert.ok(Math.abs(phone.maxX - phone.minX - 390 * 800 / 844) < 1e-9);
 });
 
-test('overview travel limits empty foreground upwards and allows hill exploration downwards', () => {
+test('overview travel limits empty foreground upwards and stops at the exposed field downwards', () => {
   const content = sceneExplorationBounds(DEFAULT_SCENE_LAYOUT);
   for (const [width, height] of [[1200, 800], [1600, 900], [390, 844]]) {
     const viewport = visibleViewBox(width, height);
     for (const zoom of [0.45, 0.66]) {
       for (const y of [-10000, 10000]) {
         const camera = clampPan({ x: 0, y, zoom }, OVERVIEW_CAMERA, viewport, content);
-        const top = sceneToViewBox(scenePoint(600, content.minY), camera).y;
         const bottom = sceneToViewBox(scenePoint(600, content.maxY), camera).y;
         if (y < 0) {
-          assert.ok(top >= viewport.minY + (viewport.maxY - viewport.minY) * 0.18 - 1e-8);
-          assert.ok(bottom <= viewport.maxY - (viewport.maxY - viewport.minY) * (zoom === .45 ? .06 : .12) + 1e-8);
+          // Taller landmarks can crop the estate; upward travel must not leave
+          // a large empty foreground beneath it.
+          assert.ok(bottom >= viewport.maxY - (viewport.maxY - viewport.minY) * .17 - 1e-8);
         } else {
-          assert.ok(top >= viewport.minY + (viewport.maxY - viewport.minY) * .65 - 1e-8);
+          assert.ok(camera.y <= Math.max(OVERVIEW_CAMERA.y, wheatRevealMaxY(zoom, viewport)) + 1e-8);
+          assert.deepEqual(clampPan({ ...camera, y: camera.y + 1000 }, OVERVIEW_CAMERA, viewport, content), camera);
         }
       }
     }
   }
 });
 
-test('overview can drag the roof down far enough to reveal the hills at modest zoom', () => {
-  for (const [width, height] of [[1366,768], [1440,900]]) {
+test('overview fully reveals the authored field without exposing further hidden skirts', () => {
+  for (const [width, height] of [[1366,768], [1440,900], [390,844]]) {
     const viewport = visibleViewBox(width, height);
     const focus = resolveRoomCamera('overview', DEFAULT_SCENE_LAYOUT, viewport);
     const content = sceneExplorationBounds(DEFAULT_SCENE_LAYOUT);
     for (const zoom of [.54, .66, .78, .9, 1.1]) {
       const camera = clampPan({ ...focus, zoom, y: 10000 }, focus, viewport, content, true);
-      const roofTop = sceneToViewBox(scenePoint(540, content.minY), camera).y;
-      assert.ok(roofTop >= viewport.minY + (viewport.maxY - viewport.minY) * .65 - 1e-8);
-      assert.ok(camera.y - focus.y > (viewport.maxY - viewport.minY) * .2);
+      const wheat = resolveParallaxCamera(camera, PARALLAX_PRESETS.wheat);
+      const front = sceneToViewBox(scenePoint(600,
+        LANDSCAPE_SURFACES.wheatFrontMaxY + LANDSCAPE_SURFACES.backgroundOffsetY), wheat).y;
+      const pasture = sceneToViewBox(scenePoint(600, LANDSCAPE_SURFACES.meadowBackMinY), camera).y;
+      assert.ok(Math.abs(pasture - front - LANDSCAPE_SURFACES.overlap) < .001);
+      assert.ok(front < viewport.maxY);
+      assert.ok(camera.y > focus.y);
     }
   }
 });
