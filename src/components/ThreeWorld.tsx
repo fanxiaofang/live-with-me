@@ -35,7 +35,6 @@ import { BackgroundLandscape, HomesteadMeadow } from '../world/render/Background
 import { ForegroundLandscape } from '../world/render/ForegroundLandscape';
 import { SceneEntity } from '../world/render/SceneEntity';
 import { WorldDefs } from '../world/render/WorldDefs';
-import { useIntermittentBreeze } from '../world/render/useIntermittentBreeze';
 import { DEFAULT_SCENE_LAYOUT } from '../world/scene/sceneLayout';
 import type { SceneLayout } from '../world/scene/sceneTypes';
 import { COUNTRYSIDE_THEMES } from '../world/theme/worldTheme';
@@ -176,7 +175,6 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
   const meadowForeground = meadowStudy === 'complete' ? requestedForeground : 'points';
   const hillsReady = useEventCallback(() => setF2Ready(true));
   const hillsFailure = useEventCallback((reason: string) => setF2Failure(reason));
-  useIntermittentBreeze(svgRef);
   const beginGesture = useEventCallback(() => { hasMovedRef.current = false; onDragGizmoBegin?.(); });
   const cancelGesture = useEventCallback(() => onDragGizmoCancel?.());
   const markGestureMoved = useEventCallback(() => { hasMovedRef.current = true; });
