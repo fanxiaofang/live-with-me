@@ -1,11 +1,23 @@
 import type { InteractionTarget } from '../../../world/interactions/interactionTypes';
 
+export interface FoothillAtmosphere {
+  air: string;
+  surfaceStrength: number;
+  landmarkStrength: number;
+  transition?: 'valley';
+  valleyMaterial?: 's4';
+  mist?: boolean;
+  mistTechnique?: 'expanded' | 'baked';
+}
+
 /**
  * 🎨 Yorkshire Countryside Theme tokens
  */
 export interface YorkshireSceneTheme {
   timeOfDay?: 'day' | 'dusk' | 'night';
   railwayAtmosphere?: { air: string; strength: number; nearestMountainStrength: number };
+  /** Main meadow hill only; source-foot objects retain their source environment. */
+  foothillAtmosphere?: FoothillAtmosphere;
   landscapeEnvironment?: {
     grassTop: string; grassMid: string; grassDeep: string;
     wheatTop: string; wheatMid: string; wheatDeep: string;

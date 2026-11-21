@@ -1,0 +1,27 @@
+{
+  "url": "http://localhost:3000/",
+  "state": {
+    "camera": {
+      "x": 0,
+      "y": 207.104,
+      "zoom": 0.54
+    },
+    "fog": "baked-c-plus-optics",
+    "geometryIds": [
+      "6d0d489b-1b3e-4f9a-be7f-b9465e24681a",
+      "ed031ac4-0fbc-4865-97a2-28b83eabc15b",
+      "e840d992-97b3-4f08-8b76-7402fe17d945"
+    ],
+    "materialIds": [
+      "fc644cd3-0707-45a9-8636-1b54c7531b2e",
+      "c663bd0f-1734-4f13-a3b9-79e7e4bf31d8",
+      "545bf293-ca01-4f66-9789-709c4d3cec9a"
+    ],
+    "projection": "matrix(0.6514471285231889 0 0 0.6514471285231889 209.13172288608666 274.16510536076083)",
+    "rail": "transform: translate(0px, 149.421px) scale(0.612); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+    "valley": "s4",
+    "wheat": "transform: translate(0px, 174.657px) scale(0.576); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+  },
+  "railwayAir": "0.115",
+  "errors": []
+}

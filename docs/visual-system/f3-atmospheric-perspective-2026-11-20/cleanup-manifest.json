@@ -1,0 +1,512 @@
+{
+  "date": "2026-11-21",
+  "removedScript": "scripts/f3/capture-atmosphere-review.mjs",
+  "removedStageBytes": 20489860.0,
+  "removedStageFiles": 122,
+  "removed": [
+    {
+      "bytes": 187364,
+      "path": "formal-static-baked\\homepage-day.png"
+    },
+    {
+      "bytes": 1809,
+      "path": "formal-static-baked\\normal-route-state.json"
+    },
+    {
+      "bytes": 1199,
+      "path": "formal-static-baked\\README.md"
+    },
+    {
+      "bytes": 1225004,
+      "path": "s1-review\\app-baseline.png"
+    },
+    {
+      "bytes": 953778,
+      "path": "s1-review\\app-clear-sky-no-vignette.png"
+    },
+    {
+      "bytes": 1246509,
+      "path": "s1-review\\baseline.png"
+    },
+    {
+      "bytes": 889461,
+      "path": "s1-review\\clear-sky-no-vignette.png"
+    },
+    {
+      "bytes": 1243946,
+      "path": "s1-review\\clear-sky.png"
+    },
+    {
+      "bytes": 2619,
+      "path": "s1-review\\homepage-check.json"
+    },
+    {
+      "bytes": 903109,
+      "path": "s1-review\\no-vignette.png"
+    },
+    {
+      "bytes": 3572,
+      "path": "s1-review\\README.md"
+    },
+    {
+      "bytes": 6636,
+      "path": "s1-review\\verification.json"
+    },
+    {
+      "bytes": 190940,
+      "path": "s2-review\\midground-live.png"
+    },
+    {
+      "bytes": 3219,
+      "path": "s2-review\\README.md"
+    },
+    {
+      "bytes": 189964,
+      "path": "s2-review\\s1-live.png"
+    },
+    {
+      "bytes": 957,
+      "path": "s2-review\\verification.json"
+    },
+    {
+      "bytes": 203278,
+      "path": "s2-1-review\\a-s2.png"
+    },
+    {
+      "bytes": 143277,
+      "path": "s2-1-review\\b-detail.png"
+    },
+    {
+      "bytes": 203147,
+      "path": "s2-1-review\\b-transition.png"
+    },
+    {
+      "bytes": 13152,
+      "path": "s2-1-review\\c-mist-detail.png"
+    },
+    {
+      "bytes": 203232,
+      "path": "s2-1-review\\c-mist.png"
+    },
+    {
+      "bytes": 3284,
+      "path": "s2-1-review\\README.md"
+    },
+    {
+      "bytes": 1142,
+      "path": "s2-1-review\\verification.json"
+    },
+    {
+      "bytes": 381,
+      "path": "s2-1-review\\art-texture-fog\\anchor-check.json"
+    },
+    {
+      "bytes": 206741,
+      "path": "s2-1-review\\art-texture-fog\\C-volume-fog-full.png"
+    },
+    {
+      "bytes": 207135,
+      "path": "s2-1-review\\art-texture-fog\\D-art-fog-full.png"
+    },
+    {
+      "bytes": 202857,
+      "path": "s2-1-review\\art-texture-fog\\D-downward-pan.png"
+    },
+    {
+      "bytes": 3104,
+      "path": "s2-1-review\\art-texture-fog\\README.md"
+    },
+    {
+      "bytes": 203936,
+      "path": "s2-1-review\\c-plus-optical-bake\\baked-downward-pan.png"
+    },
+    {
+      "bytes": 250229,
+      "path": "s2-1-review\\c-plus-optical-bake\\baked-zoom.png"
+    },
+    {
+      "bytes": 208189,
+      "path": "s2-1-review\\c-plus-optical-bake\\C-plus-baked.png"
+    },
+    {
+      "bytes": 250359,
+      "path": "s2-1-review\\c-plus-optical-bake\\C-plus-live-zoom.png"
+    },
+    {
+      "bytes": 208170,
+      "path": "s2-1-review\\c-plus-optical-bake\\C-plus-live.png"
+    },
+    {
+      "bytes": 3203,
+      "path": "s2-1-review\\c-plus-optical-bake\\cache-and-anchor-check.json"
+    },
+    {
+      "bytes": 3651,
+      "path": "s2-1-review\\c-plus-optical-bake\\README.md"
+    },
+    {
+      "bytes": 358,
+      "path": "s2-1-review\\c-plus-optical-bake\\screen-comparison.json"
+    },
+    {
+      "bytes": 2863,
+      "path": "s2-1-review\\c-plus-optical-bake\\performance\\README.md"
+    },
+    {
+      "bytes": 48992,
+      "path": "s2-1-review\\c-plus-optical-bake\\performance\\results.png"
+    },
+    {
+      "bytes": 3101,
+      "path": "s2-1-review\\c-plus-optical-bake\\performance\\run-01.json"
+    },
+    {
+      "bytes": 3414,
+      "path": "s2-1-review\\c-plus-optical-bake\\performance\\run-02.json"
+    },
+    {
+      "bytes": 778,
+      "path": "s2-1-review\\c-plus-optical-bake\\performance\\summary.json"
+    },
+    {
+      "bytes": 490,
+      "path": "s2-1-review\\c-plus-volume\\anchor-check.json"
+    },
+    {
+      "bytes": 208155,
+      "path": "s2-1-review\\c-plus-volume\\C-original.png"
+    },
+    {
+      "bytes": 204054,
+      "path": "s2-1-review\\c-plus-volume\\C-plus-downward-pan.png"
+    },
+    {
+      "bytes": 208386,
+      "path": "s2-1-review\\c-plus-volume\\C-plus.png"
+    },
+    {
+      "bytes": 2988,
+      "path": "s2-1-review\\c-plus-volume\\README.md"
+    },
+    {
+      "bytes": 112248,
+      "path": "s2-1-review\\density-bake-v2\\01-separated-density16.png"
+    },
+    {
+      "bytes": 5233,
+      "path": "s2-1-review\\density-bake-v2\\01-separated-preview.jpg"
+    },
+    {
+      "bytes": 18142,
+      "path": "s2-1-review\\density-bake-v2\\01-separated.png"
+    },
+    {
+      "bytes": 141619,
+      "path": "s2-1-review\\density-bake-v2\\02-broad-density16.png"
+    },
+    {
+      "bytes": 5843,
+      "path": "s2-1-review\\density-bake-v2\\02-broad-preview.jpg"
+    },
+    {
+      "bytes": 22944,
+      "path": "s2-1-review\\density-bake-v2\\02-broad.png"
+    },
+    {
+      "bytes": 105772,
+      "path": "s2-1-review\\density-bake-v2\\03-light-density16.png"
+    },
+    {
+      "bytes": 16190,
+      "path": "s2-1-review\\density-bake-v2\\03-light.png"
+    },
+    {
+      "bytes": 126382,
+      "path": "s2-1-review\\density-bake-v2\\04-sculpted-broad-density16.png"
+    },
+    {
+      "bytes": 19644,
+      "path": "s2-1-review\\density-bake-v2\\04-sculpted-broad.png"
+    },
+    {
+      "bytes": 90153,
+      "path": "s2-1-review\\density-bake-v2\\05-sculpted-light-density16.png"
+    },
+    {
+      "bytes": 12413,
+      "path": "s2-1-review\\density-bake-v2\\05-sculpted-light.png"
+    },
+    {
+      "bytes": 2579,
+      "path": "s2-1-review\\density-bake-v2\\bake-settings.json"
+    },
+    {
+      "bytes": 208122,
+      "path": "s2-1-review\\density-bake-v2\\D-density-v2-scene.png"
+    },
+    {
+      "bytes": 107769,
+      "path": "s2-1-review\\density-bake-v2\\density-contact-sheet.png"
+    },
+    {
+      "bytes": 30167,
+      "path": "s2-1-review\\density-bake-v2\\final-broad-preview.png"
+    },
+    {
+      "bytes": 1234,
+      "path": "s2-1-review\\density-bake-v2\\motion-check.json"
+    },
+    {
+      "bytes": 3721,
+      "path": "s2-1-review\\density-bake-v2\\README.md"
+    },
+    {
+      "bytes": 53683,
+      "path": "s2-1-review\\density-bake-v2\\rejected-over-smoothed-comparison.png"
+    },
+    {
+      "bytes": 206684,
+      "path": "s2-1-review\\density-bake-v2\\rejected-restored-C.png"
+    },
+    {
+      "bytes": 204435,
+      "path": "s2-1-review\\hill-foot-mist-v3\\b-base.png"
+    },
+    {
+      "bytes": 21834,
+      "path": "s2-1-review\\hill-foot-mist-v3\\c-detail.png"
+    },
+    {
+      "bytes": 22110,
+      "path": "s2-1-review\\hill-foot-mist-v3\\down-drag-detail.png"
+    },
+    {
+      "bytes": 1549,
+      "path": "s2-1-review\\hill-foot-mist-v3\\down-drag.png"
+    },
+    {
+      "bytes": 201307,
+      "path": "s2-1-review\\horizon-mist-v2\\b-base.png"
+    },
+    {
+      "bytes": 23898,
+      "path": "s2-1-review\\horizon-mist-v2\\c-detail.png"
+    },
+    {
+      "bytes": 197642,
+      "path": "s2-1-review\\horizon-mist-v2\\c-horizon-mist.png"
+    },
+    {
+      "bytes": 3195,
+      "path": "s2-1-review\\horizon-mist-v2\\README.md"
+    },
+    {
+      "bytes": 848755,
+      "path": "s2-1-review\\horizon-mist-v2\\user-reference-horizon.png"
+    },
+    {
+      "bytes": 2243392,
+      "path": "s2-1-review\\horizon-mist-v2\\user-reference-scene.png"
+    },
+    {
+      "bytes": 1258,
+      "path": "s2-1-review\\horizon-mist-v2\\verification.json"
+    },
+    {
+      "bytes": 208808,
+      "path": "s2-1-review\\reference-v3\\C-volume-scene.png"
+    },
+    {
+      "bytes": 208811,
+      "path": "s2-1-review\\reference-v3\\E-reference-scene.png"
+    },
+    {
+      "bytes": 1167,
+      "path": "s2-1-review\\reference-v3\\mode-check.json"
+    },
+    {
+      "bytes": 1666,
+      "path": "s2-1-review\\reference-v3\\README.md"
+    },
+    {
+      "bytes": 429,
+      "path": "s2-1-review\\webgl-fog-prototype\\anchor-check.json"
+    },
+    {
+      "bytes": 205008,
+      "path": "s2-1-review\\webgl-fog-prototype\\B-transition.png"
+    },
+    {
+      "bytes": 205166,
+      "path": "s2-1-review\\webgl-fog-prototype\\C-webgl-fog.png"
+    },
+    {
+      "bytes": 201000,
+      "path": "s2-1-review\\webgl-fog-prototype\\downward-pan.png"
+    },
+    {
+      "bytes": 885,
+      "path": "s2-1-review\\webgl-fog-prototype\\README.md"
+    },
+    {
+      "bytes": 207295,
+      "path": "s3-railway\\after-overview.png"
+    },
+    {
+      "bytes": 163208,
+      "path": "s3-railway\\after-railway-view.png"
+    },
+    {
+      "bytes": 207101,
+      "path": "s3-railway\\before-overview.png"
+    },
+    {
+      "bytes": 162896,
+      "path": "s3-railway\\before-railway-view.png"
+    },
+    {
+      "bytes": 207150,
+      "path": "s3-railway\\final-view.png"
+    },
+    {
+      "bytes": 1165,
+      "path": "s3-railway\\isolation-check.json"
+    },
+    {
+      "bytes": 2131,
+      "path": "s3-railway\\README.md"
+    },
+    {
+      "bytes": 53,
+      "path": "s3-railway\\restored-camera.json"
+    },
+    {
+      "bytes": 207144,
+      "path": "s4-assessment\\current-with-mist.png"
+    },
+    {
+      "bytes": 206813,
+      "path": "s4-assessment\\current-without-local-mist.png"
+    },
+    {
+      "bytes": 600,
+      "path": "s4-assessment\\ownership-state.json"
+    },
+    {
+      "bytes": 164966,
+      "path": "s4-valley-material\\after-no-mist-pan.png"
+    },
+    {
+      "bytes": 229195,
+      "path": "s4-valley-material\\after-no-mist-zoom.png"
+    },
+    {
+      "bytes": 208936,
+      "path": "s4-valley-material\\after-no-mist.png"
+    },
+    {
+      "bytes": 209506,
+      "path": "s4-valley-material\\after-with-mist.png"
+    },
+    {
+      "bytes": 164890,
+      "path": "s4-valley-material\\before-no-mist-pan.png"
+    },
+    {
+      "bytes": 208853,
+      "path": "s4-valley-material\\before-no-mist.png"
+    },
+    {
+      "bytes": 2964,
+      "path": "s4-valley-material\\README.md"
+    },
+    {
+      "bytes": 2732,
+      "path": "s4-valley-material\\verification.json"
+    },
+    {
+      "bytes": 188002,
+      "path": "s4-valley-material\\evening-adaptation\\day-return.png"
+    },
+    {
+      "bytes": 175518,
+      "path": "s4-valley-material\\evening-adaptation\\dusk.png"
+    },
+    {
+      "bytes": 153694,
+      "path": "s4-valley-material\\evening-adaptation\\night.png"
+    },
+    {
+      "bytes": 1787,
+      "path": "s4-valley-material\\evening-adaptation\\README.md"
+    },
+    {
+      "bytes": 5255,
+      "path": "s4-valley-material\\evening-adaptation\\verification.json"
+    },
+    {
+      "bytes": 209214,
+      "path": "s4-valley-material\\v2\\after-no-mist.png"
+    },
+    {
+      "bytes": 208938,
+      "path": "s4-valley-material\\v2\\before-no-mist.png"
+    },
+    {
+      "bytes": 1501,
+      "path": "s4-valley-material\\v2\\README.md"
+    },
+    {
+      "bytes": 25957,
+      "path": "s4-valley-material\\v2\\valley-detail.png"
+    },
+    {
+      "bytes": 1779,
+      "path": "s4-valley-material\\v2\\verification.json"
+    },
+    {
+      "bytes": 979,
+      "path": "s4-valley-material\\v2-front\\accepted-default-with-railway.json"
+    },
+    {
+      "bytes": 188016,
+      "path": "s4-valley-material\\v2-front\\accepted-default-with-railway.png"
+    },
+    {
+      "bytes": 954,
+      "path": "s4-valley-material\\v2-front\\accepted-default.json"
+    },
+    {
+      "bytes": 187844,
+      "path": "s4-valley-material\\v2-front\\accepted-default.png"
+    },
+    {
+      "bytes": 209532,
+      "path": "s4-valley-material\\v2-front\\after-no-mist.png"
+    },
+    {
+      "bytes": 2360,
+      "path": "s4-valley-material\\v2-front\\README.md"
+    },
+    {
+      "bytes": 25943,
+      "path": "s4-valley-material\\v2-front\\valley-detail.png"
+    }
+  ],
+  "retainedOriginals": {
+    "reference-layering-b.png": "references/layering-diagram.png",
+    "reference-spec-a.md": "references/original-spec.md",
+    "s2-1-review/horizon-mist-v2/user-reference-horizon.png": "references/user-horizon-reference.png",
+    "s2-1-review/horizon-mist-v2/user-reference-scene.png": "references/user-scene-reference.png",
+    "s4-valley-material/evening-adaptation/day-return.png": "current/day.png",
+    "s4-valley-material/evening-adaptation/dusk.png": "current/dusk.png",
+    "s4-valley-material/evening-adaptation/night.png": "current/night.png",
+    "s4-valley-material/v2-front/after-no-mist.png": "current/day-no-mist.png",
+    "s4-valley-material/v2-front/accepted-default-with-railway.json": "validation/day-with-railway.json",
+    "s4-valley-material/evening-adaptation/verification.json": "validation/period-switch.json",
+    "s2-1-review/c-plus-optical-bake/C-plus-live.png": "fog-comparison/realtime-c-plus.png",
+    "s2-1-review/c-plus-optical-bake/C-plus-baked.png": "fog-comparison/baked-c-plus.png",
+    "s2-1-review/c-plus-optical-bake/cache-and-anchor-check.json": "fog-comparison/cache-and-anchor.json",
+    "s2-1-review/c-plus-optical-bake/screen-comparison.json": "fog-comparison/screen-difference.json"
+  }
+}

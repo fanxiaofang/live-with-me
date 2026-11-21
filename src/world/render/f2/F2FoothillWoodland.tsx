@@ -13,7 +13,7 @@ export const F2FoothillWoodland = memo(function F2FoothillWoodland({ theme }: { 
   const shade = colors?.woodlandShade || theme.hillGreenNear;
   const light = colors?.woodlandLight || theme.hillGreenMid;
   const meadow=requestedMeadowFoothill();
-  const vegetationMaterial=meadow ? meadowFoothillMaterial(theme.timeOfDay || 'day') : undefined;
+  const vegetationMaterial=meadow ? meadowFoothillMaterial(theme.timeOfDay || 'day',undefined,undefined,theme.foothillAtmosphere) : undefined;
   const trees=meadow ? [...MEADOW_HILL_TREES,...FOOTHILL_WOODLAND.filter(t=>t.group==='east')] : FOOTHILL_WOODLAND;
   return <g data-foothill-trees="mixed" pointerEvents="none" aria-hidden="true">
     {[...trees].sort((a,b) => foothillSurfaceY(a.x,a.depth) - foothillSurfaceY(b.x,b.depth)).map(tree => {

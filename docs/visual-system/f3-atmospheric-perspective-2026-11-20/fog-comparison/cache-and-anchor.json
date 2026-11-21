@@ -1,0 +1,134 @@
+{
+  "before": {
+    "bake": {
+      "bakeCount": 1,
+      "bakeSubmitMs": 2941.3000000715256,
+      "bounds": {
+        "height": 140,
+        "minX": 0,
+        "minY": 180,
+        "width": 1080
+      },
+      "encoding": "linear-premultiplied-radiance-and-opacity",
+      "format": "RGBA16F",
+      "height": 280,
+      "stepsPerVolume": 128,
+      "textureId": "51169bd5-e705-4cf9-b28a-b4fc4157910f",
+      "width": 2160
+    },
+    "camera": {
+      "x": 0,
+      "y": 207.104,
+      "zoom": 0.54
+    },
+    "fieldY": 569.6035766601562,
+    "fogY": 576.5908608297855,
+    "hillY": 469.5567626953125,
+    "mode": "baked-c-plus-optics",
+    "projection": {
+      "scaleX": 1.0189719166660025,
+      "scaleY": 1.0189719166660025,
+      "x": 212.28353701211736,
+      "y": 311.6581624966248
+    }
+  },
+  "pan": {
+    "bake": {
+      "bakeCount": 1,
+      "bakeSubmitMs": 2941.3000000715256,
+      "bounds": {
+        "height": 140,
+        "minX": 0,
+        "minY": 180,
+        "width": 1080
+      },
+      "encoding": "linear-premultiplied-radiance-and-opacity",
+      "format": "RGBA16F",
+      "height": 280,
+      "stepsPerVolume": 128,
+      "textureId": "51169bd5-e705-4cf9-b28a-b4fc4157910f",
+      "width": 2160
+    },
+    "camera": {
+      "x": 0,
+      "y": 258.249,
+      "zoom": 0.54
+    },
+    "fieldY": 613.6036376953125,
+    "fogY": 578.9001340048769,
+    "hillY": 471.8660888671875,
+    "mode": "baked-c-plus-optics",
+    "projection": {
+      "scaleX": 1.0189719166660025,
+      "scaleY": 1.0189719166660025,
+      "x": 212.28353701211736,
+      "y": 313.9674356717164
+    }
+  },
+  "zoom": {
+    "bake": {
+      "bakeCount": 1,
+      "bakeSubmitMs": 2941.3000000715256,
+      "bounds": {
+        "height": 140,
+        "minX": 0,
+        "minY": 180,
+        "width": 1080
+      },
+      "encoding": "linear-premultiplied-radiance-and-opacity",
+      "format": "RGBA16F",
+      "height": 280,
+      "stepsPerVolume": 128,
+      "textureId": "51169bd5-e705-4cf9-b28a-b4fc4157910f",
+      "width": 2160
+    },
+    "camera": {
+      "x": 0,
+      "y": 258.249,
+      "zoom": 1.14064
+    },
+    "fieldY": 373.29254150390625,
+    "fogY": 582.4527004642913,
+    "hillY": 470.087646484375,
+    "mode": "baked-c-plus-optics",
+    "projection": {
+      "scaleX": 1.0697228660862064,
+      "scaleY": 1.0697228660862064,
+      "x": 181.83296735999477,
+      "y": 304.32475528187763
+    }
+  },
+  "restored": {
+    "bake": {
+      "bakeCount": 1,
+      "bakeSubmitMs": 2941.3000000715256,
+      "bounds": {
+        "height": 140,
+        "minX": 0,
+        "minY": 180,
+        "width": 1080
+      },
+      "encoding": "linear-premultiplied-radiance-and-opacity",
+      "format": "RGBA16F",
+      "height": 280,
+      "stepsPerVolume": 128,
+      "textureId": "51169bd5-e705-4cf9-b28a-b4fc4157910f",
+      "width": 2160
+    },
+    "camera": {
+      "x": 0,
+      "y": 207.104,
+      "zoom": 0.54
+    },
+    "fieldY": 569.6035766601562,
+    "fogY": 576.5908608297855,
+    "hillY": 469.5567626953125,
+    "mode": "baked-c-plus-optics",
+    "projection": {
+      "scaleX": 1.0189719166660025,
+      "scaleY": 1.0189719166660025,
+      "x": 212.28353701211736,
+      "y": 311.6581624966248
+    }
+  }
+}

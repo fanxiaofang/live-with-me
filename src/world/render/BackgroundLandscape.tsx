@@ -98,9 +98,9 @@ function BackgroundLandscapeAsset({
           )}
         </g>
         <g id="parallax-foothill-trees-layer" pointerEvents="none" aria-hidden="true">
-          {integratedGround && requestedFoothillTransition() && requestedFoothillTrees() && (
+          {integratedGround && requestedFoothillTransition() && (
             <g transform={`translate(0, ${LANDSCAPE_SURFACES.backgroundOffsetY})`}>
-              <F2FoothillWoodland theme={theme} />
+              {requestedFoothillTrees() && <F2FoothillWoodland theme={theme} />}
             </g>
           )}
         </g>
@@ -118,6 +118,7 @@ function BackgroundLandscapeAsset({
         </g>
         <g id="wheat-scene-objects" ref={wheatObjectsRef} />
       </g>
+
     </>
   );
 }

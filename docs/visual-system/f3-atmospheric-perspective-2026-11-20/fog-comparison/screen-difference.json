@@ -1,0 +1,16 @@
+{
+  "roi": [
+    275,
+    520,
+    1280,
+    600
+  ],
+  "excludedSmokeX": [
+    742,
+    792
+  ],
+  "meanAbsoluteChannelDifference": 0.08856457242582896,
+  "p95ChannelDifference": 1.0,
+  "maxChannelDifference": 11.0,
+  "note": "8-bit screenshot comparison; 32-step live vs 128-step baked; not a perceptual approval or GPU timing measurement"
+}

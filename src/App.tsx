@@ -1,4 +1,6 @@
 import { useYardEditor } from './features/yard-editor/useYardEditor';
+import { AtmosphereStudyPanel } from './components/dev/AtmosphereStudyPanel';
+import { defaultAtmosphereStudy, requestedAtmosphereStudy, type AtmosphereStudy } from './world/render/f2/F3AtmosphereStudy';
 import { YardPanel } from './features/yard-editor/YardPanel';
 import type { WorldViewId } from './types';
 import { useBookshelf } from './features/bookshelf/useBookshelf';
@@ -36,6 +38,8 @@ const ChairInspectionModal = lazy(() => import('./components/desk/ChairInspectio
 const CabinetDetailModal = lazy(() => import('./components/cabinet/CabinetDetailModal').then(module => ({ default: module.CabinetDetailModal })));
 
 export default function App() {
+  const [atmosphereReview] = useState(() => new URLSearchParams(window.location.search).get('atmosphereReview') === '1');
+  const [atmosphereStudy, setAtmosphereStudy] = useState<AtmosphereStudy>(() => requestedAtmosphereStudy(window.location.search));
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>(() => {
     const query=new URLSearchParams(window.location.search),time=query.get('wearTime');
     return time==='dusk'||time==='night'?time:query.has('wearNightStudy')?'night':'day';
@@ -141,6 +145,7 @@ export default function App() {
       <div className="absolute inset-0 z-0">
         <DeskStudyContext.Provider value={deskStudyPreview && deskStudyDraft ? { surface: deskStudyDraft.surface, guides: deskStudyPreview.guides } : null}>
         <ThreeWorld
+          atmosphereStudy={atmosphereReview ? atmosphereStudy : defaultAtmosphereStudy(timeOfDay)}
           yardEditor={yard}
           sceneLayout={yard.sceneLayout}
           timeOfDay={timeOfDay}
@@ -373,6 +378,7 @@ export default function App() {
           setIsLayoutInspectorOpen(false); setActiveGizmoId(null); setActiveRoom('my_room'); setIsChairModalOpen(false);
         }}
       /></Suspense>)}
+      {atmosphereReview && <AtmosphereStudyPanel study={atmosphereStudy} onChange={setAtmosphereStudy} />}
     </main>
   );
 }

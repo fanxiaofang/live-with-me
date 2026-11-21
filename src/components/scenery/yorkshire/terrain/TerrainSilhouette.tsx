@@ -11,6 +11,7 @@ import { FIELD_DETAIL_FRONT_Y, WHEAT_TRAMLINES, tramlinePoint, tramlineX } from 
 import { FieldParcels } from './FieldParcels';
 import { FieldDressing } from '../dressing/FieldDressing';
 import { isInObservatorySite, type ObservatorySite } from '../../../../world/scene/observatorySite';
+import { meadowFoothillMaterial } from '../../../../world/render/f2/meadowFoothillMaterial';
 
 export function DistantFarmsteads({ theme, landform = false }: { theme?: YorkshireSceneTheme; landform?: boolean }) {
   const meadow=landform && requestedMeadowFoothill();
@@ -19,10 +20,14 @@ export function DistantFarmsteads({ theme, landform = false }: { theme?: Yorkshi
   const second = landform ? foothillSurfaceY(secondX, FOOTHILL_FARMSTEADS[1].depth) : 157;
   const wall = theme?.landscapeEnvironment?.farmWall || '#f8fafc';
   const roof = theme?.landscapeEnvironment?.farmRoof || '#a84e34';
+  const hillMaterial = meadow && theme?.foothillAtmosphere
+    ? meadowFoothillMaterial(theme.timeOfDay || 'day',undefined,undefined,theme.foothillAtmosphere) : undefined;
+  const hillWall = hillMaterial?.landmarkColor('#e1e0c7',[0,1,0]) || wall;
+  const hillRoof = hillMaterial?.landmarkColor('#a84e34',[0,.8,.6]) || roof;
   return <>
       <g transform={`translate(${firstX}, ${first - 18})`} data-farmstead-root={landform ? firstX+','+first : undefined}>
-        <polygon points="0,10 16,10 16,18 0,18" fill={wall} />
-        <polygon points="-2,10 8,2 18,10" fill={roof} />
+        <polygon points="0,10 16,10 16,18 0,18" fill={hillWall} />
+        <polygon points="-2,10 8,2 18,10" fill={hillRoof} />
       </g>
       <g transform={`translate(${secondX}, ${second - 15})`} data-farmstead-root={landform ? secondX+','+second : undefined}>
         <polygon points="0,8 14,8 14,15 0,15" fill={wall} />

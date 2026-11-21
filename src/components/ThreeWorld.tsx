@@ -16,6 +16,7 @@ import type { WorldViewId } from '../types';
 import React, { lazy, Suspense, useMemo, useRef, useState } from 'react';
 import { F2Sky } from '../world/render/f2/F2Sky';
 import { createF2SceneTheme } from '../world/render/f2/F2Environment';
+import { atmosphereStudyLook, withStudySky, withStudyRailway, type AtmosphereStudy } from '../world/render/f2/F3AtmosphereStudy';
 import { resolveSceneOptions } from '../world/scene/currentScene';
 import { hasNearPlants } from './scenery/yorkshire/vegetation/meadowStudy';
 import { NearMeadowPlants } from './scenery/yorkshire/vegetation/NearMeadowPlants';
@@ -55,6 +56,8 @@ const F2DistantHills = lazy(() => import('../world/render/f2/F2DistantHills'));
 const PosterDetailModal = lazy(() => import('./wall-posters/PosterDetailModal').then(module => ({ default: module.PosterDetailModal })));
 
 interface ThreeWorldProps {
+  /** Accepted appearance or an explicit development comparison. */
+  atmosphereStudy?: AtmosphereStudy;
   yardEditor?: YardEditor;
   /** Historical fixtures can opt out of the accepted default composition. */
   meadowComposition?: 'current' | 'legacy';
@@ -99,6 +102,7 @@ interface ThreeWorldProps {
 
 // Anime countryside atmospheric color palettes & lighting
 export const ThreeWorld: React.FC<ThreeWorldProps> = ({
+  atmosphereStudy = 'baseline',
   yardEditor,
   meadowComposition = 'current',
   groundDecoration,
@@ -184,10 +188,13 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
 
   const { hoveredObject, setHoveredObject, alienPulseEffect, alienTransmissionText, setAlienTransmissionText, sofaSquish, sofaThought, stoveColor, setStoveColor, triggerAlienSignal, triggerSofaSquish } = useWorldFeedback();
 
+  const studyLook = useMemo(() => atmosphereStudyLook(atmosphereStudy, timeOfDay), [atmosphereStudy, timeOfDay]);
   const theme = useMemo(() => {
     const host = COUNTRYSIDE_THEMES[timeOfDay] || COUNTRYSIDE_THEMES.day;
-    return hillsMode === 'f2' ? createF2SceneTheme(host, timeOfDay) : host;
-  }, [hillsMode, timeOfDay]);
+    if (hillsMode !== 'f2') return host;
+    const display = withStudyRailway(withStudySky(createF2SceneTheme(host, timeOfDay), studyLook.sky), studyLook.railway);
+    return studyLook.foothill ? { ...display, foothillAtmosphere: studyLook.foothill } : display;
+  }, [hillsMode, timeOfDay, studyLook.sky, studyLook.foothill, studyLook.railway]);
   const currentMeadow = meadowComposition === 'current';
 
   const interactionTiers = customBookshelfTiers ?? PRESET_COZY_TIERS;
@@ -225,6 +232,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       data-meadow-foreground={meadowForeground}
       data-field-edges={fieldEdges}
       data-hills-requested={hillsMode}
+      data-atmosphere-study={atmosphereStudy}
       data-hills-mode={f2Active ? 'f2' : 'legacy'}
       data-hills-failure={f2Failure || undefined}
       {...pointerHandlers}
@@ -242,7 +250,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
       {hillsMode === 'f2' && !f2Active && <F2Sky theme={theme} />}
       {hillsMode === 'f2' && !f2Failure && <Suspense fallback={null}>
         <F2DistantHills svgRef={svgRef} camera={camera} isDragging={isDragging}
-          timeOfDay={timeOfDay} theme={theme} onReady={hillsReady} onFailure={hillsFailure} />
+          timeOfDay={timeOfDay} theme={theme} skyAppearance={studyLook.sky} onReady={hillsReady} onFailure={hillsFailure} />
       </Suspense>}
       {/* 2.5D ANIME COUNTRYSIDE FULL-BLEED STAGE CONTAINER */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
@@ -374,7 +382,7 @@ export const ThreeWorld: React.FC<ThreeWorldProps> = ({
         {/* 5. MASTER ATMOSPHERE FRAME VIGNETTE (全景顶级艺术画框压暗) */}
         {/*    万物生灵片头经典摄影构图：四周温和暗角自然汇聚视觉于中心 */}
         {/* ======================================================== */}
-        <g id="master-viewport-frame-vignette" className="pointer-events-none">
+        <g id="master-viewport-frame-vignette" className="pointer-events-none" opacity={studyLook.vignetteOpacity}>
           {/* Subtle Viewport Radial Vignette */}
           <rect x="0" y="0" width="1200" height="800" fill="url(#frameVignetteRadial)" />
         </g>

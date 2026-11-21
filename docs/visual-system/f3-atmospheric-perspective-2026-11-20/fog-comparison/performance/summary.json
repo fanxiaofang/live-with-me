@@ -1,0 +1,13 @@
+{
+  "gpuMedianRatio": 41.83677524048714,
+  "gpuReductionPercent": 97.60975841409436,
+  "cacheTextureMiB": 4.6142578125,
+  "warmBakeEquivalentSavedDraws": 8.56877645504011,
+  "sourceHashes": {
+    "src/world/render/f2/FogPerformanceProbe.ts": "4e9732365d0c5bc5f0af582c77f58b6450aaf62ce892994d7ddb3668a247ed92",
+    "src/world/render/f2/HillFootFog.ts": "c85b0c728450f349d8103b82134fe2af80235153a1c7ba634919b15d0f603ac2",
+    "src/world/render/f2/ExpandedHillFogMaterial.ts": "4a7984bef830b3a5541634803713ed07d1a573f442f789cca333104212d5197b",
+    "src/world/render/f2/BakedHillFog.ts": "edd3fd6de18ab45edfbc54501e2c56f4109ab02d1d705011d8334b82f8332434",
+    "tests/fixtures/fog-performance.ts": "1cec641b83c22d594abff8d83be1f228ae43397d54e58e3309f2e91b091a950c"
+  }
+}

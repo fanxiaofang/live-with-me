@@ -1,0 +1,143 @@
+{
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+    "dpr": 1.5,
+    "drawingBuffer": {
+      "width": 2400,
+      "height": 1350
+    },
+    "gpuTimerAvailable": true,
+    "vendor": "Google Inc. (Intel)",
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x00009BCA) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "firstUseSubmissionMs": {
+    "expanded": 402.89999997615814,
+    "baked": 266
+  },
+  "live": {
+    "submission": [
+      0.8999999761581421,
+      0.3999999761581421,
+      0.5,
+      0.6000000238418579,
+      0.7000000476837158,
+      0.8999999761581421,
+      0.5,
+      1.100000023841858,
+      0.5,
+      0.6000000238418579,
+      0.3999999761581421,
+      0.3999999761581421,
+      0.8999999761581421,
+      0.9000000953674316,
+      0.8999999761581421,
+      0.7000000476837158
+    ],
+    "gpu": [
+      42.178247,
+      42.212497,
+      42.235247,
+      42.209664,
+      45.289985,
+      45.258485,
+      45.239819,
+      42.436913,
+      39.559175,
+      39.711674,
+      39.575008,
+      39.540925,
+      39.530508,
+      39.532008,
+      39.557675,
+      39.561591
+    ]
+  },
+  "baked": {
+    "submission": [
+      0.9000000953674316,
+      0.7000000476837158,
+      1,
+      0.5,
+      0.19999992847442627,
+      0.6000000238418579,
+      0.40000009536743164,
+      0.3999999761581421,
+      0.6999999284744263,
+      0.7999999523162842,
+      0.6999999284744263,
+      0.8999999761581421,
+      0.8999999761581421,
+      0.7000000476837158,
+      0.7999999523162842,
+      1
+    ],
+    "gpu": [
+      0.963496,
+      1.020329,
+      1.015412,
+      1.099912,
+      1.042412,
+      0.974662,
+      1.050329,
+      1.079412,
+      0.951162,
+      1.008162,
+      1.002912,
+      0.993329,
+      0.975246,
+      0.975746,
+      1.039162,
+      0.977412
+    ]
+  },
+  "discardedGpuSamples": 0,
+  "limitations": "Isolated fog draw only; Submission wall time includes gl.finish calls, but browser command buffering means it does not establish GPU completion; use the GPU timer result for GPU cost. GPU query available only if supported and not disjoint. Not presented FPS, whole-app latency, production-browser matrix, or phone performance.",
+  "warmRebake": {
+    "submissionMs": 2.600000023841858,
+    "gpuMs": 352.777255,
+    "note": "One explicitly invalidated, shader-warm rebake plus one composition draw; not first-ever shader compilation."
+  },
+  "summary": {
+    "live": {
+      "submission": {
+        "samples": 16,
+        "medianMs": 0.7000000476837158,
+        "p95Ms": 1.100000023841858
+      },
+      "gpu": {
+        "samples": 16,
+        "medianMs": 42.178247,
+        "p95Ms": 45.289985
+      }
+    },
+    "baked": {
+      "submission": {
+        "samples": 16,
+        "medianMs": 0.7000000476837158,
+        "p95Ms": 1
+      },
+      "gpu": {
+        "samples": 16,
+        "medianMs": 1.008162,
+        "p95Ms": 1.099912
+      }
+    }
+  },
+  "cache": {
+    "bakeCount": 2,
+    "width": 2160,
+    "height": 280,
+    "stepsPerVolume": 128,
+    "format": "RGBA16F",
+    "encoding": "linear-premultiplied-radiance-and-opacity",
+    "bakeSubmitMs": 0.8999999761581421,
+    "bounds": {
+      "minX": 0,
+      "minY": 180,
+      "width": 1080,
+      "height": 140
+    },
+    "textureId": "9e9a2e83-9daf-457c-a138-48a8a63145fc"
+  },
+  "measuredAt": "2026-11-20T17:11:00.087Z"
+}

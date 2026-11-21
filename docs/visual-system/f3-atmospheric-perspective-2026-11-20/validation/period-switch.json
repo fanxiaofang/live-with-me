@@ -1,0 +1,180 @@
+{
+  "dusk": {
+    "camera": {
+      "x": 0,
+      "y": 207.104,
+      "zoom": 0.54
+    },
+    "fog": "off",
+    "geometryIds": [
+      "3f182b11-42e0-4d1c-a322-ac2be3ad312d",
+      "d1995e8c-5341-4395-95c2-bf3139ad0357",
+      "f5d12fc8-fc09-498d-b2d5-c8f0154d9c45"
+    ],
+    "materialIds": [
+      "ebc33e53-2c70-4bd3-b659-9c3289ba0167",
+      "cb982630-719b-4ffc-b536-7666134d41a1",
+      "da0da101-dd51-42e7-9e32-39d80c60a8ff"
+    ],
+    "projection": "matrix(0.6514471285231889 0 0 0.6514471285231889 209.13172288608666 274.16510536076083)",
+    "rail": "transform: translate(0px, 149.421px) scale(0.612); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+    "valley": "s4",
+    "wheat": "transform: translate(0px, 174.657px) scale(0.576); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+  },
+  "night": {
+    "camera": {
+      "x": 0,
+      "y": 207.104,
+      "zoom": 0.54
+    },
+    "fog": "off",
+    "geometryIds": [
+      "3f182b11-42e0-4d1c-a322-ac2be3ad312d",
+      "d1995e8c-5341-4395-95c2-bf3139ad0357",
+      "f5d12fc8-fc09-498d-b2d5-c8f0154d9c45"
+    ],
+    "materialIds": [
+      "ebc33e53-2c70-4bd3-b659-9c3289ba0167",
+      "cb982630-719b-4ffc-b536-7666134d41a1",
+      "da0da101-dd51-42e7-9e32-39d80c60a8ff"
+    ],
+    "projection": "matrix(0.6514471285231889 0 0 0.6514471285231889 209.13172288608666 274.16510536076083)",
+    "rail": "transform: translate(0px, 149.421px) scale(0.612); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+    "valley": "s4",
+    "wheat": "transform: translate(0px, 174.657px) scale(0.576); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+  },
+  "dayReturn": {
+    "camera": {
+      "x": 0,
+      "y": 207.104,
+      "zoom": 0.54
+    },
+    "fog": "baked-c-plus-optics",
+    "geometryIds": [
+      "3f182b11-42e0-4d1c-a322-ac2be3ad312d",
+      "d1995e8c-5341-4395-95c2-bf3139ad0357",
+      "f5d12fc8-fc09-498d-b2d5-c8f0154d9c45"
+    ],
+    "materialIds": [
+      "ebc33e53-2c70-4bd3-b659-9c3289ba0167",
+      "cb982630-719b-4ffc-b536-7666134d41a1",
+      "da0da101-dd51-42e7-9e32-39d80c60a8ff"
+    ],
+    "projection": "matrix(0.6514471285231889 0 0 0.6514471285231889 209.13172288608666 274.16510536076083)",
+    "rail": "transform: translate(0px, 149.421px) scale(0.612); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);",
+    "valley": "s4",
+    "wheat": "transform: translate(0px, 174.657px) scale(0.576); transform-origin: 600px 400px; transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);"
+  },
+  "final": {
+    "railAir": "0.1",
+    "stats": {
+      "calibration": "refined",
+      "camera": {
+        "x": 0,
+        "y": 207.1037,
+        "zoom": 0.54
+      },
+      "disposed": false,
+      "dpr": 1.5,
+      "drawCalls": 4,
+      "environment": "night",
+      "environmentOwner": "source-v2",
+      "environmentProgress": 1,
+      "fogProjection": {
+        "scaleX": 1.0189719166660025,
+        "scaleY": 1.0189719166660025,
+        "x": 212.28353701211736,
+        "y": 311.6581624966248
+      },
+      "fogTechnique": "off",
+      "geometries": 4,
+      "geometryBytes": 293700,
+      "geometryIds": [
+        "3f182b11-42e0-4d1c-a322-ac2be3ad312d",
+        "d1995e8c-5341-4395-95c2-bf3139ad0357",
+        "f5d12fc8-fc09-498d-b2d5-c8f0154d9c45"
+      ],
+      "height": 1251.3333740234375,
+      "isDragging": false,
+      "layerResponses": [
+        {
+          "pan": 0,
+          "zoom": 0
+        },
+        {
+          "pan": 0.015,
+          "zoom": 0.025
+        },
+        {
+          "pan": 0.035,
+          "zoom": 0.065
+        }
+      ],
+      "materialIds": [
+        "ebc33e53-2c70-4bd3-b659-9c3289ba0167",
+        "cb982630-719b-4ffc-b536-7666134d41a1",
+        "da0da101-dd51-42e7-9e32-39d80c60a8ff"
+      ],
+      "mode": "B",
+      "placement": {
+        "centerX": 600,
+        "hiddenBottom": -8,
+        "horizonY": 35,
+        "layerOffsetY": [
+          10,
+          4,
+          0
+        ],
+        "layerScale": [
+          1,
+          1,
+          1
+        ],
+        "offsetX": 0,
+        "offsetY": 40,
+        "pixelRatioLimit": 1.5,
+        "scale": 1,
+        "unitsPerDesignUnit": 400
+      },
+      "programs": 5,
+      "reliefLayer": 2,
+      "renderMeanMs": 109.37777777512868,
+      "renderSamples": 9,
+      "renderSubmitMs": 0.2999999523162842,
+      "responseOwner": "source-v2",
+      "revision": "186",
+      "sampledCamera": {
+        "x": 0,
+        "y": 207.104,
+        "zoom": 0.54
+      },
+      "skyDither": true,
+      "skyHorizon": "4a6486",
+      "skyTop": "142b4c",
+      "skyVisible": true,
+      "textures": 0,
+      "transforms": [
+        {
+          "scale": 0.6599999999999999,
+          "x": 0,
+          "y": 0.18224999999999997
+        },
+        {
+          "scale": 0.6566972250786344,
+          "x": 0,
+          "y": 0.18944610000000003
+        },
+        {
+          "scale": 0.6514471285231889,
+          "x": 0,
+          "y": 0.1924409
+        }
+      ],
+      "triangles": 13826,
+      "valleyMaterial": "s4",
+      "width": 1647.3333740234375
+    },
+    "vignette": "0"
+  },
+  "errors": []
+}

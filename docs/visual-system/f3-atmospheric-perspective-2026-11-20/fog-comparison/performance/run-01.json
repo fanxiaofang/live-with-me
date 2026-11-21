@@ -1,0 +1,138 @@
+{
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+    "dpr": 1.5,
+    "drawingBuffer": {
+      "width": 2400,
+      "height": 1350
+    },
+    "gpuTimerAvailable": true,
+    "vendor": "Google Inc. (Intel)",
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x00009BCA) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "coldSynchronizedMs": {
+    "expanded": 459.8000000715256,
+    "baked": 176
+  },
+  "live": {
+    "synchronized": [
+      1.600000023841858,
+      1.600000023841858,
+      0.3999999761581421,
+      0.5,
+      0.7000000476837158,
+      0.6999999284744263,
+      0.2999999523162842,
+      0.8999999761581421,
+      0.8999999761581421,
+      0.6999999284744263,
+      0.6999999284744263,
+      0.7000000476837158,
+      0.7999999523162842,
+      0.5999999046325684,
+      1.2999999523162842,
+      0.40000009536743164
+    ],
+    "gpu": [
+      39.510675,
+      45.217735,
+      42.188164,
+      39.565425,
+      39.551008,
+      39.560675,
+      39.574925,
+      39.594008,
+      39.528008,
+      42.215747,
+      45.242569,
+      42.223497,
+      42.279914,
+      43.128327,
+      42.169497,
+      39.573591
+    ]
+  },
+  "baked": {
+    "synchronized": [
+      0.5,
+      0.3999999761581421,
+      0.8000000715255737,
+      0.40000009536743164,
+      0.3999999761581421,
+      0.5,
+      0.5,
+      0.6000000238418579,
+      0.5,
+      0.30000007152557373,
+      0.5,
+      1.4000000953674316,
+      0.7999999523162842,
+      0.5,
+      0.8000000715255737,
+      0.8999999761581421
+    ],
+    "gpu": [
+      1.003412,
+      1.166412,
+      1.108495,
+      1.004495,
+      1.044162,
+      1.016162,
+      1.051995,
+      0.995912,
+      0.961162,
+      1.011162,
+      0.981079,
+      1.069162,
+      1.010329,
+      1.078829,
+      1.081079,
+      0.976746
+    ]
+  },
+  "discardedGpuSamples": 0,
+  "limitations": "Isolated fog draw only; gl.finish wall time includes CPU/driver/GPU synchronization. GPU query available only if supported and not disjoint. Not presented FPS, whole-app latency, production-browser matrix, or phone performance.",
+  "summary": {
+    "live": {
+      "synchronized": {
+        "samples": 16,
+        "medianMs": 0.7000000476837158,
+        "p95Ms": 1.600000023841858
+      },
+      "gpu": {
+        "samples": 16,
+        "medianMs": 42.169497,
+        "p95Ms": 45.242569
+      }
+    },
+    "baked": {
+      "synchronized": {
+        "samples": 16,
+        "medianMs": 0.5,
+        "p95Ms": 1.4000000953674316
+      },
+      "gpu": {
+        "samples": 16,
+        "medianMs": 1.016162,
+        "p95Ms": 1.166412
+      }
+    }
+  },
+  "cache": {
+    "bakeCount": 1,
+    "width": 2160,
+    "height": 280,
+    "stepsPerVolume": 128,
+    "format": "RGBA16F",
+    "encoding": "linear-premultiplied-radiance-and-opacity",
+    "bakeSubmitMs": 147.30000007152557,
+    "bounds": {
+      "minX": 0,
+      "minY": 180,
+      "width": 1080,
+      "height": 140
+    },
+    "textureId": "498d97a7-877c-42e7-8581-339450752c71"
+  },
+  "measuredAt": "2026-11-20T17:07:10.473Z"
+}

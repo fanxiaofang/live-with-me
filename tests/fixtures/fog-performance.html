@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><title>C+ 雾层定向性能对照</title></head>
+<body style="margin:0;background:#647879;color:#eef3f0;font:16px/1.6 system-ui">
+<div id="fog-host" style="position:absolute;width:1600px;height:900px;pointer-events:none"></div>
+<main style="position:relative;z-index:2;max-width:980px;margin:36px auto;padding:24px;background:#162b2bef;border-radius:12px">
+<h1>C+ 雾层定向性能对照</h1>
+<p>固定 1600 × 900 CSS 像素，沿用当前浏览器 DPR 上限 1.5；仅比较雾层，非整页 FPS。</p>
+<button id="start" style="padding:10px 20px;font:inherit">开始一次测量</button>
+<p id="status">尚未开始</p><div id="summary"></div>
+<details><summary>原始结果</summary><pre id="result-json" style="font-size:12px;white-space:pre-wrap"></pre></details>
+</main><script type="module" src="/tests/fixtures/fog-performance.ts"></script></body></html>

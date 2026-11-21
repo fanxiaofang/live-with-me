@@ -1,4 +1,6 @@
 import type { TimeOfDay } from '../../../types';
+import type { FoothillAtmosphere } from '../../../components/scenery/yorkshire/landscapeTypes';
+import { Color } from 'three';
 import { meadowHillNormal, meadowHillSurfaceY, MEADOW_FOOTHILL } from '../../scene/meadowFoothill';
 import { MEADOW_GROUND_ROLES, SUMMER_MEADOW_VEGETATION, meadowVegetationWeights, type MeadowVegetationPalette } from '../../scene/meadowVegetation';
 import { LANDSCAPE_SURFACES } from '../../scene/landscapeGeometry';
@@ -7,13 +9,17 @@ import { environmentLook } from './vendor/backdrop/environment.js';
 import { sunVector, diffuseAt, heightSample, surfaceNormal, ridgeSample } from './vendor/f2/VirtualReliefModel.js';
 import { fogMask } from './vendor/backdrop/ridgeMaterial.js';
 import { resolveSourceHillsLook } from './F2Atmosphere';
+import { applyValleyColor, valleyFields, valleyMapping, valleyPalette } from './FoothillValleyMaterial';
 import { F2_STUDIES, requestedF2Study } from './f2Config';
 
 /** Accepted vegetation blending under the original F2 light and atmosphere. */
-export function meadowFoothillMaterial(time:TimeOfDay,height:number=MEADOW_FOOTHILL.height,vegetation:MeadowVegetationPalette=SUMMER_MEADOW_VEGETATION) {
+export function meadowFoothillMaterial(time:TimeOfDay,height:number=MEADOW_FOOTHILL.height,vegetation:MeadowVegetationPalette=SUMMER_MEADOW_VEGETATION,atmosphere?:FoothillAtmosphere) {
   const {config,study}=resolveF2Environment(time);
   const look=environmentLook(config,{...config.layers[2],color:'#899b70'},2);
   const nearest=resolveSourceHillsLook(config,2);
+  const valley=atmosphere?.valleyMaterial==='s4' ? valleyPalette(config) : undefined;
+  const valleyMap=valleyMapping(study.model.depth,study.model.screenDrop);
+  const interiorAir=atmosphere ? new Color(atmosphere.air) : look.air;
   const coverLooks=MEADOW_GROUND_ROLES.map(role=>environmentLook(config,{...config.layers[2],color:vegetation.ground[role]},2));
   const sun=sunVector(study.lighting);
   const response=(normal:number[])=>Math.max(-.65,Math.min(.65,
@@ -30,20 +36,32 @@ export function meadowFoothillMaterial(time:TimeOfDay,height:number=MEADOW_FOOTH
     const ridge=ridgeSample(config.layers[2].points,sx).height;
     const z=Math.max(0,ridge-sy)*study.model.depth/study.model.screenDrop;
     const normal=surfaceNormal(heightSample(config.layers[2].points,study.model,sx,z),study.lighting.reliefStrength);
-    return shade(nearest,normal).lerp(nearest.air,Math.min(.92,nearest.layerAir+fogMask(sx,sy,ridge,nearest)*nearest.foot));
+    const airStrength=Math.min(.92,nearest.layerAir+fogMask(sx,sy,ridge,nearest)*nearest.foot);
+    const lit=shade(nearest,normal);
+    return valley ? applyValleyColor(lit,nearest.air,airStrength,response(normal),nearest.light,
+      valleyFields(sx,sy,ridge,valleyMap),valley) : lit.lerp(nearest.air,airStrength);
   };
   const colorAt=(x:number,depth:number)=>{
     const normal=meadowHillNormal(x,depth,study.lighting.reliefStrength);
     const weights=meadowVegetationWeights(x,depth),color=look.base.clone().setRGB(0,0,0);
     coverLooks.forEach((cover,i)=>color.add(shade(cover,normal,.85).multiplyScalar(weights[i])));
-    color.lerp(look.air,.18);
+    // Interior depth is independent; the existing side/toe target remains the
+    // complete source-ridge surface colour, including S4 when enabled, light and air.
+    color.lerp(interiorAir,atmosphere?.surfaceStrength ?? .18);
     const thickness=meadowHillSurfaceY(x,1,height)!-meadowHillSurfaceY(x,0,height)!;
-    const endMix=1-Math.min(1,thickness/16);
-    const toeMix=Math.max(0,(depth-.90)/(1-.90));
+    const smooth=(v:number)=>{const t=Math.max(0,Math.min(1,v));return t*t*(3-2*t);};
+    const rawEnd=1-Math.min(1,thickness/16);
+    const softened=atmosphere?.transition==='valley';
+    const endMix=softened ? smooth(rawEnd) : rawEnd;
+    // Unequal broad runs enter gently; keep the exact source colour at depth=1.
+    // These are material weights only: no displacement or new terrain contour.
+    const toeStart=softened ? .84+.045*(.5+.5*Math.sin((x-160)/105)) : .90;
+    const rawToe=Math.max(0,(depth-toeStart)/(1-toeStart));
+    const toeMix=softened ? smooth(rawToe) : rawToe;
     return '#'+color.lerp(groundAt(x),Math.max(endMix,toeMix)).getHexString();
   };
   const landmarkColor=(hex:string,normal:number[])=>'#'+shade(
-    environmentLook(config,{...config.layers[2],color:hex},2),normal).lerp(look.air,.18).getHexString();
+    environmentLook(config,{...config.layers[2],color:hex},2),normal).lerp(interiorAir,atmosphere?.landmarkStrength ?? .18).getHexString();
   return {colorAt,landmarkColor,sun,lighting:study.lighting,air:'#'+look.air.getHexString(),response,
     groundAt:(x:number)=>'#'+groundAt(x).getHexString()};
 }

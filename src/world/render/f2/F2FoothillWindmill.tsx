@@ -8,7 +8,7 @@ export function F2FoothillWindmill({theme}:{theme:YorkshireSceneTheme}) {
   if (!requestedMeadowFoothill()) return null;
   const {x,depth}=MEADOW_HILL_WINDMILL;
   const y=meadowHillSurfaceY(x,depth)!;
-  const material=meadowFoothillMaterial(theme.timeOfDay || 'day');
+  const material=meadowFoothillMaterial(theme.timeOfDay || 'day',undefined,undefined,theme.foothillAtmosphere);
   const wall=material.landmarkColor('#b9b59a',[-.65,.5,.57]);
   const side=material.landmarkColor('#aaa990',[.65,.5,.57]);
   const roof=material.landmarkColor('#796e5c',[0,.8,.6]);

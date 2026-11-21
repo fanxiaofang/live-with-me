@@ -13,8 +13,11 @@ import { F2_STUDIES, requestedF2Study } from './f2Config';
 import { resolveF2Environment } from './F2Environment';
 import { resolveSourceHillsLook } from './F2Atmosphere';
 import { addHostNightSky } from './F2SkyDetails';
+import type { SkyAppearance } from './F3AtmosphereStudy';
 import { LANDSCAPE_SURFACES } from '../../scene/landscapeGeometry';
 import { sliceViewport } from '../../coordinates/viewport';
+import { addValleyMaterial, updateValleyMaterial } from './FoothillValleyMaterial';
+import { createHillFootFog } from './HillFootFog';
 
 interface Props {
   svgRef: RefObject<SVGSVGElement>;
@@ -22,6 +25,7 @@ interface Props {
   isDragging: boolean;
   timeOfDay: TimeOfDay;
   theme: YorkshireSceneTheme;
+  skyAppearance?: SkyAppearance;
   onReady: () => void;
   onFailure: (reason: string) => void;
 }
@@ -36,14 +40,16 @@ export default function F2DistantHills(props: Props) {
   const state = useRef(props);
   state.current = props;
   const wake = useRef<() => void>(() => {});
-  useLayoutEffect(() => wake.current(), [props.camera, props.isDragging, props.timeOfDay, props.theme]);
+  useLayoutEffect(() => wake.current(), [props.camera, props.isDragging, props.timeOfDay, props.theme, props.skyAppearance]);
 
   useEffect(() => {
     const host = hostRef.current, svg = state.current.svgRef.current;
     if (!host || !svg) return;
-    const landmarks = svg.querySelector<SVGGElement>('#f2-nearest-landmarks');
+    const landmarks = [...svg.querySelectorAll<SVGGElement>('#f2-nearest-landmarks')];
     let disposed = false, raf = 0, deadline = 0, ready = false, failed = false;
     let backdrop: ReturnType<typeof createF2Backdrop> | undefined;
+    let fog: ReturnType<typeof createHillFootFog> | undefined;
+    let lastFogMode = 'off', textureDirty = false;
     let themeKey = '', lastSignature = '', lastDpr = 0, wasBlending = false;
     let themeStart = 0;
     let from: Uniforms[] = [], to: Uniforms[] = [];
@@ -67,11 +73,18 @@ export default function F2DistantHills(props: Props) {
       return;
     }
     const f2 = backdrop;
+    const reliefMaterial = f2.getReliefMaterial();
+    if (!(reliefMaterial instanceof THREE.ShaderMaterial)) {
+      f2.dispose();
+      fail('F2 relief shader material is unavailable');
+      return;
+    }
     f2.core.renderer.debug.onShaderError = () => { throw new Error('F2 shader compilation failed'); };
     const meshes = f2.core.scene.children.filter((child: THREE.Object3D) =>
       (child as THREE.Mesh).isMesh && child.renderOrder >= 0 && child.renderOrder <= 4) as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>[];
     const sky = f2.core.scene.children.find(child => child.renderOrder === -100) as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
     addHostNightSky(sky.material);
+    addValleyMaterial(reliefMaterial);
     const animatedMeshes = [...meshes, sky];
     f2.core.renderer.autoClear = false;
     f2.core.renderer.info.autoReset = false;
@@ -84,22 +97,27 @@ export default function F2DistantHills(props: Props) {
     f2.canvas.setAttribute('aria-hidden', 'true');
     f2.canvas.addEventListener('webglcontextlost', lost);
     const uniformSnapshot = () => animatedMeshes.map(mesh => Object.fromEntries(
-      Object.entries(mesh.material.uniforms).filter(([key, u]) => key !== 'uViewport' && key !== 'uPixelRatio' && (typeof u.value === 'number' || u.value?.isColor || u.value?.isVector2 || u.value?.isVector3 || u.value?.isVector4))
+      Object.entries(mesh.material.uniforms).filter(([key, u]) => !['uViewport','uPixelRatio','uS4ValleyEnabled','uS4ValleyMap'].includes(key) && (typeof u.value === 'number' || u.value?.isColor || u.value?.isVector2 || u.value?.isVector3 || u.value?.isVector4))
         .map(([key, u]) => [key, { value: cloneUniform(u.value) }]),
     ) as Uniforms);
     const setEnvironment = (now: number) => {
-      const { timeOfDay, theme } = state.current;
-      const key = timeOfDay + theme.skyBottom;
+      const { timeOfDay, theme, skyAppearance } = state.current;
+      const key = JSON.stringify([timeOfDay, theme.skyBottom, skyAppearance?.top, skyAppearance?.horizon, theme.foothillAtmosphere?.valleyMaterial]);
       if (key === themeKey) return false;
       const first = !themeKey;
       themeKey = key;
       from = uniformSnapshot();
       const { config, study, sky: skyLook } = resolveF2Environment(timeOfDay);
+      if (skyAppearance) {
+        skyLook.top.set(skyAppearance.top);
+        skyLook.horizon.set(skyAppearance.horizon);
+      }
       meshes.forEach((mesh, index) => {
         const look = resolveSourceHillsLook(config, index);
         updateRidgeMaterial(mesh, look);
       });
       updateReliefMaterial(f2.getReliefMaterial(), study, baseline.layers[2].points);
+      updateValleyMaterial(reliefMaterial, config, study.model, timeOfDay, theme.foothillAtmosphere?.valleyMaterial === 's4');
       sky.material.uniforms.uTop.value.copy(skyLook.top);
       sky.material.uniforms.uAir.value.copy(skyLook.air);
       sky.material.uniforms.uHorizon.value.copy(skyLook.horizon);
@@ -132,7 +150,11 @@ export default function F2DistantHills(props: Props) {
         if (resized) { f2.resize(view.width, view.height, dpr); lastDpr = dpr; }
         const changedTheme = setEnvironment(now);
         const blending = applyEnvironment(now);
-        const environmentChanged = changedTheme || blending || wasBlending;
+        const atmosphere = state.current.theme.foothillAtmosphere;
+        const fogMode = !atmosphere?.mist ? 'off' : atmosphere.mistTechnique === 'baked' ? 'baked' : atmosphere.mistTechnique === 'expanded' ? 'expanded' : 'volume';
+        const environmentChanged = changedTheme || blending || wasBlending || fogMode !== lastFogMode || textureDirty;
+        lastFogMode = fogMode;
+        textureDirty = false;
         wasBlending = blending;
         const signature = JSON.stringify(view);
         if (signature !== lastSignature || resized || environmentChanged || !ready) {
@@ -144,9 +166,10 @@ export default function F2DistantHills(props: Props) {
           });
           // The SVG roots and WebGL ridge use the same sampled frame and projection.
           // No second easing clock or independent tree/house response is introduced.
-          if (landmarks) {
+          if (landmarks.length) {
             const m = f2LandmarkTransform(view, placement);
-            landmarks.setAttribute('transform', `matrix(${m.a} ${m.b} ${m.c} ${m.d} ${m.e} ${m.f})`);
+            const matrix = `matrix(${m.a} ${m.b} ${m.c} ${m.d} ${m.e} ${m.f})`;
+            landmarks.forEach(root => root.setAttribute('transform', matrix));
           }
           // The existing opaque wheat/meadow covers every pixel below this conservative
           // envelope. Scissor only hidden fragments; keep all ridge vertices/shaders.
@@ -174,12 +197,14 @@ export default function F2DistantHills(props: Props) {
           }
           f2.render();
           sky.visible = true;
+          if (fogMode !== 'off' && !fog) fog = createHillFootFog(host.parentElement!, () => { textureDirty = true; wake.current(); });
+          const fogProjection = fog?.render(view, placement, fogMode);
           if (f2.core.renderer.info.programs?.some(program => (program as unknown as { diagnostics?: { runnable: boolean } }).diagnostics?.runnable === false))
             throw new Error('F2 shader compilation failed');
           samples.push(performance.now() - begin);
           if (samples.length > 300) samples.shift();
           host.dataset.stats = JSON.stringify({
-            ...f2.getStats(), mode: 'B', reliefLayer: 2, skyVisible: true,
+            ...f2.getStats(), valleyMaterial: state.current.theme.foothillAtmosphere?.valleyMaterial || 'original', fogTechnique: fogMode === 'baked' ? 'baked-c-plus-optics' : fogMode === 'expanded' ? 'expanded-c-raymarch' : fogMode === 'volume' ? '3d-density-raymarch-32' : 'off', fogProjection, mode: 'B', reliefLayer: 2, skyVisible: true,
             skyDither: sky.material.dithering, environmentOwner: 'source-v2',
             skyTop: sky.material.uniforms.uTop.value.getHexString(), skyHorizon: sky.material.uniforms.uHorizon.value.getHexString(),
             materialIds: meshes.map(mesh => mesh.material.uuid), geometryIds: meshes.map(mesh => mesh.geometry.uuid),
@@ -229,7 +254,8 @@ export default function F2DistantHills(props: Props) {
       motion.removeEventListener('change', schedule);
       transitionEvents.forEach(type => clock?.removeEventListener(type, transition));
       f2.canvas.removeEventListener('webglcontextlost', lost);
-      landmarks?.removeAttribute('transform');
+      landmarks.forEach(root => root.removeAttribute('transform'));
+      fog?.dispose();
       f2.dispose();
     };
   }, []);

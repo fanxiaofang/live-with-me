@@ -8,11 +8,13 @@ import { BLENDED_MEADOW_COLUMNS, BLENDED_MEADOW_DEPTHS, BLENDED_MEADOW_STEP } fr
 /** The approved meadow surface and its static windmill. */
 export function F2MeadowFoothill({theme}:{theme:YorkshireSceneTheme}) {
   const id=useId().replace(/:/g,''),height=MEADOW_FOOTHILL.height;
-  const material=useMemo(()=>meadowFoothillMaterial(theme.timeOfDay || 'day'),[theme.timeOfDay]);
+  const material=useMemo(()=>meadowFoothillMaterial(theme.timeOfDay || 'day',undefined,undefined,theme.foothillAtmosphere),[theme.timeOfDay,theme.foothillAtmosphere]);
   const columns=BLENDED_MEADOW_COLUMNS,path=meadowHillPath(height);
   const step=BLENDED_MEADOW_STEP,depths=BLENDED_MEADOW_DEPTHS;
   return <g data-gentle-foothill="meadow" data-main-foothill-revision="grassland-form"
-    data-foothill-material="blended-vegetation" data-review-status="accepted" pointerEvents="none" aria-hidden="true">
+    data-foothill-material="blended-vegetation" data-foothill-atmosphere={theme.foothillAtmosphere ? 'midground' : 'source'}
+    data-foothill-transition={theme.foothillAtmosphere?.transition || 'original'}
+    data-review-status={theme.foothillAtmosphere?.mist && !theme.foothillAtmosphere.mistTechnique ? 'comparison' : 'accepted'} pointerEvents="none" aria-hidden="true">
     <defs>
       <clipPath id={`${id}-clip`}><path d={path}/></clipPath>
       {/* Blend across adjacent samples horizontally; preserve vertical material detail.
